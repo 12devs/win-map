@@ -1,0 +1,28 @@
+{
+  "app": {
+    "host": "0.0.0.0",
+    "port": 8081
+  },
+  "static": {
+    "public": "public",
+    "resources": "public/resources",
+    "views": "/views"
+  },
+  "logger": {
+    "level": "info",
+    "name": "backend"
+  },
+  "database": {
+    "dialect": "postgres",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "breath",
+    "host": "127.0.0.1"
+  },
+  "openweathermap": {
+    "cnt": 8,
+    "units": "metric"
+  },
+  "google": {},
+  "darksky": {}
+}
