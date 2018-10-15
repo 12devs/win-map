@@ -74,7 +74,7 @@ class MyMap extends React.Component {
           center={[51.505, -0.09]}
           onClick={this.addMarker}
           zoom={13}
-          style={{height: '70%'}}
+          style={{height: '600px'}}
         >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

@@ -33,14 +33,17 @@ class App extends Component {
             <li>
               <Link to="/test">test</Link>
             </li>
+            <li>
+              <Link to="/leaflet">leaflet</Link>
+            </li>
           </ul>
           <br/>
           <Switch>
             <Route path="/register" component={Register}/>
             <Route path="/login" component={Login}/>
             <Route path="/test" component={Test}/>
-            <Route children={() => <h2>Not found</h2>}/>
             <Route path="/leaflet" component={LeafletMap}/>
+            <Route children={() => <h2>Not found</h2>}/>
           </Switch>
         </div>
       </Router>
