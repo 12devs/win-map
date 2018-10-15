@@ -22,6 +22,7 @@
     "metrics-graphics": "^2.15.6",
     "moment": "^2.22.2",
     "prop-types": "^15.6.1",
+    "qs": "^6.5.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.5",

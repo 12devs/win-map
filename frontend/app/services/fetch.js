@@ -1,18 +1,17 @@
 import axios from 'axios';
-
-const options = () => {
-  return {
-    headers: {
-      authorization: `Token ${localStorage.windToken}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-  }
-};
+var qs = require('qs');
 
 const fetch = (method, url, body) => {
+  let options;
   switch (method) {
     case 'get':
-      return axios.get(url, options())
+      options = {
+        headers: {
+          authorization: `Token ${localStorage.windToken}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      };
+      return axios.get(url, options)
         .then(result => {
           return result.data
         })
@@ -24,7 +23,16 @@ const fetch = (method, url, body) => {
           }
         });
     case 'post':
-      return axios.post(url, body)
+      options = {
+        method: 'POST',
+        url,
+        data: qs.stringify(body),
+        headers: {
+          authorization: `Token ${localStorage.windToken}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      };
+      return axios(options)
         .then(result => {
           return result.data
         })

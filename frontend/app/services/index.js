@@ -9,7 +9,7 @@ const register = (login, password) => {
 };
 
 const test = () => {
-  return fetch('get', '/api/test');
+  return fetch('post', '/api/test', {data: 'dfdfdfdfdfdf'});
 };
 
 export default {
