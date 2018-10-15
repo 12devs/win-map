@@ -31,12 +31,13 @@ class Login extends Component {
 
     return (
       <div>
+        <h1>login</h1>
         <div>
-          login
+          <span>login </span>
           <input type="text" onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
         </div>
         <div>
-          password
+          <span>password </span>
           <input type="text" onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
         </div>
         <div>

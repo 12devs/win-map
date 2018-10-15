@@ -1,33 +1,15 @@
-import axios from 'axios';
-
-const options = () => {
-  return {
-    headers: {
-      authorization: `Token ${localStorage.windToken}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-  }
-}
+import { fetch } from './fetch';
 
 const login = (login, password) => {
-  return axios.post('/publicRouts/login', { login, password })
-    .then(result => {
-      return result.data
-    });
+  return fetch('post', '/publicRouts/login', { login, password });
 };
 
 const register = (login, password) => {
-  return axios.post('/publicRouts/register', { login, password })
-    .then(result => {
-      return result.data
-    });
+  return fetch('post', '/publicRouts/register', { login, password });
 };
 
 const test = () => {
-  return axios.get('/api/test', options())
-    .then(result => {
-      return result.data
-    });
+  return fetch('get', '/api/test');
 };
 
 export default {
