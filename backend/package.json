@@ -10,7 +10,7 @@
     "start": "node ./dist",
     "build": "babel ./src -d dist ; cp -r src/views dist;"
   },
-  "author": "alexeyrkorkoza <Keane95@yandex.ru>",
+  "author": "12devs",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.1",
