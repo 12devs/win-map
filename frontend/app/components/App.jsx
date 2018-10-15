@@ -6,6 +6,7 @@ import { Switch, Route, Redirect, BrowserRouter as Router, Link } from 'react-ro
 import Main from './Main/Main';
 import City from './City/City';
 import Cheker from './Cheker';
+import LeafletMap from './LeafletMap'
 import MyMapComponent from './Map';
 
 const mapStateToProps = state => ({});
@@ -26,6 +27,7 @@ class App extends Component {
           <Route exact path="/" component={Cheker}/>
           <Route path="/main" component={Main}/>
           <Route path="/city/:code" component={City}/>
+          <Route path="/leaflet" component={LeafletMap}/>
           <Route path="/map" component={()=>{
             return (<MyMapComponent
                 isMarkerShown
