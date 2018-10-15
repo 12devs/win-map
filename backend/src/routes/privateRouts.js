@@ -1,8 +1,8 @@
 import express from 'express';
-import email from '../controllers/email';
+import test from '../controllers/test';
 
 const route = express.Router();
 
-route.get('/:email/:code', email.saveEmail);
+route.get('/test', test.list);
 
 export default route;
