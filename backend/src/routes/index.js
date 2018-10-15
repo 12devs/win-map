@@ -1,12 +1,11 @@
 import express from 'express';
-import mainPage from './mainPage';
-import cityPage from './cityPage';
-import email from './email';
+import publicRouts from './publicRouts';
+import privateRouts from './privateRouts';
+import auth from '../middlewares/auth';
 
 const route = express();
 
-route.use('/mainPage', mainPage);
-route.use('/cityPage', cityPage);
-route.use('/email', email);
+route.use('/publicRouts', publicRouts);
+route.use('/api', auth, privateRouts);
 
 export default route;

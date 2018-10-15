@@ -13,6 +13,8 @@
   "author": "alexeyrkorkoza <Keane95@yandex.ru>",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.1",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "bunyan": "^1.6.0",
@@ -21,6 +23,8 @@
     "ejs": "^2.5.7",
     "email-existence": "^0.1.6",
     "express": "^4.16.2",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.3.0",
     "moleculer": "^0.13.1",
     "moleculer-web": "^0.8.1",
     "moment": "^2.22.2",

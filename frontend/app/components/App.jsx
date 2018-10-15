@@ -3,10 +3,9 @@ import { render } from 'react-dom';
 import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, BrowserRouter as Router, Link } from 'react-router-dom';
-import Main from './Main/Main';
-import City from './City/City';
-import Cheker from './Cheker';
-import MyMapComponent from './Map';
+import Register from './Register';
+import Login from './Login';
+import Test from './Test';
 
 const mapStateToProps = state => ({});
 
@@ -22,22 +21,26 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route exact path="/" component={Cheker}/>
-          <Route path="/main" component={Main}/>
-          <Route path="/city/:code" component={City}/>
-          <Route path="/map" component={()=>{
-            return (<MyMapComponent
-                isMarkerShown
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm14psj1plbzjQEFAfVvML-nClpO7HERs&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div style={{height: '100%'}}/>}
-                containerElement={<div style={{height: '400px'}}/>}
-                mapElement={<div style={{height: '100%'}}/>}
-              />
-            )
-          }}/>
-          <Route children={() => <h2>Not found</h2>}/>
-        </Switch>
+        <div>
+          <ul>
+            <li>
+              <Link to="/register">register</Link>
+            </li>
+            <li>
+              <Link to="/login">login</Link>
+            </li>
+            <li>
+              <Link to="/test">test</Link>
+            </li>
+          </ul>
+          <br/>
+          <Switch>
+            <Route path="/register" component={Register}/>
+            <Route path="/login" component={Login}/>
+            <Route path="/test" component={Test}/>
+            <Route children={() => <h2>Not found</h2>}/>
+          </Switch>
+        </div>
       </Router>
     );
   }

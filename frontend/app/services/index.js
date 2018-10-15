@@ -1,34 +1,37 @@
 import axios from 'axios';
 
-const getMainPageData = () => {
-  return axios.get('/mainPage')
+const options = () => {
+  return {
+    headers: {
+      authorization: `Token ${localStorage.windToken}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  }
+}
+
+const login = (login, password) => {
+  return axios.post('/publicRouts/login', { login, password })
     .then(result => {
       return result.data
     });
 };
 
-const getCityPageData = (code) => {
-  return axios.get(`/cityPage/${code}`)
+const register = (login, password) => {
+  return axios.post('/publicRouts/register', { login, password })
     .then(result => {
       return result.data
-    })
-    .catch(result => {
-      return result.response.data;
     });
 };
 
-const saveEmail = (email, code) => {
-  return axios.get(`/email/${email}/${code}`)
+const test = () => {
+  return axios.get('/api/test', options())
     .then(result => {
       return result.data
-    })
-    .catch(result => {
-      return result.response.data;
     });
 };
 
 export default {
-  getMainPageData,
-  getCityPageData,
-  saveEmail
+  login,
+  register,
+  test
 };

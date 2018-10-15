@@ -1,7 +1,7 @@
 const { DataTypes, literal } = require('sequelize');
 const utils = require('../utils');
 
-const tableName = 'emails';
+const tableName = 'accounts';
 
 const columns = {
   id: {
@@ -9,13 +9,15 @@ const columns = {
     autoIncrement: true,
     primaryKey: true,
   },
-  email: {
+  login: {
     type: DataTypes.STRING(255),
+    defaultValue: '',
     unique: true,
     allowNull: false,
   },
-  code: {
+  encrypted_password: {
     type: DataTypes.STRING(255),
+    defaultValue: '',
     allowNull: false,
   },
   created_at: {

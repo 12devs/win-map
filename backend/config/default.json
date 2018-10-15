@@ -16,7 +16,7 @@
     "dialect": "postgres",
     "username": "postgres",
     "password": "postgres",
-    "database": "breath",
+    "database": "wind",
     "host": "127.0.0.1"
   },
   "openweathermap": {
