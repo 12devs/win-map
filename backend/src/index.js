@@ -20,7 +20,7 @@ app.use(cors());
 
 app.use(routes);
 
-app.get(['/', '/register', '/login', '/test'], (req, res) => res.render('app'));
+app.get(['/', '/register', '/login', '/test', '/leaflet'], (req, res) => res.render('app'));
 
 const db = getInstance();
 

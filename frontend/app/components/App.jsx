@@ -6,6 +6,7 @@ import { Switch, Route, Redirect, BrowserRouter as Router, Link } from 'react-ro
 import Register from './Register';
 import Login from './Login';
 import Test from './Test';
+import LeafletMap from './LeafletMap'
 
 const mapStateToProps = state => ({});
 
@@ -39,6 +40,7 @@ class App extends Component {
             <Route path="/login" component={Login}/>
             <Route path="/test" component={Test}/>
             <Route children={() => <h2>Not found</h2>}/>
+            <Route path="/leaflet" component={LeafletMap}/>
           </Switch>
         </div>
       </Router>
