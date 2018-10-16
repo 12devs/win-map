@@ -1,5 +1,6 @@
 import rp from 'request-promise';
 import moment from 'moment';
+import { bearing, distance, sideOfTheWorld } from "./util";
 
 const getStationId = (location) => {
   return new Promise(resolve => {
@@ -15,21 +16,21 @@ const getStationId = (location) => {
   })
 };
 
-const getHistoricalData = (locations, days = 365) => {
+const getHistoricalData = (location, days = 365) => {
 
   const currentMoment = moment();
   const end = currentMoment.format("YYYYMMDD");
   const start = currentMoment.subtract(days, 'days').format("YYYYMMDD");
 
   return new Promise(resolve => {
-    getStationId(locations)
+    getStationId(location)
       .then(id => {
 
         const options = {
           uri: `https://api-ak.wunderground.com/api/606f3f6977348613/history_${start}${end}/units:metric/v:2.0/q/pws:${id}.json?showObs=0`,
-          json: true
+          json: true,
         };
-
+        console.log(options.uri);
         return rp(options);
       })
       .then(data => {
@@ -86,11 +87,29 @@ const getHistoricalData = (locations, days = 365) => {
   });
 };
 
-const roundValue = (value, digits) => {
+const getWindDirections = (locationFirst, locationSecond) => {
 
-  return parseFloat(value.toFixed(digits));
-};
+  const bear = bearing(locationFirst, locationSecond);
+  const dist = distance(locationFirst, locationSecond);
+
+  const result = [];
+
+  sideOfTheWorld.forEach((item, index) => {
+
+    if (index !== sideOfTheWorld.length - 1 && item.degrees <= bear && sideOfTheWorld[index + 1].degrees > bear) {
+      result.push(item.side);
+      result.push(sideOfTheWorld[index + 1].side);
+    } else if (index === sideOfTheWorld.length - 1 && bear > item.degrees) {
+      result.push(sideOfTheWorld[0].side);
+      result.push(item.side);
+    }
+
+  });
+
+  return Promise.resolve({ directions: result, distance: dist });
+}
 
 module.exports = {
   getHistoricalData,
+  getWindDirections,
 };
