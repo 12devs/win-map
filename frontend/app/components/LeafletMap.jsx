@@ -1,49 +1,89 @@
 import React from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
-import marker from 'leaflet/dist/images/marker-icon.png';
+import markerBlue from '../assets/img/map_blue.png';
+import markerRed from '../assets/img/map_red.png';
 
-const myIcon = L.icon({
-  iconUrl: marker,
+const redIcon = L.icon({
+  iconUrl: markerRed,
   iconSize: [25, 41],
-  iconAnchor: [12.5, 41]
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
 });
 
-const data = [{marker: 'My Place', dataType: 'Current'}, {marker: 'Danger', dataType: 'Historical'}];
+const blueIcon = L.icon({
+  iconUrl: markerBlue,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+
+const data = [{markerType: 'My Place', dataType: 'Current', event: 'Add'}, {
+  markerType: 'Danger',
+  dataType: 'Historical',
+  event: 'Del'
+}];
 
 class MyMap extends React.Component {
   constructor() {
     super();
     this.state = {
-      lat: 51.505,
-      lng: -0.09,
+      center: {
+        lat: 51.505,
+        lng: -0.09,
+      },
       zoom: 13,
-      markers: [[51.505, -0.09]],
-      marker: 'My Place',
-      dataType: 'Current'
+      draggable: true,
+      markers: [{icon: blueIcon, LatLng: {lat: 51.50649873794456, lng: -0.08943557739257814}}],
+      markerType: 'My Place',
+      dataType: 'Current',
+      event: 'Add'
     };
 
     this.addMarker = this.addMarker.bind(this);
+    this.delMarker = this.delMarker.bind(this);
     this.getInitialState = this.getInitialState.bind(this);
     this.onMarkerChanged = this.onMarkerChanged.bind(this);
     this.onDataTypeChanged = this.onDataTypeChanged.bind(this);
+    this.toggleDraggable = this.toggleDraggable.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
+    this.onEventChanged = this.onEventChanged.bind(this);
   }
 
   addMarker(e) {
-    console.log(e.latlng);
-    const {markers} = this.state;
-    markers.push(e.latlng);
-    this.setState({markers});
+    if (this.state.event === 'Add') {
+      console.log(e.latlng);
+      const {markers} = this.state;
+      const icon = this.state.markerType === 'My Place' ? blueIcon : redIcon;
+      markers.push({icon, LatLng: e.latlng});
+      this.setState({markers});
+      console.log(this.state.markers);
+    }
+  };
+
+  delMarker(id) {
+    if (this.state.event === 'Del') {
+      console.log('id', id);
+      const {markers} = this.state;
+      delete markers[id];
+      this.setState({markers});
+      console.log(this.state.markers);
+    }
   };
 
   getInitialState() {
-    this.state.marker = '',
-      this.state.dataType = '';
+    this.state.marker = '';
+    this.state.dataType = '';
+    this.state.event = '';
   }
 
   onMarkerChanged(e) {
     this.setState({
-      marker: e.currentTarget.value
+      markerType: e.currentTarget.value
     });
   }
 
@@ -53,25 +93,54 @@ class MyMap extends React.Component {
     });
   }
 
+  onEventChanged(e) {
+    this.setState({
+      event: e.currentTarget.value
+    });
+  }
+
+  toggleDraggable() {
+    this.setState({draggable: !this.state.draggable});
+  };
+
+  updatePosition(id, e) {
+    console.log(id);
+    const {markers} = this.state;
+    const marker = e.target._latlng;
+    console.log(e.target._latlng);
+    if (marker != null) {
+      markers[id] = marker;
+      this.setState({markers});
+    }
+    console.log('this.state.markers', this.state.markers);
+
+  };
+
   render() {
-    let resultRows = data.map((result) =>
-      <tbody key={result.marker}>
+    const center = [this.state.center.lat, this.state.center.lng];
+
+    let resultRows = data.map((result, id) =>
+      <tbody key={id}>
       <tr>
         <td><input type="radio" name="markers"
-                   value={result.marker}
-                   checked={this.state.marker === result.marker}
-                   onChange={this.onMarkerChanged}/>{result.marker}</td>
+                   value={result.markerType}
+                   checked={this.state.markerType === result.markerType}
+                   onChange={this.onMarkerChanged}/>{result.markerType}</td>
         <td><input type="radio" name="data_type"
                    value={result.dataType}
                    checked={this.state.dataType === result.dataType}
                    onChange={this.onDataTypeChanged}/>{result.dataType}</td>
+        <td><input type="radio" name="event"
+                   value={result.event}
+                   checked={this.state.event === result.event}
+                   onChange={this.onEventChanged}/>{result.event}</td>
       </tr>
       </tbody>, this);
 
     return (
       <div style={{height: '100%'}}>
         <Map
-          center={[51.505, -0.09]}
+          center={center}
           onClick={this.addMarker}
           zoom={13}
           style={{height: '600px'}}
@@ -81,26 +150,39 @@ class MyMap extends React.Component {
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
           {this.state.markers.map((position, idx) =>
-            <Marker key={`marker-${idx}`} position={position} icon={myIcon}>
+            <Marker
+              key={`marker-${idx}`}
+              draggable={this.state.draggable}
+              onDragend={(e) => {
+                this.updatePosition(idx, e);
+              }}
+              onClick={() => {
+                this.delMarker(idx);
+              }}
+              position={position.LatLng}
+              icon={position.icon}>
               <Popup>
-                <span>A pretty CSS3 popup. <br/> Easily customizable.{idx}</span>
+                  <span>
+                    {'MARKER' + idx}
+                  </span>
               </Popup>
             </Marker>
           )}
         </Map>
-
         <table className="table">
           <thead>
           <tr>
             <th>Marker</th>
             <th>Data</th>
+            <th>Event</th>
           </tr>
           </thead>
           {resultRows}
           <tfoot>
           <tr>
-            <td>chosen marker: {this.state.marker} </td>
+            <td>chosen marker: {this.state.markerType} </td>
             <td>chosen data: {this.state.dataType} </td>
+            <td>chosen event: {this.state.event} </td>
           </tr>
           </tfoot>
         </table>
