@@ -18,7 +18,10 @@ store.dispatch({
   state: {
     stations: [],
     points: [],
-    stationsData: {}
+    stationsData: {},
+    markerType: 'place',
+    viewType: 'current',
+    actionType: 'addMarker',
   }
 });
 
