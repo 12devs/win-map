@@ -12,8 +12,18 @@ const test = () => {
   return fetch('post', '/api/test', {data: 'dfdfdfdfdfdf'});
 };
 
+const savePoint = (point) => {
+  return fetch('post', '/api/points/save', point);
+};
+
+const getInfo = (point) => {
+  return fetch('post', '/api/points/withData', point);
+};
+
 export default {
   login,
   register,
-  test
+  test,
+  savePoint,
+  getInfo,
 };

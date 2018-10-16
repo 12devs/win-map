@@ -1,7 +1,7 @@
 import config from 'config';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 module.exports = (sequelize, DataTypes) => {
   const Accounts = sequelize.define('Account', {
@@ -38,6 +38,13 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     paranoid: true
   });
+
+  Accounts.associate = models => {
+    Accounts.hasMany(models.Point, {
+      as: 'points',
+      foreignKey: 'account_id'
+    });
+  };
 
   Accounts.prototype.comparePassword = async function (password) {
     try {
