@@ -1,34 +1,19 @@
-import axios from 'axios';
+import { fetch } from './fetch';
 
-const getMainPageData = () => {
-  return axios.get('/mainPage')
-    .then(result => {
-      return result.data
-    });
+const login = (login, password) => {
+  return fetch('post', '/publicRouts/login', { login, password });
 };
 
-const getCityPageData = (code) => {
-  return axios.get(`/cityPage/${code}`)
-    .then(result => {
-      return result.data
-    })
-    .catch(result => {
-      return result.response.data;
-    });
+const register = (login, password) => {
+  return fetch('post', '/publicRouts/register', { login, password });
 };
 
-const saveEmail = (email, code) => {
-  return axios.get(`/email/${email}/${code}`)
-    .then(result => {
-      return result.data
-    })
-    .catch(result => {
-      return result.response.data;
-    });
+const test = () => {
+  return fetch('post', '/api/test', {data: 'dfdfdfdfdfdf'});
 };
 
 export default {
-  getMainPageData,
-  getCityPageData,
-  saveEmail
+  login,
+  register,
+  test
 };

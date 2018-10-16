@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import './assets/sass/main.scss';
+import 'leaflet/dist/leaflet.css'
 import App from './components/App';
 import configureStore from './configureStore';
 

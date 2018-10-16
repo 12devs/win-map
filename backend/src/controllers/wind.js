@@ -26,7 +26,7 @@ const pointStatistics = (req, res) => {
       res.status(500).json(error);
     });
 
-}
+};
 
 export {
   pointStatistics,
