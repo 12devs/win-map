@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 import markerBlue from '../assets/img/map_blue.png';
 import markerRed from '../assets/img/map_red.png';
@@ -103,17 +103,15 @@ class MyMap extends React.Component {
     this.setState({draggable: !this.state.draggable});
   };
 
-  updatePosition(id, e) {
+  updatePosition(id,icon, e) {
     console.log(id);
     const {markers} = this.state;
-    const marker = e.target._latlng;
-    console.log(e.target._latlng);
+    const marker = {icon, LatLng: e.target._latlng};
     if (marker != null) {
       markers[id] = marker;
       this.setState({markers});
     }
     console.log('this.state.markers', this.state.markers);
-
   };
 
   render() {
@@ -154,7 +152,7 @@ class MyMap extends React.Component {
               key={`marker-${idx}`}
               draggable={this.state.draggable}
               onDragend={(e) => {
-                this.updatePosition(idx, e);
+                this.updatePosition(idx, position.icon, e);
               }}
               onClick={() => {
                 this.delMarker(idx);
@@ -168,6 +166,7 @@ class MyMap extends React.Component {
               </Popup>
             </Marker>
           )}
+          <Polygon color="purple" positions={[[51.515, -0.09], [51.52, -0.1], [51.52, -0.12]]} />
         </Map>
         <table className="table">
           <thead>
