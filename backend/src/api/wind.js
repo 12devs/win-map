@@ -1,5 +1,6 @@
 import rp from 'request-promise';
 import moment from 'moment';
+import { bearing, distance, sideOfTheWorld } from "./util";
 
 const getStationId = (location) => {
   return new Promise(resolve => {
@@ -72,12 +73,30 @@ const getHistoricalData = async (stationId, days = 365) => {
   return ({ history: windRose, current: currentWind, period: data.history.days.length });
 };
 
-const roundValue = (value, digits) => {
+const getWindDirections = (locationFirst, locationSecond) => {
 
-  return parseFloat(value.toFixed(digits));
-};
+  const bear = bearing(locationFirst, locationSecond);
+  const dist = distance(locationFirst, locationSecond);
+
+  const result = [];
+
+  sideOfTheWorld.forEach((item, index) => {
+
+    if (index !== sideOfTheWorld.length - 1 && item.degrees <= bear && sideOfTheWorld[index + 1].degrees > bear) {
+      result.push(item.side);
+      result.push(sideOfTheWorld[index + 1].side);
+    } else if (index === sideOfTheWorld.length - 1 && bear > item.degrees) {
+      result.push(sideOfTheWorld[0].side);
+      result.push(item.side);
+    }
+
+  });
+
+  return Promise.resolve({ directions: result, distance: dist });
+}
 
 module.exports = {
   getHistoricalData,
-  getStationId
+  getStationId,
+  getWindDirections
 };
