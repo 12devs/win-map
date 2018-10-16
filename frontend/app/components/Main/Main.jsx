@@ -1,8 +1,9 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import services from "./../../services";
 import { connect } from 'react-redux';
 import actions from './../../actions/points';
+import Map from './Map'
+import Settings from './Settings'
 
 class Main extends React.Component {
   constructor() {
@@ -26,7 +27,8 @@ class Main extends React.Component {
     console.log('Main Props', this.props);
     return (
       <div>
-        <h1>Main</h1>
+        <Map/>
+        <Settings/>
       </div>
     )
   }

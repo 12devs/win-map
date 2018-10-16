@@ -24,5 +24,20 @@
     "units": "metric"
   },
   "google": {},
-  "darksky": {}
+  "darksky": {},
+  "auth": {
+    "saltRound": 10,
+    "iv": "fe5091106e9f93dec6030926dab17892"
+  },
+  "jwt": {
+    "expiresIn": "10m",
+    "algorithm": "RS256",
+    "privateKey": "keys/jwt-private-key.pem",
+    "privateKeyPassphrase": "121212",
+    "publicKey": "keys/jwt-public-key.pem",
+    "secret": "some-secret-shit-goes-here",
+    "refreshTokenSecret": "some-secret-refresh-token-shit",
+    "tokenLife": 900,
+    "refreshTokenLife": 86400
+  }
 }
