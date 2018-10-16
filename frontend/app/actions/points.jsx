@@ -5,4 +5,14 @@ const addPoint = function (point) {
   }
 };
 
-module.exports = {addPoint};
+const setMainData = function (state) {
+  return {
+    type: "SET_STATE",
+    state
+  }
+};
+
+module.exports = {
+  addPoint,
+  setMainData,
+};

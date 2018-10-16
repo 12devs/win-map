@@ -9,9 +9,10 @@ import Register from './Register';
 import Login from './Login';
 import Test from './Test';
 import LeafletMap from './LeafletMap'
-
+import Main from "./Main/Main";
 
 const store = createStore(reducer);
+
 store.dispatch({
   type: "SET_STATE",
   state: {
@@ -44,6 +45,9 @@ class App extends Component {
               <li>
                 <Link to="/leaflet">leaflet</Link>
               </li>
+              <li>
+                <Link to="/main">main</Link>
+              </li>
             </ul>
             <br/>
             <Switch>
@@ -51,6 +55,7 @@ class App extends Component {
               <Route path="/login" component={Login}/>
               <Route path="/test" component={Test}/>
               <Route path="/leaflet" component={LeafletMap}/>
+              <Route path="/main" component={Main}/>
               <Route children={() => <h2>Not found</h2>}/>
             </Switch>
           </div>

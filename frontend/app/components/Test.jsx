@@ -44,7 +44,7 @@ class Test extends Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get("points")
+    points: state.get("points"),
   };
 }
 
