@@ -1,9 +1,9 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions/points';
-import { redIcon, blueIcon } from '../../icons/index';
+import { blueIcon } from '../../icons/index';
 
 class UserPlace extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class UserPlace extends React.Component {
     }
   };
 
-  updatePosition(id, icon, e) {
+  updatePosition(id, e) {
     return services.movePoint({
       point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
@@ -36,24 +36,28 @@ class UserPlace extends React.Component {
       });
   };
 
-
   render() {
+    let ololo;
+    if (this.props.actionType === 'Add') {
+      ololo = (
+        <Popup>
+                  <span>
+                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
+                  </span>
+        </Popup>);
+    }
     return (
       <Marker
         draggable={true}
         onDragend={(e) => {
-          this.updatePosition(this.props.point.id, blueIcon, e);
+          this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
           this.delMarker(this.props.point.id);
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {this.props.actionType !== 'Del' ? <Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-        </Popup> : null}
+        {ololo}
       </Marker>
     );
   }

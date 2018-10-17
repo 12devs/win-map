@@ -1,9 +1,9 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions/points';
-import { redIcon, blueIcon } from '../../icons/index';
+import { redIcon } from '../../icons/index';
 import SectorPolygon from '../SectorPolygon';
 
 class Danger extends React.Component {
@@ -25,7 +25,7 @@ class Danger extends React.Component {
     }
   };
 
-  updatePosition(id, icon, e) {
+  updatePosition(id, e) {
     return services.movePoint({
       point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
@@ -43,20 +43,20 @@ class Danger extends React.Component {
       <div><Marker
         draggable={true}
         onDragend={(e) => {
-          this.updatePosition(this.props.point.id, blueIcon, e);
+          this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
           this.delMarker(this.props.point.id);
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
-        {this.props.actionType !== 'Del' ? <Popup>
+        <Popup>
                   <span>
                     {`MARKER ${this.props.point.name} ${this.props.point.id}`}
                   </span>
-        </Popup> : null}
+        </Popup>
       </Marker>
-        <SectorPolygon point={this.props.point} dist={5000} direction={'N'} />
+        <SectorPolygon point={this.props.point} dist={5000} direction={'N'}/>
       </div>);
   }
 }

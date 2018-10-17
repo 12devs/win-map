@@ -3,7 +3,6 @@ import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import services from './../../services';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import { redIcon, blueIcon } from '../icons';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search'
 

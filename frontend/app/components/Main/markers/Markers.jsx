@@ -1,9 +1,6 @@
 import React from 'react';
-import { Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions/points';
-import { redIcon, blueIcon } from '../../icons/index';
 import Danger from './Danger';
 import UserPlace from './UserPlace';
 
@@ -16,7 +13,7 @@ class Markers extends React.Component {
     return (
       <div>
         {this.props.points.map((point, id) => {
-          if (point.get('type') === 'Danger') {
+            if (point.get('type') === 'Danger') {
               return <Danger key={id} point={point.toJS()}/>;
             }
             else {
