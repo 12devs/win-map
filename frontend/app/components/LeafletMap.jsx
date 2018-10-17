@@ -3,6 +3,8 @@ import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 import markerBlue from '../assets/img/map_blue.png';
 import markerRed from '../assets/img/map_red.png';
+import SectorPolygon from './Main/SectorPolygon';
+import WindRose from './Main/WindRose';
 
 const redIcon = L.icon({
   iconUrl: markerRed,
@@ -167,6 +169,9 @@ class MyMap extends React.Component {
             </Marker>
           )}
           <Polygon color="purple" positions={[[51.515, -0.09], [51.52, -0.1], [51.52, -0.12]]} />
+          <SectorPolygon color="purple" point={{lat: 51.50649873794456, lng: -0.08943557739257814}} dist={5000} direction={'SSW'} />
+          <WindRose color="purple" point={{lat: 51.50649873794456, lng: -0.08943557739257814}} dist={5000} />
+
         </Map>
         <table className="table">
           <thead>
