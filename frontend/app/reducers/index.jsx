@@ -26,13 +26,13 @@ const reducer = function (state = Map(), action) {
     case "updatePoints":
       return state.update("points", () => immutable.fromJS(action.value));
     case "changeMarkerType":
-      return state.update("markerType", () => Map(action.value));
+      return state.update("markerType", () => immutable.fromJS(action.value));
     case "changeActionType":
-      return state.update("actionType", () => Map(action.value));
+      return state.update("actionType", () => immutable.fromJS(action.value));
     case "changeViewType":
-      return state.update("viewType", () => Map(action.value));
+      return state.update("viewType", () => immutable.fromJS(action.value));
     case "updateStatistic":
-      return state.update("statistic", () => Map(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
+      return state.update("statistic", () => immutable.fromJS(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
   }
   return state;
 };
