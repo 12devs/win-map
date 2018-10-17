@@ -20,6 +20,8 @@ class Main extends React.Component {
       .then(res => {
         console.log(res);
         this.props.setMainData(res)
+        console.log('Mai', JSON.parse(JSON.stringify(this.props)));
+
       })
   }
 

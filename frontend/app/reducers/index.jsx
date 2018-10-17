@@ -22,8 +22,12 @@ const reducer = function (state = Map(), action) {
   switch (action.type) {
     case "SET_STATE":
       return state.merge(action.state);
-    case "addPoint":
-      return state.update("points", (points) => points.push(action.point));
+    case "updateMainData":
+      console.log('action',action);
+      state.update("points", () => action.value.points);
+      state.update("stations", () => action.value.stations);
+      state.update("stationsData", () => action.value.stationsData);
+      return;
     case "updatePoints":
       return state.update("points", () => action.value);
     case "changeMarkerType":

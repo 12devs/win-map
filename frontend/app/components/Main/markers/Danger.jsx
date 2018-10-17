@@ -1,13 +1,13 @@
 import React from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import services from './../../services';
+import services from '../../../services/index';
 import { connect } from 'react-redux';
-import actions from './../../actions/points';
-import {redIcon, blueIcon} from '../icons';
+import actions from '../../../actions/points';
+import { redIcon, blueIcon } from '../../icons/index';
 
-class MyMap extends React.Component {
-  constructor() {
-    super();
+class Danger extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       center: {
         lat: 51.505,
@@ -48,28 +48,27 @@ class MyMap extends React.Component {
   };
 
   render() {
-    console.log('Main Props', this.props);
+    console.log('Danger Props', this.props);
 
-    const center = [this.state.center.lat, this.state.center.lng];
     return (
       <Marker
-        key={`marker-${idx}`}
+        key={`marker-${id}`}
         draggable={this.state.draggable}
         onDragend={(e) => {
-          this.updatePosition(idx, position.icon, e);
+          this.updatePosition(id, blueIcon, e);
         }}
         onClick={() => {
-          this.delMarker(idx);
+          this.delMarker(id);
         }}
-        position={position.LatLng}
-        icon={position.icon}>
+        position={[point.get('lat'), point.get('lng')]}
+        icon={blueIcon}>
         <Popup>
-          <span>
-            {'MARKER' + idx}
-          </span>
+                  <span>
+                    {'Danger' + id}
+                  </span>
         </Popup>
-      </Marker>
-    );
+      </Marker>);
+
   }
 }
 
@@ -81,4 +80,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(MyMap);
+export default connect(mapStateToProps, actions)(Danger);

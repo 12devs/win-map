@@ -5,17 +5,17 @@ const addPoint = function (point) {
   }
 };
 
-const updatePoints = function (point) {
+const updatePoints = function (value) {
   return {
     type: "updatePoints",
-    point
+    value
   }
 };
 
-const setMainData = function (state) {
+const setMainData = function (value) {
   return {
-    type: "SET_STATE",
-    state
+    type: "updateMainData",
+    value,
   }
 };
 

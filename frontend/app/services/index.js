@@ -16,6 +16,10 @@ const savePoint = (point) => {
   return fetch('post', '/api/points/save', point);
 };
 
+const movePoint = (point) => {
+  return fetch('post', '/api/points/move', point);
+};
+
 const deletePoint = (point) => {
   return fetch('post', '/api/points/delete', point);
 };

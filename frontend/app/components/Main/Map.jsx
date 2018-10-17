@@ -4,7 +4,7 @@ import services from './../../services';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import { redIcon, blueIcon } from '../icons';
-import Markers from './Markers';
+import Markers from './markers/Markers';
 
 class MyMap extends React.Component {
   constructor() {
@@ -45,7 +45,10 @@ class MyMap extends React.Component {
         stations: [...this.props.stations]
       })
         .then(res => {
-          this.props.addPoint(res.point);
+
+          const points = this.props.points.toJS();
+          points.push(res.point);
+          this.props.updatePoints(points);
         });
     }
   };

@@ -19,9 +19,9 @@ store.dispatch({
     stations: [],
     points: [],
     stationsData: {},
-    markerType: 'place',
-    viewType: 'current',
-    actionType: 'addMarker',
+    markerType: 'My Place',
+    viewType: 'Current',
+    actionType: 'Add',
   }
 });
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import services from './../../services';
+import services from '../../../services/index';
 import { connect } from 'react-redux';
-import actions from './../../actions/points';
-import { redIcon, blueIcon } from '../icons';
+import actions from '../../../actions/points';
+import { redIcon, blueIcon } from '../../icons/index';
+import Danger from './Danger';
+import UserPlace from './UserPlace';
 
 class Markers extends React.Component {
   constructor() {
@@ -35,33 +37,20 @@ class Markers extends React.Component {
       });
   }
 
-
   render() {
     return (
       <div>
         {this.props.points.map((point, id) => {
-
-            console.log(typeof point.get('lat'), typeof point.get('lng'));
-            if(point.get())
-            return (<Marker
-              key={`marker-${id}`}
-              draggable={this.state.draggable}
-              onDragend={(e) => {
-                this.updatePosition(id, blueIcon, e);
-              }}
-              onClick={() => {
-                this.delMarker(id);
-              }}
-              position={[point.get('lat'), point.get('lng')]}
-              icon={blueIcon}>
-              <Popup>
-                  <span>
-                    {'MARKER' + id}
-                  </span>
-              </Popup>
-            </Marker>);
+          console.log('point',point);
+          if (point.type === 'Danger') {
+              return <Danger key={id} point={point}/>;
+            }
+            else {
+              return <UserPlace key={id} point={point}/>;
+            }
           }
-        )}</div>
+        )}
+      </div>
     );
   }
 }
