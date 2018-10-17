@@ -5,6 +5,13 @@ const addPoint = function (point) {
   }
 };
 
+const updatePoints = function (point) {
+  return {
+    type: "updatePoints",
+    point
+  }
+};
+
 const setMainData = function (state) {
   return {
     type: "SET_STATE",
@@ -15,4 +22,5 @@ const setMainData = function (state) {
 module.exports = {
   addPoint,
   setMainData,
+  updatePoints,
 };

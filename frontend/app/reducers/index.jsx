@@ -24,6 +24,8 @@ const reducer = function (state = Map(), action) {
       return state.merge(action.state);
     case "addPoint":
       return state.update("points", (points) => points.push(action.point));
+    case "updatePoints":
+      return state.update("points", () => action.value);
     case "changeMarkerType":
       return state.update("markerType", () => action.value);
     case "changeActionType":
