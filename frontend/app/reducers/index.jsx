@@ -1,4 +1,5 @@
-import { Map } from "immutable";
+import { Map, Set, List } from "immutable";
+import immutable from "immutable";
 import geolib from 'geolib';
 
 const getStats = (points, stationsData) => {
@@ -22,22 +23,16 @@ const reducer = function (state = Map(), action) {
   switch (action.type) {
     case "SET_STATE":
       return state.merge(action.state);
-    case "updateMainData":
-      console.log('action',action);
-      state.update("points", () => action.value.points);
-      state.update("stations", () => action.value.stations);
-      state.update("stationsData", () => action.value.stationsData);
-      return;
     case "updatePoints":
-      return state.update("points", () => action.value);
+      return state.update("points", () => immutable.fromJS(action.value));
     case "changeMarkerType":
-      return state.update("markerType", () => action.value);
+      return state.update("markerType", () => Map(action.value));
     case "changeActionType":
-      return state.update("actionType", () => action.value);
+      return state.update("actionType", () => Map(action.value));
     case "changeViewType":
-      return state.update("viewType", () => action.value);
+      return state.update("viewType", () => Map(action.value));
     case "updateStatistic":
-      return state.update("statistic", () => getStats(state.get('points').toJS(), state.get('stationsData').toJS()));
+      return state.update("statistic", () => Map(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
   }
   return state;
 };

@@ -19,14 +19,13 @@ class Main extends React.Component {
     return services.getInfo()
       .then(res => {
         console.log(res);
-        this.props.setMainData(res)
+        this.props.setMainData(res);
         console.log('Mai', JSON.parse(JSON.stringify(this.props)));
 
       })
   }
 
   render() {
-    console.log('Main Props', JSON.parse(JSON.stringify(this.props, null, 4)));
     return (
       <div>
         <h1>Main</h1>

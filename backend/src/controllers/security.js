@@ -35,10 +35,8 @@ export default {
   },
 
   async login(req, res) {
-    console.log('login');
     try {
       const { login, password } = req.body;
-      console.log(req.body);
       Account.findOne({ where: { login } })
         .then(async acc => {
           await acc.comparePassword(password);

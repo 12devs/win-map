@@ -8,62 +8,13 @@ import { redIcon, blueIcon } from '../../icons/index';
 class UserPlace extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      center: {
-        lat: 51.505,
-        lng: -0.09,
-      },
-      zoom: 13,
-      draggable: true,
-      markers: [{icon: blueIcon, LatLng: {lat: 51.50649873794456, lng: -0.08943557739257814}}],
-      markerType: 'My Place',
-      dataType: 'Current',
-      event: 'Add'
-    };
-    this.getInfo = this.getInfo.bind(this);
-    this.updatePosition = this.updatePosition.bind(this);
-    this.delMarker = this.delMarker.bind(this);
   }
-
-  componentDidMount() {
-    return this.getInfo();
-  }
-
-  getInfo() {
-    return services.getInfo()
-      .then(res => {
-        console.log(res);
-        this.props.setMainData(res);
-      });
-  }
-
-  updatePosition(id, icon, e) {
-
-
-  };
-
-  delMarker(id) {
-    if (this.props.actionType === 'Del') {
-      return services.deletePoint({
-        point: {id},
-      })
-        .then(res => {
-          const points = this.props.points.toJS().filter(el => !(el.id === id));
-          console.log('points',points);
-          console.log('delMarker-------', this.props.points.toJS());
-
-          this.props.updatePoints(points);
-          console.log('delMarker-------', this.props.points.toJS());
-        });
-    }
-  };
 
   render() {
-    // console.log('UserPlace Props', this.props);
 
     return (
       <Marker
-        draggable={this.state.draggable}
+        draggable={true}
         onDragend={(e) => {
           this.updatePosition(this.props.point.id, blueIcon, e);
         }}

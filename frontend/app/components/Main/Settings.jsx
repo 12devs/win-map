@@ -10,24 +10,11 @@ const data = [{markerType: 'My Place', dataType: 'Current', event: 'Add'}, {
 }];
 
 class Settings extends React.Component {
-  constructor() {
-    super();
-    this.getInfo = this.getInfo.bind(this);
+  constructor(props) {
+    super(props);
     this.onMarkerChanged = this.onMarkerChanged.bind(this);
     this.onDataTypeChanged = this.onDataTypeChanged.bind(this);
     this.onEventChanged = this.onEventChanged.bind(this);
-  }
-
-  componentDidMount() {
-    return this.getInfo();
-  }
-
-  getInfo() {
-    return services.getInfo()
-      .then(res => {
-        console.log(res);
-        this.props.setMainData(res);
-      });
   }
 
   onMarkerChanged(e) {

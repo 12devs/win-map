@@ -19,7 +19,7 @@ export default {
           [savedPoint.station_id]: await getHistoricalData(savedPoint.station_id)
         }
       }
-      res.status(200).json({ point, stationsData })
+      res.status(200).json({ point:savedPoint, stationsData })
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: err.message })

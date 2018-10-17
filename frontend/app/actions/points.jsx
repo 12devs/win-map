@@ -12,10 +12,10 @@ const updatePoints = function (value) {
   }
 };
 
-const setMainData = function (value) {
+const setMainData = function (state) {
   return {
-    type: "updateMainData",
-    value,
+    type: "SET_STATE",
+    state,
   }
 };
 

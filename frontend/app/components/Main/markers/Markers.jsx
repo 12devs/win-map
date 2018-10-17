@@ -8,45 +8,20 @@ import Danger from './Danger';
 import UserPlace from './UserPlace';
 
 class Markers extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      center: {
-        lat: 51.505,
-        lng: -0.09,
-      },
-      zoom: 13,
-      draggable: true,
-      markers: [{icon: blueIcon, LatLng: {lat: 51.50649873794456, lng: -0.08943557739257814}}],
-      markerType: 'My Place',
-      dataType: 'Current',
-      event: 'Add'
-    };
-    this.getInfo = this.getInfo.bind(this);
-  }
-
-  componentDidMount() {
-    return this.getInfo();
-  }
-
-  getInfo() {
-    return services.getInfo()
-      .then(res => {
-        console.log(res);
-        this.props.setMainData(res);
-      });
+  constructor(props) {
+    super(props);
   }
 
   render() {
+    console.log('Markers this.props.points.toJS()', this.props.points.toJS());
     return (
       <div>
         {this.props.points.map((point, id) => {
-          console.log('point',point);
-          if (point.type === 'Danger') {
-              return <Danger key={id} point={point}/>;
+          if (point.get('type') === 'Danger') {
+              return <Danger key={id} point={point.toJS()}/>;
             }
             else {
-              return <UserPlace key={id} point={point}/>;
+              return <UserPlace key={id} point={point.toJS()}/>;
             }
           }
         )}

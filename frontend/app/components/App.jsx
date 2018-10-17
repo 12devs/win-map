@@ -25,6 +25,8 @@ store.dispatch({
   }
 });
 
+store.subscribe(()=>{console.log('store', store.getState().toJS())});
+
 class App extends Component {
   constructor(props) {
     super(props);

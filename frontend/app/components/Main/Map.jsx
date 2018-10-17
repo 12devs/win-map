@@ -7,74 +7,54 @@ import { redIcon, blueIcon } from '../icons';
 import Markers from './markers/Markers';
 
 class MyMap extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      center: {
-        lat: 51.505,
-        lng: -0.09,
-      },
-      zoom: 13,
-      draggable: true,
-      markers: [{icon: blueIcon, LatLng: {lat: 51.50649873794456, lng: -0.08943557739257814}}],
-      markerType: 'My Place',
-      dataType: 'Current',
-      event: 'Add'
-    };
-    this.getInfo = this.getInfo.bind(this);
+  constructor(props) {
+    super(props);
     this.addMarker = this.addMarker.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
-  }
-
-  componentDidMount() {
-    return this.getInfo();
-  }
-
-  getInfo() {
-    return services.getInfo()
-      .then(res => {
-        console.log('rea', res);
-        this.props.setMainData(res);
-      });
   }
 
   addMarker(e) {
     if (this.props.actionType === 'Add') {
       return services.savePoint({
-        point: {...e.latlng, name: 'point', type: this.props.markerType},
+        point: { ...e.latlng, name: 'point', type: this.props.markerType },
         stations: [...this.props.stations]
       })
         .then(res => {
 
           const points = this.props.points.toJS();
           points.push(res.point);
+          console.log('addMarker new points', points);
           this.props.updatePoints(points);
+          console.log('-------------');
+          console.log(this.props);
+          console.log(JSON.parse(JSON.stringify(this.props)));
         });
     }
   };
 
   updatePosition(id, icon, e) {
-    console.log(id);
     const markers = this.props.get('points');
-    const marker = {icon, LatLng: e.target._latlng};
+    const marker = { icon, LatLng: e.target._latlng };
     if (marker != null) {
       markers[id] = marker;
-      this.setState({markers});
+      this.setState({ markers });
     }
   };
 
 
   render() {
-    console.log('Main Propss', this.props);
-    const center = [this.state.center.lat, this.state.center.lng];
+    const center = {
+      lat: 51.505,
+      lng: -0.09,
+    };
 
     return (
-      <div style={{height: '100%'}}>
+      <div style={{ height: '100%' }}>
         <Map
           center={center}
           onClick={this.addMarker}
           zoom={11}
-          style={{height: '600px'}}
+          style={{ height: '600px' }}
         >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
