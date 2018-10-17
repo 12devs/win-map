@@ -13,7 +13,6 @@ class Test extends Component {
   }
 
   componentDidMount() {
-    console.log('test', 'componentDidMount');
     return this.test()
   }
 
@@ -32,8 +31,6 @@ class Test extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
-    console.log('this.props.test', this.props.points);
     return (
       <div>
         <h1>Test</h1>

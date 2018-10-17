@@ -20,20 +20,12 @@ class Danger extends React.Component {
       })
         .then(res => {
           const points = this.props.points.toJS().filter(el => !(el.id === id));
-          console.log('points', points);
-          console.log('delMarker-------', this.props.points.toJS());
-
           this.props.updatePoints(points);
-          console.log('delMarker-------', this.props.points.toJS());
         });
     }
   };
 
   updatePosition(id, icon, e) {
-    console.log({
-      point: {...e.target._latlng, id,},
-      stations: [...this.props.stations]
-    });
     return services.movePoint({
       point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
@@ -41,11 +33,13 @@ class Danger extends React.Component {
       .then(res => {
         const points = this.props.points.toJS().filter(el => !(el.id === id));
         points.push(res.point);
-        console.log('points', points);
-
-
+        let stationsData = this.props.stationsData.toJS();
+        const stations = this.props.stations.toJS();
+        stationsData = { ...stationsData, ...res.stationsData };
+        stations.push(...Object.keys(res.stationsData));
         this.props.updatePoints(points);
-
+        this.props.updateStationsData(stationsData);
+        this.props.updateStations(stations);
       });
   };
 
@@ -61,11 +55,11 @@ class Danger extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
-        <Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-        </Popup>
+        {/*<Popup>*/}
+                  {/*<span>*/}
+                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
+                  {/*</span>*/}
+        {/*</Popup>*/}
       </Marker>
         <SectorPolygon point={this.props.point} dist={5000} direction={'N'} />
       </div>);
@@ -78,6 +72,9 @@ function mapStateToProps(state) {
     points: state.get('points'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
   };
 }
 

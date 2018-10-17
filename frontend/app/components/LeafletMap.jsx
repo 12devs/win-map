@@ -58,22 +58,18 @@ class MyMap extends React.Component {
 
   addMarker(e) {
     if (this.state.event === 'Add') {
-      console.log(e.latlng);
       const {markers} = this.state;
       const icon = this.state.markerType === 'My Place' ? blueIcon : redIcon;
       markers.push({icon, LatLng: e.latlng});
       this.setState({markers});
-      console.log(this.state.markers);
     }
   };
 
   delMarker(id) {
     if (this.state.event === 'Del') {
-      console.log('id', id);
       const {markers} = this.state;
       delete markers[id];
       this.setState({markers});
-      console.log(this.state.markers);
     }
   };
 

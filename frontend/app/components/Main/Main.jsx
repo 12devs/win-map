@@ -18,10 +18,7 @@ class Main extends React.Component {
   getInfo() {
     return services.getInfo()
       .then(res => {
-        console.log(res);
         this.props.setMainData(res);
-        console.log('Mai', JSON.parse(JSON.stringify(this.props)));
-
       })
   }
 

@@ -48,19 +48,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Accounts.prototype.comparePassword = async function (password) {
     try {
-      // assert.ok(this.hash, this.t('hashedPasswordErrorMessage'))
-      // assert.ok(password, this.t('passwordErrorMessage'))
       const isCompared = bcrypt.compareSync(password, this.encrypted_password);
-      console.log(isCompared);
       if (!isCompared) {
         throw new Error('Compare passwords error');
       }
-      // assert.ok(res, this.t('passwordNotMatchErrorMessage'))
-
-      // password do match
       return true;
     } catch (err) {
-      // if there is any error during comparison
       throw new Error (err);
     }
   };

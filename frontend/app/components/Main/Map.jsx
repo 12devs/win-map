@@ -19,14 +19,15 @@ class MyMap extends React.Component {
         stations: [...this.props.stations]
       })
         .then(res => {
-
           const points = this.props.points.toJS();
+          let stationsData = this.props.stationsData.toJS();
+          const stations = this.props.stations.toJS();
+          stationsData = { ...stationsData, ...res.stationsData };
           points.push(res.point);
-          console.log('addMarker new points', points);
+          stations.push(...Object.keys(res.stationsData));
           this.props.updatePoints(points);
-          console.log('-------------');
-          console.log(this.props);
-          console.log(JSON.parse(JSON.stringify(this.props)));
+          this.props.updateStationsData(stationsData);
+          this.props.updateStations(stations);
         });
     }
   };
@@ -50,7 +51,6 @@ class MyMap extends React.Component {
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
           <Markers/>
-          <Polygon color="purple" positions={[[51.515, -0.09], [51.52, -0.1], [51.52, -0.12]]}/>
         </Map>
       </div>
     );

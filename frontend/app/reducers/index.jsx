@@ -25,6 +25,10 @@ const reducer = function (state = Map(), action) {
       return state.merge(action.state);
     case "updatePoints":
       return state.update("points", () => immutable.fromJS(action.value));
+    case "updateStationData":
+      return state.update("stationsData", () => immutable.fromJS(action.value));
+    case "updateStations":
+      return state.update("stations", () => immutable.fromJS(action.value));
     case "changeMarkerType":
       return state.update("markerType", () => immutable.fromJS(action.value));
     case "changeActionType":

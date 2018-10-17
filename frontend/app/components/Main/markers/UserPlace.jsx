@@ -19,20 +19,12 @@ class UserPlace extends React.Component {
       })
         .then(res => {
           const points = this.props.points.toJS().filter(el => !(el.id === id));
-          console.log('points', points);
-          console.log('delMarker-------', this.props.points.toJS());
-
           this.props.updatePoints(points);
-          console.log('delMarker-------', this.props.points.toJS());
         });
     }
   };
 
   updatePosition(id, icon, e) {
-    console.log({
-      point: {...e.target._latlng, id,},
-      stations: [...this.props.stations]
-    });
     return services.movePoint({
       point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
@@ -40,14 +32,15 @@ class UserPlace extends React.Component {
       .then(res => {
         const points = this.props.points.toJS().filter(el => !(el.id === id));
         points.push(res.point);
-        console.log('points', points);
-
-
+        let stationsData = this.props.stationsData.toJS();
+        const stations = this.props.stations.toJS();
+        stationsData = { ...stationsData, ...res.stationsData };
+        stations.push(...Object.keys(res.stationsData));
         this.props.updatePoints(points);
-
+        this.props.updateStationsData(stationsData);
+        this.props.updateStations(stations);
       });
   };
-
 
   render() {
     return (
@@ -61,11 +54,11 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {this.props.actionType !== 'Del'?<Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-        </Popup>:null}
+        {/*{this.props.actionType !== 'Del'?<Popup>*/}
+                  {/*<span>*/}
+                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
+                  {/*</span>*/}
+        {/*</Popup>:null}*/}
       </Marker>
     );
   }
