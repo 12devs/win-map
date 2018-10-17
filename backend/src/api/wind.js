@@ -27,7 +27,7 @@ const getHistoricalData = async (stationId, days = 365) => {
   };
   console.log(options);
   let data = await rp(options);
-  console.log(data);
+  // console.log(data);
   let count = 0;
 
   const currentWind = {

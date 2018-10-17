@@ -1,7 +1,7 @@
 import React from 'react';
 import services from "./../../services";
 import { connect } from 'react-redux';
-import actions from './../../actions/points';
+import actions from './../../actions';
 import Map from './Map'
 import Settings from './Settings'
 
@@ -24,9 +24,10 @@ class Main extends React.Component {
   }
 
   render() {
-    console.log('Main Props', this.props);
+    console.log('Main Props', JSON.parse(JSON.stringify(this.props, null, 4)));
     return (
       <div>
+        <h1>Main</h1>
         <Map/>
         <Settings/>
       </div>
@@ -39,6 +40,9 @@ function mapStateToProps(state) {
     points: state.get("points"),
     stations: state.get("stations"),
     stationsData: state.get("stationsData"),
+    markerType: state.get("markerType"),
+    viewType: state.get("viewType"),
+    actionType: state.get("actionType"),
   };
 }
 

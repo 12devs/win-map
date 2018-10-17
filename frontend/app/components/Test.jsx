@@ -23,8 +23,9 @@ class Test extends Component {
       type: 'danger',
       lat: -34.35897,
       lng: 150.35897,
+      // id: 28,
     };
-    return services.getInfo(point)
+    return services.savePoint({point, stations: ['INEWSOUT1518']})
       .then(res => {
         this.props.addPoint(res.point)
       })

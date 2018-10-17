@@ -16,6 +16,10 @@ const savePoint = (point) => {
   return fetch('post', '/api/points/save', point);
 };
 
+const deletePoint = (point) => {
+  return fetch('post', '/api/points/delete', point);
+};
+
 const getInfo = (point) => {
   return fetch('post', '/api/points/withData', point);
 };
@@ -26,4 +30,5 @@ export default {
   test,
   savePoint,
   getInfo,
+  deletePoint
 };

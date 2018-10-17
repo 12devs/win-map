@@ -1,7 +1,7 @@
 import React from 'react';
 import services from './../../services';
 import { connect } from 'react-redux';
-import actions from './../../actions/points';
+import actions from './../../actions';
 
 const data = [{markerType: 'My Place', dataType: 'Current', event: 'Add'}, {
   markerType: 'Danger',
@@ -12,12 +12,6 @@ const data = [{markerType: 'My Place', dataType: 'Current', event: 'Add'}, {
 class Settings extends React.Component {
   constructor() {
     super();
-    this.state = {
-      markerType: 'My Place',
-      dataType: 'Current',
-      event: 'Add'
-    };
-
     this.getInfo = this.getInfo.bind(this);
     this.onMarkerChanged = this.onMarkerChanged.bind(this);
     this.onDataTypeChanged = this.onDataTypeChanged.bind(this);
@@ -37,39 +31,32 @@ class Settings extends React.Component {
   }
 
   onMarkerChanged(e) {
-    this.setState({
-      markerType: e.currentTarget.value
-    });
+    this.props.changeMarkerType(e.currentTarget.value)
   }
 
   onDataTypeChanged(e) {
-    this.setState({
-      dataType: e.currentTarget.value
-    });
+    this.props.changeViewType(e.currentTarget.value)
   }
 
   onEventChanged(e) {
-    this.setState({
-      event: e.currentTarget.value
-    });
+    this.props.changeActionType(e.currentTarget.value)
   }
 
   render() {
-    console.log('Main Props', this.props);
     let resultRows = data.map((result, id) =>
       <tbody key={id}>
       <tr>
         <td><input type="radio" name="markers"
                    value={result.markerType}
-                   checked={this.state.markerType === result.markerType}
+                   checked={this.props.markerType === result.markerType}
                    onChange={this.onMarkerChanged}/>{result.markerType}</td>
         <td><input type="radio" name="data_type"
                    value={result.dataType}
-                   checked={this.state.dataType === result.dataType}
+                   checked={this.props.viewType === result.dataType}
                    onChange={this.onDataTypeChanged}/>{result.dataType}</td>
         <td><input type="radio" name="event"
                    value={result.event}
-                   checked={this.state.event === result.event}
+                   checked={this.props.actionType === result.event}
                    onChange={this.onEventChanged}/>{result.event}</td>
       </tr>
       </tbody>, this);
@@ -86,9 +73,9 @@ class Settings extends React.Component {
         {resultRows}
         <tfoot>
         <tr>
-          <td>chosen marker: {this.state.markerType} </td>
-          <td>chosen data: {this.state.dataType} </td>
-          <td>chosen event: {this.state.event} </td>
+          <td>chosen marker: {this.props.markerType} </td>
+          <td>chosen data: {this.props.viewType} </td>
+          <td>chosen event: {this.props.actionType} </td>
         </tr>
         </tfoot>
       </table>
@@ -98,9 +85,9 @@ class Settings extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get('points'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
+    markerType: state.get("markerType"),
+    viewType: state.get("viewType"),
+    actionType: state.get("actionType"),
   };
 }
 

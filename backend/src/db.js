@@ -1,5 +1,6 @@
 import Sequelize from "sequelize"
 import config from "config"
+Sequelize.postgres.DECIMAL.parse = function (value) { return parseFloat(value); };
 
 let db;
 
