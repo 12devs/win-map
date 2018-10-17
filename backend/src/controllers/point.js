@@ -8,6 +8,7 @@ export default {
     try {
       const { user } = req;
       const { point, stations } = req.body;
+      console.log(point, stations);
       const { lat, lng } = point;
       point.account_id = user.id;
       point.station_id = await getStationId({ lat, lng });
