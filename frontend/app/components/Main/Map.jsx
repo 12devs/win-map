@@ -4,6 +4,7 @@ import services from './../../services';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import { redIcon, blueIcon } from '../icons';
+import Markers from './Markers';
 
 class MyMap extends React.Component {
   constructor() {
@@ -76,29 +77,7 @@ class MyMap extends React.Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
-
-          {this.props.points.map((position, id) => {
-
-              console.log(typeof position.get('lat'), typeof position.get('lng'));
-              return (<Marker
-                key={`marker-${id}`}
-                draggable={this.state.draggable}
-                onDragend={(e) => {
-                  this.updatePosition(id, blueIcon, e);
-                }}
-                onClick={() => {
-                  this.delMarker(id);
-                }}
-                position={[position.get('lat'), position.get('lng')]}
-                icon={blueIcon}>
-                <Popup>
-                  <span>
-                    {'MARKER' + id}
-                  </span>
-                </Popup>
-              </Marker>);
-            }
-          )}
+          <Markers/>
           <Polygon color="purple" positions={[[51.515, -0.09], [51.52, -0.1], [51.52, -0.12]]}/>
         </Map>
       </div>
