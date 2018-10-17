@@ -13,7 +13,6 @@ class Markers extends React.Component {
   }
 
   render() {
-    console.log('Markers this.props.points.toJS()', this.props.points.toJS());
     return (
       <div>
         {this.props.points.map((point, id) => {

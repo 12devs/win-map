@@ -34,5 +34,6 @@ export default {
   test,
   savePoint,
   getInfo,
-  deletePoint
+  deletePoint,
+  movePoint
 };

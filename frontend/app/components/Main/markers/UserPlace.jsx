@@ -8,7 +8,45 @@ import { redIcon, blueIcon } from '../../icons/index';
 class UserPlace extends React.Component {
   constructor(props) {
     super(props);
+    this.delMarker = this.delMarker.bind(this);
   }
+
+  delMarker(id) {
+    if (this.props.actionType === 'Del') {
+      return services.deletePoint({
+        point: {id},
+      })
+        .then(res => {
+          const points = this.props.points.toJS().filter(el => !(el.id === id));
+          console.log('points', points);
+          console.log('delMarker-------', this.props.points.toJS());
+
+          this.props.updatePoints(points);
+          console.log('delMarker-------', this.props.points.toJS());
+        });
+    }
+  };
+
+  updatePosition(id, icon, e) {
+    console.log({
+      point: { ...e.target._latlng, id,},
+      stations: [...this.props.stations]
+    })
+    return services.movePoint({
+      point: { ...e.target._latlng, id,},
+      stations: [...this.props.stations]
+    })
+      .then(res => {
+        const points = this.props.points.toJS().filter(el => !(el.id === id));
+        points.push(res.point);
+        console.log('points', points);
+
+
+        this.props.updatePoints(points);
+
+      });
+  };
+
 
   render() {
 
