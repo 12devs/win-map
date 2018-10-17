@@ -37,15 +37,6 @@ class UserPlace extends React.Component {
   };
 
   render() {
-    let ololo;
-    if (this.props.actionType === 'Add') {
-      ololo = (
-        <Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-        </Popup>);
-    }
     return (
       <Marker
         draggable={true}
@@ -57,7 +48,11 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {ololo}
+        {this.props.actionType === 'Add'?<Popup>
+                  <span>
+                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
+                  </span>
+        </Popup>:null}
       </Marker>
     );
   }

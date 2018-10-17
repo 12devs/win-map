@@ -15,13 +15,8 @@ class Danger extends React.Component {
 
   delMarker(id) {
     if (this.props.actionType === 'Del') {
-      return services.deletePoint({
-        point: {id},
-      })
-        .then(res => {
-          const points = this.props.points.toJS().filter(el => !(el.id === id));
-          this.props.updatePoints(points);
-        });
+      const points = this.props.points.toJS().filter(el => !(el.id === id));
+      this.props.updatePoints(points);
     }
   };
 
@@ -40,22 +35,23 @@ class Danger extends React.Component {
 
   render() {
     return (
-      <div><Marker
-        draggable={true}
-        onDragend={(e) => {
-          this.updatePosition(this.props.point.id, e);
-        }}
-        onClick={() => {
-          this.delMarker(this.props.point.id);
-        }}
-        position={[this.props.point.lat, this.props.point.lng]}
-        icon={redIcon}>
-        <Popup>
+      <div>
+        <Marker
+          draggable={true}
+          onDragend={(e) => {
+            this.updatePosition(this.props.point.id, e);
+          }}
+          onClick={() => {
+            this.delMarker(this.props.point.id);
+          }}
+          position={[this.props.point.lat, this.props.point.lng]}
+          icon={redIcon}>
+          {this.props.actionType === 'sss'?<Popup>
                   <span>
                     {`MARKER ${this.props.point.name} ${this.props.point.id}`}
                   </span>
-        </Popup>
-      </Marker>
+          </Popup>:null}
+        </Marker>
         <SectorPolygon point={this.props.point} dist={5000} direction={'N'}/>
       </div>);
   }
