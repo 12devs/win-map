@@ -10,7 +10,6 @@ class MyMap extends React.Component {
   constructor(props) {
     super(props);
     this.addMarker = this.addMarker.bind(this);
-    this.updatePosition = this.updatePosition.bind(this);
   }
 
   addMarker(e) {
@@ -31,16 +30,6 @@ class MyMap extends React.Component {
         });
     }
   };
-
-  updatePosition(id, icon, e) {
-    const markers = this.props.get('points');
-    const marker = { icon, LatLng: e.target._latlng };
-    if (marker != null) {
-      markers[id] = marker;
-      this.setState({ markers });
-    }
-  };
-
 
   render() {
     const center = {

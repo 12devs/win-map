@@ -9,6 +9,7 @@ class UserPlace extends React.Component {
   constructor(props) {
     super(props);
     this.delMarker = this.delMarker.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
   }
 
   delMarker(id) {
@@ -29,11 +30,11 @@ class UserPlace extends React.Component {
 
   updatePosition(id, icon, e) {
     console.log({
-      point: { ...e.target._latlng, id,},
+      point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
-    })
+    });
     return services.movePoint({
-      point: { ...e.target._latlng, id,},
+      point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
     })
       .then(res => {
@@ -49,7 +50,6 @@ class UserPlace extends React.Component {
 
 
   render() {
-
     return (
       <Marker
         draggable={true}
@@ -61,8 +61,13 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-
-      </Marker>);
+        {this.props.actionType !== 'Del'?<Popup>
+                  <span>
+                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
+                  </span>
+        </Popup>:null}
+      </Marker>
+    );
   }
 }
 
