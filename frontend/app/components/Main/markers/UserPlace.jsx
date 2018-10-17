@@ -1,9 +1,9 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions/points';
-import { redIcon, blueIcon } from '../../icons/index';
+import { blueIcon } from '../../icons/index';
 
 class UserPlace extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class UserPlace extends React.Component {
     }
   };
 
-  updatePosition(id, icon, e) {
+  updatePosition(id, e) {
     return services.movePoint({
       point: {...e.target._latlng, id,},
       stations: [...this.props.stations]
@@ -35,7 +35,7 @@ class UserPlace extends React.Component {
         let stationsData = this.props.stationsData.toJS();
         const stations = this.props.stations.toJS();
         stationsData = { ...stationsData, ...res.stationsData };
-        stations.push(...Object.keys(res.stationsData));
+        stations.push(...Object.keys((res.stationsData||{})));
         this.props.updatePoints(points);
         this.props.updateStationsData(stationsData);
         this.props.updateStations(stations);
@@ -47,7 +47,7 @@ class UserPlace extends React.Component {
       <Marker
         draggable={true}
         onDragend={(e) => {
-          this.updatePosition(this.props.point.id, blueIcon, e);
+          this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
           this.delMarker(this.props.point.id);

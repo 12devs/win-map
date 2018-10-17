@@ -3,8 +3,8 @@ import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import services from './../../services';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import { redIcon, blueIcon } from '../icons';
 import Markers from './markers/Markers';
+import { ReactLeafletSearch } from 'react-leaflet-search'
 
 class MyMap extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class MyMap extends React.Component {
           const stations = this.props.stations.toJS();
           stationsData = { ...stationsData, ...res.stationsData };
           points.push(res.point);
-          stations.push(...Object.keys(res.stationsData));
+          stations.push(...Object.keys((res.stationsData||{})));
           this.props.updatePoints(points);
           this.props.updateStationsData(stationsData);
           this.props.updateStations(stations);
@@ -46,6 +46,7 @@ class MyMap extends React.Component {
           zoom={11}
           style={{ height: '600px' }}
         >
+          <ReactLeafletSearch position="topleft" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
