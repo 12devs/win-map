@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import SectorPolygon from './SectorPolygon';
 
-// const getStats =(points, stationsData)=> {
-// const places = points.filter(point=> point.type=)
-// };
-
-
 class WindRose extends React.Component {
   constructor() {
     super();

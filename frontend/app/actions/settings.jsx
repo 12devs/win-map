@@ -19,8 +19,16 @@ const changeViewType = function (value) {
   }
 };
 
+const updateStatistic = function (value) {
+  return {
+    type: "updateStatistic",
+    value
+  }
+};
+
 module.exports = {
   changeMarkerType,
   changeActionType,
   changeViewType,
+  updateStatistic
 };

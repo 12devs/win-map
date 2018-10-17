@@ -40,6 +40,7 @@ function mapStateToProps(state) {
     markerType: state.get("markerType"),
     viewType: state.get("viewType"),
     actionType: state.get("actionType"),
+    statistic: state.get("statistic"),
   };
 }
 
