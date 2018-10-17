@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import { redIcon, blueIcon } from '../icons';
 import Markers from './markers/Markers';
+import { ReactLeafletSearch } from 'react-leaflet-search'
 
 class MyMap extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class MyMap extends React.Component {
           zoom={11}
           style={{ height: '600px' }}
         >
+          <ReactLeafletSearch position="topleft" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
