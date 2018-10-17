@@ -25,13 +25,13 @@ const getHistoricalData = async (stationId, days = 365) => {
     uri: `https://api-ak.wunderground.com/api/606f3f6977348613/history_${start}${end}/units:metric/v:2.0/q/pws:${stationId}.json?showObs=0`,
     json: true
   };
-  console.log(options);
   let data = await rp(options);
-  // console.log(data);
   let count = 0;
-
+  if (!data.history) {
+    return ({ history: {}, current: {}, period: 0 });
+  }
   const currentWind = {
-    dir: data.history.days[data.history.days.length - 1].summary.wind_dir,
+    dir: (data.history || {}).days[data.history.days.length - 1].summary.wind_dir,
     speed: data.history.days[data.history.days.length - 1].summary.wind_speed,
   };
 
@@ -73,30 +73,7 @@ const getHistoricalData = async (stationId, days = 365) => {
   return ({ history: windRose, current: currentWind, period: data.history.days.length });
 };
 
-const getWindDirections = (locationFirst, locationSecond) => {
-
-  const bear = bearing(locationFirst, locationSecond);
-  const dist = distance(locationFirst, locationSecond);
-
-  const result = [];
-
-  sideOfTheWorld.forEach((item, index) => {
-
-    if (index !== sideOfTheWorld.length - 1 && item.degrees <= bear && sideOfTheWorld[index + 1].degrees > bear) {
-      result.push(item.side);
-      result.push(sideOfTheWorld[index + 1].side);
-    } else if (index === sideOfTheWorld.length - 1 && bear > item.degrees) {
-      result.push(sideOfTheWorld[0].side);
-      result.push(item.side);
-    }
-
-  });
-
-  return Promise.resolve({ directions: result, distance: dist });
-}
-
 module.exports = {
   getHistoricalData,
   getStationId,
-  getWindDirections
 };

@@ -15,8 +15,13 @@ class Danger extends React.Component {
 
   delMarker(id) {
     if (this.props.actionType === 'Del') {
-      const points = this.props.points.toJS().filter(el => !(el.id === id));
-      this.props.updatePoints(points);
+      return services.deletePoint({
+        point: {id},
+      })
+        .then(res => {
+          const points = this.props.points.toJS().filter(el => !(el.id === id));
+          this.props.updatePoints(points);
+        });
     }
   };
 
@@ -28,31 +33,35 @@ class Danger extends React.Component {
       .then(res => {
         const points = this.props.points.toJS().filter(el => !(el.id === id));
         points.push(res.point);
-        console.log('points', points);
+        let stationsData = this.props.stationsData.toJS();
+        const stations = this.props.stations.toJS();
+        stationsData = { ...stationsData, ...res.stationsData };
+        stations.push(...Object.keys((res.stationsData||{})));
         this.props.updatePoints(points);
+        this.props.updateStationsData(stationsData);
+        this.props.updateStations(stations);
       });
   };
 
   render() {
     return (
-      <div>
-        <Marker
-          draggable={true}
-          onDragend={(e) => {
-            this.updatePosition(this.props.point.id, e);
-          }}
-          onClick={() => {
-            this.delMarker(this.props.point.id);
-          }}
-          position={[this.props.point.lat, this.props.point.lng]}
-          icon={redIcon}>
-          {this.props.actionType === 'sss'?<Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-          </Popup>:null}
-        </Marker>
-        <SectorPolygon point={this.props.point} dist={5000} direction={'N'}/>
+      <div><Marker
+        draggable={true}
+        onDragend={(e) => {
+          this.updatePosition(this.props.point.id, e);
+        }}
+        onClick={() => {
+          this.delMarker(this.props.point.id);
+        }}
+        position={[this.props.point.lat, this.props.point.lng]}
+        icon={redIcon}>
+        {/*<Popup>*/}
+                  {/*<span>*/}
+                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
+                  {/*</span>*/}
+        {/*</Popup>*/}
+      </Marker>
+        <SectorPolygon point={this.props.point} dist={5000} direction={'N'} />
       </div>);
   }
 }

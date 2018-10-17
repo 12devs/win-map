@@ -8,7 +8,6 @@ export default {
     try {
       const { user } = req;
       const { point, stations } = req.body;
-      console.log(point, stations);
       const { lat, lng } = point;
       point.account_id = user.id;
       point.station_id = await getStationId({ lat, lng });
@@ -19,9 +18,8 @@ export default {
           [savedPoint.station_id]: await getHistoricalData(savedPoint.station_id)
         }
       }
-      res.status(200).json({ point:savedPoint, stationsData })
+      res.status(200).json({ point: savedPoint, stationsData })
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ error: err.message })
     }
   },
@@ -57,16 +55,15 @@ export default {
       const { point, stations } = req.body;
       const { lat, lng } = point;
       point.station_id = await getStationId({ lat, lng });
-      const savedPoint = (await Point.update(point, { where: { id: point.id } ,returning: true, plain: true}))[1];
+      const savedPoint = (await Point.update(point, { where: { id: point.id }, returning: true, plain: true }))[1];
       let stationsData;
       if (!stations || stations.indexOf(savedPoint.station_id) === -1) {
         stationsData = {
           [savedPoint.station_id]: await getHistoricalData(savedPoint.station_id)
         }
       }
-      res.status(200).json({ point:savedPoint, stationsData })
+      res.status(200).json({ point: savedPoint, stationsData })
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ error: err.message })
     }
   }

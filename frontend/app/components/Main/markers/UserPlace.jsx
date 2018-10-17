@@ -32,7 +32,13 @@ class UserPlace extends React.Component {
       .then(res => {
         const points = this.props.points.toJS().filter(el => !(el.id === id));
         points.push(res.point);
+        let stationsData = this.props.stationsData.toJS();
+        const stations = this.props.stations.toJS();
+        stationsData = { ...stationsData, ...res.stationsData };
+        stations.push(...Object.keys((res.stationsData||{})));
         this.props.updatePoints(points);
+        this.props.updateStationsData(stationsData);
+        this.props.updateStations(stations);
       });
   };
 
@@ -48,11 +54,11 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {this.props.actionType === 'Add'?<Popup>
-                  <span>
-                    {`MARKER ${this.props.point.name} ${this.props.point.id}`}
-                  </span>
-        </Popup>:null}
+        {/*{this.props.actionType !== 'Del'?<Popup>*/}
+                  {/*<span>*/}
+                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
+                  {/*</span>*/}
+        {/*</Popup>:null}*/}
       </Marker>
     );
   }

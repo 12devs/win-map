@@ -12,6 +12,20 @@ const updatePoints = function (value) {
   }
 };
 
+const updateStationsData = function (value) {
+  return {
+    type: "updateStationData",
+    value
+  }
+};
+
+const updateStations = function (value) {
+  return {
+    type: "updateStations",
+    value
+  }
+};
+
 const setMainData = function (state) {
   return {
     type: "SET_STATE",
@@ -23,4 +37,6 @@ module.exports = {
   addPoint,
   setMainData,
   updatePoints,
+  updateStationsData,
+  updateStations
 };
