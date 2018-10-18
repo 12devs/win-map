@@ -47,6 +47,7 @@ class Danger extends React.Component {
   };
 
   render() {
+    const {viewType} = this.props;
     return (
       <div><Marker
         draggable={true}
