@@ -35,8 +35,8 @@ class Danger extends React.Component {
         points.push(res.point);
         let stationsData = this.props.stationsData.toJS();
         const stations = this.props.stations.toJS();
-        stationsData = { ...stationsData, ...res.stationsData };
-        stations.push(...Object.keys((res.stationsData||{})));
+        stationsData = {...stationsData, ...res.stationsData};
+        stations.push(...Object.keys((res.stationsData || {})));
         this.props.updatePoints(points);
         this.props.updateStationsData(stationsData);
         this.props.updateStations(stations);
@@ -55,13 +55,12 @@ class Danger extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
-        {/*<Popup>*/}
-                  {/*<span>*/}
-                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
-                  {/*</span>*/}
-        {/*</Popup>*/}
+        {this.props.actionType === 'Add' ?
+          <Popup>
+            {`MARKER ${this.props.point.name} ${this.props.point.id}`}
+          </Popup> : null}
       </Marker>
-        <SectorPolygon point={this.props.point} dist={5000} direction={'N'} />
+        <SectorPolygon point={this.props.point} dist={5000} direction={'N'}/>
       </div>);
   }
 }

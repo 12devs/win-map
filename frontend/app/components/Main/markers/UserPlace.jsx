@@ -34,8 +34,8 @@ class UserPlace extends React.Component {
         points.push(res.point);
         let stationsData = this.props.stationsData.toJS();
         const stations = this.props.stations.toJS();
-        stationsData = { ...stationsData, ...res.stationsData };
-        stations.push(...Object.keys((res.stationsData||{})));
+        stationsData = {...stationsData, ...res.stationsData};
+        stations.push(...Object.keys((res.stationsData || {})));
         this.props.updatePoints(points);
         this.props.updateStationsData(stationsData);
         this.props.updateStations(stations);
@@ -54,11 +54,10 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {/*{this.props.actionType !== 'Del'?<Popup>*/}
-                  {/*<span>*/}
-                    {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
-                  {/*</span>*/}
-        {/*</Popup>:null}*/}
+        {this.props.actionType === 'Add' ?
+          <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup> : null}
       </Marker>
     );
   }
