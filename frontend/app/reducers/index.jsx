@@ -31,7 +31,7 @@ const getStats = (points, stationsData) => {
         dangerName: danger.name,
         dangerId: danger.id,
         direction: direction,
-        period: `${stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100} / ${stationsData[place.station_id].period}`,
+        period: `${Math.round(stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100)} / ${stationsData[place.station_id].period}`,
         currently: direction === stationsData[danger.station_id].current.dir
       }
     })
@@ -57,6 +57,8 @@ const reducer = function (state = Map(), action) {
       return state.update("viewType", () => immutable.fromJS(action.value));
     case "updateStatistic":
       return state.update("statistic", () => immutable.fromJS(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
+    case "changeScaleWind":
+      return state.update("scaleWind", () => immutable.fromJS(action.value));
   }
   return state;
 };

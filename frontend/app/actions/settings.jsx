@@ -26,9 +26,17 @@ const updateStatistic = function (value) {
   }
 };
 
+const changeScaleWind = function (value) {
+  return {
+    type: "changeScaleWind",
+    value
+  }
+};
+
 module.exports = {
   changeMarkerType,
   changeActionType,
   changeViewType,
-  updateStatistic
+  updateStatistic,
+  changeScaleWind
 };
