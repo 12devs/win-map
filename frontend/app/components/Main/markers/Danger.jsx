@@ -2,7 +2,7 @@ import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
-import actions from '../../../actions/points';
+import actions from '../../../actions';
 import { redIcon } from '../../icons/index';
 import SectorPolygon from '../SectorPolygon';
 import WindRose from '../WindRose';

@@ -2,14 +2,29 @@ import { Map, Set, List } from "immutable";
 import immutable from "immutable";
 import geolib from 'geolib';
 
+const getCompassDirection = (from, to) => {
+  const geolibGetCompassDirection = geolib.getCompassDirection(from, to).exact;
+  switch (geolibGetCompassDirection) {
+    case "N":
+      return 'North';
+    case "W":
+      return 'West';
+    case "E":
+      return 'East';
+    case "S":
+      return 'South';
+    default:
+      return geolibGetCompassDirection
+  }
+};
+
 const getStats = (points, stationsData) => {
   const places = points.filter(point => point.type === 'My Place');
   const dangers = points.filter(point => point.type === 'Danger');
   const stats = {};
   places.forEach(place => {
     stats[place.id] = dangers.map(danger => {
-      const direction = geolib.getBearing(danger, place).exact;
-      console.log(danger, place);
+      const direction = getCompassDirection(danger, place);
       return {
         name: place.name,
         type: place.type,
