@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import SectorPolygon from './SectorPolygon';
+import _ from 'lodash';
 
 class WindRose extends React.Component {
   constructor() {
@@ -9,28 +10,11 @@ class WindRose extends React.Component {
   }
 
   render() {
-    const { point, dist } = this.props;
-    // const { history } = this.props.stationsData[point.station_id];
 
-    const history = {
-      ENE: 22.81,
-      ESE: 6.14,
-      E: 13.16,
-      NE: 33.77,
-      NNE: 21.49,
-      NNW: 0.44,
-      NW: 0,
-      N: 2.19,
-      SE: 0,
-      SSE: 0,
-      SSW: 0,
-      SW: 0,
-      S: 0,
-      WNW: 1,
-      WSW: 0,
-      W: 10,
-    };
-
+    const { point} = this.props;
+    const stationsData = this.props.stationsData.toJS();
+    const dist = 5000;
+    const history = _.get(stationsData, [point.station_id, 'history'], {});
     const arr = Object.keys(history);
     return (
       <div>

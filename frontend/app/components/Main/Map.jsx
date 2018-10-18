@@ -28,6 +28,7 @@ class MyMap extends React.Component {
           this.props.updatePoints(points);
           this.props.updateStationsData(stationsData);
           this.props.updateStations(stations);
+          this.props.updateStatistic();
         });
     }
   };

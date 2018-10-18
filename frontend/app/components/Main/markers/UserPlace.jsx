@@ -20,6 +20,7 @@ class UserPlace extends React.Component {
         .then(res => {
           const points = this.props.points.toJS().filter(el => !(el.id === id));
           this.props.updatePoints(points);
+          this.props.updateStatistic();
         });
     }
   };
@@ -39,6 +40,7 @@ class UserPlace extends React.Component {
         this.props.updatePoints(points);
         this.props.updateStationsData(stationsData);
         this.props.updateStations(stations);
+        this.props.updateStatistic();
       });
   };
 

@@ -19,6 +19,7 @@ class Main extends React.Component {
     return services.getInfo()
       .then(res => {
         this.props.setMainData(res);
+        this.props.updateStatistic();
       })
   }
 

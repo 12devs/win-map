@@ -3,20 +3,25 @@ import immutable from "immutable";
 import geolib from 'geolib';
 
 const getStats = (points, stationsData) => {
-  const places = points.filter(point => point.type = 'place');
-  const dangers = points.filter(point => point.type = 'danger');
-  return places.map(place => {
-    return dangers.map(danger => {
+  const places = points.filter(point => point.type === 'My Place');
+  const dangers = points.filter(point => point.type === 'Danger');
+  const stats = {};
+  places.forEach(place => {
+    stats[place.id] = dangers.map(danger => {
       const direction = geolib.getBearing(danger, place).exact;
+      console.log(danger, place);
       return {
-        id: place.id,
         name: place.name,
+        type: place.type,
         dangerName: danger.name,
+        dangerId: danger.id,
+        direction: direction,
         period: stationsData[place.station_id].history[direction] * stationsData[place.station_id].period,
-        currently: direction === stationsData[place.station_id].current.dir
+        currently: direction === stationsData[danger.station_id].current.dir
       }
     })
-  })
+  });
+  return stats;
 };
 
 const reducer = function (state = Map(), action) {

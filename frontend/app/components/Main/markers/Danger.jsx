@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import actions from '../../../actions/points';
 import { redIcon } from '../../icons/index';
 import SectorPolygon from '../SectorPolygon';
+import WindRose from '../WindRose';
 
 class Danger extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class Danger extends React.Component {
         .then(res => {
           const points = this.props.points.toJS().filter(el => !(el.id === id));
           this.props.updatePoints(points);
+          this.props.updateStatistic();
         });
     }
   };
@@ -40,6 +42,7 @@ class Danger extends React.Component {
         this.props.updatePoints(points);
         this.props.updateStationsData(stationsData);
         this.props.updateStations(stations);
+        this.props.updateStatistic();
       });
   };
 
@@ -61,7 +64,13 @@ class Danger extends React.Component {
                   {/*</span>*/}
         {/*</Popup>*/}
       </Marker>
-        <SectorPolygon point={this.props.point} dist={5000} direction={'N'} />
+        {(()=>{
+          if (viewType==="Current"){
+            return <SectorPolygon point={this.props.point} />
+          } else {
+            return <WindRose point={this.props.point} />
+          }
+        })()}
       </div>);
   }
 }
