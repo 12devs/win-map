@@ -11,15 +11,17 @@ class WindRose extends React.Component {
 
   render() {
 
-    const { point} = this.props;
+    const { point } = this.props;
     const stationsData = this.props.stationsData.toJS();
     const dist = 5000;
     const history = _.get(stationsData, [point.station_id, 'history'], {});
     const arr = Object.keys(history);
+    const max = Math.max(..._.values(history));
+    const k = dist / max;
     return (
       <div>
         {arr.map((direction, i) => {
-          return (<SectorPolygon key={i} color="purple" point={point} dist={history[direction] * dist / 100}
+          return (<SectorPolygon key={i} color="purple" point={point} dist={history[direction] * k}
                                  direction={direction}/>)
         })}
       </div>

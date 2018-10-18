@@ -31,7 +31,7 @@ const getStats = (points, stationsData) => {
         dangerName: danger.name,
         dangerId: danger.id,
         direction: direction,
-        period: stationsData[place.station_id].history[direction] * stationsData[place.station_id].period,
+        period: `${stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100} / ${stationsData[place.station_id].period}`,
         currently: direction === stationsData[danger.station_id].current.dir
       }
     })
