@@ -22,6 +22,7 @@ store.dispatch({
     markerType: 'My Place',
     viewType: 'Current',
     actionType: 'Add',
+    notificationSettings: [ {arrId:0}],
   }
 });
 

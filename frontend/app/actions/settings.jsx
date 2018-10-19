@@ -26,9 +26,18 @@ const updateStatistic = function (value) {
   }
 };
 
+const updateNotificationSettings = function (value) {
+  return {
+    type: "updateNotificationSettings",
+    value
+  }
+};
+
+
 module.exports = {
   changeMarkerType,
   changeActionType,
   changeViewType,
-  updateStatistic
+  updateStatistic,
+  updateNotificationSettings
 };

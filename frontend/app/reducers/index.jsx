@@ -9,7 +9,7 @@ const getStats = (points, stationsData) => {
   places.forEach(place => {
     stats[place.id] = dangers.map(danger => {
       const direction = geolib.getBearing(danger, place).exact;
-      console.log(danger, place);
+      // console.log(danger, place);
       return {
         name: place.name,
         type: place.type,
@@ -40,6 +40,8 @@ const reducer = function (state = Map(), action) {
       return state.update("actionType", () => immutable.fromJS(action.value));
     case "changeViewType":
       return state.update("viewType", () => immutable.fromJS(action.value));
+    case "updateNotificationSettings":
+      return state.update("notificationSettings", () => immutable.fromJS(action.value));
     case "updateStatistic":
       return state.update("statistic", () => immutable.fromJS(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
   }

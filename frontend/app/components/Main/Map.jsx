@@ -77,7 +77,6 @@ class MyMap extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
   }
 
@@ -109,7 +108,7 @@ class MyMap extends React.Component {
                 Name:
                 <input type="text" value={this.state.value} onChange={this.handleChange} />
               </label>
-              <button onClick={this.addMarker} >Send</button>
+              <button onClick={this.addMarker}>Send</button>
             </form>
             <button onClick={this.closeModal}>close</button>
           </Modal>
