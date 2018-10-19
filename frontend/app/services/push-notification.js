@@ -1,22 +1,14 @@
 import firebase from 'firebase';
 
-// import SW from './firebase-messaging-sw';
-//
-// navigator.serviceWorker
-//   .register()
-//   .then((registration) => {
-//     console.log(registration)
-//     firebase.messaging().useServiceWorker(registration);
-//   });
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('../firebase-messaging-sw.js')
-    .then(function(registration) {
-      console.log('Registration successful, scope is:', registration.scope);
-    }).catch(function(err) {
+navigator.serviceWorker
+  .register('./public/firebase-messaging-sw.js')
+  .then((registration) => {
+    firebase.messaging().useServiceWorker(registration);
+  })
+  .catch((err) => {
     console.log('Service worker registration failed, error:', err);
   });
-}
+
 
 export const initializeFirebase = () => {
   firebase.initializeApp({
@@ -29,7 +21,7 @@ export const askForPermissioToReceiveNotifications = async () => {
     const messaging = firebase.messaging();
     await messaging.requestPermission();
     const token = await messaging.getToken();
-    console.log('token do usuário:', token);
+    console.log(token);
 
     return token;
   } catch (error) {
