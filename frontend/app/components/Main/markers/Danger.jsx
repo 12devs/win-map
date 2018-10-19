@@ -2,7 +2,7 @@ import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
-import actions from '../../../actions/points';
+import actions from '../../../actions';
 import { redIcon } from '../../icons/index';
 import SectorPolygon from '../SectorPolygon';
 import WindRose from '../WindRose';
@@ -17,37 +17,33 @@ class Danger extends React.Component {
   delMarker(id) {
     if (this.props.actionType === 'Del') {
       return services.deletePoint({
-        point: {id},
+        danger: { id },
       })
         .then(res => {
-          const points = this.props.points.toJS().filter(el => !(el.id === id));
-          this.props.updatePoints(points);
-          this.props.updateStatistic();
+          const dangers = this.props.dangers.toJS().filter(el => !(el.id === id));
+          this.props.updateMainData({dangers});
         });
     }
   };
 
   updatePosition(id, e) {
     return services.movePoint({
-      point: {...e.target._latlng, id,},
+      danger: { ...e.target._latlng, id, },
       stations: [...this.props.stations]
     })
       .then(res => {
-        const points = this.props.points.toJS().filter(el => !(el.id === id));
-        points.push(res.point);
+        const dangers = this.props.dangers.toJS().filter(el => !(el.id === id));
+        dangers.push(res.danger);
         let stationsData = this.props.stationsData.toJS();
         const stations = this.props.stations.toJS();
-        stationsData = { ...stationsData, ...res.stationsData };
-        stations.push(...Object.keys((res.stationsData||{})));
-        this.props.updatePoints(points);
-        this.props.updateStationsData(stationsData);
-        this.props.updateStations(stations);
-        this.props.updateStatistic();
+        stationsData = { ...stationsData, ...(res.stationsData || {}) };
+        stations.push(...Object.keys((res.stationsData || {})));
+        this.props.updateMainData({ dangers, stations, stationsData });
       });
   };
 
   render() {
-    const {viewType} = this.props;
+    const { viewType } = this.props;
     return (
       <div><Marker
         draggable={true}
@@ -59,12 +55,17 @@ class Danger extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
+        {/*<Popup>*/}
+        {/*<span>*/}
+        {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
+        {/*</span>*/}
+        {/*</Popup>*/}
       </Marker>
-        {(()=>{
-          if (viewType==="Current"){
-            return <SectorPolygon point={this.props.point} />
+        {(() => {
+          if (viewType === "Current") {
+            return <SectorPolygon point={this.props.point}/>
           } else {
-            return <WindRose point={this.props.point} />
+            return <WindRose point={this.props.point}/>
           }
         })()}
       </div>);
@@ -73,12 +74,13 @@ class Danger extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get('points'),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     markerType: state.get('markerType'),
     viewType: state.get('viewType'),
-    actionType: state.get('actionType')
+    actionType: state.get('actionType'),
   };
 }
 

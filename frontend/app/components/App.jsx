@@ -10,6 +10,7 @@ import Login from './Login';
 import Test from './Test';
 import LeafletMap from './LeafletMap'
 import Main from "./Main/Main";
+import Notification from './Notification';
 
 const store = createStore(reducer);
 
@@ -17,11 +18,13 @@ store.dispatch({
   type: "SET_STATE",
   state: {
     stations: [],
-    points: [],
+    places: [],
+    dangers: [],
     stationsData: {},
     markerType: 'My Place',
     viewType: 'Current',
     actionType: 'Add',
+    scaleWind: 5000,
     notificationSettings: [ {arrId:0}],
   }
 });
@@ -54,6 +57,9 @@ class App extends Component {
               <li>
                 <Link to="/main">main</Link>
               </li>
+              <li>
+                <Link to="/notification">notification</Link>
+              </li>
             </ul>
             <br/>
             <Switch>
@@ -62,6 +68,7 @@ class App extends Component {
               <Route path="/test" component={Test}/>
               <Route path="/leaflet" component={LeafletMap}/>
               <Route path="/main" component={Main}/>
+              <Route path="/notification" component={Notification}/>
               <Route children={() => <h2>Not found</h2>}/>
             </Switch>
           </div>

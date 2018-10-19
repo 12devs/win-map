@@ -24,7 +24,7 @@ app.use((req, res, next)=>{
 
 app.use(routes);
 
-app.get(['/', '/register', '/login', '/test', '/leaflet', '/main'], (req, res) => res.render('app'));
+app.get(['/', '/register', '/login', '/test', '/leaflet', '/main', '/notification'], (req, res) => res.render('app'));
 
 const db = getInstance();
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Points = sequelize.define('Point', {
+  const Places = sequelize.define('Place', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    type: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -44,18 +40,18 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'points',
+    tableName: 'places',
     timestamps: true,
     paranoid: true
   });
 
-  Points.associate = models => {
-    Points.belongsTo(models.Account, {
-      as: "points",
+  Places.associate = models => {
+    Places.belongsTo(models.Account, {
+      as: "places",
       foreignKey: "account_id"
     });
   };
 
-  return Points;
+  return Places;
 
 };

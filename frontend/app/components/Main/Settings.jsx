@@ -3,7 +3,7 @@ import services from './../../services';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 
-const data = [{markerType: 'My Place', dataType: 'Current', event: 'Add'}, {
+const data = [{ markerType: 'My Place', dataType: 'Current', event: 'Add' }, {
   markerType: 'Danger',
   dataType: 'Historical',
   event: 'Del'
@@ -49,32 +49,43 @@ class Settings extends React.Component {
       </tbody>, this);
 
     return (
-      <table className="table">
-        <thead>
-        <tr>
-          <th>Marker</th>
-          <th>Data</th>
-          <th>Event</th>
-        </tr>
-        </thead>
-        {resultRows}
-        <tfoot>
-        <tr>
-          <td>chosen marker: {this.props.markerType} </td>
-          <td>chosen data: {this.props.viewType} </td>
-          <td>chosen event: {this.props.actionType} </td>
-        </tr>
-        </tfoot>
-      </table>
+      <div>
+        <table className="table">
+          <thead>
+          <tr>
+            <th>Marker</th>
+            <th>Data</th>
+            <th>Event</th>
+          </tr>
+          </thead>
+          {resultRows}
+          <tfoot>
+          <tr>
+            <td>chosen marker: {this.props.markerType} </td>
+            <td>chosen data: {this.props.viewType} </td>
+            <td>chosen event: {this.props.actionType} </td>
+          </tr>
+          </tfoot>
+        </table>
+        <input type="range" id="start" name="size"
+               min="0" max="1000000" onChange={(e)=> this.props.changeScaleWind(e.target.value)}/>
+        <div style={{whiteSpace:'pre'}}>
+          {JSON.stringify(this.props.statistic, null, 4)}
+        </div>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    markerType: state.get("markerType"),
-    viewType: state.get("viewType"),
-    actionType: state.get("actionType"),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
   };
 }
 
