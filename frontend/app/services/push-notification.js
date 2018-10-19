@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import services from '../services';
 
 navigator.serviceWorker
   .register('./public/firebase-messaging-sw.js')
@@ -21,6 +22,9 @@ export const askForPermissioToReceiveNotifications = async () => {
     const messaging = firebase.messaging();
     await messaging.requestPermission();
     const token = await messaging.getToken();
+
+    services.saveNotificationToken(token);
+
     console.log(token);
 
     return token;

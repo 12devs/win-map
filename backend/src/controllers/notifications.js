@@ -23,5 +23,11 @@ export default {
     }
   },
 
+  async saveToken(req, res) {
+    const { user } = req;
+    const { token } = req.body;
+
+    console.log(user, token);
+  }
 
 }
