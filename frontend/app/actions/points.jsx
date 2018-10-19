@@ -33,10 +33,18 @@ const setMainData = function (state) {
   }
 };
 
+const updateMainData = function (value) {
+  return {
+    type: "updateMainData",
+    value,
+  }
+};
+
 module.exports = {
   addPoint,
   setMainData,
   updatePoints,
   updateStationsData,
-  updateStations
+  updateStations,
+  updateMainData,
 };

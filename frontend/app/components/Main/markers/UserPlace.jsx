@@ -15,32 +15,28 @@ class UserPlace extends React.Component {
   delMarker(id) {
     if (this.props.actionType === 'Del') {
       return services.deletePoint({
-        point: {id},
+        place: {id},
       })
         .then(res => {
-          const points = this.props.points.toJS().filter(el => !(el.id === id));
-          this.props.updatePoints(points);
-          this.props.updateStatistic();
+          const places = this.props.places.toJS().filter(el => !(el.id === id));
+          this.props.updateMainData({places});
         });
     }
   };
 
   updatePosition(id, e) {
     return services.movePoint({
-      point: {...e.target._latlng, id,},
+      place: {...e.target._latlng, id,},
       stations: [...this.props.stations]
     })
       .then(res => {
-        const points = this.props.points.toJS().filter(el => !(el.id === id));
-        points.push(res.point);
+        const places = this.props.places.toJS().filter(el => !(el.id === id));
+        places.push(res.place);
         let stationsData = this.props.stationsData.toJS();
         const stations = this.props.stations.toJS();
         stationsData = {...stationsData, ...res.stationsData};
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updatePoints(points);
-        this.props.updateStationsData(stationsData);
-        this.props.updateStations(stations);
-        this.props.updateStatistic();
+        this.props.updateMainData({places, stationsData, stations});
       });
   };
 
@@ -67,7 +63,8 @@ class UserPlace extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get('points'),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     markerType: state.get('markerType'),

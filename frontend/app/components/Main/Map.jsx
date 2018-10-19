@@ -38,7 +38,7 @@ class MyMap extends React.Component {
   }
 
   openModal(e) {
-    this.setState({modalIsOpen: true, latlng: e.latlng});
+    this.setState({ modalIsOpen: true, latlng: e.latlng });
   }
 
   afterOpenModal() {
@@ -47,33 +47,47 @@ class MyMap extends React.Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({ modalIsOpen: false });
   }
 
   addMarker() {
     if (this.props.actionType === 'Add') {
+      let key;
+      if (this.props.markerType === 'Danger') {
+        key = 'danger'
+      } else {
+        key = 'place'
+      }
       return services.savePoint({
-        point: {...this.state.latlng, name: this.state.value, type: this.props.markerType},
+        [key]: {
+          ...this.state.latlng,
+          name: this.state.value
+        },
         stations: [...this.props.stations]
       })
         .then(res => {
-          const points = this.props.points.toJS();
+          const {danger, place} = res;
+          let places = this.props.places.toJS();
+          let dangers = this.props.dangers.toJS();
           let stationsData = this.props.stationsData.toJS();
           const stations = this.props.stations.toJS();
           stationsData = { ...stationsData, ...res.stationsData };
-          points.push(res.point);
+          if (danger){
+            dangers.push(danger);
+          }
+          if (place){
+            places.push(place);
+          }
           stations.push(...Object.keys((res.stationsData || {})));
-          this.props.updatePoints(points);
-          this.props.updateStationsData(stationsData);
-          this.props.updateStations(stations);
-          this.props.updateStatistic();
+          console.log('updateMainData');
+          this.props.updateMainData({ places, dangers, stationsData, stations });
           this.closeModal()
         });
     }
   };
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
@@ -88,12 +102,12 @@ class MyMap extends React.Component {
     };
 
     return (
-      <div style={{height: '100%'}}>
+      <div style={{ height: '100%' }}>
         <Map
           center={center}
-          onClick={(e)=>this.openModal(e)}
+          onClick={(e) => this.openModal(e)}
           zoom={11}
-          style={{height: '600px'}}
+          style={{ height: '600px' }}
         >
           <Modal
             isOpen={this.state.modalIsOpen}
@@ -107,9 +121,9 @@ class MyMap extends React.Component {
             <form onSubmit={this.handleSubmit}>
               <label>
                 Name:
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                <input type="text" value={this.state.value} onChange={this.handleChange}/>
               </label>
-              <button onClick={this.addMarker} >Send</button>
+              <button onClick={this.addMarker}>Send</button>
             </form>
             <button onClick={this.closeModal}>close</button>
           </Modal>
@@ -127,7 +141,8 @@ class MyMap extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get('points'),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     markerType: state.get('markerType'),

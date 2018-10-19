@@ -1,6 +1,7 @@
-import { Point, Account } from './../models';
-import { getStationId, getHistoricalData } from '../api/wind';
+import { Place, Danger, Account } from './../models';
 import _ from 'lodash';
+import { getStationId, getHistoricalData } from '../api/wind';
+
 
 export default {
 

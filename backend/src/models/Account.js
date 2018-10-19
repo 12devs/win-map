@@ -40,8 +40,24 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Accounts.associate = models => {
-    Accounts.hasMany(models.Point, {
-      as: 'points',
+    Accounts.hasMany(models.Danger, {
+      as: 'dangers',
+      foreignKey: 'account_id'
+    });
+    Accounts.hasMany(models.Place, {
+      as: 'places',
+      foreignKey: 'account_id'
+    });
+    Accounts.hasMany(models.Subscription, {
+      as: 'subscriptions',
+      foreignKey: 'account_id'
+    });
+    Accounts.hasMany(models.Device, {
+      as: 'devices',
+      foreignKey: 'account_id'
+    });
+    Accounts.hasMany(models.Notification, {
+      as: 'notifications',
       foreignKey: 'account_id'
     });
   };
