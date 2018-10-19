@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Places = sequelize.define('Place', {
+  const Subscription = sequelize.define('Subscription', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
@@ -9,20 +9,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
-    name: {
+    place_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    danger_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    last_message: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    station_id: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    lat: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    lng: {
-      type: DataTypes.DECIMAL,
+      defaultValue: '',
       allowNull: false,
     },
     created_at: {
@@ -40,18 +37,18 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'places',
+    tableName: 'subscriptions',
     timestamps: true,
     paranoid: true
   });
 
-  Places.associate = models => {
-    Places.belongsTo(models.Account, {
-      as: "places",
+  Subscription.associate = models => {
+    Subscription.belongsTo(models.Account, {
+      as: "subscriptions",
       foreignKey: "account_id"
     });
   };
 
-  return Places;
+  return Subscription;
 
 };

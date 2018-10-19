@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Places = sequelize.define('Place', {
+  const Notification = sequelize.define('Notification', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
@@ -9,21 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
-    name: {
+    message: {
       type: DataTypes.STRING(255),
+      defaultValue: '',
       allowNull: false,
     },
-    station_id: {
-      type: DataTypes.STRING(255),
+    sent_at: {
+      type: DataTypes.DATE,
       allowNull: false,
-    },
-    lat: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    lng: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     created_at: {
       type: DataTypes.DATE,
@@ -40,18 +34,18 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'places',
+    tableName: 'notifications',
     timestamps: true,
     paranoid: true
   });
 
-  Places.associate = models => {
-    Places.belongsTo(models.Account, {
-      as: "places",
+  Notification.associate = models => {
+    Notification.belongsTo(models.Account, {
+      as: "notifications",
       foreignKey: "account_id"
     });
   };
 
-  return Places;
+  return Notification;
 
 };

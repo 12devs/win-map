@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Points = sequelize.define('Point', {
+  const Device = sequelize.define('Device', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
@@ -9,24 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
-    name: {
+    token: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    type: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    station_id: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    lat: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    lng: {
-      type: DataTypes.DECIMAL,
+      defaultValue: '',
       allowNull: false,
     },
     created_at: {
@@ -44,18 +29,17 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'points',
+    tableName: 'devices',
     timestamps: true,
     paranoid: true
   });
 
-  Points.associate = models => {
-    Points.belongsTo(models.Account, {
-      as: "points",
+  Device.associate = models => {
+    Device.belongsTo(models.Account, {
+      as: "devices",
       foreignKey: "account_id"
     });
   };
 
-  return Points;
-
+  return Device;
 };

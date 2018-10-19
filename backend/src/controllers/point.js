@@ -51,6 +51,7 @@ export default {
       });
       res.status(200).json({ places, dangers, stations, stationsData })
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ error: err.message })
     }
   },
