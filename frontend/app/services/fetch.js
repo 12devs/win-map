@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 var qs = require('qs');
 
 const fetch = (method, url, body) => {
@@ -22,31 +23,41 @@ const fetch = (method, url, body) => {
             return err.response.data
           }
         });
-    case 'post':
-      options = {
-        method: 'POST',
-        url,
-        data: qs.stringify(body),
-        headers: {
-          authorization: `Token ${localStorage.windToken}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      };
-      return axios(options)
-        .then(result => {
-          return result.data
-        })
-        .catch(err => {
-          if (err.response.statusText === 'Unauthorized') {
-            location.assign('/login')
-          } else {
-            return err.response.data
-          }
-        });
+    case 'post' || 'delete':
+
+      return postPutDeleteOptoions(url, 'POST', body);
+    case 'delete':
+
+      return postPutDeleteOptoions(url, 'DELETE', body);
     default:
+
       return 'Unknown method'
   }
 };
+
+const postPutDeleteOptoions = (url, method, body) => {
+
+  const options = {
+    method: method,
+    url,
+    data: qs.stringify(body),
+    headers: {
+      authorization: `Token ${localStorage.windToken}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+  return axios(options)
+    .then(result => {
+      return result.data
+    })
+    .catch(err => {
+      if (err.response.statusText === 'Unauthorized') {
+        location.assign('/login')
+      } else {
+        return err.response.data
+      }
+    });
+}
 
 export {
   fetch,

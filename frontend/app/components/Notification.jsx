@@ -1,10 +1,15 @@
 import React from 'react';
-import { askForPermissioToReceiveNotifications } from '../services/push-notification';
+import { askForPermissioToReceiveNotifications, deleteToken } from '../services/push-notification';
 
 const NotificationButton = () => (
-  <button onClick={askForPermissioToReceiveNotifications} >
-    Subscribe to notifications
-  </button>
+  <div>
+    <button onClick={askForPermissioToReceiveNotifications}>
+      Subscribe to notifications
+    </button>
+    <button onClick={deleteToken}>
+      unsubscribe to notifications
+    </button>
+  </div>
 );
 
 export default NotificationButton;
