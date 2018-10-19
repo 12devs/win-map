@@ -25,17 +25,17 @@ const fetch = (method, url, body) => {
         });
     case 'post' || 'delete':
 
-      return postPutDeleteOptoions(url, 'POST', body);
+      return postPutDelete(url, 'POST', body);
     case 'delete':
 
-      return postPutDeleteOptoions(url, 'DELETE', body);
+      return postPutDelete(url, 'DELETE', body);
     default:
 
       return 'Unknown method'
   }
 };
 
-const postPutDeleteOptoions = (url, method, body) => {
+const postPutDelete = (url, method, body) => {
 
   const options = {
     method: method,
