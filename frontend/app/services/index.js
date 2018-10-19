@@ -28,6 +28,14 @@ const getInfo = (point) => {
   return fetch('post', '/api/points/withData', point);
 };
 
+const saveNotificationToken = (token) => {
+  return fetch('post','/api/notifications/saveToken', { token });
+}
+
+const deleteNotificationToken = (token) => {
+  return fetch('delete','/api/notifications/deleteToken', { token });
+}
+
 export default {
   login,
   register,
@@ -35,5 +43,7 @@ export default {
   savePoint,
   getInfo,
   deletePoint,
-  movePoint
+  movePoint,
+  saveNotificationToken,
+  deleteNotificationToken,
 };

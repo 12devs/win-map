@@ -39,5 +39,6 @@
     "refreshTokenSecret": "some-secret-refresh-token-shit",
     "tokenLife": 900,
     "refreshTokenLife": 86400
-  }
+  },
+  "apiKeys":{}
 }

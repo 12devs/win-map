@@ -25,6 +25,7 @@ store.dispatch({
     viewType: 'Current',
     actionType: 'Add',
     scaleWind: 5000,
+    notificationSettings: [ {arrId:0}],
   }
 });
 

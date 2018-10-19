@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import Map from './Map'
 import Settings from './Settings'
+import NotificationSettings from './NotificationSettings';
 
 class Main extends React.Component {
   constructor() {
@@ -29,6 +30,7 @@ class Main extends React.Component {
         <h1>Main</h1>
         <Map/>
         <Settings/>
+        <NotificationSettings/>
       </div>
     )
   }

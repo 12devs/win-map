@@ -28,6 +28,7 @@ const getHistoricalData = async (stationId, days = 365) => {
   let data = await rp(options);
   let count = 0;
   if (!data.history) {
+    console.log(data);
     return ({ history: {}, current: {}, period: 0 });
   }
   const currentWind = {
