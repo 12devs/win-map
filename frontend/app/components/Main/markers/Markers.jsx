@@ -12,15 +12,12 @@ class Markers extends React.Component {
   render() {
     return (
       <div>
-        {this.props.points.map((point, id) => {
-            if (point.get('type') === 'Danger') {
-              return <Danger key={id} point={point.toJS()}/>;
-            }
-            else {
-              return <UserPlace key={id} point={point.toJS()}/>;
-            }
-          }
-        )}
+        {this.props.places.map((point, id) => {
+          return <UserPlace key={id} point={point.toJS()}/>;
+        })}
+        {this.props.dangers.map((point, id) => {
+          return <Danger key={id} point={point.toJS()}/>;
+        })}
       </div>
     );
   }
@@ -28,9 +25,13 @@ class Markers extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get('points'),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
   };
 }
 

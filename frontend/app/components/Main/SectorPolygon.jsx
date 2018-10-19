@@ -43,7 +43,12 @@ class SectorPolygon extends React.Component {
   render() {
     const { point} = this.props;
     const stationsData = this.props.stationsData.toJS();
-    const dist = this.props.dist || this.props.scaleWind;
+    let dist;
+    if (this.props.dist || this.props.dist === 0){
+      dist = this.props.dist;
+    } else {
+      dist = this.props.scaleWind;
+    }
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null);
     if (direction){
       const positions = getPolygon(point, dist, direction);
@@ -58,13 +63,14 @@ class SectorPolygon extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    points: state.get("points"),
-    stations: state.get("stations"),
-    stationsData: state.get("stationsData"),
-    markerType: state.get("markerType"),
-    viewType: state.get("viewType"),
-    actionType: state.get("actionType"),
-    scaleWind: state.get("scaleWind"),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    scaleWind: state.get('scaleWind'),
   };
 }
 

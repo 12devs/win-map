@@ -17,7 +17,8 @@ store.dispatch({
   type: "SET_STATE",
   state: {
     stations: [],
-    points: [],
+    places: [],
+    dangers: [],
     stationsData: {},
     markerType: 'My Place',
     viewType: 'Current',

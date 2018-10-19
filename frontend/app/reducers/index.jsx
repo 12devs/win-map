@@ -18,9 +18,7 @@ const getCompassDirection = (from, to) => {
   }
 };
 
-const getStats = (points, stationsData) => {
-  const places = points.filter(point => point.type === 'My Place');
-  const dangers = points.filter(point => point.type === 'Danger');
+const getStats = (places, dangers, stationsData) => {
   const stats = {};
   places.forEach(place => {
     stats[place.id] = dangers.map(danger => {
@@ -56,9 +54,27 @@ const reducer = function (state = Map(), action) {
     case "changeViewType":
       return state.update("viewType", () => immutable.fromJS(action.value));
     case "updateStatistic":
-      return state.update("statistic", () => immutable.fromJS(getStats(state.get('points').toJS(), state.get('stationsData').toJS())));
+      return state.update("statistic", () => immutable.fromJS(getStats(state.get('places').toJS(), state.get('dangers').toJS(), state.get('stationsData').toJS())));
     case "changeScaleWind":
       return state.update("scaleWind", () => immutable.fromJS(action.value));
+    case "updateMainData":
+      return state.update((state) => {
+        const newState = state.toJS();
+        if (action.value.dangers) {
+          newState.dangers = action.value.dangers;
+        }
+        if (action.value.places) {
+          newState.places = action.value.places;
+        }
+        if (action.value.stations) {
+          newState.stations = action.value.stations;
+        }
+        if (action.value.stationsData) {
+          newState.stationsData = action.value.stationsData;
+        }
+        newState.statistic = getStats(newState.places, newState.dangers, newState.stationsData);
+        return immutable.fromJS(newState)
+      });
   }
   return state;
 };
