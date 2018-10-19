@@ -32,3 +32,18 @@ export const askForPermissioToReceiveNotifications = async () => {
     console.error(error);
   }
 }
+
+export const deleteToken = async () => {
+
+  try{
+    const messaging = firebase.messaging();
+    const token = await messaging.getToken();
+    await messaging.deleteToken(token);
+
+    services.deleteNotificationToken(token);
+
+    console.log('deleted token');
+  } catch (error) {
+    console.error(error);
+  }
+}

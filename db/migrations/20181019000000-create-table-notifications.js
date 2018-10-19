@@ -20,8 +20,8 @@ const columns = {
   },
   sent_at: {
     type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: literal('CURRENT_TIMESTAMP'),
+    // allowNull: false,
+    // defaultValue: literal('CURRENT_TIMESTAMP'),
   },
   created_at: {
     type: DataTypes.DATE,

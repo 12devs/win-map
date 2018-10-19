@@ -32,6 +32,10 @@ const saveNotificationToken = (token) => {
   return fetch('post','/api/notifications/saveToken', { token });
 }
 
+const deleteNotificationToken = (token) => {
+  return fetch('delete','/api/notifications/deleteToken', { token });
+}
+
 export default {
   login,
   register,
@@ -41,4 +45,5 @@ export default {
   deletePoint,
   movePoint,
   saveNotificationToken,
+  deleteNotificationToken,
 };

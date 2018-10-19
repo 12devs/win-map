@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Subscription.associate = models => {
     Subscription.belongsTo(models.Account, {
-      as: "subscriptions",
+      as: "account",
       foreignKey: "account_id"
     });
   };
