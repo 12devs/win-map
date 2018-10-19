@@ -4,7 +4,7 @@ import actions from './../../actions';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 
-class DoubleSelect extends React.Component {
+class MultiSelect extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -53,4 +53,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(DoubleSelect);
+export default connect(mapStateToProps, actions)(MultiSelect);

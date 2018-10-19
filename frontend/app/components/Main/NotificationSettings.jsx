@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import DoubleSelect from './DoubleSelect';
+import DoubleSelect from './MultiSelect';
 
 class NotificationSettings extends React.Component {
   constructor(props) {
