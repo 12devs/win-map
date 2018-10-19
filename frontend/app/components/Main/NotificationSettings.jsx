@@ -23,14 +23,25 @@ class NotificationSettings extends React.Component {
   render() {
     return (
       <div>
-        {this.props.notificationSettings.map((point, id) =>
-          <div key={id}>
-            <DoubleSelect point={point.toJS()}/>
-            <br/>
-            <br/>
-          </div>
-        )}
-        <button onClick={this.handleClick}>+</button>
+        <table width="100%">
+          <tbody>
+          <tr>
+            <th>place</th>
+            <th>danger</th>
+          </tr>
+          {this.props.places.map((point, id) =>
+            <tr key={id}>
+              <td>
+                {point.get('name')}
+              </td>
+              <td>
+                <DoubleSelect point={point.toJS()}/>
+              </td>
+            </tr>
+          )}
+          </tbody>
+        </table>
+        <button onClick={this.handleClick}>Send</button>
       </div>
     );
   }
@@ -38,6 +49,7 @@ class NotificationSettings extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    places: state.get('places'),
     notificationSettings: state.get('notificationSettings')
   };
 }

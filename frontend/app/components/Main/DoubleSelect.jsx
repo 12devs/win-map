@@ -8,27 +8,20 @@ class DoubleSelect extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.delSetting = this.delSetting.bind(this);
   }
 
-  handleChange = (newValue, type) => {
+  handleChange = (newValue) => {
     let points = this.props.notificationSettings.toJS();
-    const point = points.find(x => x.arrId === this.props.point.arrId);
+    const point = points.find(x => x.place.value === this.props.point.id);
+
     if (point) {
-      point[type] = newValue;
-      points = this.props.notificationSettings.toJS().filter(x => !(x.arrId === this.props.point.arrId));
-      points.push(point);
-      this.props.updateNotificationSettings(points);
-
+      points = this.props.notificationSettings.toJS().filter(x => !(x.place.value === this.props.point.id));
     }
-    else {
-      points.push({arrId: this.props.point.arrId, [type]: newValue});
-      this.props.updateNotificationSettings(points);
-    }
-  };
 
-  delSetting = () => {
-    const points = this.props.notificationSettings.toJS().filter(x => !(x.arrId === this.props.point.arrId));
+    points.push({
+      place: {value: this.props.point.id, label: this.props.point.name},
+      danger: newValue
+    });
     this.props.updateNotificationSettings(points);
   };
 
@@ -39,28 +32,15 @@ class DoubleSelect extends React.Component {
         }
       );
 
-    const place = this.props.places
-      .map((point) => {
-          return {value: point.get('id'), label: point.get('name')};
-        }
-      );
-
     return (
       <div>
         <Select
-          isClearable
-          components={makeAnimated()}
-          onChange={(e) => this.handleChange(e, 'place')}
-          options={place}
-        />
-        <Select
           closeMenuOnSelect={false}
           components={makeAnimated()}
-          onChange={(e) => this.handleChange(e, 'danger')}
+          onChange={this.handleChange}
           isMulti
           options={danger}
         />
-        <button onClick={this.delSetting}>-</button>
       </div>
     );
   }
@@ -68,7 +48,6 @@ class DoubleSelect extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
     dangers: state.get('dangers'),
     notificationSettings: state.get('notificationSettings')
   };
