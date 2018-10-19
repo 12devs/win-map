@@ -9,6 +9,8 @@ import 'leaflet/dist/leaflet.css'
 import App from './components/App';
 import configureStore from './configureStore';
 
+import { initializeFirebase } from './services/push-notification';
+
 const store = configureStore();
 
 render(
@@ -17,3 +19,5 @@ render(
     </Provider>,
     document.getElementById('root')
 );
+
+initializeFirebase();
