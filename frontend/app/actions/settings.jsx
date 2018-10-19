@@ -26,6 +26,14 @@ const updateStatistic = function (value) {
   }
 };
 
+const updateNotificationSettings = function (value) {
+  return {
+    type: "updateNotificationSettings",
+    value
+  }
+};
+
+
 const changeScaleWind = function (value) {
   return {
     type: "changeScaleWind",
@@ -38,5 +46,6 @@ module.exports = {
   changeActionType,
   changeViewType,
   updateStatistic,
+  updateNotificationSettings,
   changeScaleWind
 };

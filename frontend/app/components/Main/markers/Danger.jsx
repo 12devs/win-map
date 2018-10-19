@@ -55,11 +55,6 @@ class Danger extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
-        {/*<Popup>*/}
-        {/*<span>*/}
-        {/*{`MARKER ${this.props.point.name} ${this.props.point.id}`}*/}
-        {/*</span>*/}
-        {/*</Popup>*/}
       </Marker>
         {(() => {
           if (viewType === "Current") {

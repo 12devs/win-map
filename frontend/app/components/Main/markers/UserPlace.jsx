@@ -52,10 +52,6 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
-        {this.props.actionType === 'Add' ?
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup> : null}
       </Marker>
     );
   }
@@ -70,6 +66,8 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
+    statistic: state.get('statistic'),
+
   };
 }
 
