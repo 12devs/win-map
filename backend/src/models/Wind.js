@@ -1,15 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const Dangers = sequelize.define('Danger', {
+  const Wind = sequelize.define('Wind', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },
-    account_id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    },
-    name: {
+    direction: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -17,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    lat: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    lng: {
+    speed: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
@@ -40,22 +32,15 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'dangers',
+    tableName: 'winds',
     timestamps: true,
     paranoid: true
   });
 
-  Dangers.associate = models => {
-    Dangers.belongsTo(models.Account, {
-      as: "dangers",
-      foreignKey: "account_id"
-    });
-    Dangers.hasMany(models.Subscription, {
-      as: "subscription",
-      foreignKey: "danger_id"
-    });
+  Wind.associate = models => {
+
   };
 
-  return Dangers;
+  return Wind;
 
 };

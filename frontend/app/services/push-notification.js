@@ -15,34 +15,41 @@ export const initializeFirebase = () => {
   firebase.initializeApp({
     messagingSenderId: "18277453447"
   });
-}
+};
 
-export const askForPermissioToReceiveNotifications = async () => {
+export const askForPermissioToReceiveNotifications = () => {
   try {
+    let token;
     const messaging = firebase.messaging();
-    await messaging.requestPermission();
-    const token = await messaging.getToken();
-
-    services.saveNotificationToken(token);
-
-    console.log(token);
-
-    return token;
+    return messaging.requestPermission()
+      .then(() => {
+        return messaging.getToken()
+      })
+      .then(res => {
+        token = res;
+        return services.saveNotificationToken(token);
+      })
+      .then(()=>{
+        return token
+      })
   } catch (error) {
     console.error(error);
   }
 }
 
-export const deleteToken = async () => {
+export const deleteToken = () => {
 
-  try{
+  try {
     const messaging = firebase.messaging();
-    const token = await messaging.getToken();
-    await messaging.deleteToken(token);
-
-    services.deleteNotificationToken(token);
-
-    console.log('deleted token');
+    let token;
+    return messaging.getToken()
+      .then(res => {
+        token = res;
+        return messaging.deleteToken(token);
+      })
+      .then(() => {
+        services.deleteNotificationToken(token);
+      })
   } catch (error) {
     console.error(error);
   }

@@ -16,6 +16,20 @@ const getStationId = (location) => {
   })
 };
 
+const getCurrenData = (stationId) => {
+  return new Promise(resolve => {
+    const options = {
+      uri: `https://api-ak.wunderground.com/api/d8585d80376a429e/conditions/labels/lang:EN/units:english/bestfct:1/v:2.0/q/pws:${stationId}.json`,
+      json: true
+    };
+    rp(options)
+      .then(data => {
+        return resolve({direction: data.current_observation.wind_dir, speed: data.current_observation.wind_speed, station_id:stationId})
+      })
+      .catch(err => resolve({}));
+  })
+};
+
 const getHistoricalData = async (stationId, days = 365) => {
   const currentMoment = moment();
   const end = currentMoment.format("YYYYMMDD");
@@ -77,4 +91,5 @@ const getHistoricalData = async (stationId, days = 365) => {
 module.exports = {
   getHistoricalData,
   getStationId,
+  getCurrenData
 };

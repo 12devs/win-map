@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import services from "./../services";
+import { askForPermissioToReceiveNotifications, deleteToken } from '../services/push-notification';
 
 class Login extends Component {
   constructor(props) {
@@ -11,6 +12,10 @@ class Login extends Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
 
+  }
+
+  componentDidMount(){
+    // return askForPermissioToReceiveNotifications()
   }
 
   login() {

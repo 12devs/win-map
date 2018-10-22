@@ -47,6 +47,14 @@ module.exports = (sequelize, DataTypes) => {
       as: "account",
       foreignKey: "account_id"
     });
+    Subscription.belongsTo(models.Place, {
+      as: "place",
+      foreignKey: "place_id"
+    });
+    Subscription.belongsTo(models.Danger, {
+      as: "danger",
+      foreignKey: "danger_id"
+    });
   };
 
   return Subscription;
