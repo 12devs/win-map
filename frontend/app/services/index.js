@@ -9,7 +9,7 @@ const register = (login, password) => {
 };
 
 const test = () => {
-  return fetch('post', '/api/test', {data: 'dfdfdfdfdfdf'});
+  return fetch('post', '/api/test', { data: 'dfdfdfdfdfdf' });
 };
 
 const savePoint = (point) => {
@@ -29,12 +29,16 @@ const getInfo = (point) => {
 };
 
 const saveNotificationToken = (token) => {
-  return fetch('post','/api/notifications/saveToken', { token });
-}
+  return fetch('post', '/api/notifications/saveToken', { token });
+};
+
+const sendSubscriptions = (body) => {
+  return fetch('post', '/api/subscriptions/save', body);
+};
 
 const deleteNotificationToken = (token) => {
-  return fetch('delete','/api/notifications/deleteToken', { token });
-}
+  return fetch('delete', '/api/notifications/deleteToken', { token });
+};
 
 export default {
   login,
@@ -46,4 +50,5 @@ export default {
   movePoint,
   saveNotificationToken,
   deleteNotificationToken,
+  sendSubscriptions
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import DoubleSelect from './MultiSelect';
+import services from "./../../services";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
@@ -15,9 +16,7 @@ class NotificationSettings extends React.Component {
   };
 
   handleClick = () => {
-    let points = this.props.notificationSettings.toJS();
-    points.push({arrId: this.props.notificationSettings.toJS().length});
-    this.props.updateNotificationSettings(points);
+    return services.sendSubscriptions({subscriptions: this.props.notificationSettings.toJS()})
   };
 
   render() {
