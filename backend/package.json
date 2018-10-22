@@ -25,6 +25,7 @@
     "email-existence": "^0.1.6",
     "express": "^4.16.2",
     "express-jwt": "^5.3.1",
+    "geolib": "^2.0.24",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
     "moleculer": "^0.13.1",

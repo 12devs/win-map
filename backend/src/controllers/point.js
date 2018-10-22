@@ -1,4 +1,4 @@
-import { Point, Account, Danger, Place } from './../models';
+import { Point, Account, Danger, Place, Subscription } from './../models';
 import { getStationId, getHistoricalData } from '../api/wind';
 import _ from 'lodash';
 
@@ -42,6 +42,46 @@ export default {
     try {
       const places = await Place.findAll({ where: { account_id: req.user.id } });
       const dangers = await Danger.findAll({ where: { account_id: req.user.id } });
+      const query = {
+        where: { account_id: req.user.id },
+        include: [
+          {
+            model: Place,
+            as: "place",
+          },
+          {
+            model: Danger,
+            as: "danger",
+          }
+        ],
+      };
+      let subscriptions = await Subscription.findAll(query);
+      subscriptions = JSON.parse(JSON.stringify(subscriptions));
+      let temp = subscriptions.reduce((acc, curent) => {
+        const { place_id, danger_id, danger, place } = curent;
+        if (acc[place_id]) {
+          acc[place_id].danger.push({
+            value: danger_id,
+            label: danger.name,
+          })
+        } else {
+          acc[place_id] = {
+            place: {
+              value: place_id,
+              label: place.name,
+            },
+            danger: [{
+              value: danger_id,
+              label: danger.name,
+            }]
+          }
+        }
+        return acc
+      }, {});
+      const notificationSettings = [];
+      for (let key in temp){
+        notificationSettings.push(temp[key])
+      }
       const stations = _.uniqBy([...places, ...dangers], (elem => elem.station_id)).map(elem => elem.station_id);
       const promises = stations.map(elem => getHistoricalData(elem));
       const stsData = await Promise.all(promises);
@@ -49,7 +89,7 @@ export default {
       stsData.forEach((elem, i) => {
         stationsData[stations[i]] = elem
       });
-      res.status(200).json({ places, dangers, stations, stationsData })
+      res.status(200).json({ places, dangers, stations, stationsData, notificationSettings })
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: err.message })
@@ -58,7 +98,7 @@ export default {
 
   async deletePoint(req, res) {
     try {
-      const {  danger, place } = req.body;
+      const { danger, place } = req.body;
       if (danger) {
         await Danger.destroy({ where: { id: danger.id } });
         res.status(200).json({ message: danger.id + ' successful deleted' })
@@ -79,7 +119,11 @@ export default {
       if (danger) {
         const { lat, lng } = danger;
         danger.station_id = await getStationId({ lat, lng });
-        const savedDanger = (await Danger.update(danger, { where: { id: danger.id }, returning: true, plain: true }))[1];
+        const savedDanger = (await Danger.update(danger, {
+          where: { id: danger.id },
+          returning: true,
+          plain: true
+        }))[1];
         let stationsData;
         if (!stations || stations.indexOf(savedDanger.station_id) === -1) {
           stationsData = {
