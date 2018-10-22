@@ -44,4 +44,4 @@ app.listen(config.app.port, () =>
   logger.info(`Server listening on ${config.app.host}:${config.app.port}`)
 );
 
-sendNotifications();
+// sendNotifications();
