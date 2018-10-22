@@ -8,7 +8,6 @@ const sendNotifications = () => {
 
   const query = {
     where: {
-      // id: 1,
       sent_at: null,
     },
     include: [{
@@ -55,19 +54,37 @@ const sendNotifications = () => {
           },
         };
 
-        fetch('https://fcm.googleapis.com/fcm/send', options)
-          .then(result => {
-
-            //@TODO
-            console.log(result)
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        sendMessage(options, value.registration_ids);
       });
     })
     .catch(err => console.log(err));
 
+}
+
+const sendMessage = (options, ids) => {
+
+  return fetch('https://fcm.googleapis.com/fcm/send', options)
+    .then(result => {
+
+      if (result.status === 200) {
+
+        const change = {
+          sent_at: Date(),
+        };
+
+        const query = {
+          where: {
+            id: ids,
+          }
+        };
+
+        Notification.update(change, query);
+      }
+    })
+    .catch(err => {
+
+      return Promise.reject(err);
+    });
 }
 
 export {
