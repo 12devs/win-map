@@ -1,4 +1,6 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/messaging';
+
 import services from '../services';
 
 navigator.serviceWorker
