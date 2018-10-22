@@ -12,12 +12,16 @@ navigator.serviceWorker
     console.log('Service worker registration failed, error:', err);
   });
 
-
 export const initializeFirebase = () => {
   firebase.initializeApp({
     messagingSenderId: "18277453447"
   });
+
+  firebase.messaging().onMessage((payload) => {
+    showNotification(payload.notification)
+  });
 };
+
 
 export const askForPermissioToReceiveNotifications = () => {
   try {
@@ -25,14 +29,15 @@ export const askForPermissioToReceiveNotifications = () => {
     const messaging = firebase.messaging();
     return messaging.requestPermission()
       .then(() => {
-        return messaging.getToken()
+        return messaging.getToken();
       })
       .then(res => {
         token = res;
+        console.log(token);
         return services.saveNotificationToken(token);
       })
-      .then(()=>{
-        return token
+      .then(() => {
+        return token;
       })
   } catch (error) {
     console.error(error);
@@ -51,8 +56,22 @@ export const deleteToken = () => {
       })
       .then(() => {
         services.deleteNotificationToken(token);
-      })
+      });
   } catch (error) {
     console.error(error);
+  }
+}
+
+const showNotification = (notification) => {
+  if (!("Notification" in window)) {
+    return;
+  } else if (Notification.permission === "granted") {
+     const  currentNotification = new Notification(notification.title, notification);
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      if (permission === "granted") {
+        const currentNotification = new Notification(notification.title, notification);
+      }
+    });
   }
 }
