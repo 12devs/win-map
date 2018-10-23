@@ -28,6 +28,7 @@ const sendNotifications = () => {
         const tokens = devices.map(device => device.token);
 
         return {
+          id: item.id,
           registration_ids: tokens,
           notification: {
             title: "wind-map", //@TODO
@@ -54,7 +55,7 @@ const sendNotifications = () => {
           },
         };
 
-        sendMessage(options, value.registration_ids);
+        sendMessage(options, value.id);
       });
     })
     .catch(err => console.log(err));
