@@ -1,6 +1,5 @@
 import rp from 'request-promise';
 import moment from 'moment';
-import { bearing, distance, sideOfTheWorld } from "./util";
 
 const getStationId = (location) => {
   return new Promise(resolve => {
@@ -10,10 +9,10 @@ const getStationId = (location) => {
     };
     rp(options)
       .then(data => {
-        return resolve(data.current_observation.station.id)
+        return resolve(data.current_observation.station.id);
       })
       .catch(err => resolve({}));
-  })
+  });
 };
 
 const getCurrenData = (stationId) => {
@@ -24,16 +23,20 @@ const getCurrenData = (stationId) => {
     };
     rp(options)
       .then(data => {
-        return resolve({direction: data.current_observation.wind_dir, speed: data.current_observation.wind_speed, station_id:stationId})
+        return resolve({
+          direction: data.current_observation.wind_dir,
+          speed: data.current_observation.wind_speed,
+          station_id: stationId
+        });
       })
       .catch(err => resolve({}));
-  })
+  });
 };
 
 const getHistoricalData = async (stationId, days = 365) => {
   const currentMoment = moment();
-  const end = currentMoment.format("YYYYMMDD");
-  const start = currentMoment.subtract(days, 'days').format("YYYYMMDD");
+  const end = currentMoment.format('YYYYMMDD');
+  const start = currentMoment.subtract(days, 'days').format('YYYYMMDD');
 
   const options = {
     uri: `https://api-ak.wunderground.com/api/606f3f6977348613/history_${start}${end}/units:metric/v:2.0/q/pws:${stationId}.json?showObs=0`,
@@ -43,7 +46,7 @@ const getHistoricalData = async (stationId, days = 365) => {
   let count = 0;
   if (!data.history) {
     console.log(data);
-    return ({ history: {}, current: {}, period: 0 });
+    return ({history: {}, current: {}, period: 0});
   }
   const currentWind = {
     dir: (data.history || {}).days[data.history.days.length - 1].summary.wind_dir,
@@ -70,11 +73,11 @@ const getHistoricalData = async (stationId, days = 365) => {
   };
 
   data.history.days.forEach(item => {
-    const { summary } = item;
+    const {summary} = item;
 
     for (let key in windRose) {
       if (key === summary.wind_dir) {
-        windRose[key]++
+        windRose[key]++;
       }
     }
 
@@ -85,11 +88,51 @@ const getHistoricalData = async (stationId, days = 365) => {
     count += windRose[key];
   }
 
-  return ({ history: windRose, current: currentWind, period: data.history.days.length });
+  return ({history: windRose, current: currentWind, period: data.history.days.length});
+};
+
+const getDailyHistoricalData = async (lat = 53.6, lng = 23.8, days = 365) => {
+  const currentMoment = moment();
+  const end = currentMoment.format('YYYYMMDD');
+  const start = currentMoment.subtract(days, 'days').format('YYYYMMDD');
+  const yearly = [];
+  const options = {
+    uri: `https://api-ak.wunderground.com/api/606f3f6977348613/history_${start}${end}/units:metric/v:2.0/q/${lat},${lng}.json`,
+    json: true
+  };
+  let data = await rp(options);
+
+  if (!data.history) {
+    console.log(data);
+    return ({history: {}, current: {}, period: 0});
+  }
+
+  const period = data.history.days.length;
+  const {wind_dir, wind_speed} = (data.history || {}).days[period - 1].observations[data.history.days[period - 1].observations.length - 1];
+  const currentWind = {wind_dir, wind_speed};
+
+  data.history.days.forEach(item => {
+    const dailyFreq = item.observations.reduce((acc, el) => {
+      acc[el.wind_dir] = (acc[el.wind_dir] || 0) + 1;
+      return acc;
+    }, {});
+
+    const keysSorted = Object.keys(dailyFreq).sort((a, b) => dailyFreq[b] - dailyFreq[a]);
+    yearly.push(keysSorted[0]);
+  });
+
+  const windRose = yearly.reduce((acc, el) => {
+    if (el)
+      acc[el] = (acc[el] || 0) + 1;
+    return acc;
+  }, {});
+
+  return ({history: windRose, current: currentWind, period: data.history.days.length});
 };
 
 module.exports = {
   getHistoricalData,
   getStationId,
-  getCurrenData
+  getCurrenData,
+  getDailyHistoricalData
 };
