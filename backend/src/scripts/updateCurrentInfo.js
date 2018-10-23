@@ -1,21 +1,24 @@
-import { Place, Danger, Account, Subscription, Device, Wind } from './../models';
+import { Place, Danger, Account, Subscription, Device, Wind, Notification } from './../models';
 import { getCurrenData } from './../api/wind';
 import BluebirdPromise from 'bluebird';
 import _ from 'lodash';
+import geolib from 'geolib';
 
-// const query = {
-//   where: {
-//     id: 1,
-//   },
-//   include: [{
-//     model: Account,
-//     as:"account",
-//     include: [{
-//       model: Device,
-//       as: 'devices'
-//     }]
-//   }],
-// };
+const getCompassDirection = (from, to) => {
+  const geolibGetCompassDirection = geolib.getCompassDirection(from, to).exact;
+  switch (geolibGetCompassDirection) {
+    case "N":
+      return 'North';
+    case "W":
+      return 'West';
+    case "E":
+      return 'East';
+    case "S":
+      return 'South';
+    default:
+      return geolibGetCompassDirection
+  }
+};
 
 const query = {
   where: {},
@@ -32,7 +35,7 @@ const query = {
   ],
 };
 
-const makeNotifications = async () => {
+const createNotifications = async () => {
   let offset = 0;
   let limit = 1;
   let subscription;
@@ -53,41 +56,71 @@ const makeNotifications = async () => {
           as: "danger",
         }
       ],
-      // raw: true,
     };
-    subscription = await Subscription.findAll(query);
-    if (!subscription.length){
+    subscription = JSON.parse(JSON.stringify(await Subscription.findAll(query)));
+
+    if (!subscription.length) {
       break
     }
     await SubscriptionHandler(subscription[0]);
     offset++;
   } while (true)
 };
-
-// Subscription.findAll(query)
-//   .then(res => {
-//     console.log(JSON.stringify(res, null, 4));
-//   })
-//   .catch(err => console.log(err));
-
-// makeNotifications();
-
 const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
   let wind = await Wind.findOne({
     where: {
       station_id: subscription.place.station_id,
       updated_at: {
-        $gt: new Date(new Date() - 1)
+        $gt: new Date(new Date() - expiredTime)
       },
     }
   });
-  if (!wind){
+  if (!wind) {
     wind = await getCurrenData(subscription.place.station_id);
-    await Wind.upsert(wind, {where: {station_id: wind.station_id}})
+    await Wind.update(wind, { where: { station_id: wind.station_id } })
+      .then(res => {
+        if (!res[0]) {
+          Wind.create(wind)
+        }
+      })
   }
-  console.log('wind', wind);
+  const direction = getCompassDirection(subscription.danger, subscription.place);
+  if (subscription.last_message) {
+    if (subscription.last_message === 'end' && direction === wind.direction) {
+      subscription.last_message = 'start';
+      await Notification.create({
+        account_id: subscription.account_id,
+        message: `Wind started from ${subscription.danger.name} to ${subscription.place.name}`
+      });
+    }
 
+    if (subscription.last_message === 'start' && direction !== wind.direction) {
+      subscription.last_message = 'end';
+      await Notification.create({
+        account_id: subscription.account_id,
+        message: `Wind finished from ${subscription.danger.name} to ${subscription.place.name}`
+      });
+    }
+  } else {
+    if (direction === wind.direction) {
+      subscription.last_message = 'start';
+
+      await Notification.create({
+        account_id: subscription.account_id,
+        message: `Wind started from ${subscription.danger.name} to ${subscription.place.name}`
+      });
+    } else {
+      subscription.last_message = 'end';
+      await Notification.create({
+        account_id: subscription.account_id,
+        message: `Wind finished from ${subscription.danger.name} to ${subscription.place.name}`
+      });
+    }
+  }
+  const {account_id, place_id, danger_id} = subscription;
+  await Subscription.update(subscription, {where: {account_id, place_id, danger_id}});
 };
 
-
-makeNotifications()
+export {
+  createNotifications
+}

@@ -19,16 +19,26 @@ class MultiSelect extends React.Component {
     }
 
     points.push({
-      place: {value: this.props.point.id, label: this.props.point.name},
+      place: { value: this.props.point.id, label: this.props.point.name },
       danger: newValue
     });
     this.props.updateNotificationSettings(points);
   };
 
   render() {
+    let defaultValue;
+    const notificationSettings = this.props.notificationSettings.toJS();
+    const index = notificationSettings.findIndex(elem => {
+      return (elem.place.value === this.props.point.id)
+    });
+    if (index !== -1) {
+      defaultValue = notificationSettings[index].danger;
+    } else {
+      defaultValue = []
+    }
     const danger = this.props.dangers
       .map((point) => {
-          return {value: point.get('id'), label: point.get('name')};
+          return { value: point.get('id'), label: point.get('name') };
         }
       );
 
@@ -38,6 +48,7 @@ class MultiSelect extends React.Component {
           closeMenuOnSelect={false}
           components={makeAnimated()}
           onChange={this.handleChange}
+          defaultValue={defaultValue}
           isMulti
           options={danger}
         />

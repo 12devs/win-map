@@ -7,8 +7,6 @@ import routes from './routes';
 import logger from './logger';
 import { getInstance } from "./db"
 
-import { sendNotifications } from './api/notifications';
-
 const app = express();
 
 app.use('/public', express.static(config.static.public));
@@ -44,4 +42,3 @@ app.listen(config.app.port, () =>
   logger.info(`Server listening on ${config.app.host}:${config.app.port}`)
 );
 
-// sendNotifications();

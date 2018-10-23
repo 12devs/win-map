@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import DoubleSelect from './MultiSelect';
+import MultiSelect from './MultiSelect';
 import services from "./../../services";
 
 class NotificationSettings extends React.Component {
@@ -34,7 +34,7 @@ class NotificationSettings extends React.Component {
                 {point.get('name')}
               </td>
               <td>
-                <DoubleSelect point={point.toJS()}/>
+                <MultiSelect point={point.toJS()}/>
               </td>
             </tr>
           )}
