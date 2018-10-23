@@ -58,6 +58,7 @@ const createNotifications = async () => {
       ],
     };
     subscription = JSON.parse(JSON.stringify(await Subscription.findAll(query)));
+    console.log(subscription);
 
     if (!subscription.length) {
       break
@@ -120,6 +121,8 @@ const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
   const {account_id, place_id, danger_id} = subscription;
   await Subscription.update(subscription, {where: {account_id, place_id, danger_id}});
 };
+
+createNotifications();
 
 export {
   createNotifications

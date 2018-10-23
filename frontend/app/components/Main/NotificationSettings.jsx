@@ -3,25 +3,33 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
+import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange = (newValue) => {
-    console.log('newValue', newValue);
-  };
-
   handleClick = () => {
-    return services.sendSubscriptions({subscriptions: this.props.notificationSettings.toJS()})
+    this.props.close();
+    return services.sendSubscriptions({ subscriptions: this.props.notificationSettings.toJS() })
   };
 
   render() {
+
+    if (!this.props.open){
+      return null
+    }
+
     return (
-      <div>
+      <div style={{ position: "absolute", left: "100px", top: "300px", zIndex: 1000, padding: '50px', backgroundColor: 'white', margin: "auto", width: "60%" }}>
+        <button onClick={askForPermissioToReceiveNotifications}>
+          Subscribe to notifications
+        </button>
+        <button onClick={deleteToken}>
+          unsubscribe to notifications
+        </button>
         <table width="100%">
           <tbody>
           <tr>
@@ -41,6 +49,7 @@ class NotificationSettings extends React.Component {
           </tbody>
         </table>
         <button onClick={this.handleClick}>Send</button>
+        <button onClick={this.props.close}>Close</button>
       </div>
     );
   }

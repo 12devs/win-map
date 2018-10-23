@@ -10,21 +10,8 @@ import WindRose from '../WindRose';
 class Danger extends React.Component {
   constructor(props) {
     super(props);
-    this.delMarker = this.delMarker.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
   }
-
-  delMarker(id) {
-    if (this.props.actionType === 'Del') {
-      return services.deletePoint({
-        danger: { id },
-      })
-        .then(res => {
-          const dangers = this.props.dangers.toJS().filter(el => !(el.id === id));
-          this.props.updateMainData({dangers});
-        });
-    }
-  };
 
   updatePosition(id, e) {
     return services.movePoint({
@@ -51,7 +38,7 @@ class Danger extends React.Component {
           this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
-          this.delMarker(this.props.point.id);
+          this.props.changeInfo({point: this.props.point, type:'danger'});
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>

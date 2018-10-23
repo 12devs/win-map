@@ -59,6 +59,10 @@ const reducer = function (state = Map(), action) {
       return state.update("statistic", () => immutable.fromJS(getStats(state.get('places').toJS(), state.get('dangers').toJS(), state.get('stationsData').toJS())));
     case "changeScaleWind":
       return state.update("scaleWind", () => immutable.fromJS(action.value));
+    case "changeInfo":
+      return state.update("info", () => immutable.fromJS(action.value));
+    case "changeSavePointSettings":
+      return state.update("savePointSettings", () => immutable.fromJS(action.value));
     case "updateMainData":
       return state.update((state) => {
         const newState = state.toJS();

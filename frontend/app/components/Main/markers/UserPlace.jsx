@@ -8,21 +8,8 @@ import { blueIcon } from '../../icons/index';
 class UserPlace extends React.Component {
   constructor(props) {
     super(props);
-    this.delMarker = this.delMarker.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
   }
-
-  delMarker(id) {
-    if (this.props.actionType === 'Del') {
-      return services.deletePoint({
-        place: {id},
-      })
-        .then(res => {
-          const places = this.props.places.toJS().filter(el => !(el.id === id));
-          this.props.updateMainData({places});
-        });
-    }
-  };
 
   updatePosition(id, e) {
     return services.movePoint({
@@ -48,7 +35,7 @@ class UserPlace extends React.Component {
           this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
-          this.delMarker(this.props.point.id);
+          this.props.changeInfo({point: this.props.point, type:'place'});
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>

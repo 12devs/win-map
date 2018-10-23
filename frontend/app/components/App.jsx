@@ -26,10 +26,17 @@ store.dispatch({
     actionType: 'Add',
     scaleWind: 5000,
     notificationSettings: [],
+    savePointSettings: {},
+    info: {
+      place: null,
+      type: null,
+    }
   }
 });
 
-store.subscribe(()=>{console.log('store', store.getState().toJS())});
+store.subscribe(() => {
+  console.log('store', store.getState().toJS())
+});
 
 class App extends Component {
   constructor(props) {

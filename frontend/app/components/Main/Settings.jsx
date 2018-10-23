@@ -67,8 +67,6 @@ class Settings extends React.Component {
           </tr>
           </tfoot>
         </table>
-        <input type="range" id="start" name="size"
-               min="0" max="1000000" onChange={(e)=> this.props.changeScaleWind(e.target.value)}/>
         <div style={{whiteSpace:'pre'}}>
           {JSON.stringify(this.props.statistic, null, 4)}
         </div>

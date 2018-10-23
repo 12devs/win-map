@@ -23,75 +23,6 @@ Modal.setAppElement('#root');
 class MyMap extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      modalIsOpen: false,
-      value: '',
-      latlng: {}
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.addMarker = this.addMarker.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  openModal(e) {
-    this.setState({ modalIsOpen: true, latlng: e.latlng });
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#111111';
-  }
-
-  closeModal() {
-    this.setState({ modalIsOpen: false });
-  }
-
-  addMarker() {
-    if (this.props.actionType === 'Add') {
-      let key;
-      if (this.props.markerType === 'Danger') {
-        key = 'danger'
-      } else {
-        key = 'place'
-      }
-      return services.savePoint({
-        [key]: {
-          ...this.state.latlng,
-          name: this.state.value
-        },
-        stations: [...this.props.stations]
-      })
-        .then(res => {
-          const {danger, place} = res;
-          let places = this.props.places.toJS();
-          let dangers = this.props.dangers.toJS();
-          let stationsData = this.props.stationsData.toJS();
-          const stations = this.props.stations.toJS();
-          stationsData = { ...stationsData, ...res.stationsData };
-          if (danger){
-            dangers.push(danger);
-          }
-          if (place){
-            places.push(place);
-          }
-          stations.push(...Object.keys((res.stationsData || {})));
-          console.log('updateMainData');
-          this.props.updateMainData({ places, dangers, stationsData, stations });
-          this.closeModal()
-        });
-    }
-  };
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
   }
 
   render() {
@@ -104,34 +35,19 @@ class MyMap extends React.Component {
       <div style={{ height: '100%' }}>
         <Map
           center={center}
-          onClick={(e) => this.openModal(e)}
+          onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
           zoom={11}
           style={{ height: '600px' }}
         >
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-
-            <h2 ref={subtitle => this.subtitle = subtitle}>Enter marker name!</h2>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                Name:
-                <input type="text" value={this.state.value} onChange={this.handleChange}/>
-              </label>
-              <button onClick={this.addMarker}>Send</button>
-            </form>
-            <button onClick={this.closeModal}>close</button>
-          </Modal>
           <ReactLeafletSearch position="topleft"/>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
           <Markers/>
+          <div style={{ zIndex: '3000' }}><input type="range" id="start" name="size"
+                                                 min="0" max="1000000"
+                                                 onChange={(e) => this.props.changeScaleWind(e.target.value)}/></div>
         </Map>
       </div>
     );
