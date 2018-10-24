@@ -8,7 +8,6 @@ export default {
     try {
       const { user } = req;
       const { subscriptions } = req.body;
-      console.log(JSON.stringify(subscriptions, null, 2));
       const subscriptionsForSaving = [];
       subscriptions.forEach(place => {
         (place.danger || []).forEach(danger => {

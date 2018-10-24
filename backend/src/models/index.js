@@ -14,21 +14,22 @@ const dbConfig = config.database;
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
   dialect: dbConfig.dialect,
-  logging(s, timing) {
-    if (s.indexOf('Exec') === 0) {
-      // Extract transaction id, cleanup ugly 'Executing (default): SELECT ...'
-      const p0 = s.indexOf('(');
-      const p1 = s.indexOf(')');
-      const trx = s.substring(p0 + 1, p1);
-      const t = s.slice(p1 + 3);
-      logger.info({
-        // timing,
-        trx: trx === 'default' ? undefined : trx,
-      }, t);
-    } else {
-      logger.info({  }, s);
-    }
-  },
+  logging: false,
+  // logging(s, timing) {
+  //   if (s.indexOf('Exec') === 0) {
+  //     // Extract transaction id, cleanup ugly 'Executing (default): SELECT ...'
+  //     const p0 = s.indexOf('(');
+  //     const p1 = s.indexOf(')');
+  //     const trx = s.substring(p0 + 1, p1);
+  //     const t = s.slice(p1 + 3);
+  //     logger.info({
+  //       // timing,
+  //       trx: trx === 'default' ? undefined : trx,
+  //     }, t);
+  //   } else {
+  //     logger.info({  }, s);
+  //   }
+  // },
     define: {
       underscored: true,
     },

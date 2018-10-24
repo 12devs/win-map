@@ -1,24 +1,29 @@
 module.exports = (sequelize, DataTypes) => {
-  const Notification = sequelize.define('Notification', {
+  const Station = sequelize.define('Station', {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },
-    account_id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    },
-    message: {
+    station_id: {
       type: DataTypes.STRING(255),
-      defaultValue: '',
       allowNull: false,
     },
-    sent_at: {
-      type: DataTypes.DATE,
+    lat: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
     },
-    view_at: {
-      type: DataTypes.DATE,
+    lng: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    direction: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    speed: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -35,18 +40,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
-    tableName: 'notifications',
+    tableName: 'stations',
     timestamps: true,
     paranoid: true
   });
 
-  Notification.associate = models => {
-    Notification.belongsTo(models.Account, {
-      as: "account",
-      foreignKey: "account_id"
-    });
-  };
+  Station.associate = models => {};
 
-  return Notification;
+  return Station;
 
 };

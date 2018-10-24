@@ -33,7 +33,6 @@ export const askForPermissioToReceiveNotifications = () => {
       })
       .then(res => {
         token = res;
-        console.log(token);
         return services.saveNotificationToken(token);
       })
       .then(() => {

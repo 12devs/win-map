@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import services from "./../services";
-import { askForPermissioToReceiveNotifications, deleteToken } from '../services/push-notification';
 
 class Login extends Component {
   constructor(props) {
@@ -10,25 +9,14 @@ class Login extends Component {
       password: '',
     };
     this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-
-  }
-
-  componentDidMount(){
-    // return askForPermissioToReceiveNotifications()
   }
 
   login() {
     const { login, password } = this.state;
     return services.login(login, password)
       .then(res => {
-        console.log(res.token);
         localStorage.setItem('windToken', res.token)
       })
-  }
-
-  logout() {
-    return localStorage.setItem('windToken', '')
   }
 
   render() {
@@ -47,9 +35,6 @@ class Login extends Component {
         </div>
         <div>
           <button onClick={this.login}>login</button>
-        </div>
-        <div>
-          <button onClick={this.logout}>logout</button>
         </div>
       </div>
     )

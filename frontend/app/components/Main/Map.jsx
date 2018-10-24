@@ -1,22 +1,10 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import services from './../../services';
+import { Map, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
 import Modal from 'react-modal';
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  }
-};
 
 Modal.setAppElement('#root');
 
@@ -26,17 +14,21 @@ class MyMap extends React.Component {
   }
 
   render() {
-    const center = {
+    let center = {
       lat: 51.505,
       lng: -0.09,
     };
+    if (this.props.mapCenter){
+      center = this.props.mapCenter.toJS()
+    }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
           center={center}
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
-          zoom={11}
+          // zoom={7}
+          bounds={[[50.505, -29.09], [52.505, 29.09]]}
           style={{ height: '600px' }}
         >
           <ReactLeafletSearch position="topleft"/>
@@ -63,6 +55,7 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
+    mapCenter: state.get('mapCenter'),
   };
 }
 

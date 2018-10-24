@@ -1,16 +1,11 @@
 import { createStore } from 'redux';
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import ReactResizeDetector from 'react-resize-detector';
 import reducer from "./../reducers";
 import { connect, Provider } from 'react-redux';
 import { Switch, Route, Redirect, BrowserRouter as Router, Link } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
-import Test from './Test';
-import LeafletMap from './LeafletMap'
 import Main from "./Main/Main";
-import Notification from './Notification';
 
 const store = createStore(reducer);
 
@@ -56,26 +51,14 @@ class App extends Component {
                 <Link to="/login">login</Link>
               </li>
               <li>
-                <Link to="/test">test</Link>
-              </li>
-              <li>
-                <Link to="/leaflet">leaflet</Link>
-              </li>
-              <li>
                 <Link to="/main">main</Link>
-              </li>
-              <li>
-                <Link to="/notification">notification</Link>
               </li>
             </ul>
             <br/>
             <Switch>
               <Route path="/register" component={Register}/>
               <Route path="/login" component={Login}/>
-              <Route path="/test" component={Test}/>
-              <Route path="/leaflet" component={LeafletMap}/>
               <Route path="/main" component={Main}/>
-              <Route path="/notification" component={Notification}/>
               <Route children={() => <h2>Not found</h2>}/>
             </Switch>
           </div>

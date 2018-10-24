@@ -15,9 +15,6 @@ class Register extends Component {
   register() {
     const { login, password } = this.state;
     return services.register(login, password)
-      .then(res => {
-        console.log(res);
-      })
   }
 
   render() {

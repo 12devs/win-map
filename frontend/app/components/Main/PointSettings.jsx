@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import MultiSelect from './MultiSelect';
 import services from "./../../services";
-import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
 
 class PointSettings extends React.Component {
   constructor(props) {

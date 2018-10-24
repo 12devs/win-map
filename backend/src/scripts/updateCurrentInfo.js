@@ -1,4 +1,4 @@
-import { Place, Danger, Account, Subscription, Device, Wind, Notification } from './../models';
+import { Place, Danger, Account, Subscription, Device, Notification, Station } from './../models';
 import { getCurrenData } from './../api/wind';
 import BluebirdPromise from 'bluebird';
 import _ from 'lodash';
@@ -20,33 +20,21 @@ const getCompassDirection = (from, to) => {
   }
 };
 
-const query = {
-  where: {},
-  include: [
-    // { all: true, }
-    {
-      model: Place,
-      as: "place",
-    },
-    {
-      model: Danger,
-      as: "danger",
-    }
-  ],
-};
-
 const createNotifications = async () => {
   let offset = 0;
   let limit = 1;
   let subscription;
   let query;
+  subscription = JSON.parse(JSON.stringify(await Subscription.findAll())).map(e => e.id);
+  console.log(subscription);
   do {
     query = {
       where: {},
       offset,
       limit,
+      subQuery: false,
+      order: ['id'],
       include: [
-        // { all: true, }
         {
           model: Place,
           as: "place",
@@ -58,8 +46,6 @@ const createNotifications = async () => {
       ],
     };
     subscription = JSON.parse(JSON.stringify(await Subscription.findAll(query)));
-    console.log(subscription);
-
     if (!subscription.length) {
       break
     }
@@ -67,8 +53,9 @@ const createNotifications = async () => {
     offset++;
   } while (true)
 };
+
 const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
-  let wind = await Wind.findOne({
+  let wind = await Station.findOne({
     where: {
       station_id: subscription.place.station_id,
       updated_at: {
@@ -78,12 +65,12 @@ const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
   });
   if (!wind) {
     wind = await getCurrenData(subscription.place.station_id);
-    await Wind.update(wind, { where: { station_id: wind.station_id } })
-      .then(res => {
-        if (!res[0]) {
-          Wind.create(wind)
-        }
-      })
+    await Station.update(wind, { where: { station_id: wind.station_id } })
+      // .then(res => {
+      //   if (!res[0]) {
+      //     Wind.create(wind)
+      //   }
+      // })
   }
   const direction = getCompassDirection(subscription.danger, subscription.place);
   if (subscription.last_message) {
@@ -108,18 +95,19 @@ const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
 
       await Notification.create({
         account_id: subscription.account_id,
-        message: `Wind started from ${subscription.danger.name} to ${subscription.place.name}`
+        message: `Wind blows from ${subscription.danger.name} to ${subscription.place.name}`
       });
     } else {
       subscription.last_message = 'end';
       await Notification.create({
         account_id: subscription.account_id,
-        message: `Wind finished from ${subscription.danger.name} to ${subscription.place.name}`
+        message: `Wind don't blows from ${subscription.danger.name} to ${subscription.place.name}`
       });
     }
   }
-  const {account_id, place_id, danger_id} = subscription;
-  await Subscription.update(subscription, {where: {account_id, place_id, danger_id}});
+  const { account_id, place_id, danger_id } = subscription;
+  await Subscription.update(subscription, { where: { account_id, place_id, danger_id } });
+  console.log(subscription.id);
 };
 
 createNotifications();
