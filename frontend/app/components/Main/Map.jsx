@@ -1,22 +1,10 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import services from './../../services';
+import { Map, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
 import Modal from 'react-modal';
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  }
-};
 
 Modal.setAppElement('#root');
 
