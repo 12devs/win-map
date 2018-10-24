@@ -40,6 +40,10 @@ const deleteNotificationToken = (token) => {
   return fetch('delete', '/api/notifications/deleteToken', { token });
 };
 
+const viewNotifications = (body) => {
+  return fetch('post', '/api/subscriptions/save', body);
+};
+
 export default {
   login,
   register,

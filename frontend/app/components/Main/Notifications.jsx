@@ -2,18 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import actions from './../../actions';
 import {Dropdown, Icon, Menu} from 'antd';
+import moment from 'moment';
 
 class Notifications extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: [
-        {id: 0, message: 'zdarova', sent_at: '2018-10-10', checked: false},
-        {id: 1, message: 'aaaaa', sent_at: '2018-10-10', checked: false},
-        {id: 3, message: 'bbbbbbbb', sent_at: '2018-10-10', checked: false},
-        {id: 4, message: 'cccccccc', sent_at: '2018-10-10', checked: false},
-        {id: 5, message: 'ddddd ddddddd', sent_at: '2018-10-10', checked: false}
-      ],
       visible: false
     };
     this.handleClick = this.handleClick.bind(this);
@@ -21,24 +15,25 @@ class Notifications extends React.Component {
   }
 
   handleClick = (id) => {
-    let notifications = this.state.notifications;
-    const index = notifications.findIndex(el => el.id === id)
-    notifications[index].checked = true;
-    this.setState({notifications});
+    const notifications = this.props.notifications.toJS();
+    const index = notifications.findIndex(el => el.id === id);
+    notifications[index].sent_at = moment().format();
+    this.props.changeNotifications(notifications);
   };
 
   visibleChange = (e) => {
     console.log(e);
-    this.setState({visible: e})
+    this.setState({visible: e});
   };
 
   render() {
-    const filter = this.state.notifications.filter(el => el.checked === false);
+    const filter = this.props.notifications.toJS().filter(el => el.sent_at === null);
+    console.log(filter);
     const menu = (
-      <Menu >
+      <Menu>
         {filter.map((el) =>
           <Menu.Item key={el.id}>
-            <span style={{paddingRight:'25px'}}>{el.message}</span>
+            <span style={{paddingRight: '25px'}}>{el.message}</span>
             <a onClick={() => this.handleClick(el.id)} style={{cursor: 'pointer', float: 'right'}}><Icon type="close"/></a>
           </Menu.Item>
         )}
@@ -55,7 +50,7 @@ class Notifications extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    notificationSettings: state.get('notificationSettings')
+    notifications: state.get('notifications')
   };
 }
 

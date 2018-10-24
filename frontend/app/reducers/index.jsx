@@ -63,6 +63,8 @@ const reducer = function (state = Map(), action) {
       return state.update("info", () => immutable.fromJS(action.value));
     case "changeSavePointSettings":
       return state.update("savePointSettings", () => immutable.fromJS(action.value));
+    case "changeNotifications":
+      return state.update("notifications", () => immutable.fromJS(action.value));
     case "updateMainData":
       return state.update((state) => {
         const newState = state.toJS();

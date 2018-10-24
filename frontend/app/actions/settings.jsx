@@ -55,6 +55,14 @@ const changeSavePointSettings = function (value) {
   }
 };
 
+const changeNotifications = function (value) {
+  return {
+    type: "changeNotifications",
+    value
+  }
+};
+
+
 module.exports = {
   changeMarkerType,
   changeActionType,
@@ -64,4 +72,5 @@ module.exports = {
   changeScaleWind,
   changeInfo,
   changeSavePointSettings,
+  changeNotifications,
 };
