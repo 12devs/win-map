@@ -1,5 +1,6 @@
 import { Point, Account, Danger, Place, Subscription } from './../models';
 import { getStationId, getHistoricalData } from '../api/wind';
+import { getCurrentLocations } from '../api/locations';
 import _ from 'lodash';
 
 export default {
