@@ -22,6 +22,7 @@ store.dispatch({
     scaleWind: 5000,
     notificationSettings: [],
     savePointSettings: {},
+    notifications:{},
     info: {
       place: null,
       type: null,

@@ -46,14 +46,17 @@ class Main extends React.Component {
       .then(res => {
         res.savePointSettings = {};
         let { latitude, longitude } = geolib.getCenter([...res.places, ...res.dangers]);
-
         const { minLat, maxLat, minLng, maxLng } = geolib.getBounds([...res.places, ...res.dangers]);
-        console.log(latitude, longitude);
         res.mapCenter = {
           lat: parseFloat(latitude) || 51.505,
           lng: parseFloat(longitude) || -0.09,
         };
-        const bounds = [[50.505, -29.09], [52.505, 29.09]];
+        if (minLat && maxLat && minLng && maxLng){
+          res.mapBounds = [[minLat, minLng ], [maxLat, maxLng ]];
+        } else {
+          res.mapBounds =[[50.505, -29.09], [52.505, 29.09]];
+        }
+
         res.mapZoom = {
           lat: parseFloat(latitude) || 51.505,
           lng: parseFloat(longitude) || -0.09,

@@ -18,17 +18,24 @@ class MyMap extends React.Component {
       lat: 51.505,
       lng: -0.09,
     };
+
+    let bounds = [[50.505, -29.09], [52.505, 29.09]];
+
     if (this.props.mapCenter){
       center = this.props.mapCenter.toJS()
+    }
+
+    if (this.props.mapBounds){
+      bounds = this.props.mapBounds.toJS()
     }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
-          center={center}
+          // center={center}
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
           // zoom={7}
-          bounds={[[50.505, -29.09], [52.505, 29.09]]}
+          bounds={bounds}
           style={{ height: '600px' }}
         >
           <ReactLeafletSearch position="topleft"/>
@@ -56,6 +63,8 @@ function mapStateToProps(state) {
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
     mapCenter: state.get('mapCenter'),
+    mapBounds: state.get('mapBounds'),
+    notifications: state.get('notifications'),
   };
 }
 
