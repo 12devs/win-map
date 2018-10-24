@@ -21,7 +21,6 @@ class SavePointSettings extends React.Component {
   addMarker() {
     const { latlng } = this.props.savePointSettings.toJS();
     const { name, markerType } = this.state;
-    console.log(latlng, name, key);
 
     let key;
     if (markerType === 'Danger') {
@@ -30,13 +29,6 @@ class SavePointSettings extends React.Component {
       key = 'place'
     }
 
-    console.log({
-      [key]: {
-    ...latlng,
-        name
-    },
-      stations: [...this.props.stations]
-    });
     return services.savePoint({
       [key]: {
         ...latlng,
@@ -65,7 +57,6 @@ class SavePointSettings extends React.Component {
 
   render() {
     const { show } = this.props.savePointSettings.toJS();
-    console.log('show', show);
 
     if (!show) {
       return null

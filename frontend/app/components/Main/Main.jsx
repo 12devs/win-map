@@ -6,6 +6,7 @@ import Map from './Map'
 import NotificationSettings from './NotificationSettings';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
+import geolib from "geolib";
 
 class Main extends React.Component {
   constructor() {
@@ -44,6 +45,19 @@ class Main extends React.Component {
     return services.getInfo()
       .then(res => {
         res.savePointSettings = {};
+        let { latitude, longitude } = geolib.getCenter([...res.places, ...res.dangers]);
+
+        const { minLat, maxLat, minLng, maxLng } = geolib.getBounds([...res.places, ...res.dangers]);
+        console.log(latitude, longitude);
+        res.mapCenter = {
+          lat: parseFloat(latitude) || 51.505,
+          lng: parseFloat(longitude) || -0.09,
+        };
+        const bounds = [[50.505, -29.09], [52.505, 29.09]];
+        res.mapZoom = {
+          lat: parseFloat(latitude) || 51.505,
+          lng: parseFloat(longitude) || -0.09,
+        };
         this.props.setMainData(res);
         this.props.updateStatistic();
       })

@@ -1,7 +1,6 @@
 const { DataTypes, literal } = require('sequelize');
 const utils = require('../utils');
-
-const tableName = 'notifications';
+const tableName = 'stations';
 
 const columns = {
   id: {
@@ -9,20 +8,25 @@ const columns = {
     autoIncrement: true,
     primaryKey: true,
   },
-  account_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-  },
-  message: {
+  station_id: {
     type: DataTypes.STRING(255),
-    defaultValue: '',
     allowNull: false,
   },
-  view_at: {
-    type: DataTypes.DATE,
+  lat: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
   },
-  sent_at: {
-    type: DataTypes.DATE,
+  lng: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
+  direction: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  speed: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
   },
   created_at: {
     type: DataTypes.DATE,

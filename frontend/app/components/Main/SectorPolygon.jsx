@@ -25,13 +25,15 @@ const sectors = {
 
 const getPolygon = (point, dist, direction) => {
   const result = [point];
-  sectors[direction].forEach(bearing => {
-    const p = geolib.computeDestinationPoint(point, dist, bearing);
-    result.push({
-      lat: p.latitude,
-      lng: p.longitude,
-    })
-  });
+  if (sectors[direction]){
+    sectors[direction].forEach(bearing => {
+      const p = geolib.computeDestinationPoint(point, dist, bearing);
+      result.push({
+        lat: p.latitude,
+        lng: p.longitude,
+      })
+    });
+  }
   return result
 };
 

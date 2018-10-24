@@ -14,17 +14,21 @@ class MyMap extends React.Component {
   }
 
   render() {
-    const center = {
+    let center = {
       lat: 51.505,
       lng: -0.09,
     };
+    if (this.props.mapCenter){
+      center = this.props.mapCenter.toJS()
+    }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
           center={center}
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
-          zoom={11}
+          // zoom={7}
+          bounds={[[50.505, -29.09], [52.505, 29.09]]}
           style={{ height: '600px' }}
         >
           <ReactLeafletSearch position="topleft"/>
@@ -51,6 +55,7 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
+    mapCenter: state.get('mapCenter'),
   };
 }
 

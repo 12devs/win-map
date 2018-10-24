@@ -15,7 +15,6 @@ class Login extends Component {
     const { login, password } = this.state;
     return services.login(login, password)
       .then(res => {
-        console.log(res.token);
         localStorage.setItem('windToken', res.token)
       })
   }

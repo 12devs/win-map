@@ -1,5 +1,5 @@
-import { Point, Account, Danger, Place, Subscription } from './../models';
-import { getStationId, getHistoricalData } from '../api/wind';
+import { Point, Account, Danger, Place, Subscription, Notification, Station } from './../models';
+import { getStationId, getHistoricalData, getDailyHistoricalData } from '../api/wind';
 import _ from 'lodash';
 
 export default {
@@ -34,6 +34,7 @@ export default {
         res.status(200).json({ place: savedPlace, stationsData })
       }
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ error: err.message })
     }
   },
@@ -42,6 +43,7 @@ export default {
     try {
       const places = await Place.findAll({ where: { account_id: req.user.id } });
       const dangers = await Danger.findAll({ where: { account_id: req.user.id } });
+      const notifications = await Notification.findAll({ where: { account_id: req.user.id } });
       const query = {
         where: { account_id: req.user.id },
         include: [
@@ -89,7 +91,7 @@ export default {
       stsData.forEach((elem, i) => {
         stationsData[stations[i]] = elem
       });
-      res.status(200).json({ places, dangers, stations, stationsData, notificationSettings })
+      res.status(200).json({ places, dangers, stations, stationsData, notificationSettings, notifications })
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: err.message })
@@ -101,12 +103,13 @@ export default {
       const { danger, place } = req.body;
       if (danger) {
         await Danger.destroy({ where: { id: danger.id } });
+        await Subscription.destroy({ where: { danger_id: danger.id} });
         res.status(200).json({ message: danger.id + ' successful deleted' })
       } else {
         await Place.destroy({ where: { id: place.id } });
+        await Subscription.destroy({ where: { place_id: place.id} });
         res.status(200).json({ message: place.id + ' successful deleted' })
       }
-
     } catch (err) {
       return res.status(500).json({ error: err.message })
     }
@@ -115,7 +118,6 @@ export default {
   async movePoint(req, res) {
     try {
       const { danger, stations, place } = req.body;
-      console.log(req.body);
       if (danger) {
         const { lat, lng } = danger;
         danger.station_id = await getStationId({ lat, lng });
