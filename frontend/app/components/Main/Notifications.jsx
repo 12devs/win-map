@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import actions from './../../actions';
 import {Dropdown, Icon, Menu} from 'antd';
 import moment from 'moment';
+import services from '../../services';
 
 class Notifications extends React.Component {
   constructor(props) {
@@ -17,17 +18,26 @@ class Notifications extends React.Component {
   handleClick = (id) => {
     const notifications = this.props.notifications.toJS();
     const index = notifications.findIndex(el => el.id === id);
-    notifications[index].sent_at = moment().format();
+    notifications[index].view_at = new Date();
     this.props.changeNotifications(notifications);
   };
 
   visibleChange = (e) => {
     console.log(e);
     this.setState({visible: e});
+    console.log('visibleChange', this.props.notifications.toJS());
+    if (this.state.visible) {
+      console.log('da');
+      return services.viewNotifications({notifications: this.props.notifications.toJS()})
+        .then(res => {
+          console.log(res);
+        });
+    }
+
   };
 
   render() {
-    const filter = this.props.notifications.toJS().filter(el => el.sent_at === null);
+    const filter = this.props.notifications.toJS().filter(el => el.view_at === null);
     console.log(filter);
     const menu = (
       <Menu>

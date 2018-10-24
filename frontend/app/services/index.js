@@ -41,7 +41,7 @@ const deleteNotificationToken = (token) => {
 };
 
 const viewNotifications = (body) => {
-  return fetch('post', '/api/subscriptions/save', body);
+  return fetch('post', '/api/subscriptions/onViewNotification', body);
 };
 
 export default {
@@ -54,5 +54,6 @@ export default {
   movePoint,
   saveNotificationToken,
   deleteNotificationToken,
-  sendSubscriptions
+  sendSubscriptions,
+  viewNotifications
 };
