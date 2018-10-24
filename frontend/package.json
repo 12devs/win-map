@@ -11,6 +11,7 @@
   "author": "12devs",
   "license": "ISC",
   "dependencies": {
+    "antd": "^3.10.2",
     "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",

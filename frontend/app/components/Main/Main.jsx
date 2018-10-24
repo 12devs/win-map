@@ -8,6 +8,7 @@ import NotificationSettings from './NotificationSettings';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
 import { deleteToken } from "../../services/push-notification";
+import Notifications from './Notifications';
 
 class Main extends React.Component {
   constructor() {
@@ -61,6 +62,7 @@ class Main extends React.Component {
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>
+        <Notifications/>
         <Map/>
       </div>
     )
