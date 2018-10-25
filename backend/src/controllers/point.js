@@ -1,5 +1,5 @@
 import { Point, Account, Danger, Place, Subscription, Notification, Station } from './../models';
-import { getStationId, getHistoricalData, getDailyHistoricalData } from '../api/wind';
+import { getStationId, getHistoricalData, getDailyHistoricalData, getCurrenData } from '../api/wind';
 import getWindRoseData from '../api/windRoseParses';
 import _ from 'lodash';
 
@@ -48,16 +48,34 @@ const getNotificationSettings = async (userId) => {
 };
 
 const getStationsData = async (stations) => {
-  const promises = stations.map(elem => getHistoricalData(elem.station_id));
-  const promisesParser = stations.map(elem => getWindRoseData(elem.lat, elem.lng));
-  const stsData = await Promise.all(promises);
-  const parserData = await Promise.all(promisesParser);
-  const stationsData = {};
-  stsData.forEach((elem, i) => {
-    elem.parser = parserData[i];
-    stationsData[stations[i].station_id] = elem;
+  const promises = stations.map(elem => {
+    return getCurrenData(elem.station_id)
+      .then(result => {
+        return {
+          current: {
+            dir: result.direction,
+            speed: result.speed,
+          },
+          history: {},
+          period: 0,
+        }
+      })
   });
-  return stationsData;
+  const promisesHistorical = stations.map(elem => ({ period: 25 }));
+  const stsData = await Promise.all(promises);
+  const historicalData = await Promise.all(promisesHistorical);
+
+  return stsData.reduce((acc,elem, i)=>{
+    const { history, period } = historicalData[i];
+    if (history){
+      elem.history = history;
+    }
+    if (period){
+      elem.period = period;
+    }
+    acc[stations[i].station_id] = elem;
+    return acc;
+  }, {});
 };
 
 const getPlacesDangersStationsDataStations = async (userId) => {
@@ -67,7 +85,7 @@ const getPlacesDangersStationsDataStations = async (userId) => {
       const dangers = result[1];
       const stations = _.uniqBy([...places, ...dangers], (elem => elem.station_id)).map(elem => {
         return {
-          station_id:elem.station_id,
+          station_id: elem.station_id,
           lat: elem.lat,
           lng: elem.lng,
         }
@@ -90,7 +108,11 @@ export default {
         const savedDanger = await Danger.create(danger);
         let stationsData;
         if (!stations || stations.indexOf(savedDanger.station_id) === -1) {
-          stationsData = await getStationsData([{station_id: savedDanger.station_id, lat: savedDanger.lat, lng: savedDanger.lng}]);
+          stationsData = await getStationsData([{
+            station_id: savedDanger.station_id,
+            lat: savedDanger.lat,
+            lng: savedDanger.lng
+          }]);
         }
         res.status(200).json({ danger: savedDanger, stationsData })
       } else {
@@ -100,7 +122,11 @@ export default {
         const savedPlace = await Place.create(place);
         let stationsData;
         if (!stations || stations.indexOf(savedPlace.station_id) === -1) {
-          stationsData = await getStationsData([{station_id: savedPlace.station_id, lat: savedPlace.lat, lng: savedPlace.lng}]);
+          stationsData = await getStationsData([{
+            station_id: savedPlace.station_id,
+            lat: savedPlace.lat,
+            lng: savedPlace.lng
+          }]);
         }
         res.status(200).json({ place: savedPlace, stationsData })
       }
@@ -161,7 +187,11 @@ export default {
         }))[1];
         let stationsData;
         if (!stations || stations.indexOf(savedDanger.station_id) === -1) {
-          stationsData = await getStationsData([{station_id: savedDanger.station_id, lat: savedDanger.lat, lng: savedDanger.lng}])
+          stationsData = await getStationsData([{
+            station_id: savedDanger.station_id,
+            lat: savedDanger.lat,
+            lng: savedDanger.lng
+          }])
         }
         res.status(200).json({ danger: savedDanger, stationsData })
       } else {
@@ -170,7 +200,11 @@ export default {
         const savedPlace = (await Place.update(place, { where: { id: place.id }, returning: true, plain: true }))[1];
         let stationsData;
         if (!stations || stations.indexOf(savedPlace.station_id) === -1) {
-          stationsData = await getStationsData([{station_id: savedPlace.station_id, lat: savedPlace.lat, lng: savedPlace.lng}]);
+          stationsData = await getStationsData([{
+            station_id: savedPlace.station_id,
+            lat: savedPlace.lat,
+            lng: savedPlace.lng
+          }]);
         }
         res.status(200).json({ place: savedPlace, stationsData })
       }
