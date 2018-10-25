@@ -51,6 +51,10 @@ class PointSettings extends React.Component {
         }}>close
         </button>
         <button onClick={() => {
+          this.props.changeMapBounds([[point.lat, point.lng], [point.lat, point.lng]]);
+        }}>go
+        </button>
+        <button onClick={() => {
           this.delMarker()
             .then(()=>{
               this.props.changeInfo({point: null, type: null});

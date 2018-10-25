@@ -21,6 +21,7 @@ class Main extends React.Component {
     this.closeNotificationSettings = this.closeNotificationSettings.bind(this);
     this.changeViewType = this.changeViewType.bind(this);
     this.logout = this.logout.bind(this);
+    this.calcBounds = this.calcBounds.bind(this);
   }
 
   componentDidMount() {
@@ -47,16 +48,25 @@ class Main extends React.Component {
     return services.getInfo()
       .then(res => {
         res.savePointSettings = {};
-        const { minLat, maxLat, minLng, maxLng } = geolib.getBounds([...res.places, ...res.dangers]);
-        if (minLat && maxLat && minLng && maxLng){
-          res.mapBounds = [[minLat, minLng ], [maxLat, maxLng ]];
-        } else {
-          res.mapBounds =[[50.505, -29.09], [52.505, 29.09]];
-        }
+        res.mapBounds = this.calcBounds([...res.places, ...res.dangers]);
         this.props.setMainData(res);
         this.props.updateStatistic();
       })
   }
+
+  calcBounds(points) {
+    try {
+      const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
+      if (minLat && maxLat && minLng && maxLng) {
+        return [[minLat, minLng], [maxLat, maxLng]];
+      } else {
+        throw new Error('cannot get bounds')
+      }
+    } catch (err) {
+      return [[50.505, -29.09], [52.505, 29.09]]
+    }
+  }
+
 
   logout() {
     return localStorage.setItem('windToken', '')
@@ -71,6 +81,10 @@ class Main extends React.Component {
         <button onClick={this.logout}>logout</button>
         <input type="range" id="start" name="size"
                min="0" max="1000000" onChange={(e) => this.props.changeScaleWind(e.target.value)}/>
+        <button onClick={() => {
+          this.props.changeMapBounds([[point.lat, point.lng], [point.lat, point.lng]]);
+        }}>go
+        </button>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>
