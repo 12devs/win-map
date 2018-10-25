@@ -1,8 +1,7 @@
-import { Place, Danger, Account, Subscription, Device, Notification, Station } from './../models';
-import { getCurrenData } from './../api/wind';
-import BluebirdPromise from 'bluebird';
-import _ from 'lodash';
 import geolib from 'geolib';
+import logger from '../logger';
+import { getCurrenData } from './../api/wind';
+import { Place, Danger, Account, Subscription, Device, Notification, Station } from '../models';
 
 const getCompassDirection = (from, to) => {
   const geolibGetCompassDirection = geolib.getCompassDirection(from, to).exact;
@@ -52,7 +51,8 @@ const createNotifications = async () => {
     await SubscriptionHandler(subscription[0]);
     offset++;
   } while (true);
-  console.log('created')
+
+  logger.info('createNotifications|CREATED');
 };
 
 const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {

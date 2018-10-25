@@ -1,5 +1,6 @@
 import { sendNotifications } from './sendNotifications';
 import { createNotifications } from './createNotifications';
+import logger from '../logger';
 
 const createAndSendNotifications = () => {
   return createNotifications()
@@ -7,7 +8,7 @@ const createAndSendNotifications = () => {
       return sendNotifications()
     })
     .then(()=>{
-      console.log('sendNotifications complete')
+      logger.info('sendNotifications|COMPLETED');
     })
 };
 
