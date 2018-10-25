@@ -1,5 +1,6 @@
 import { Point, Account, Danger, Place, Subscription, Notification, Station } from './../models';
 import { getStationId, getHistoricalData, getDailyHistoricalData } from '../api/wind';
+import getWindRoseData from '../api/windRoseParses';
 import _ from 'lodash';
 
 const getNotificationSettings = async (userId) => {
@@ -47,11 +48,14 @@ const getNotificationSettings = async (userId) => {
 };
 
 const getStationsData = async (stations) => {
-  const promises = stations.map(elem => getHistoricalData(elem));
+  const promises = stations.map(elem => getHistoricalData(elem.station_id));
+  const promisesParser = stations.map(elem => getWindRoseData(elem.lat, elem.lng));
   const stsData = await Promise.all(promises);
+  const parserData = await Promise.all(promisesParser);
   const stationsData = {};
   stsData.forEach((elem, i) => {
-    stationsData[stations[i]] = elem
+    elem.parser = parserData[i];
+    stationsData[stations[i].station_id] = elem;
   });
   return stationsData;
 };
@@ -61,7 +65,13 @@ const getPlacesDangersStationsDataStations = async (userId) => {
     .then(async result => {
       const places = result[0];
       const dangers = result[1];
-      const stations = _.uniqBy([...places, ...dangers], (elem => elem.station_id)).map(elem => elem.station_id);
+      const stations = _.uniqBy([...places, ...dangers], (elem => elem.station_id)).map(elem => {
+        return {
+          station_id:elem.station_id,
+          lat: elem.lat,
+          lng: elem.lng,
+        }
+      });
       const stationsData = await getStationsData(stations);
       return { places, dangers, stationsData, stations }
     });

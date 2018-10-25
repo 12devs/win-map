@@ -45,4 +45,9 @@ const getWindRoseData = async (lat = 53, lng = 50) => {
   return JSON.parse(windRoseData);
 };
 
+// getWindRoseData()
+//   .then(res=>{
+//     console.log(res);
+//   })
+
 export default getWindRoseData
