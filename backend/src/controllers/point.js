@@ -90,9 +90,7 @@ export default {
         const savedDanger = await Danger.create(danger);
         let stationsData;
         if (!stations || stations.indexOf(savedDanger.station_id) === -1) {
-          stationsData = {
-            [savedDanger.station_id]: await getHistoricalData(savedDanger.station_id)
-          }
+          stationsData = await getStationsData([{station_id: savedDanger.station_id, lat: savedDanger.lat, lng: savedDanger.lng}]);
         }
         res.status(200).json({ danger: savedDanger, stationsData })
       } else {
@@ -102,9 +100,7 @@ export default {
         const savedPlace = await Place.create(place);
         let stationsData;
         if (!stations || stations.indexOf(savedPlace.station_id) === -1) {
-          stationsData = {
-            [savedPlace.station_id]: await getHistoricalData(savedPlace.station_id)
-          }
+          stationsData = await getStationsData([{station_id: savedPlace.station_id, lat: savedPlace.lat, lng: savedPlace.lng}]);
         }
         res.status(200).json({ place: savedPlace, stationsData })
       }
@@ -175,7 +171,6 @@ export default {
         let stationsData;
         if (!stations || stations.indexOf(savedPlace.station_id) === -1) {
           stationsData = await getStationsData([{station_id: savedPlace.station_id, lat: savedPlace.lat, lng: savedPlace.lng}]);
-          console.log(stationsData);
         }
         res.status(200).json({ place: savedPlace, stationsData })
       }
