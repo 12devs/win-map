@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import actions from './../../actions';
 import {Dropdown, Icon, Menu} from 'antd';
-import moment from 'moment';
 import services from '../../services';
 
 class Notifications extends React.Component {
@@ -20,20 +19,12 @@ class Notifications extends React.Component {
     const index = notifications.findIndex(el => el.id === id);
     notifications[index].view_at = new Date();
     this.props.changeNotifications(notifications);
+    return services.viewNotifications({notification: notifications[index]})
   };
 
   visibleChange = (e) => {
     console.log(e);
     this.setState({visible: e});
-    console.log('visibleChange', this.props.notifications.toJS());
-    if (this.state.visible) {
-      console.log('da');
-      return services.viewNotifications({notifications: this.props.notifications.toJS()})
-        .then(res => {
-          console.log(res);
-        });
-    }
-
   };
 
   render() {
