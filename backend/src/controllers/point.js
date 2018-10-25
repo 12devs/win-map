@@ -61,18 +61,12 @@ const getStationsData = async (stations) => {
         }
       })
   });
-  const promisesHistorical = stations.map(elem => ({ period: 25 }));
+  const promisesHistorical = stations.map(elem => getWindRoseData(elem.lat, elem.lng));
   const stsData = await Promise.all(promises);
   const historicalData = await Promise.all(promisesHistorical);
 
-  return stsData.reduce((acc,elem, i)=>{
-    const { history, period } = historicalData[i];
-    if (history){
-      elem.history = history;
-    }
-    if (period){
-      elem.period = period;
-    }
+  return stsData.reduce((acc, elem, i) => {
+    elem = Object.assign(elem, historicalData[i]);
     acc[stations[i].station_id] = elem;
     return acc;
   }, {});
@@ -140,7 +134,7 @@ export default {
     try {
       const { places, dangers, stations, stationsData, notificationSettings, notifications } = await Promise.all([
         getPlacesDangersStationsDataStations(req.user.id),
-        Notification.findAll({ where: { account_id: req.user.id, view_at: null } }),
+        Notification.findAll({ where: { account_id: req.user.id } }),
         getNotificationSettings(req.user.id)
       ])
         .then(result => {

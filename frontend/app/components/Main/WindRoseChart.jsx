@@ -21,11 +21,10 @@ class WindRoseChart extends React.Component {
   }
 
   newChart() {
-    new Highcharts.Chart('container', this.props.stationsData.toJS()[this.props.stationId].parser);
+    new Highcharts.Chart('container', this.props.stationsData.toJS()[this.props.stationId].windRoseData);
   }
 
   render() {
-    console.log(this.props.stationsData.toJS()[this.props.stationId].parser);
     return (
       <div>
         <div id="container"/>

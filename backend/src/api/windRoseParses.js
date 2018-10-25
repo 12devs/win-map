@@ -3,7 +3,7 @@ import scrapeIt from 'scrape-it';
 
 const url = 'https://www.meteoblue.com/en/weather/forecast/modelclimate/';
 
-const getCityDataUrl = (lat = 53, lng = 20) => {
+const getCityDataUrl = (lat, lng) => {
   return new Promise((resolve) => {
     request(`https://www.meteoblue.com/en/server/search/query3?query=${lat},${lng}`)
       .then(response => resolve(JSON.parse(response).results[0].url))
@@ -59,12 +59,16 @@ const historyData = data => {
   return {history, period: Number((period / 24).toFixed())};
 };
 
-const getWindRoseData = async (lat = 53, lng = 50) => {
-  const cityDataUrl = await getCityDataUrl(lat, lng);
-  const windRoseUrl = await getWindRoseUrl(cityDataUrl);
-  const windRoseData = await getData(windRoseUrl);
-  const {history, period} = await historyData(JSON.parse(windRoseData));
-  return ({history, period, windRoseData: JSON.parse(windRoseData)});
+const getWindRoseData = async (lat, lng) => {
+  try{
+    const cityDataUrl = await getCityDataUrl(lat, lng);
+    const windRoseUrl = await getWindRoseUrl(cityDataUrl);
+    const windRoseData = await getData(windRoseUrl);
+    const {history, period} = await historyData(JSON.parse(windRoseData));
+    return ({history, period, windRoseData: JSON.parse(windRoseData)});
+  } catch (err){
+    return ({history: {}, period: 0, windRoseData: {}});
+  }
 };
 
 export default getWindRoseData;
