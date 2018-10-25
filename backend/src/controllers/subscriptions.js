@@ -19,10 +19,30 @@ export default {
           subscriptionsForSaving.push(subscription)
         });
       });
-      await Subscription.destroy({ where: { account_id: user.id } });
+      const startTime = new Date();
       await  BluebirdPromise.mapSeries(subscriptionsForSaving, subscription => {
-        return Subscription.create(subscription)
+        return Subscription.update(subscription, {
+          where: {
+            account_id: user.id,
+            place_id: subscription.place_id,
+            danger_id: subscription.danger_id
+          }
+        })
+          .then(res => {
+            if (!res[0]) {
+              Subscription.create(subscription)
+            }
+          })
       });
+      await Subscription.destroy({
+        where: {
+          account_id: user.id,
+          updated_at: {
+            $lt: startTime
+          }
+        }
+      });
+
       return res.status(200).json({ message: 'OK' });
     } catch (err) {
       console.log(err);
