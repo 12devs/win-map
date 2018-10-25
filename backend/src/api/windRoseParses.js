@@ -11,7 +11,7 @@ const getCityDataUrl = (lat = 53, lng = 20) => {
   });
 };
 
-const getWindRoseUrl = (q) => {
+const getWindRoseUrl = q => {
   return new Promise((resolve) => {
     scrapeIt(`${url}${q}`, {
       WindRoseUrl: {
@@ -29,7 +29,7 @@ const getWindRoseUrl = (q) => {
   });
 };
 
-const getData = (url) => {
+const getData = url => {
   return new Promise((resolve) => {
     request(`https:${url}`)
       .then(response => resolve(response))
@@ -37,17 +37,34 @@ const getData = (url) => {
   });
 };
 
+const historyData = data => {
+  let winds = [];
+  let period = 0;
+  const labels = data.xAxis.categories;
+  let history = {};
+
+  data.series.forEach(el => {
+    winds = el.data.map((e, i) => {
+      period += e;
+      if (!winds[i])
+        return e;
+      return e + winds[i];
+    });
+  });
+
+  winds = winds.forEach((el, i) => {
+    history[labels[i]] = Number((el * 100 / period).toFixed(2));
+  });
+
+  return {history, period: Number((period / 24).toFixed())};
+};
+
 const getWindRoseData = async (lat = 53, lng = 50) => {
   const cityDataUrl = await getCityDataUrl(lat, lng);
   const windRoseUrl = await getWindRoseUrl(cityDataUrl);
   const windRoseData = await getData(windRoseUrl);
-  console.log((cityDataUrl));
-  return JSON.parse(windRoseData);
+  const {history, period} = await historyData(JSON.parse(windRoseData));
+  return ({history, period, windRoseData: JSON.parse(windRoseData)});
 };
 
-// getWindRoseData()
-//   .then(res=>{
-//     console.log(res);
-//   })
-
-export default getWindRoseData
+export default getWindRoseData;

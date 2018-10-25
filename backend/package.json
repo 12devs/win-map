@@ -11,7 +11,7 @@
     "build": "babel ./src -d dist ; cp -r src/views dist;",
     "script": "babel-watch src/scripts/index.js | bunyan",
     "script:send": "babel-watch src/scripts/sendNotifications.js | bunyan",
-    "parser": "babel-node src/scripts/windRoseParses.js"
+    "parser": "babel-node src/api/windRoseParses.js"
   },
   "author": "12devs",
   "license": "ISC",
