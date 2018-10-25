@@ -32,9 +32,19 @@ export default {
 
   async onViewNotification(req, res) {
     try {
-      const { user } = req;
-      const { notification } = req.body;
-      await Notification.update(notification, {where:{account_id: user.id, id: notification.id}});
+      const { notifications } = req.body;
+      await  BluebirdPromise.mapSeries(notifications, notification => {
+        delete notification.created_at;
+        delete notification.updated_at;
+        delete notification.deleted_at;
+        if (notification.view_at === ''){
+          delete notification.view_at;
+        }
+        if (notification.sent_at === ''){
+          delete notification.sent_at;
+        }
+        return Notification.update(notification, { where: {id: notification.id } });
+      });
       return res.status(200).json({ message: 'OK' });
     } catch (err) {
       console.log(err);

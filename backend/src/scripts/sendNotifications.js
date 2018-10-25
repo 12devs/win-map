@@ -5,7 +5,7 @@ import config from 'config';
 const keys = config.apiKeys;
 
 const sendNotifications = () => {
-
+  console.log('sendNotifications start');
   const query = {
     where: {
       sent_at: null,
@@ -20,9 +20,9 @@ const sendNotifications = () => {
     }],
   };
 
-  Notification.findAll(query)
+  return Notification.findAll(query)
     .then(res => {
-
+      console.log(res.map(elem => elem.id))
       const messages = res.map(item => {
         const { devices } = item.account;
         const tokens = devices.map(device => device.token);
@@ -90,5 +90,3 @@ const sendMessage = (options, ids) => {
 export {
   sendNotifications,
 }
-
-sendNotifications();

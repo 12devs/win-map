@@ -14,16 +14,8 @@ class MyMap extends React.Component {
   }
 
   render() {
-    let center = {
-      lat: 51.505,
-      lng: -0.09,
-    };
 
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
-
-    if (this.props.mapCenter){
-      center = this.props.mapCenter.toJS()
-    }
 
     if (this.props.mapBounds){
       bounds = this.props.mapBounds.toJS()
@@ -32,9 +24,7 @@ class MyMap extends React.Component {
     return (
       <div style={{ height: '100%' }}>
         <Map
-          // center={center}
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
-          // zoom={7}
           bounds={bounds}
           style={{ height: '600px' }}
         >

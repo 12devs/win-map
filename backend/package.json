@@ -9,7 +9,7 @@
     "dev:watch": "babel-watch src/index.js | bunyan",
     "start": "node ./dist",
     "build": "babel ./src -d dist ; cp -r src/views dist;",
-    "script": "babel-watch src/scripts/updateCurrentInfo.js | bunyan",
+    "script": "babel-watch src/scripts/index.js | bunyan",
     "script:send": "babel-watch src/scripts/sendNotifications.js | bunyan"
   },
   "author": "12devs",
