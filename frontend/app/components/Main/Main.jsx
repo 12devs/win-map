@@ -22,6 +22,7 @@ class Main extends React.Component {
     this.changeViewType = this.changeViewType.bind(this);
     this.logout = this.logout.bind(this);
     this.calcBounds = this.calcBounds.bind(this);
+    this.showAll = this.showAll.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +68,17 @@ class Main extends React.Component {
     }
   }
 
+  showAll() {
+    try {
+      const places = this.props.places.toJS();
+      const dangers = this.props.dangers.toJS();
+      const bounds = this.calcBounds([...places, ...dangers]);
+      this.props.changeMapBounds(bounds);
+      this.closeNotificationSettings()
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   logout() {
     return localStorage.setItem('windToken', '')
@@ -81,10 +93,7 @@ class Main extends React.Component {
         <button onClick={this.logout}>logout</button>
         <input type="range" id="start" name="size"
                min="0" max="1000000" onChange={(e) => this.props.changeScaleWind(e.target.value)}/>
-        <button onClick={() => {
-          this.props.changeMapBounds([[point.lat, point.lng], [point.lat, point.lng]]);
-        }}>go
-        </button>
+        <button onClick={this.showAll}>showAll</button>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>

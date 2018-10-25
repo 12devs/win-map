@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import services from "./../../services";
+import geolib from "geolib";
 
 class PointSettings extends React.Component {
   constructor(props) {
     super(props);
     this.delMarker = this.delMarker.bind(this);
+    this.goToMarker = this.goToMarker.bind(this);
   }
 
   delMarker() {
@@ -25,6 +27,18 @@ class PointSettings extends React.Component {
           this.props.updateMainData({ dangers });
         }
       });
+  };
+
+  goToMarker() {
+    const {point} = this.props.info.toJS();
+    const points = [0,90,180,270].map(bearing =>{
+      return geolib.computeDestinationPoint(point, 5000, bearing);
+    });
+    const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
+    if (minLat && maxLat && minLng && maxLng) {
+      this.props.changeMapBounds([[minLat, minLng], [maxLat, maxLng]]);
+      this.props.changeInfo({point: null, type: null});
+    }
   };
 
   render() {
@@ -50,9 +64,7 @@ class PointSettings extends React.Component {
           this.props.changeInfo({point: null, type: null});
         }}>close
         </button>
-        <button onClick={() => {
-          this.props.changeMapBounds([[point.lat, point.lng], [point.lat, point.lng]]);
-        }}>go
+        <button onClick={this.goToMarker}>goToMarker
         </button>
         <button onClick={() => {
           this.delMarker()
