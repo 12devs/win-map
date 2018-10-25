@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import services from "./../../services";
+import WindRoseChart from './WindRoseChart';
 
 class PointSettings extends React.Component {
   constructor(props) {
@@ -64,6 +65,7 @@ class PointSettings extends React.Component {
         </button>
         {JSON.stringify(point, null, 2)}
         {type}
+        <WindRoseChart stationId={point.station_id}/>
       </div>
     );
   }
