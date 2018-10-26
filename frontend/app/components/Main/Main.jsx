@@ -6,7 +6,6 @@ import Map from './Map'
 import NotificationSettings from './NotificationSettings';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
-import { deleteToken } from "../../services/push-notification";
 import Notifications from './Notifications';
 import geolib from "geolib";
 
@@ -74,7 +73,7 @@ class Main extends React.Component {
       const dangers = this.props.dangers.toJS();
       const bounds = this.calcBounds([...places, ...dangers]);
       this.props.changeMapBounds(bounds);
-      this.closeNotificationSettings()
+      this.closeNotificationSettings();
     } catch (err) {
       console.log(err);
     }
