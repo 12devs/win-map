@@ -31,11 +31,14 @@ const getStationId = (location) => {
             return resolve(stationData);
           })
       })
-      .catch(err => resolve({}));
+      .catch(err => resolve('not Found'));
   });
 };
 
 const getCurrenData = async (stationId) => {
+  if (stationId === 'not Found'){
+    return {}
+  }
   const { lat, lng } = await Station.findOne({ where: { station_id: stationId } });
   return new Promise(resolve => {
     const options = {
@@ -55,6 +58,9 @@ const getCurrenData = async (stationId) => {
 };
 
 const getHistoricalData = async (stationId, days = 1) => {
+  if (stationId === 'not Found'){
+    return { history: {}, current: {}, period: 0 }
+  }
   const currentMoment = moment();
   const end = currentMoment.format('YYYYMMDD');
   const start = currentMoment.subtract(days, 'days').format('YYYYMMDD');

@@ -58,7 +58,7 @@ class Main extends React.Component {
     try {
       const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
       if (minLat && maxLat && minLng && maxLng) {
-        return [[minLat, minLng], [maxLat, maxLng]];
+        return [[minLat + Math.random()/1000000, minLng], [maxLat, maxLng]];
       } else {
         throw new Error('cannot get bounds')
       }

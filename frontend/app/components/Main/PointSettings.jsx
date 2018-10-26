@@ -37,7 +37,7 @@ class PointSettings extends React.Component {
     });
     const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
     if (minLat && maxLat && minLng && maxLng) {
-      this.props.changeMapBounds([[minLat, minLng], [maxLat, maxLng]]);
+      this.props.changeMapBounds([[minLat + Math.random()/1000000, minLng], [maxLat, maxLng]]);
       this.props.changeInfo({point: null, type: null});
     }
   };
