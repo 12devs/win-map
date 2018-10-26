@@ -60,13 +60,15 @@ const historyData = data => {
 };
 
 const getWindRoseData = async (lat, lng) => {
-  try{
+  try {
     const cityDataUrl = await getCityDataUrl(lat, lng);
     const windRoseUrl = await getWindRoseUrl(cityDataUrl);
-    const windRoseData = await getData(windRoseUrl);
+    let windRoseData = await getData(windRoseUrl);
     const {history, period} = await historyData(JSON.parse(windRoseData));
-    return ({history, period, windRoseData: JSON.parse(windRoseData)});
-  } catch (err){
+    windRoseData = JSON.parse(windRoseData);
+    windRoseData.credits.text = 'highcharts.com';
+    return ({history, period, windRoseData});
+  } catch (err) {
     return ({history: {}, period: 0, windRoseData: {}});
   }
 };
