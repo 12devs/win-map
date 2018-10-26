@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import config from 'config';
+import fs from 'fs';
+import https from 'https';
 import routes from './routes';
 import logger from './logger';
 import { getInstance } from "./db"
@@ -42,3 +44,15 @@ app.listen(config.app.port, () =>
   logger.info(`Server listening on ${config.app.host}:${config.app.port}`)
 );
 
+const options = {
+  key: fs.readFileSync(__dirname + '/ssl/localhost.key', 'ascii'),
+  cert: fs.readFileSync(__dirname + '/ssl/localhost.crt', 'ascii'),
+};
+
+https.createServer(options, app).listen(8082, err => {
+  if (err) {
+    console.error(err, 'Internal server error');
+    return;
+  }
+  console.info(`Server is up on ${8082}'s port`);
+});

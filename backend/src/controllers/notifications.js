@@ -8,7 +8,7 @@ export default {
       const { user } = req;
       const { token } = req.body;
 
-      const device = await Device.create({ account_id: user.id, token });
+      const device = await Device.findOrCreate({where:{ account_id: user.id, token }, defaults: { account_id: user.id, token }});
 
       return res.status(200).json({ message: 'created' });
     } catch (err) {

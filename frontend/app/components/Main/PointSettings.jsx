@@ -13,13 +13,13 @@ class PointSettings extends React.Component {
   }
 
   delMarker() {
-    const {point, type} = this.props.info.toJS();
-    const {id} = point;
+    const { point, type } = this.props.info.toJS();
+    const { id } = point;
     return services.deletePoint({
       [type]: { id },
     })
       .then(res => {
-        if (type === 'place'){
+        if (type === 'place') {
           const places = this.props.places.toJS().filter(el => !(el.id === id));
           this.props.updateMainData({ places });
         }
@@ -31,19 +31,19 @@ class PointSettings extends React.Component {
   };
 
   goToMarker() {
-    const {point} = this.props.info.toJS();
-    const points = [0,90,180,270].map(bearing =>{
+    const { point } = this.props.info.toJS();
+    const points = [0, 90, 180, 270].map(bearing => {
       return geolib.computeDestinationPoint(point, 5000, bearing);
     });
     const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
     if (minLat && maxLat && minLng && maxLng) {
-      this.props.changeMapBounds([[minLat + Math.random()/1000000, minLng], [maxLat, maxLng]]);
-      this.props.changeInfo({point: null, type: null});
+      this.props.changeMapBounds([[minLat + Math.random() / 1000000, minLng], [maxLat, maxLng]]);
+      this.props.changeInfo({ point: null, type: null });
     }
   };
 
   render() {
-    const {point, type} = this.props.info.toJS();
+    const { point, type } = this.props.info.toJS();
 
     if (!(point && type)) {
       return null
@@ -62,21 +62,24 @@ class PointSettings extends React.Component {
         width: "60%"
       }}>
         <button onClick={() => {
-          this.props.changeInfo({point: null, type: null});
+          this.props.changeInfo({ point: null, type: null });
         }}>close
         </button>
         <button onClick={this.goToMarker}>goToMarker
         </button>
         <button onClick={() => {
           this.delMarker()
-            .then(()=>{
-              this.props.changeInfo({point: null, type: null});
+            .then(() => {
+              this.props.changeInfo({ point: null, type: null });
             });
           return false
         }}>delete
         </button>
-        {JSON.stringify(point, null, 2)}
-        {type}
+        <div>Name {point.name}</div>
+        <div>Lat {point.lat}</div>
+        <div>Lng {point.lng}</div>
+        <div>Type {type}</div>
+        <div>StationId {point.station_id}</div>
         <WindRoseChart stationId={point.station_id}/>
       </div>
     );

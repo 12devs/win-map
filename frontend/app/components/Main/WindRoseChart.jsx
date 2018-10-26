@@ -20,6 +20,12 @@ class WindRoseChart extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.newChart(this.props);
+    }
+  }
+
   newChart() {
     new Highcharts.Chart('container', this.props.stationsData.toJS()[this.props.stationId].windRoseData);
   }
