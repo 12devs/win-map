@@ -55,6 +55,7 @@ const createNotifications = (messages) => {
       registration_ids: tokens,
       notification: {
         title: "wind-map", //@TODO
+        icon: "https://st3.depositphotos.com/14847044/17089/i/450/depositphotos_170894478-stock-photo-meteorology-wild-sign.jpg", //@TODO
         body: item.message,
         click_action: "http://localhost:8081", //@TODO
         sound: "default",
@@ -106,7 +107,7 @@ const sendMessage = (options, ids) => {
 
       return Promise.reject(err);
     });
-}
+};
 
 export {
   sendNotifications,

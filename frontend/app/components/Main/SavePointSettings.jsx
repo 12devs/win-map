@@ -29,9 +29,19 @@ class SavePointSettings extends React.Component {
       key = 'place'
     }
 
+    let lngCorrect = latlng.lng;
+    do {
+      if (lngCorrect > 180) {
+        lngCorrect -= 360;
+      } else if (lngCorrect < -180){
+          lngCorrect += 360;
+      }
+    } while (!((lngCorrect <= 180) && (lngCorrect > -180)));
+
     return services.savePoint({
       [key]: {
-        ...latlng,
+        lat: latlng.lat,
+        lng: lngCorrect,
         name
       },
       stations: [...this.props.stations]

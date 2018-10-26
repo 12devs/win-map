@@ -73,7 +73,6 @@ const getHistoricalData = async (stationId, days = 1) => {
 
   let count = 0;
   if (!data.history) {
-    console.log(data);
     return ({ history: {}, current: {}, period: 0 });
   }
   const currentWind = {
@@ -131,7 +130,6 @@ const getDailyHistoricalData = async (stationId, days = 1) => {
     // uri: `https://api-ak.wunderground.com/api/606f3f6977348613/history_2017102420181024/units:metric/v:2.0/q/51.536459320055805,-0.13938903808593753.json`,
     json: true
   };
-  console.log(options);
   let data = await rp(options);
   fs.writeFileSync('res.json', JSON.stringify(data, null, 4));
   if ((!data.history) || data.history.days.length === 0) {

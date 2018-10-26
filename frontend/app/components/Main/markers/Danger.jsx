@@ -14,7 +14,6 @@ class Danger extends React.Component {
   }
 
   updatePosition(id, e) {
-    console.log(e.target._latlng);
     return services.movePoint({
       danger: { ...e.target._latlng, id, },
       stations: [...this.props.stations]

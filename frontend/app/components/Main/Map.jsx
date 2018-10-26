@@ -1,10 +1,12 @@
 import React from 'react';
-import { Map, TileLayer } from 'react-leaflet';
+import { Map, TileLayer, LayersControl, LayerGroup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
 import Modal from 'react-modal';
+
+const { BaseLayer, Overlay } = LayersControl;
 
 Modal.setAppElement('#root');
 
@@ -17,7 +19,7 @@ class MyMap extends React.Component {
 
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
 
-    if (this.props.mapBounds){
+    if (this.props.mapBounds) {
       bounds = this.props.mapBounds.toJS()
     }
 
@@ -27,19 +29,68 @@ class MyMap extends React.Component {
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
           bounds={bounds}
           style={{ height: '600px' }}
+          // minZoom={1.5}
+          maxBounds={[[90, -180], [-90, 180]]}
         >
           <ReactLeafletSearch position="topleft"/>
+
+          <LayersControl position="topright">
+            <BaseLayer checked name="1">
+              <TileLayer
+                attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            </BaseLayer>
+
+            <BaseLayer name="2">
+              <LayerGroup>
+
+                <TileLayer
+                  attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                  url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                />
+                <TileLayer
+                  attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url='https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}'
+                  minZoom={0}
+                  maxZoom={20}
+                  ext='png'
+                />
+              </LayerGroup>
+            </BaseLayer>
+
+            <BaseLayer name="3">
+              <LayerGroup>
+
+                <TileLayer
+                  attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                  url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                />
+                {/*<TileLayer*/}
+                  {/*attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'*/}
+                  {/*url='https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}'*/}
+                  {/*minZoom={0}*/}
+                  {/*maxZoom={20}*/}
+                  {/*ext='png'*/}
+                {/*/>*/}
+              </LayerGroup>
+            </BaseLayer>
+
+          </LayersControl>
+
           <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+
           <Markers/>
           <div style={{ zIndex: '3000' }}><input type="range" id="start" name="size"
                                                  min="0" max="1000000"
                                                  onChange={(e) => this.props.changeScaleWind(e.target.value)}/></div>
         </Map>
       </div>
-    );
+    )
+      ;
   }
 }
 
