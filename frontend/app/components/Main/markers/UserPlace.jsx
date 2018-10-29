@@ -27,13 +27,13 @@ class UserPlace extends React.Component {
       stations: [...this.props.stations]
     })
       .then(res => {
-        const places = this.props.places.toJS().filter(el => !(el.id === id));
+        const places = this.props.places.filter(el => !(el.id === id));
         places.push(res.place);
-        let stationsData = this.props.stationsData.toJS();
-        const stations = this.props.stations.toJS();
+        let stationsData = this.props.stationsData;
+        const stations = this.props.stations;
         stationsData = {...stationsData, ...res.stationsData};
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateMainData({places, stationsData, stations});
+        this.props.updateReduxState({places, stationsData, stations});
       });
   };
 
@@ -45,7 +45,7 @@ class UserPlace extends React.Component {
           this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
-          this.props.changeInfo({point: this.props.point, type:'place'});
+          this.props.updateReduxState({info: {point: this.props.point, type:'place'}});
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>

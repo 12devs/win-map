@@ -28,13 +28,13 @@ class Danger extends React.Component {
       stations: [...this.props.stations]
     })
       .then(res => {
-        const dangers = this.props.dangers.toJS().filter(el => !(el.id === id));
+        const dangers = this.props.dangers.filter(el => !(el.id === id));
         dangers.push(res.danger);
-        let stationsData = this.props.stationsData.toJS();
-        const stations = this.props.stations.toJS();
+        let stationsData = this.props.stationsData;
+        const stations = this.props.stations;
         stationsData = { ...stationsData, ...(res.stationsData || {}) };
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateMainData({ dangers, stations, stationsData });
+        this.props.updateReduxState({ dangers, stations, stationsData });
       });
   };
 
@@ -47,7 +47,7 @@ class Danger extends React.Component {
           this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
-          this.props.changeInfo({ point: this.props.point, type: 'danger' });
+          this.props.updateReduxState({info:{ point: this.props.point, type: 'danger' }});
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>

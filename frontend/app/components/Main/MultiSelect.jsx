@@ -11,23 +11,23 @@ class MultiSelect extends React.Component {
   }
 
   handleChange = (newValue) => {
-    let points = this.props.notificationSettings.toJS();
+    let points = this.props.notificationSettings;
     const point = points.find(x => x.place.value === this.props.point.id);
 
     if (point) {
-      points = this.props.notificationSettings.toJS().filter(x => !(x.place.value === this.props.point.id));
+      points = this.props.notificationSettings.filter(x => !(x.place.value === this.props.point.id));
     }
 
     points.push({
       place: { value: this.props.point.id, label: this.props.point.name },
       danger: newValue
     });
-    this.props.updateNotificationSettings(points);
+    this.props.updateReduxState({notificationSettings: points});
   };
 
   render() {
     let defaultValue;
-    const notificationSettings = this.props.notificationSettings.toJS();
+    const notificationSettings = this.props.notificationSettings;
     const index = notificationSettings.findIndex(elem => {
       return (elem.place.value === this.props.point.id)
     });
@@ -38,7 +38,7 @@ class MultiSelect extends React.Component {
     }
     const danger = this.props.dangers
       .map((point) => {
-          return { value: point.get('id'), label: point.get('name') };
+          return { value: point.id, label: point.name };
         }
       );
 

@@ -20,13 +20,13 @@ class MyMap extends React.Component {
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
 
     if (this.props.mapBounds) {
-      bounds = this.props.mapBounds.toJS()
+      bounds = this.props.mapBounds
     }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
-          onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
+          onClick={(e) => this.props.updateReduxState({savePointSettings:{ show: true, latlng: e.latlng }})}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}

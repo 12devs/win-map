@@ -13,37 +13,37 @@ class PointSettings extends React.Component {
   }
 
   delMarker() {
-    const { point, type } = this.props.info.toJS();
+    const { point, type } = this.props.info;
     const { id } = point;
     return services.deletePoint({
       [type]: { id },
     })
       .then(res => {
         if (type === 'place') {
-          const places = this.props.places.toJS().filter(el => !(el.id === id));
-          this.props.updateMainData({ places });
+          const places = this.props.places.filter(el => !(el.id === id));
+          this.props.updateReduxState({ places });
         }
         if (type === 'danger') {
-          const dangers = this.props.dangers.toJS().filter(el => !(el.id === id));
-          this.props.updateMainData({ dangers });
+          const dangers = this.props.dangers.filter(el => !(el.id === id));
+          this.props.updateReduxState({ dangers });
         }
       });
   };
 
   goToMarker() {
-    const { point } = this.props.info.toJS();
+    const { point } = this.props.info;
     const points = [0, 90, 180, 270].map(bearing => {
       return geolib.computeDestinationPoint(point, 5000, bearing);
     });
     const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
     if (minLat && maxLat && minLng && maxLng) {
-      this.props.changeMapBounds([[minLat + Math.random() / 1000000, minLng], [maxLat, maxLng]]);
-      this.props.changeInfo({ point: null, type: null });
+      this.props.updateReduxState({mapBounds:[[minLat + Math.random() / 1000000, minLng], [maxLat, maxLng]]});
+      this.props.updateReduxState({info:{ point: null, type: null }});
     }
   };
 
   render() {
-    const { point, type } = this.props.info.toJS();
+    const { point, type } = this.props.info;
 
     if (!(point && type)) {
       return null
@@ -57,13 +57,13 @@ class PointSettings extends React.Component {
         <div className="point__data-text">Lat: {point.lat}</div>
         <div className="point__data-text">Lng: {point.lng}</div>
         <button className="point__data-btn-close" onClick={() => {
-          this.props.changeInfo({point: null, type: null});
+          this.props.updateReduxState({info:{point: null, type: null}});
         }}/>
         <button onClick={this.goToMarker}>goToMarker</button>
         <button  className="point__data-btn-remove" onClick={() => {
           this.delMarker()
             .then(() => {
-              this.props.changeInfo({ point: null, type: null });
+              this.props.updateReduxState({info:{ point: null, type: null }});
             });
           return false
         }}>Remove point

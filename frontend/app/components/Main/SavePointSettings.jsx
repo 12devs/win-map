@@ -14,7 +14,7 @@ class SavePointSettings extends React.Component {
   }
 
   addMarker(markerType) {
-    const { latlng } = this.props.savePointSettings.toJS();
+    const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
 
     let key;
@@ -42,10 +42,10 @@ class SavePointSettings extends React.Component {
     })
       .then(res => {
         const { danger, place } = res;
-        let places = this.props.places.toJS();
-        let dangers = this.props.dangers.toJS();
-        let stationsData = this.props.stationsData.toJS();
-        const stations = this.props.stations.toJS();
+        let places = this.props.places;
+        let dangers = this.props.dangers;
+        let stationsData = this.props.stationsData;
+        const stations = this.props.stations;
         stationsData = { ...stationsData, ...res.stationsData };
         if (danger) {
           dangers.push(danger);
@@ -54,13 +54,13 @@ class SavePointSettings extends React.Component {
           places.push(place);
         }
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateMainData({ places, dangers, stationsData, stations });
-        this.props.changeSavePointSettings({ show: false })
+        this.props.updateReduxState({ places, dangers, stationsData, stations });
+        this.props.updateReduxState({savePointSettings:{ show: false }})
       });
   };
 
   render() {
-    const { show } = this.props.savePointSettings.toJS();
+    const { show } = this.props.savePointSettings;
 
     if (!show) {
       return null
@@ -103,7 +103,7 @@ class SavePointSettings extends React.Component {
           </label>
         </div>
         <button className="point__create-map-close" onClick={() => {
-          this.props.changeSavePointSettings({ show: false })
+          this.props.updateReduxState({savePointSettings:{ show: false }})
         }}/>
       </div>
     );
