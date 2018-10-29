@@ -11,12 +11,7 @@ class SavePointSettings extends React.Component {
       markerType: '',
     };
     this.addMarker = this.addMarker.bind(this);
-    this.changeMarketType = this.changeMarketType.bind(this);
   }
-
-  changeMarketType = (e) => {
-    this.setState({ markerType: e.currentTarget.value })
-  };
 
   addMarker(markerType) {
     const { latlng } = this.props.savePointSettings.toJS();

@@ -12,8 +12,18 @@ class UserPlace extends React.Component {
   }
 
   updatePosition(id, e) {
+    let { lat, lng } = e.target._latlng;
+    let lngCorrect = lng;
+    lngCorrect = lngCorrect % 360;
+    if (lngCorrect > 180) {
+      lngCorrect -= 360;
+    }
+    if (lngCorrect < -180) {
+      lngCorrect += 360;
+    }
+
     return services.movePoint({
-      place: {...e.target._latlng, id,},
+      place: {lat, lng: lngCorrect, id},
       stations: [...this.props.stations]
     })
       .then(res => {

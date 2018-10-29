@@ -1,4 +1,4 @@
-import { Map, Set, List } from "immutable";
+import { Map } from "immutable";
 import immutable from "immutable";
 import geolib from 'geolib';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { Marker } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -14,8 +14,17 @@ class Danger extends React.Component {
   }
 
   updatePosition(id, e) {
+    let { lat, lng } = e.target._latlng;
+    let lngCorrect = lng;
+    lngCorrect = lngCorrect % 360;
+    if (lngCorrect > 180) {
+      lngCorrect -= 360;
+    }
+    if (lngCorrect < -180) {
+      lngCorrect += 360;
+    }
     return services.movePoint({
-      danger: { ...e.target._latlng, id, },
+      danger: { lat, lng: lngCorrect, id, },
       stations: [...this.props.stations]
     })
       .then(res => {
@@ -38,7 +47,7 @@ class Danger extends React.Component {
           this.updatePosition(this.props.point.id, e);
         }}
         onClick={() => {
-          this.props.changeInfo({point: this.props.point, type:'danger'});
+          this.props.changeInfo({ point: this.props.point, type: 'danger' });
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
