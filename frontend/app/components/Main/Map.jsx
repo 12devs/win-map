@@ -84,9 +84,6 @@ class MyMap extends React.Component {
           />
 
           <Markers/>
-          <div style={{ zIndex: '3000' }}><input type="range" id="start" name="size"
-                                                 min="0" max="1000000"
-                                                 onChange={(e) => this.props.changeScaleWind(e.target.value)}/></div>
         </Map>
       </div>
     )
