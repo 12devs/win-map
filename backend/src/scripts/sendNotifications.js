@@ -1,64 +1,86 @@
-import { Notification, Device, Account } from '../models/index';
 import fetch from 'node-fetch';
 import config from 'config';
+import logger from '../logger';
+import { Notification, Device, Account } from '../models';
 
 const keys = config.apiKeys;
 
-const sendNotifications = () => {
-  console.log('sendNotifications start');
-  const query = {
-    where: {
-      sent_at: null,
-    },
-    include: [{
-      model: Account,
-      as: "account",
+const sendNotifications = async () => {
+
+  logger.info('sendNotifications|START');
+
+  let offset = 0;
+  let limit = 1;
+
+  do {
+    const query = {
+      offset,
+      limit,
+      where: {
+        sent_at: null,
+      },
       include: [{
-        model: Device,
-        as: 'devices'
-      }]
-    }],
-  };
+        model: Account,
+        as: "account",
+        include: [{
+          model: Device,
+          as: 'devices'
+        }]
+      }],
+    };
 
-  return Notification.findAll(query)
-    .then(res => {
-      console.log(res.map(elem => elem.id))
-      const messages = res.map(item => {
-        const { devices } = item.account;
-        const tokens = devices.map(device => device.token);
+    try {
+      const notifications = await Notification.findAll(query);
 
-        return {
-          id: item.id,
-          registration_ids: tokens,
-          notification: {
-            title: "wind-map", //@TODO
-            body: item.message,
-            click_action: "http://localhost:8081", //@TODO
-            sound: "default",
-          },
-        };
-      });
+      if (!notifications.length) break;
 
-      return messages;
-    })
-    .then(messages => {
+      const messages = createNotifications(notifications);
+      prepareToSend(messages);
+    } catch (error) {
+      logger.error('sendNotifications|ERROR', error)
+    }
 
-      messages.forEach(value => {
+    offset++;
+  } while (true);
 
-        const options = {
-          method: 'POST',
-          body: JSON.stringify(value),
-          headers: {
-            Authorization: `key=${keys.fcm}`,
-            'Content-Type': 'application/json',
-          },
-        };
+}
 
-        sendMessage(options, value.id);
-      });
-    })
-    .catch(err => console.log(err));
+const createNotifications = (messages) => {
+  const currentMessages = messages.map(item => {
+    const { devices } = item.account;
+    const tokens = devices.map(device => device.token);
 
+    return {
+      id: item.id,
+      registration_ids: tokens,
+      notification: {
+        title: "wind-map", //@TODO
+        icon: "https://st3.depositphotos.com/14847044/17089/i/450/depositphotos_170894478-stock-photo-meteorology-wild-sign.jpg", //@TODO
+        body: item.message,
+        click_action: "http://localhost:8081", //@TODO
+        sound: "default",
+      },
+    };
+  });
+
+  return currentMessages;
+}
+
+const prepareToSend = (messages) => {
+
+  messages.forEach(value => {
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(value),
+      headers: {
+        Authorization: `key=${keys.fcm}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    sendMessage(options, value.id);
+  });
 }
 
 const sendMessage = (options, ids) => {
@@ -85,7 +107,7 @@ const sendMessage = (options, ids) => {
 
       return Promise.reject(err);
     });
-}
+};
 
 export {
   sendNotifications,

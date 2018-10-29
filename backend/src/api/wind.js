@@ -1,5 +1,6 @@
 import rp from 'request-promise';
 import moment from 'moment';
+import fs from 'fs';
 import { Point, Account, Danger, Place, Subscription, Notification, Station } from './../models';
 import { Wind } from "../models";
 
@@ -7,7 +8,7 @@ const getStationId = (location) => {
   let stationData;
   return new Promise(resolve => {
     const options = {
-      uri: `https://api-ak.wunderground.com/api/d8585d80376a429e/conditions/labels/lang:EN/units:english/bestfct:1/v:2.0/q/${location.lat},${location.lng}.json`,
+      uri: `https://api-ak.wunderground.com/api/d8585d80376a429e/conditions/labels/lang:EN/units:metric/bestfct:1/v:2.0/q/${location.lat},${location.lng}.json`,
       json: true
     };
     rp(options)
@@ -30,14 +31,18 @@ const getStationId = (location) => {
             return resolve(stationData);
           })
       })
-      .catch(err => resolve({}));
+      .catch(err => resolve('not Found'));
   });
 };
 
-const getCurrenData = (stationId) => {
+const getCurrenData = async (stationId) => {
+  if (stationId === 'not Found'){
+    return {}
+  }
+  const { lat, lng } = await Station.findOne({ where: { station_id: stationId } });
   return new Promise(resolve => {
     const options = {
-      uri: `https://api-ak.wunderground.com/api/d8585d80376a429e/conditions/labels/lang:EN/units:english/bestfct:1/v:2.0/q/pws:${stationId}.json`,
+      uri: `https://api-ak.wunderground.com/api/d8585d80376a429e/conditions/labels/lang:EN/units:metric/bestfct:1/v:2.0/q/${lat},${lng}.json`,
       json: true
     };
     rp(options)
@@ -49,10 +54,13 @@ const getCurrenData = (stationId) => {
         });
       })
       .catch(err => resolve({}));
-  });
+  })
 };
 
-const getHistoricalData = async (stationId, days = 365) => {
+const getHistoricalData = async (stationId, days = 1) => {
+  if (stationId === 'not Found'){
+    return { history: {}, current: {}, period: 0 }
+  }
   const currentMoment = moment();
   const end = currentMoment.format('YYYYMMDD');
   const start = currentMoment.subtract(days, 'days').format('YYYYMMDD');
@@ -65,7 +73,6 @@ const getHistoricalData = async (stationId, days = 365) => {
 
   let count = 0;
   if (!data.history) {
-    console.log(data);
     return ({ history: {}, current: {}, period: 0 });
   }
   const currentWind = {
@@ -111,7 +118,7 @@ const getHistoricalData = async (stationId, days = 365) => {
   return ({ history: windRose, current: currentWind, period: data.history.days.length });
 };
 
-const getDailyHistoricalData = async (stationId, days = 365) => {
+const getDailyHistoricalData = async (stationId, days = 1) => {
   let time = new Date();
   const { lat, lng } = await Station.findOne({ where: { station_id: stationId } });
   const currentMoment = moment();
@@ -124,7 +131,7 @@ const getDailyHistoricalData = async (stationId, days = 365) => {
     json: true
   };
   let data = await rp(options);
-
+  fs.writeFileSync('res.json', JSON.stringify(data, null, 4));
   if ((!data.history) || data.history.days.length === 0) {
     return ({ history: {}, current: {}, period: 0 });
   }
@@ -149,7 +156,7 @@ const getDailyHistoricalData = async (stationId, days = 365) => {
       acc[el] = (acc[el] || 0) + 1;
     return acc;
   }, {});
-  return ({ history: windRose, current: currentWind, period: data.history.days.length });
+  return ({ current: currentWind });
 };
 
 module.exports = {

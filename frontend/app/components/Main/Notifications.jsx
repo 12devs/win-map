@@ -24,13 +24,11 @@ class Notifications extends React.Component {
   };
 
   visibleChange = (e) => {
-    console.log(e);
     this.setState({visible: e});
   };
 
   render() {
     const filter = this.props.notifications.toJS().filter(el => el.view_at === null);
-    console.log(filter);
     const menu = (
       <Menu>
         {filter.map((el) =>

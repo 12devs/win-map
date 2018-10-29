@@ -1,16 +1,17 @@
 import firebase from 'firebase/app';
 import 'firebase/messaging';
-
 import services from '../services';
 
-navigator.serviceWorker
-  .register('./public/firebase-messaging-sw.js')
-  .then((registration) => {
-    firebase.messaging().useServiceWorker(registration);
-  })
-  .catch((err) => {
-    console.log('Service worker registration failed, error:', err);
-  });
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('./public/firebase-messaging-sw.js')
+    .then((registration) => {
+      firebase.messaging().useServiceWorker(registration);
+    })
+    .catch((err) => {
+      console.log('Service worker registration failed, error:', err);
+    });
+}
 
 export const initializeFirebase = () => {
   firebase.initializeApp({
@@ -65,7 +66,7 @@ const showNotification = (notification) => {
   if (!("Notification" in window)) {
     return;
   } else if (Notification.permission === "granted") {
-     const  currentNotification = new Notification(notification.title, notification);
+    const currentNotification = new Notification(notification.title, notification);
   } else if (Notification.permission !== 'denied') {
     Notification.requestPermission(function (permission) {
       if (permission === "granted") {

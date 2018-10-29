@@ -21,6 +21,8 @@ class Main extends React.Component {
     this.closeNotificationSettings = this.closeNotificationSettings.bind(this);
     this.changeViewType = this.changeViewType.bind(this);
     this.logout = this.logout.bind(this);
+    this.calcBounds = this.calcBounds.bind(this);
+    this.showAll = this.showAll.bind(this);
   }
 
   componentDidMount() {
@@ -47,15 +49,35 @@ class Main extends React.Component {
     return services.getInfo()
       .then(res => {
         res.savePointSettings = {};
-        const { minLat, maxLat, minLng, maxLng } = geolib.getBounds([...res.places, ...res.dangers]);
-        if (minLat && maxLat && minLng && maxLng){
-          res.mapBounds = [[minLat, minLng ], [maxLat, maxLng ]];
-        } else {
-          res.mapBounds =[[50.505, -29.09], [52.505, 29.09]];
-        }
+        res.mapBounds = this.calcBounds([...res.places, ...res.dangers]);
         this.props.setMainData(res);
         this.props.updateStatistic();
       })
+  }
+
+  calcBounds(points) {
+    try {
+      const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
+      if (minLat && maxLat && minLng && maxLng) {
+        return [[minLat + Math.random()/1000000, minLng], [maxLat, maxLng]];
+      } else {
+        throw new Error('cannot get bounds')
+      }
+    } catch (err) {
+      return [[50.505, -29.09], [52.505, 29.09]]
+    }
+  }
+
+  showAll() {
+    try {
+      const places = this.props.places.toJS();
+      const dangers = this.props.dangers.toJS();
+      const bounds = this.calcBounds([...places, ...dangers]);
+      this.props.changeMapBounds(bounds);
+      this.closeNotificationSettings();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   logout() {
@@ -66,11 +88,12 @@ class Main extends React.Component {
     return (
       <div>
         <div className="map__navigation">
-          <button className="map__navigation-btn map__navigation-btn--settings" onClick={this.openNotificationSettings}></button>
-          <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}></button>
-          <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}></button>
+          <button className="map__navigation-btn map__navigation-btn--settings" onClick={this.openNotificationSettings}/>
+          <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
+          <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
                min="0" max="1000000" onChange={(e) => this.props.changeScaleWind(e.target.value)}/>
+        <button onClick={this.showAll}>showAll</button>
         </div>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>

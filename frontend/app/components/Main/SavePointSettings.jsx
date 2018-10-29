@@ -18,9 +18,9 @@ class SavePointSettings extends React.Component {
     this.setState({ markerType: e.currentTarget.value })
   };
 
-  addMarker() {
+  addMarker(markerType) {
     const { latlng } = this.props.savePointSettings.toJS();
-    const { name, markerType } = this.state;
+    const { name } = this.state;
 
     let key;
     if (markerType === 'Danger') {
@@ -29,9 +29,18 @@ class SavePointSettings extends React.Component {
       key = 'place'
     }
 
+    let lngCorrect = latlng.lng;
+    lngCorrect = lngCorrect % 360;
+    if (lngCorrect > 180) {
+      lngCorrect -= 360;
+    }
+    if (lngCorrect < -180) {
+      lngCorrect += 360;
+    }
     return services.savePoint({
       [key]: {
-        ...latlng,
+        lat: latlng.lat,
+        lng: lngCorrect,
         name
       },
       stations: [...this.props.stations]
@@ -67,39 +76,40 @@ class SavePointSettings extends React.Component {
         <div className="point__title">Add point</div>
         <div>
           <label>
-            <input className="point__input-text" placeholder="Name" type="text" value={this.state.name} onChange={(e) => {
-              this.setState({ name: e.target.value })
-            }}/>
+            <input className="point__input-text" placeholder="Name" type="text" value={this.state.name}
+                   onChange={(e) => {
+                     this.setState({ name: e.target.value })
+                   }}/>
           </label>
         </div>
         <div className="point__create-map">
           <label className="point__create-map-label point__create-map-label--green">
             <input
-                   className="point__create-map-radio"
-                   type="radio"
-                   value={'My Place'}
-                   checked={this.state.markerType === 'My Place'}
-                   onChange={this.changeMarketType}/>
-
-              <span className="point__create-map-title">My place</span>
+              className="point__create-map-radio"
+              type="radio"
+              value={'My Place'}
+              onChange={() => {
+                this.addMarker('My Place')
+              }}/>
+            <span className="point__create-map-title">My place</span>
           </label>
 
 
           <label className="point__create-map-label point__create-map-label--red">
             <input
-                   className="point__create-map-radio"
-                   type="radio"
-                   checked={this.state.markerType === 'Danger'}
-                   value={'Danger'}
-                   onChange={this.changeMarketType}/>
+              className="point__create-map-radio"
+              type="radio"
+              value={'Danger'}
+              onChange={() => {
+                this.addMarker('Danger')
+              }}/>
 
-              <span className="point__create-map-title">Danger</span>
+            <span className="point__create-map-title">Danger</span>
           </label>
         </div>
-        {/* <button onClick={this.addMarker}>Send</button> */}
         <button className="point__create-map-close" onClick={() => {
           this.props.changeSavePointSettings({ show: false })
-        }}></button>
+        }}/>
       </div>
     );
   }

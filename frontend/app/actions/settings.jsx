@@ -62,6 +62,13 @@ const changeNotifications = function (value) {
   }
 };
 
+const changeMapBounds = function (value) {
+  return {
+    type: "changeMapBounds",
+    value
+  }
+};
+
 
 module.exports = {
   changeMarkerType,
@@ -73,4 +80,5 @@ module.exports = {
   changeInfo,
   changeSavePointSettings,
   changeNotifications,
+  changeMapBounds,
 };
