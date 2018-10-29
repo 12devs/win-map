@@ -33,8 +33,21 @@ a:focus {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1000;
+    z-index: 100000;
     background-color: #fff;
+    padding: 3rem;
+    border-radius: 0.4rem;
+    box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.3);
+}
+
+.point__container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100000;
     padding: 3rem;
     border-radius: 0.4rem;
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.3);
@@ -129,7 +142,7 @@ a:focus {
     top: 50%;
     transform: translateY(-50%);
     right: 5rem;
-    z-index: 1000;
+    z-index: 100000;
     background-color: #F95B45;
     font-size: 1.3rem;
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.3);

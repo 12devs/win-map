@@ -37,8 +37,8 @@ class PointSettings extends React.Component {
     });
     const { minLat, maxLat, minLng, maxLng } = geolib.getBounds(points);
     if (minLat && maxLat && minLng && maxLng) {
-      this.props.updateReduxState({mapBounds:[[minLat + Math.random() / 1000000, minLng], [maxLat, maxLng]]});
-      this.props.updateReduxState({info:{ point: null, type: null }});
+      this.props.updateReduxState({ mapBounds: [[minLat + Math.random() / 1000000, minLng], [maxLat, maxLng]] });
+      this.props.updateReduxState({ info: { point: null, type: null } });
     }
   };
 
@@ -46,29 +46,35 @@ class PointSettings extends React.Component {
     const { point, type } = this.props.info;
 
     if (!(point && type)) {
-      return null
+      return null;
     }
 
     return (
-      <div className="point__data">
-        <div className="point__data-name">{point.name}</div>
-        <div className="point__data-ico"/>
-        <div className="point__data-type">Type {type}</div>
-        <div className="point__data-text">Lat: {point.lat}</div>
-        <div className="point__data-text">Lng: {point.lng}</div>
-        <button className="point__data-btn-close" onClick={() => {
-          this.props.updateReduxState({info:{point: null, type: null}});
-        }}/>
-        <button onClick={this.goToMarker}>goToMarker</button>
-        <button  className="point__data-btn-remove" onClick={() => {
-          this.delMarker()
-            .then(() => {
-              this.props.updateReduxState({info:{ point: null, type: null }});
-            });
-          return false
-        }}>Remove point
-        </button>
-        <WindRoseChart stationId={point.station_id}/>
+      <div>
+        <div className='point__container' onClick={() => {
+          this.props.updateReduxState({ info: { point: null, type: null } });
+        }}>
+        </div>
+        <div className="point__data">
+          <div className="point__data-name">{point.name}</div>
+          <div className="point__data-ico"/>
+          <div className="point__data-type">Type {type}</div>
+          <div className="point__data-text">Lat: {point.lat}</div>
+          <div className="point__data-text">Lng: {point.lng}</div>
+          <button className="point__data-btn-close" onClick={() => {
+            this.props.updateReduxState({ info: { point: null, type: null } });
+          }}/>
+          <button onClick={this.goToMarker}>goToMarker</button>
+          <button className="point__data-btn-remove" onClick={() => {
+            this.delMarker()
+              .then(() => {
+                this.props.updateReduxState({ info: { point: null, type: null } });
+              });
+            return false;
+          }}>Remove point
+          </button>
+          <WindRoseChart stationId={point.station_id}/>
+        </div>
       </div>
     );
   }
