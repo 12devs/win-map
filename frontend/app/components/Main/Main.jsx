@@ -65,12 +65,13 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h1>Main</h1>
-        <button onClick={this.openNotificationSettings}> Settings</button>
-        <button onClick={this.changeViewType}> Mode</button>
-        <button onClick={this.logout}>logout</button>
-        <input type="range" id="start" name="size"
+        <div className="map__navigation">
+          <button className="map__navigation-btn map__navigation-btn--settings" onClick={this.openNotificationSettings}></button>
+          <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}></button>
+          <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}></button>
+          <input className="map__navigation-range" type="range" id="start" name="size"
                min="0" max="1000000" onChange={(e) => this.props.changeScaleWind(e.target.value)}/>
+        </div>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>

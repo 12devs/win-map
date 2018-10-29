@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import actions from './../../actions';
 import {Dropdown, Icon, Menu} from 'antd';
 import services from '../../services';
+import { redIcon } from '../icons';
 
 class Notifications extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Notifications extends React.Component {
 
     return (
       <Dropdown overlay={menu} onVisibleChange={this.visibleChange} visible={this.state.visible} trigger={['click']}>
-        <Icon type="bell"/>
+        <Icon style={{border:'1px solid', width: '2rem !important', height: '2rem !important'}} type="bell"/>
       </Dropdown>
     );
   }

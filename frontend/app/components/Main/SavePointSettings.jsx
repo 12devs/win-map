@@ -63,43 +63,43 @@ class SavePointSettings extends React.Component {
     }
 
     return (
-      <div style={{
-        whiteSpace: "pre",
-        position: "absolute",
-        left: "100px",
-        top: "300px",
-        zIndex: 1000,
-        padding: '50px',
-        backgroundColor: 'white',
-        margin: "auto",
-        width: "60%"
-      }}>
+      <div className="point">
+        <div className="point__title">Add point</div>
         <div>
-          <label>Name
-            <input type="text" value={this.state.name} onChange={(e) => {
+          <label>
+            <input className="point__input-text" placeholder="Name" type="text" value={this.state.name} onChange={(e) => {
               this.setState({ name: e.target.value })
             }}/>
           </label>
         </div>
-        <div>
-          <label>Type
-            Place
-            <input type="radio"
+        <div className="point__create-map">
+          <label className="point__create-map-label point__create-map-label--green">
+            <input
+                   className="point__create-map-radio"
+                   type="radio"
                    value={'My Place'}
                    checked={this.state.markerType === 'My Place'}
                    onChange={this.changeMarketType}/>
 
-            <input type="radio"
+              <span className="point__create-map-title">My place</span>
+          </label>
+
+
+          <label className="point__create-map-label point__create-map-label--red">
+            <input
+                   className="point__create-map-radio"
+                   type="radio"
                    checked={this.state.markerType === 'Danger'}
                    value={'Danger'}
                    onChange={this.changeMarketType}/>
+
+              <span className="point__create-map-title">Danger</span>
           </label>
         </div>
-        <button onClick={this.addMarker}>Send</button>
-        <button onClick={() => {
+        {/* <button onClick={this.addMarker}>Send</button> */}
+        <button className="point__create-map-close" onClick={() => {
           this.props.changeSavePointSettings({ show: false })
-        }}>Close
-        </button>
+        }}></button>
       </div>
     );
   }

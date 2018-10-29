@@ -26,7 +26,7 @@ class MyMap extends React.Component {
         <Map
           onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
           bounds={bounds}
-          style={{ height: '600px' }}
+          style={{ height: '100vh' }}
         >
           <ReactLeafletSearch position="topleft"/>
           <TileLayer

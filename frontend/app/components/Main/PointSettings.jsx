@@ -35,31 +35,23 @@ class PointSettings extends React.Component {
     }
 
     return (
-      <div style={{
-        whiteSpace: "pre",
-        position: "absolute",
-        left: "100px",
-        top: "300px",
-        zIndex: 1000,
-        padding: '50px',
-        backgroundColor: 'white',
-        margin: "auto",
-        width: "60%"
-      }}>
-        <button onClick={() => {
+      <div className="point__data">
+        <div className="point__data-name">{point.name}</div>
+        <div className="point__data-ico"></div>
+        <div className="point__data-type">Type {type}</div>
+        <div className="point__data-text">Lat: {point.lat}</div>
+        <div className="point__data-text">Lng: {point.lng}</div>
+        <button className="point__data-btn-close" onClick={() => {
           this.props.changeInfo({point: null, type: null});
-        }}>close
-        </button>
-        <button onClick={() => {
+        }}></button>
+        <button  className="point__data-btn-remove" onClick={() => {
           this.delMarker()
             .then(()=>{
               this.props.changeInfo({point: null, type: null});
             });
           return false
-        }}>delete
+        }}>Remove point
         </button>
-        {JSON.stringify(point, null, 2)}
-        {type}
       </div>
     );
   }
