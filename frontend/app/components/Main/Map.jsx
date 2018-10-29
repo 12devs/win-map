@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, TileLayer, LayersControl, LayerGroup } from 'react-leaflet';
+import { Map, TileLayer, LayersControl, LayerGroup, Rectangle } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
@@ -20,13 +20,13 @@ class MyMap extends React.Component {
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
 
     if (this.props.mapBounds) {
-      bounds = this.props.mapBounds.toJS()
+      bounds = this.props.mapBounds
     }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
-          onClick={(e) => this.props.changeSavePointSettings({ show: true, latlng: e.latlng })}
+          onClick={(e) => this.props.updateReduxState({savePointSettings:{ show: true, latlng: e.latlng }})}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}
@@ -65,13 +65,6 @@ class MyMap extends React.Component {
                   attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                   url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
                 />
-                {/*<TileLayer*/}
-                  {/*attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'*/}
-                  {/*url='https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}'*/}
-                  {/*minZoom={0}*/}
-                  {/*maxZoom={20}*/}
-                  {/*ext='png'*/}
-                {/*/>*/}
               </LayerGroup>
             </BaseLayer>
 
@@ -83,10 +76,10 @@ class MyMap extends React.Component {
           />
 
           <Markers/>
+          <Rectangle bounds={[[90, -180], [-90, 180]]}/>
         </Map>
       </div>
-    )
-      ;
+    );
   }
 }
 

@@ -48,7 +48,7 @@ class SectorPolygon extends React.Component {
 
   render() {
     const { point} = this.props;
-    const stationsData = this.props.stationsData.toJS();
+    const stationsData = this.props.stationsData;
     let dist;
     if (this.props.dist || this.props.dist === 0){
       dist = this.props.dist;

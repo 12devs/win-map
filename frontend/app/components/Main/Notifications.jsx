@@ -16,10 +16,10 @@ class Notifications extends React.Component {
   }
 
   handleClick = (id) => {
-    const notifications = this.props.notifications.toJS();
+    const notifications = this.props.notifications;
     const index = notifications.findIndex(el => el.id === id);
     notifications[index].view_at = new Date();
-    this.props.changeNotifications(notifications);
+    this.props.updateReduxState({notifications});
     return services.viewNotifications({notification: notifications[index]})
   };
 
@@ -28,7 +28,7 @@ class Notifications extends React.Component {
   };
 
   render() {
-    const filter = this.props.notifications.toJS().filter(el => el.view_at === null);
+    const filter = this.props.notifications.filter(el => el.view_at === null);
     const menu = (
       <Menu>
         {filter.map((el) =>

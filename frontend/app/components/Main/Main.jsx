@@ -6,7 +6,6 @@ import Map from './Map'
 import NotificationSettings from './NotificationSettings';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
-import { deleteToken } from "../../services/push-notification";
 import Notifications from './Notifications';
 import geolib from "geolib";
 
@@ -35,9 +34,9 @@ class Main extends React.Component {
 
   changeViewType() {
     if (this.props.viewType === 'Current') {
-      this.props.changeViewType('Historical')
+      this.props.updateReduxState({viewType:'Historical'})
     } else {
-      this.props.changeViewType('Current')
+      this.props.updateReduxState({viewType:'Current'})
     }
   }
 
@@ -50,7 +49,7 @@ class Main extends React.Component {
       .then(res => {
         res.savePointSettings = {};
         res.mapBounds = this.calcBounds([...res.places, ...res.dangers]);
-        this.props.setMainData(res);
+        this.props.updateReduxState(res);
         this.props.updateStatistic();
       })
   }
@@ -70,10 +69,10 @@ class Main extends React.Component {
 
   showAll() {
     try {
-      const places = this.props.places.toJS();
-      const dangers = this.props.dangers.toJS();
-      const bounds = this.calcBounds([...places, ...dangers]);
-      this.props.changeMapBounds(bounds);
+      const places = this.props.places;
+      const dangers = this.props.dangers;
+      const mapBounds = this.calcBounds([...places, ...dangers]);
+      this.props.updateReduxState({mapBounds});
       this.closeNotificationSettings();
     } catch (err) {
       console.log(err);
@@ -92,7 +91,7 @@ class Main extends React.Component {
           <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
-               min="0" max="1000000" onChange={(e) => this.props.changeScaleWind(e.target.value)}/>
+               min="0" max="1000000" onChange={(e) => this.props.updateReduxState({scaleWind: e.target.value})}/>
         <button onClick={this.showAll}>showAll</button>
         </div>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
