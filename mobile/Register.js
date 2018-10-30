@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import services from './services'
-import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
 
-class Login extends Component {
+class Register extends Component {
   state = {
     login: 'x',
     password: 'x'
@@ -16,14 +15,11 @@ class Login extends Component {
     this.setState({ password: text })
   };
   login = () => {
-    console.log('login');
     const { login, password } = this.state;
     console.log(login, password);
     services.login(login, password)
       .then(res => {
-        console.log(res);
-        AsyncStorage.setItem('windToken', res.token);
-        Actions.Main();
+        AsyncStorage.setItem('windToken', res.token)
       })
       .catch((error) => {
         console.error(error);
@@ -72,7 +68,7 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Register
 
 const styles = StyleSheet.create({
   container: {

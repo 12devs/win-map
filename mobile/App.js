@@ -1,9 +1,20 @@
 import React from 'react';
 import Login from './Login.js'
+import Register from './Register.js'
+import Main from './Main.js'
+import Test from './Test.js'
+import { Router, Scene } from 'react-native-router-flux'
 
 const App = () => {
   return (
-    <Login />
+    <Router>
+      <Scene key = "root">
+        <Scene key = "Login" component = {Login} title = "Login" />
+        <Scene key = "Register" component = {Register} title = "Register" />
+        <Scene key = "Main" component = {Main} title = "Main" initial = {true}/>
+        <Scene key = "Test" component = {Test} title = "Test" />
+      </Scene>
+    </Router>
   )
 }
 export default App
