@@ -34,14 +34,14 @@ class MyMap extends React.Component {
           <ReactLeafletSearch position="topleft"/>
 
           <LayersControl position="topright">
-            <BaseLayer checked name="1">
+            <BaseLayer checked name="OpenStreetMap">
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
             </BaseLayer>
 
-            <BaseLayer name="2">
+            <BaseLayer name="Arcgisonline With Names">
               <LayerGroup>
 
                 <TileLayer
@@ -58,7 +58,7 @@ class MyMap extends React.Component {
               </LayerGroup>
             </BaseLayer>
 
-            <BaseLayer name="3">
+            <BaseLayer name="Arcgisonline">
               <LayerGroup>
 
                 <TileLayer

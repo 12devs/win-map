@@ -50,7 +50,6 @@ const computeDestinationPoint = (start, distance, bearing) => {
 };
 
 const getPolygon = (point, dist, direction) => {
-  console.log(Number.TO_RAD);
   const result = [point];
   if (sectors[direction]) {
     sectors[direction].forEach(bearing => {
