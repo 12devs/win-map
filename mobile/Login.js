@@ -1,77 +1,57 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import services from './services'
-import { Actions } from 'react-native-router-flux';
-import { AsyncStorage } from 'react-native';
 
 class Login extends Component {
   state = {
-    login: 'x',
-    password: 'x'
+    email: '',
+    password: ''
   };
-  handleLogin = (text) => {
-    this.setState({ login: text })
+  handleEmail = (text) => {
+    this.setState({ email: text })
   };
   handlePassword = (text) => {
     this.setState({ password: text })
   };
-  login = () => {
-    console.log('login');
-    const { login, password } = this.state;
-    console.log(login, password);
-    services.login(login, password)
-      .then(res => {
-        console.log(res);
-        AsyncStorage.setItem('windToken', res.token);
-        Actions.Main();
+  login = (email, pass) => {
+    fetch('http://localhost:8081/publicRouts/test', {
+      method: "get",
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
       })
       .catch((error) => {
         console.error(error);
       });
   };
-
-  test = () => {
-    const { login, password } = this.state;
-    console.log(login, password);
-    services.getInfo()
-      .then(res => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput style={styles.input}
-                   underlineColorAndroid="transparent"
-                   placeholder="Login"
-                   placeholderTextColor="#9a73ef"
-                   autoCapitalize="none"
-                   onChangeText={this.handleLogin}/>
-        <TextInput style={styles.input}
-                   underlineColorAndroid="transparent"
-                   placeholder="Password"
-                   placeholderTextColor="#9a73ef"
-                   autoCapitalize="none"
-                   onChangeText={this.handlePassword}/>
+      <View style = {styles.container}>
+        <TextInput style = {styles.input}
+                   underlineColorAndroid = "transparent"
+                   placeholder = "Email"
+                   placeholderTextColor = "#9a73ef"
+                   autoCapitalize = "none"
+                   onChangeText = {this.handleEmail}/>
+
+        <TextInput style = {styles.input}
+                   underlineColorAndroid = "transparent"
+                   placeholder = "Password"
+                   placeholderTextColor = "#9a73ef"
+                   autoCapitalize = "none"
+                   onChangeText = {this.handlePassword}/>
+
         <TouchableOpacity
-          style={styles.submitButton}
-          onPress={this.login}>
-          <Text style={styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={this.test}>
-          <Text style={styles.submitButtonText}> Test </Text>
+          style = {styles.submitButton}
+          onPress = {
+            () => this.login(this.state.email, this.state.password)
+          }>
+          <Text style = {styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
       </View>
     )
   }
 }
-
 export default Login
 
 const styles = StyleSheet.create({
@@ -90,7 +70,7 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 40,
   },
-  submitButtonText: {
+  submitButtonText:{
     color: 'white'
   }
 });

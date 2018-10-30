@@ -57,26 +57,26 @@ class PointSettings extends React.Component {
         </div>
         <div className="point__data">
           <div className="point__data-name">{point.name}</div>
-          <div className="point__data-ico"/>
           <div className="point__data-type">Type {type}</div>
+          <WindRoseChart stationId={point.station_id}/>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>
           <button className="point__data-btn-close" onClick={() => {
             this.props.updateReduxState({ info: { point: null, type: null } });
           }}/>
-          <button onClick={this.goToMarker}>goToMarker</button>
-          <button className="point__data-btn-remove" onClick={() => {
+          <button className="point__data-btn-meta point__data-btn-meta--marker" onClick={this.goToMarker}>Go to marker
+          </button>
+          <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
             this.delMarker()
               .then(() => {
                 this.props.updateReduxState({ info: { point: null, type: null } });
               });
-            return false;
+            return false
           }}>Remove point
           </button>
           <WindRoseChart stationId={point.station_id}/>
         </div>
-      </div>
-    );
+      </div>);
   }
 }
 
