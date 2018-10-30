@@ -11,22 +11,17 @@ class SavePointSettings extends React.Component {
       markerType: '',
     };
     this.addMarker = this.addMarker.bind(this);
-    this.changeMarketType = this.changeMarketType.bind(this);
   }
 
-  changeMarketType = (e) => {
-    this.setState({ markerType: e.currentTarget.value })
-  };
-
   addMarker(markerType) {
-    const { latlng } = this.props.savePointSettings.toJS();
+    const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
 
     let key;
     if (markerType === 'Danger') {
-      key = 'danger'
+      key = 'danger';
     } else {
-      key = 'place'
+      key = 'place';
     }
 
     let lngCorrect = latlng.lng;
@@ -47,10 +42,10 @@ class SavePointSettings extends React.Component {
     })
       .then(res => {
         const { danger, place } = res;
-        let places = this.props.places.toJS();
-        let dangers = this.props.dangers.toJS();
-        let stationsData = this.props.stationsData.toJS();
-        const stations = this.props.stations.toJS();
+        let places = this.props.places;
+        let dangers = this.props.dangers;
+        let stationsData = this.props.stationsData;
+        const stations = this.props.stations;
         stationsData = { ...stationsData, ...res.stationsData };
         if (danger) {
           dangers.push(danger);
@@ -59,58 +54,65 @@ class SavePointSettings extends React.Component {
           places.push(place);
         }
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateMainData({ places, dangers, stationsData, stations });
-        this.props.changeSavePointSettings({ show: false })
+        this.props.updateReduxState({ places, dangers, stationsData, stations });
+        this.props.updateReduxState({ savePointSettings: { show: false } });
       });
   };
 
   render() {
-    const { show } = this.props.savePointSettings.toJS();
+    const { show } = this.props.savePointSettings;
 
     if (!show) {
-      return null
+      return null;
     }
 
     return (
-      <div className="point">
-        <div className="point__title">Add point</div>
-        <div>
-          <label>
-            <input className="point__input-text" placeholder="Name" type="text" value={this.state.name}
-                   onChange={(e) => {
-                     this.setState({ name: e.target.value })
-                   }}/>
-          </label>
+      <div>
+        <div className='point__container' onClick={() => {
+          this.props.updateReduxState({ savePointSettings: { show: false } });
+        }}>
         </div>
-        <div className="point__create-map">
-          <label className="point__create-map-label point__create-map-label--green">
-            <input
-              className="point__create-map-radio"
-              type="radio"
-              value={'My Place'}
-              onChange={() => {
-                this.addMarker('My Place')
-              }}/>
-            <span className="point__create-map-title">My place</span>
-          </label>
+        <div className="point">
+          <div className="point__title">Add point</div>
+          <div>
+            <label>
+              <input className="point__input-text" placeholder="Name" type="text" value={this.state.name}
+                     onChange={(e) => {
+                       this.setState({ name: e.target.value });
+                     }}/>
+            </label>
+          </div>
+          <div className="point__create-map">
+            <label className="point__create-map-label point__create-map-label--green">
+              <input
+                className="point__create-map-radio"
+                type="radio"
+                value={'My Place'}
+                onChange={() => {
+                  this.addMarker('My Place');
+                }}/>
+              <span className="point__create-map-title">My place</span>
+            </label>
 
 
-          <label className="point__create-map-label point__create-map-label--red">
-            <input
-              className="point__create-map-radio"
-              type="radio"
-              value={'Danger'}
-              onChange={() => {
-                this.addMarker('Danger')
-              }}/>
+            <label className="point__create-map-label point__create-map-label--red">
+              <input
+                className="point__create-map-radio"
+                type="radio"
+                value={'Danger'}
+                onChange={() => {
+                  this.addMarker('Danger');
+                }}/>
 
-            <span className="point__create-map-title">Danger</span>
-          </label>
+              <span className="point__create-map-title">Danger</span>
+            </label>
+          </div>
+          <button className="point__create-map-close" onClick={() => {
+            this.props.updateReduxState({ savePointSettings: { show: false } });
+          }}/>
         </div>
-        <button className="point__create-map-close" onClick={() => {
-          this.props.changeSavePointSettings({ show: false })
-        }}/>
       </div>
+
     );
   }
 }

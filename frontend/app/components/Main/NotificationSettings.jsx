@@ -13,7 +13,7 @@ class NotificationSettings extends React.Component {
 
   handleClick = () => {
     this.props.close();
-    return services.sendSubscriptions({ subscriptions: this.props.notificationSettings.toJS() })
+    return services.sendSubscriptions({ subscriptions: this.props.notificationSettings })
   };
 
   render() {
@@ -39,10 +39,10 @@ class NotificationSettings extends React.Component {
           {this.props.places.map((point, id) =>
             <tr key={id}>
               <td>
-                {point.get('name')}
+                {point.name}
               </td>
               <td>
-                <MultiSelect point={point.toJS()}/>
+                <MultiSelect point={point}/>
               </td>
             </tr>
           )}

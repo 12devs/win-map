@@ -1,24 +1,3 @@
-const changeMarkerType = function (value) {
-  return {
-    type: "changeMarkerType",
-    value
-  }
-};
-
-const changeActionType = function (value) {
-  return {
-    type: "changeActionType",
-    value
-  }
-};
-
-const changeViewType = function (value) {
-  return {
-    type: "changeViewType",
-    value
-  }
-};
-
 const updateStatistic = function (value) {
   return {
     type: "updateStatistic",
@@ -26,59 +5,14 @@ const updateStatistic = function (value) {
   }
 };
 
-const updateNotificationSettings = function (value) {
+const updateReduxState = function (state) {
   return {
-    type: "updateNotificationSettings",
-    value
+    type: "updateReduxState",
+    state
   }
 };
-
-
-const changeScaleWind = function (value) {
-  return {
-    type: "changeScaleWind",
-    value
-  }
-};
-
-const changeInfo = function (value) {
-  return {
-    type: "changeInfo",
-    value
-  }
-};
-
-const changeSavePointSettings = function (value) {
-  return {
-    type: "changeSavePointSettings",
-    value
-  }
-};
-
-const changeNotifications = function (value) {
-  return {
-    type: "changeNotifications",
-    value
-  }
-};
-
-const changeMapBounds = function (value) {
-  return {
-    type: "changeMapBounds",
-    value
-  }
-};
-
 
 module.exports = {
-  changeMarkerType,
-  changeActionType,
-  changeViewType,
   updateStatistic,
-  updateNotificationSettings,
-  changeScaleWind,
-  changeInfo,
-  changeSavePointSettings,
-  changeNotifications,
-  changeMapBounds,
+  updateReduxState,
 };

@@ -1,4 +1,3 @@
-import { Map, Set, List } from "immutable";
 import immutable from "immutable";
 import geolib from 'geolib';
 
@@ -37,56 +36,17 @@ const getStats = (places, dangers, stationsData) => {
   return stats;
 };
 
-const reducer = function (state = Map(), action) {
+const reducer = function (state = immutable.Map(), action) {
   switch (action.type) {
     case "SET_STATE":
-      return state.merge(action.state);
-    case "updatePoints":
-      return state.update("points", () => immutable.fromJS(action.value));
-    case "updateStationData":
-      return state.update("stationsData", () => immutable.fromJS(action.value));
-    case "updateStations":
-      return state.update("stations", () => immutable.fromJS(action.value));
-    case "changeMarkerType":
-      return state.update("markerType", () => immutable.fromJS(action.value));
-    case "changeActionType":
-      return state.update("actionType", () => immutable.fromJS(action.value));
-    case "changeViewType":
-      return state.update("viewType", () => immutable.fromJS(action.value));
-    case "updateNotificationSettings":
-      return state.update("notificationSettings", () => immutable.fromJS(action.value));
+      return immutable.fromJS(action.state);
+    case "updateReduxState":
+      return immutable.fromJS(immutable.mergeWith((oldVal, newVal, key) => {
+        return newVal;
+      }, state, action.state));
     case "updateStatistic":
-      return state.update("statistic", () => immutable.fromJS(getStats(state.get('places').toJS(), state.get('dangers').toJS(), state.get('stationsData').toJS())));
-    case "changeScaleWind":
-      return state.update("scaleWind", () => immutable.fromJS(action.value));
-    case "changeInfo":
-      return state.update("info", () => immutable.fromJS(action.value));
-    case "changeSavePointSettings":
-      return state.update("savePointSettings", () => immutable.fromJS(action.value));
-    case "changeNotifications":
-      return state.update("notifications", () => immutable.fromJS(action.value));
-    case "changeMapBounds":
-      return state.update("mapBounds", () => immutable.fromJS(action.value));
-    case "updateMainData":
-      return state.update((state) => {
-        const newState = state.toJS();
-        if (action.value.dangers) {
-          newState.dangers = action.value.dangers;
-        }
-        if (action.value.places) {
-          newState.places = action.value.places;
-        }
-        if (action.value.stations) {
-          newState.stations = action.value.stations;
-        }
-        if (action.value.stationsData) {
-          newState.stationsData = action.value.stationsData;
-        }
-        newState.statistic = getStats(newState.places, newState.dangers, newState.stationsData);
-        return immutable.fromJS(newState)
-      });
+      return state.update("statistic", () => immutable.fromJS(getStats(state.get('places'), state.get('dangers'), state.get('stationsData'))));
   }
-  return state;
 };
 
 module.exports = reducer;
