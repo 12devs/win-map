@@ -30,7 +30,7 @@ class Test extends Component {
     return (
       <ScrollView style={styles.container}>
         <Navigation/>
-        <Text>{JSON.stringify(this.state, null, 4)}</Text>
+        <Text>{JSON.stringify(this.props, null, 4)}</Text>
       </ScrollView>
     )
   }
@@ -38,6 +38,7 @@ class Test extends Component {
 
 function mapStateToProps(state) {
   return {
+    savePointSettings: state.get('savePointSettings'),
     places: state.get('places'),
     dangers: state.get('dangers'),
     stations: state.get('stations'),
