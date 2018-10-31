@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import actions from '../actions';
 import redIcon from '../assets/map_red.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
+import { Actions } from 'react-native-router-flux';
 
 class Danger extends React.Component {
   constructor(props) {
@@ -46,8 +47,9 @@ class Danger extends React.Component {
           longitude: this.props.point.lng
         }}
         onDragEnd={(e) => this.updatePosition(this.props.point.id, e)}
-        onClick={() => {
+        onPress={() => {
           this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
+          Actions.PointSettings();
         }}
         draggable
         image={redIcon}

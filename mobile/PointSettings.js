@@ -13,12 +13,13 @@ class PointSettings extends Component {
       <View style = {styles.container}>
         <Navigation/>
           <Text style = {styles.submitButtonText}> {JSON.stringify(this.props.savePointSettings, null, 4)} </Text>
+          <Text style = {styles.submitButtonText}> pointSettings </Text>
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
             () => Actions.Main()
           }>
-          <Text style={styles.submitButtonText}>Logout</Text>
+          <Text style={styles.submitButtonText}>Close</Text>
         </TouchableOpacity>
       </View>
     )

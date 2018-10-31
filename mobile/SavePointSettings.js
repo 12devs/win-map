@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './actions';
 import services from "./services";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
+import Navigation from './Navigation';
+import { Actions } from 'react-native-router-flux';
 
 class SavePointSettings extends React.Component {
   constructor(props) {
@@ -66,50 +68,35 @@ class SavePointSettings extends React.Component {
     if (!show) {
       return null;
     }
-
+    console.log(this.state.name);
     return (
-      <View style={styles.modal}>
 
+
+      <View style={styles.container}>
         <Text>Add point</Text>
-
-        {/* <div>
-            <label>
-              <input className="point__input-text" placeholder="Name" type="text" value={this.state.name}
-                     onChange={(e) => {
-                       this.setState({ name: e.target.value });
-                     }}/>
-            </label>
-          </div>
-          <div className="point__create-map">
-            <label className="point__create-map-label point__create-map-label--green">
-              <input
-                className="point__create-map-radio"
-                type="radio"
-                value={'My Place'}
-                onChange={() => {
-                  this.addMarker('My Place');
-                }}/>
-              <span className="point__create-map-title">My place</span>
-            </label>
-
-
-            <label className="point__create-map-label point__create-map-label--red">
-              <input
-                className="point__create-map-radio"
-                type="radio"
-                value={'Danger'}
-                onChange={() => {
-                  this.addMarker('Danger');
-                }}/>
-
-              <span className="point__create-map-title">Danger</span>
-            </label>
-          </div>
-          <button className="point__create-map-close" onClick={() => {
-            this.props.updateReduxState({ savePointSettings: { show: false } });
-          }}/>*/}
+        <Text style={styles.submitButtonText}> {JSON.stringify(this.props.savePointSettings, null, 4)} </Text>
+        <TextInput style={styles.input}
+                   underlineColorAndroid="transparent"
+                   placeholder="Name"
+                   placeholderTextColor="#9a73ef"
+                   autoCapitalize="none"
+                   onChangeText={(e) => {
+                     this.setState({ name: e });
+                   }}/>
+        <Button
+          onPress={() => {
+            this.addMarker('My Place');
+            Actions.Main();
+          }}
+          title='My Place'/>
+        <Button
+          onPress={() => {
+            this.addMarker('Danger');
+            Actions.Main();
+          }}
+          title='Danger'
+          color='red'/>
       </View>
-
     );
   }
 }
@@ -143,5 +130,12 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0
-  }
+  },
+  input: {
+    margin: 5,
+    height: 40,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    // flex:1
+  },
 });

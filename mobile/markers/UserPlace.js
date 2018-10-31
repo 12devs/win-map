@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import actions from '../actions';
 import blueIcon from '../assets/map_blue.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
+import { Actions } from 'react-native-router-flux';
 
 class UserPlace extends React.Component {
   constructor(props) {
@@ -46,23 +47,13 @@ class UserPlace extends React.Component {
           longitude: this.props.point.lng
         }}
         onDragEnd={(e) => this.updatePosition(this.props.point.id, e)}
-        onClick={() => {
+        onPress={() => {
           this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
+          Actions.PointSettings();
         }}
         draggable
         image={blueIcon}
       />
-      /*<Marker
-        draggable={true}
-        onDragend={(e) => {
-          this.updatePosition(this.props.point.id, e);
-        }}
-        onClick={() => {
-          this.props.updateReduxState({info: {point: this.props.point, type:'place'}});
-        }}
-        position={[this.props.point.lat, this.props.point.lng]}
-        icon={blueIcon}>
-      </Marker>*/
     );
   }
 }

@@ -5,6 +5,8 @@ import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
+import { Actions } from 'react-native-router-flux';
+
 
 
 const screen = Dimensions.get('window');
@@ -27,12 +29,16 @@ class Login extends Component {
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
     return (
       <MapView
-        onPress={(e) => this.props.updateReduxState({
-          savePointSettings: {
-            show: true,
-            latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
-          }
-        })}
+        onPress={(e) => {
+          console.log({ lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude });
+          this.props.updateReduxState({
+            savePointSettings: {
+              show: true,
+              latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
+            }
+          });
+          Actions.SavePointSettings()
+        }}
         provider={PROVIDER_DEFAULT}
         style={styles.map}
         initialRegion={{
