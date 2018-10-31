@@ -37,7 +37,7 @@ class Login extends Component {
               latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
             }
           });
-          Actions.SavePointSettings()
+          Actions.AddPoint()
         }}
         provider={PROVIDER_DEFAULT}
         style={styles.map}

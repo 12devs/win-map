@@ -6,7 +6,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'rea
 import Navigation from './Navigation';
 import { Actions } from 'react-native-router-flux';
 
-class SavePointSettings extends React.Component {
+class AddPoint extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,7 +73,6 @@ class SavePointSettings extends React.Component {
 
 
       <View style={styles.container}>
-        <Text>Add point</Text>
         <Text style={styles.submitButtonText}> {JSON.stringify(this.props.savePointSettings, null, 4)} </Text>
         <TextInput style={styles.input}
                    underlineColorAndroid="transparent"
@@ -114,7 +113,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(SavePointSettings);
+export default connect(mapStateToProps, actions)(AddPoint);
 
 const styles = StyleSheet.create({
   content: {

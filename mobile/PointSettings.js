@@ -5,10 +5,16 @@ import { Actions } from 'react-native-router-flux';
 import Navigation from "./Navigation";
 import actions from "./actions";
 import { connect } from "react-redux";
+import WindRoseChart from './WindRoseChart';
 
 class PointSettings extends Component {
 
   render() {
+    const { point, type } = this.props.info;
+
+    if (!(point && type)) {
+      return null;
+    }
     return (
       <View style = {styles.container}>
         <Navigation/>
@@ -21,6 +27,7 @@ class PointSettings extends Component {
           }>
           <Text style={styles.submitButtonText}>Close</Text>
         </TouchableOpacity>
+        <WindRoseChart stationId={point.station_id}/>
       </View>
     )
   }
@@ -37,6 +44,7 @@ function mapStateToProps(state) {
     actionType: state.get('actionType'),
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     savePointSettings: state.get('savePointSettings'),
+    info: state.get('info'),
   };
 }
 

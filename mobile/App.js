@@ -8,7 +8,7 @@ import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
-import SavePointSettings from './SavePointSettings';
+import AddPoint from './AddPoint';
 
 const store = createStore(reducer);
 
@@ -46,7 +46,7 @@ const App = () => {
           <Scene key="Register" component={Register} title="Register"/>
           <Scene key="Main" component={Main} title="Main"/>
           <Scene key="Test" component={Test} title="Test" initial={true}/>
-          <Scene key="SavePointSettings" component={SavePointSettings} title="SavePointSettings"/>
+          <Scene key="AddPoint" component={AddPoint} title="Add Point"/>
           <Scene key="PointSettings" component={PointSettings} title="PointSettings"/>
         </Scene>
       </Router>
