@@ -3,6 +3,7 @@ import Login from './Login.js'
 import Register from './Register.js'
 import Main from './Main.js'
 import Test from './Test.js'
+import PointSettings from './PointSettings.js'
 import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
@@ -42,8 +43,9 @@ const App = () => {
         <Scene key="root">
           <Scene key="Login" component={Login} title="Login"/>
           <Scene key="Register" component={Register} title="Register"/>
-          <Scene key="Main" component={Main} title="Main"initial={true}/>
-          <Scene key="Test" component={Test} title="Test" />
+          <Scene key="Main" component={Main} title="Main"/>
+          <Scene key="Test" component={Test} title="Test" initial={true}/>
+          <Scene key="PointSettings" component={PointSettings} title="PointSettings" initial={true}/>
         </Scene>
       </Router>
     </Provider>

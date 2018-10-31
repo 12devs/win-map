@@ -1,0 +1,68 @@
+import React, { Component } from 'react'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
+import services from "./services";
+import { Actions } from 'react-native-router-flux';
+import Navigation from "./Navigation";
+import actions from "./actions";
+import { connect } from "react-redux";
+
+class PointSettings extends Component {
+
+  render() {
+    return (
+      <View style = {styles.container}>
+        <Navigation/>
+          <Text style = {styles.submitButtonText}> {JSON.stringify(this.props.savePointSettings, null, 4)} </Text>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={
+            () => Actions.Main()
+          }>
+          <Text style={styles.submitButtonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+    savePointSettings: state.get('savePointSettings'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(PointSettings);
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    // justifyContent: 'space-between',
+    alignItems: 'stretch',
+    flex: 1,
+  },
+  input: {
+    margin: 5,
+    height: 40,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    // flex:1
+  },
+  submitButton: {
+    backgroundColor: '#7a42f4',
+    padding: 10,
+    margin: 5,
+    height: 40,
+  },
+  submitButtonText:{
+    color: 'black'
+  }
+});
