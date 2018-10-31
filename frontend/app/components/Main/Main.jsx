@@ -87,6 +87,7 @@ class Main extends React.Component {
     return (
       <div>
         <div className="map__navigation">
+          <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
           <button className="map__navigation-btn map__navigation-btn--settings" onClick={this.openNotificationSettings}/>
           <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
