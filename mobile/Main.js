@@ -3,34 +3,14 @@ import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-maps';
 import Navigation from "./Navigation";
+import { Actions } from 'react-native-router-flux';
+import actions from "./actions";
+import { connect } from "react-redux";
 
 
 const screen = Dimensions.get('window');
 
-class Login extends Component {
-  state = {
-    email: '',
-    password: ''
-  };
-  handleEmail = (text) => {
-    this.setState({ email: text });
-  };
-  handlePassword = (text) => {
-    this.setState({ password: text });
-  };
-  login = (email, pass) => {
-    /*fetch('http://192.168.1.87:8081/publicRouts/test', {
-      method: "get",
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });*/
-    console.log(this.state);
-  };
+class Main extends Component {
 
   render() {
     const ASPECT_RATIO = screen.width / screen.height;
@@ -42,6 +22,16 @@ class Login extends Component {
       <View style={styles.container}>
         <Navigation/>
         <MapView
+          onPress={(e) => {
+            console.log({ lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude });
+            this.props.updateReduxState({
+              savePointSettings: {
+                show: true,
+                latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
+              }
+            });
+            Actions.PointSettings()
+          }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}
           initialRegion={{
@@ -57,7 +47,21 @@ class Login extends Component {
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Main);
+
 
 const styles = StyleSheet.create({
   container: {
