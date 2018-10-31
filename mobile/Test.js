@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 
 import services from './services'
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
+import actions from "./actions";
+import { connect } from "react-redux";
 
 class Test extends Component {
   state = {
@@ -16,7 +18,7 @@ class Test extends Component {
         this.setState({token: windToken});
         return services.getInfo()
           .then(res => {
-            this.setState({info:res})
+            return this.props.updateReduxState(res)
           })
           .catch((error) => {
             console.error(error);
@@ -34,7 +36,20 @@ class Test extends Component {
   }
 }
 
-export default Test
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Test);
 
 const styles = StyleSheet.create({
   container: {
