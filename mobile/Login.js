@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
+import services from "./services";
+import { Actions } from 'react-native-router-flux';
+import Navigation from "./Navigation";
 
 class Login extends Component {
   state = {
@@ -12,13 +15,13 @@ class Login extends Component {
   handlePassword = (text) => {
     this.setState({ password: text })
   };
-  login = (email, pass) => {
-    fetch('http://localhost:8081/publicRouts/test', {
-      method: "get",
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
+  login = () => {
+    const { login, password } = this.state;
+    services.login(login, password)
+      .then(res => {
+        AsyncStorage.setItem('windToken', res.token);
+        Actions.Main();
+
       })
       .catch((error) => {
         console.error(error);
@@ -27,6 +30,7 @@ class Login extends Component {
   render() {
     return (
       <View style = {styles.container}>
+        <Navigation/>
         <TextInput style = {styles.input}
                    underlineColorAndroid = "transparent"
                    placeholder = "Email"

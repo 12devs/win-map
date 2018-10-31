@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import constants from '../constants'
+import { Actions } from 'react-native-router-flux';
 
 const API_URL_PREFIX = constants.api.URL_PREFIX;
 import { AsyncStorage } from 'react-native';
@@ -23,8 +24,8 @@ const fetch = (method, url, body) => {
               return result.data;
             })
             .catch(err => {
-              if (err.response.statusText === 'Unauthorized') {
-                location.assign('/login');
+              if (err.response.status === 401) {
+                Actions.Login()
               } else {
                 return err.response.data;
               }
@@ -59,8 +60,8 @@ const postPutDelete = (url, method, body) => {
           return result.data
         })
         .catch(err => {
-          if (err.response.statusText === 'Unauthorized') {
-            location.assign('/login')
+          if (err.response.status === 401) {
+            Actions.Login()
           } else {
             return err.response.data;
           }

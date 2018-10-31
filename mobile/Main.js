@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet ,Dimensions} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-maps';
+import Navigation from "./Navigation";
 
 
 const screen = Dimensions.get('window');
+
 class Login extends Component {
   state = {
     email: '',
@@ -38,6 +40,7 @@ class Login extends Component {
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
     return (
       <View style={styles.container}>
+        <Navigation/>
         <MapView
           provider={PROVIDER_DEFAULT}
           style={styles.map}
@@ -48,16 +51,7 @@ class Login extends Component {
             longitudeDelta: LONGITUDE_DELTA,
           }}
         >
-
         </MapView>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.animate()}
-            style={[styles.bubble, styles.button]}
-          >
-            <Text>Animate</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -67,33 +61,14 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    backgroundColor: 'red',
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    flex: 1,
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  bubble: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
-  },
-  latlng: {
-    width: 200,
-    alignItems: 'stretch',
-  },
-  button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    marginHorizontal: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: 'transparent',
-  },
+    flex: 10,
+  }
 });

@@ -1,27 +1,36 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import Navigation from './Navigation'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native'
 import services from './services'
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
 
 class Test extends Component {
-  state = {};
+  state = {
+    token:'',
+    info: {}
+  };
   componentDidMount = () => {
-    console.log('Test, componentDidMount');
-    services.getInfo()
-      .then(res => {
-        this.setState(res)
-      })
-      .catch((error) => {
-        console.error(error);
+    return AsyncStorage.getItem('windToken')
+      .then(windToken => {
+        this.setState({token: windToken});
+        return services.getInfo()
+          .then(res => {
+            this.setState({info:res})
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>{this.state}</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Navigation/>
+        <Text>{JSON.stringify(this.state, null, 4)}</Text>
+        <Text>{this.state.token}</Text>
+      </ScrollView>
     )
   }
 }

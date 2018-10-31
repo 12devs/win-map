@@ -11,8 +11,8 @@ const App = () => {
       <Scene key = "root">
         <Scene key = "Login" component = {Login} title = "Login" />
         <Scene key = "Register" component = {Register} title = "Register" />
-        <Scene key = "Main" component = {Main} title = "Main" initial = {true}/>
-        <Scene key = "Test" component = {Test} title = "Test" />
+        <Scene key = "Main" component = {Main} title = "Main" />
+        <Scene key = "Test" component = {Test} title = "Test" initial = {true}/>
       </Scene>
     </Router>
   )
