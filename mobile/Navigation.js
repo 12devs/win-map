@@ -56,13 +56,7 @@ export default Navigation
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flex: 1,
-  },
-  input: {
-    margin: 15,
-    height: 40,
-    borderColor: '#7a42f4',
-    borderWidth: 1
+    // flex: 1,
   },
   submitButton: {
     backgroundColor: '#7a42f4',

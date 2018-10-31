@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import services from './services'
-import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Navigation from "./Navigation";
 
 class Register extends Component {
   state = {
@@ -20,18 +20,6 @@ class Register extends Component {
     services.register(login, password)
       .then(() => {
         Actions.Login()
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  test = () => {
-    const { login, password } = this.state;
-    console.log(login, password);
-    services.getInfo()
-      .then(res => {
-        console.log(res);
       })
       .catch((error) => {
         console.error(error);
@@ -59,11 +47,6 @@ class Register extends Component {
           onPress={this.login}>
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={this.test}>
-          <Text style={styles.submitButtonText}> Test </Text>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -73,10 +56,9 @@ export default Register
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 23
   },
   input: {
-    margin: 15,
+    margin: 5,
     height: 40,
     borderColor: '#7a42f4',
     borderWidth: 1
@@ -84,7 +66,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#7a42f4',
     padding: 10,
-    margin: 15,
+    margin: 5,
     height: 40,
   },
   submitButtonText: {

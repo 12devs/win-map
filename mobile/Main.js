@@ -61,7 +61,6 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
     flexDirection: 'column',
     // justifyContent: 'center',
     justifyContent: 'space-between',

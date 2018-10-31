@@ -29,7 +29,6 @@ class Test extends Component {
       <ScrollView style={styles.container}>
         <Navigation/>
         <Text>{JSON.stringify(this.state, null, 4)}</Text>
-        <Text>{this.state.token}</Text>
       </ScrollView>
     )
   }
