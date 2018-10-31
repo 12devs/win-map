@@ -30,8 +30,7 @@ class WindRoseChart extends React.Component {
   render() {
     return (
       <ScrollView>
-        <Text>{JSON.stringify(this.props.stationsData[this.props.stationId].windRoseData)}</Text>
-        <ChartView style={{ height: 300 }} config={this.state.config}/>
+        <ChartView style={{ height: 300 }} config={this.state.config} options={this.state.options}/>
       </ScrollView>
     );
   }
