@@ -72,6 +72,7 @@ const getWindRoseData = async (lat, lng) => {
     // windRoseData.chart.alignTicks = true;
     // windRoseData.legend.margin = 0;
     windRoseData.legend.itemDistance = 2;
+    windRoseData.chart.zoomType= 'Xy';
     return ({history, period, windRoseData});
   } catch (err) {
     return ({history: {}, period: 0, windRoseData: {}});

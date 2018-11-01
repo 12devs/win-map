@@ -29,11 +29,11 @@ const sectors = {
 
 const computeDestinationPoint = (start, distance, bearing) => {
 
-  const {lat, lng} = start;
+  const { lat, lng } = start;
 
   const radius = 6371000;
 
-  const b = distance/ radius; // angular distance in radians
+  const b = distance / radius; // angular distance in radians
   const Q = bearing * Math.PI / 180;
 
   const f1 = lat * Math.PI / 180;
@@ -51,7 +51,7 @@ const computeDestinationPoint = (start, distance, bearing) => {
 };
 
 const getPolygon = (point, dist, direction) => {
-  const result = [{latitude: point.lat, longitude: point.lng}];
+  const result = [{ latitude: point.lat, longitude: point.lng }];
   if (sectors[direction]) {
     sectors[direction].forEach(bearing => {
       const p = computeDestinationPoint(point, dist, bearing);
@@ -81,10 +81,12 @@ class SectorPolygon extends React.Component {
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null);
     if (direction) {
       const positions = getPolygon(point, dist, direction);
-      console.log('pos', positions);
       return (
         <Polygon
           coordinates={positions}
+          strokeWidth={1}
+          strokeColor={'blue'}
+          fillColor={'red'}
         />
       )
     } else {

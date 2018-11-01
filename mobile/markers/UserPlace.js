@@ -49,7 +49,6 @@ class UserPlace extends React.Component {
         onDragEnd={(e) => this.updatePosition(this.props.point.id, e)}
         onPress={() => {
           this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
-          Actions.PointSettings();
         }}
         draggable
         image={blueIcon}

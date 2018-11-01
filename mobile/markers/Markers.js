@@ -18,12 +18,6 @@ class Markers extends React.Component {
         {this.props.dangers.map((point, id) => {
           return <Danger key={id} point={point} showInfo={this.showInfo}/>
         })}
-        {this.props.dangers.map((point, id) => {
-          return <SectorPolygon
-            key={id} point={point}
-          />
-        })}
-
       </View>
     );
   }

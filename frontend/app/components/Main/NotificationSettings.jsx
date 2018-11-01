@@ -23,33 +23,33 @@ class NotificationSettings extends React.Component {
     }
 
     return (
-      <div style={{ position: "absolute", left: "100px", top: "300px", zIndex: 1000, padding: '50px', backgroundColor: 'white', margin: "auto", width: "60%" }}>
-        <button onClick={askForPermissioToReceiveNotifications}>
-          Subscribe to notifications
-        </button>
-        <button onClick={deleteToken}>
-          unsubscribe to notifications
-        </button>
-        <table width="100%">
+      <div className="notification">
+        <table className="notification__settings" width="100%" cellPadding="0" cellSpacing="0">
           <tbody>
           <tr>
-            <th>place</th>
-            <th>danger</th>
+            <th className="notification__settings-item notification__settings-item--title">Place</th>
+            <th className="notification__settings-item notification__settings-item--title">Danger</th>
           </tr>
           {this.props.places.map((point, id) =>
             <tr key={id}>
-              <td>
+              <td className="notification__settings-item notification__settings-item--name">
                 {point.name}
               </td>
-              <td>
+              <td className="notification__settings-item notification__settings-item--name">
                 <MultiSelect point={point}/>
               </td>
             </tr>
           )}
           </tbody>
         </table>
-        <button onClick={this.handleClick}>Send</button>
-        <button onClick={this.props.close}>Close</button>
+        <button className="notification__btn notification__btn--sub" onClick={askForPermissioToReceiveNotifications}>
+          Subscribe
+        </button>
+        <button className="notification__btn notification__btn--unsub" onClick={deleteToken}>
+          Unsubscribe
+        </button>
+        <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
+        <button className="notification__settings-close" onClick={this.props.close}></button>
       </div>
     );
   }

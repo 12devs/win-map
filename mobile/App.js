@@ -10,7 +10,6 @@ import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
 import AddPoint from './AddPoint';
-import { View } from "react-native";
 
 const store = createStore(reducer);
 
@@ -26,10 +25,10 @@ store.dispatch({
     actionType: "Add",
     scaleWind: 5000,
     notificationSettings: [],
-    savePointSettings: {},
+    savePointSettings: {show: false},
     notifications: [],
     info: {
-      place: null,
+      point: null,
       type: null
     }
   }
@@ -42,16 +41,6 @@ store.dispatch({
 const App = () => {
   return (
     <Provider store={store}>
-        {/*<Router>*/}
-          {/*<Scene key="root">*/}
-            {/*<Scene key="Login" component={Login} title="Login"/>*/}
-            {/*<Scene key="Register" component={Register} title="Register"/>*/}
-            {/*<Scene key="Main" component={Main} title="Main"/>*/}
-            {/*<Scene key="Test" component={Test} title="Test" initial={true}/>*/}
-            {/*<Scene key="AddPoint" component={AddPoint} title="Add Point"/>*/}
-            {/*<Scene key="PointSettings" component={PointSettings} title="PointSettings"/>*/}
-          {/*</Scene>*/}
-        {/*</Router>*/}
       <Menu/>
     </Provider>
   )

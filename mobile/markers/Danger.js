@@ -5,6 +5,9 @@ import actions from '../actions';
 import redIcon from '../assets/point_red-mobile.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
+import { View } from "react-native";
+import SectorPolygon from "./SectorPolygon";
+import WindRose from "./WindRose";
 
 class Danger extends React.Component {
   constructor(props) {
@@ -39,23 +42,29 @@ class Danger extends React.Component {
   };
 
   render() {
-    const { viewType } = this.props;
+    const { viewType, point } = this.props;
     return (
-      <Marker
-        coordinate={{
-          latitude: this.props.point.lat,
-          longitude: this.props.point.lng
-        }}
-        onDragEnd={(e) => this.updatePosition(this.props.point.id, e)}
-        onPress={() => {
-          this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
-          Actions.PointSettings();
-        }}
-        draggable
-        image={redIcon}
-      />
-
-    );
+      <View>
+        <Marker
+          coordinate={{
+            latitude: point.lat,
+            longitude: point.lng
+          }}
+          onDragEnd={(e) => this.updatePosition(point.id, e)}
+          onPress={() => {
+            this.props.updateReduxState({ info: { point, type: 'place' } });
+          }}
+          draggable
+          image={redIcon}/>
+        {(() => {
+          if (viewType === "Current") {
+            return <SectorPolygon point={point}/>
+          } else {
+            return <WindRose point={point}/>
+          }
+        })()}
+      </View>
+    )
   }
 }
 

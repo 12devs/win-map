@@ -23,18 +23,21 @@ class Login extends Component {
     const { login, password } = this.state;
 
     return (
-      <div>
-        <h1>login</h1>
-        <div>
-          <span>login </span>
-          <input type="text" onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
-        </div>
-        <div>
-          <span>password </span>
-          <input type="text" onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
-        </div>
-        <div>
-          <button onClick={this.login}>login</button>
+      <div className="login">
+        <div className="login__form">
+          <div>
+            <label className="login__label" htmlFor="login">
+              <input placeholder="Login" className="login__input" type="text" onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
+            </label>
+          </div>
+          <div>
+            <label className="login__label" htmlFor="password">
+              <input placeholder="Password" className="login__input" type="text" onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
+            </label>
+          </div>
+          <div>
+            <button className="login__btn-submit" onClick={this.login}>Login</button>
+          </div>
         </div>
       </div>
     )
