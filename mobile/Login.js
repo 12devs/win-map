@@ -1,24 +1,27 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
+import services from "./services";
+import { Actions } from 'react-native-router-flux';
+import Navigation from "./Navigation";
 
 class Login extends Component {
   state = {
-    email: '',
+    login: '',
     password: ''
   };
   handleEmail = (text) => {
-    this.setState({ email: text })
+    this.setState({ login: text })
   };
   handlePassword = (text) => {
     this.setState({ password: text })
   };
-  login = (email, pass) => {
-    fetch('http://localhost:8081/publicRouts/test', {
-      method: "get",
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
+  login = () => {
+    const { login, password } = this.state;
+    services.login(login, password)
+      .then(res => {
+        AsyncStorage.setItem('windToken', res.token);
+        Actions.Main();
+
       })
       .catch((error) => {
         console.error(error);
@@ -27,16 +30,17 @@ class Login extends Component {
   render() {
     return (
       <View style = {styles.container}>
+        <Navigation/>
         <TextInput style = {styles.input}
                    underlineColorAndroid = "transparent"
-                   placeholder = "Email"
+                   placeholder = " Login"
                    placeholderTextColor = "#9a73ef"
                    autoCapitalize = "none"
                    onChangeText = {this.handleEmail}/>
 
         <TextInput style = {styles.input}
                    underlineColorAndroid = "transparent"
-                   placeholder = "Password"
+                   placeholder = " Password"
                    placeholderTextColor = "#9a73ef"
                    autoCapitalize = "none"
                    onChangeText = {this.handlePassword}/>
@@ -56,18 +60,23 @@ export default Login
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 23
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    // justifyContent: 'space-between',
+    alignItems: 'stretch',
+    flex: 1,
   },
   input: {
-    margin: 15,
+    margin: 5,
     height: 40,
     borderColor: '#7a42f4',
-    borderWidth: 1
+    borderWidth: 1,
+    // flex:1
   },
   submitButton: {
     backgroundColor: '#7a42f4',
     padding: 10,
-    margin: 15,
+    margin: 5,
     height: 40,
   },
   submitButtonText:{

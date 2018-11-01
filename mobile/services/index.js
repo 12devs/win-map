@@ -1,7 +1,6 @@
 import { fetch } from './fetch';
 
 const login = (login, password) => {
-  console.log(login, password);
   return fetch('post', '/publicRouts/login', { login, password });
 };
 

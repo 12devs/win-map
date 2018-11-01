@@ -1,32 +1,56 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import Navigation from './Navigation'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native'
 import services from './services'
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
+import actions from "./actions";
+import { connect } from "react-redux";
 
 class Test extends Component {
-  state = {};
+  state = {
+    token:'',
+    info: {}
+  };
   componentDidMount = () => {
-    console.log('Test, componentDidMount');
-    services.getInfo()
-      .then(res => {
-        this.setState(res)
-      })
-      .catch((error) => {
-        console.error(error);
+    return AsyncStorage.getItem('windToken')
+      .then(windToken => {
+        this.setState({token: windToken});
+        return services.getInfo()
+          .then(res => {
+            return this.props.updateReduxState(res)
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>{this.state}</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Navigation/>
+        <Text>{JSON.stringify(this.props, null, 4)}</Text>
+      </ScrollView>
     )
   }
 }
 
-export default Test
+function mapStateToProps(state) {
+  return {
+    savePointSettings: state.get('savePointSettings'),
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Test);
 
 const styles = StyleSheet.create({
   container: {
