@@ -223,15 +223,7 @@ a:focus {
         margin-top: 2rem;
         margin-bottom: 0.5rem;
         background-color: #F8C845;
-    //     background-size: 1.8rem 1.8rem;
-    //     background-position: 0.7rem 0.9rem;
-    //     background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg style='enable-background:new 0 0 24 24;' version='1.1' viewBox='0 0 24 24' fill='%23ffffff' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg id='info'/%3E%3Cg id='icons'%3E%3Cpath d='M12,0C7,0,3,4,3,9c0,6.2,3.4,11.7,8.5,14.9c0.3,0.2,0.7,0.2,1.1,0C17.6,20.6,21,15.2,21,9C21,4,17,0,12,0z M12,13 c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,11.2,14.2,13,12,13z' id='pin'/%3E%3C/g%3E%3C/svg%3E");
     }
-
-    // &--remove {
-    //     background-position: 0.7rem 0.4rem;
-    //     background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg%0Awidth='24px' fill='%23fff' id='Layer_1' style='enable-background:new 0 0 24 24;' version='1.1' viewBox='0 0 24 24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cstyle type='text/css'%3E%3C/style%3E%3Cpath class='st0' d='M18,22H6V8H4v13.7C4,22.8,4.9,24,6,24h12c1.1,0,2-1.2,2-2.3V8h-2V22z M15,4V2H9v2H2v2h20V4H15z M9,10v10h2V10H9 z M13,10v10h2V10H13z'/%3E%3C/svg%3E");
-    // }
 }
 
 .map__navigation {
@@ -325,7 +317,7 @@ a:focus {
 .login {
     width: 100%;
     height: 100%;
-    background-color: #E4EAF2;
+    background-color: #D3E0F4;
     position: absolute;
 }
 

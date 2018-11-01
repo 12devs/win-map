@@ -28,7 +28,5 @@ export default {
     googleAnalytics: {
         trackingId: 'UA-109067804-1'
     }
-
-
 }
 

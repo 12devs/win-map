@@ -46,7 +46,7 @@ class Login extends Component {
           }}
           region={this.props.mapRegion}
           mapPadding={{
-            top: mapPadding,
+            top: mapPadding * 2,
             right: mapPadding,
             bottom: mapPadding,
             left: mapPadding
@@ -77,7 +77,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, actions)(Login);
-
 
 const styles = StyleSheet.create({
   container: {

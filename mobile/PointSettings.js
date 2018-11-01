@@ -3,19 +3,38 @@ import { calcMapRegionOne } from './utils';
 import {
   View,
   Text,
-  TouchableOpacity,
-  TextInput,
   StyleSheet,
-  AsyncStorage,
   Modal,
-  Alert,
-  TouchableHighlight
 } from 'react-native';
 import actions from "./actions";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
+import services from './services';
+import Button from './Button';
 
 class PointSettings extends Component {
+  constructor() {
+    super();
+    this.delMarker = this.delMarker.bind(this);
+  }
+
+  delMarker() {
+    const { point, type } = this.props.info;
+    const { id } = point;
+    return services.deletePoint({
+      [type]: { id },
+    })
+      .then(res => {
+        if (type === 'place') {
+          const places = this.props.places.filter(el => !(el.id === id));
+          this.props.updateReduxState({ places });
+        }
+        if (type === 'danger') {
+          const dangers = this.props.dangers.filter(el => !(el.id === id));
+          this.props.updateReduxState({ dangers });
+        }
+      });
+  };
 
   render() {
     const { point, type } = this.props.info;
@@ -40,18 +59,22 @@ class PointSettings extends Component {
           <Text>Lat: {point.lat}</Text>
           <Text>Lng: {point.lng}</Text>
           <WindRoseChart stationId={point.station_id}/>
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={
-              () => {
-                const mapRegion = calcMapRegionOne(point);
-                if (mapRegion) {
-                  this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
-                }
+          <Button
+            label='Go to marker'
+            onPress={() => {
+              const mapRegion = calcMapRegionOne(point);
+              if (mapRegion) {
+                this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
               }
-            }>
-            <Text style={styles.submitButtonText}>Go to marker</Text>
-          </TouchableOpacity>
+            }}/>
+          <Button
+            label='Remove point'
+            onPress={() => {
+              this.delMarker()
+                .then(() => {
+                  this.props.updateReduxState({ info: { point: null, type: null } });
+                });
+            }}/>
         </View>
       </Modal>
     );
@@ -60,6 +83,15 @@ class PointSettings extends Component {
 
 function mapStateToProps(state) {
   return {
+    places: state.get('places'),
+    savePointSettings: state.get('savePointSettings'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     info: state.get('info'),
   };
 }
@@ -72,11 +104,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     flex: 1,
   },
-  submitButton: {
-    backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 25,
-    height: 40,
-    // flex: 1,
-  },
+  button: {
+    margin: 20
+  }
 });
