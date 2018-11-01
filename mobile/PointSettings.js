@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
-import services from "./services";
 import { Actions } from 'react-native-router-flux';
 import Navigation from "./Navigation";
 import actions from "./actions";

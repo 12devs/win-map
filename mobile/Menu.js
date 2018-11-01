@@ -1,23 +1,92 @@
-import Drawer from 'react-native-drawer'
-import Login from "./Login";
+import React, { Component } from 'react';
 
-class Menu extends Component {
-  closeControlPanel = () => {
-    this._drawer.close()
-  };
-  openControlPanel = () => {
-    this._drawer.open()
-  };
-  render () {
-    return (
-      <Drawer
-        ref={(ref) => this._drawer = ref}
-        content={<ControlPanel />}
-      >
-        <MainView />
-      </Drawer>
-    )
+import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox } from 'react-native';
+
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import Login from './Login';
+import Logout from './Logout';
+import Register from './Register';
+import Main from './Main';
+
+class HamburgerIcon extends Component {
+  toggleDrawer = () => {
+    this.props.navigationProps.toggleDrawer();
   }
-})
 
-export default Menu
+  render() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
+          <Image
+            source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
+            style={{ width: 25, height: 25, marginLeft: 5 }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+
+const Register_StackNavigator = createStackNavigator({
+  First: {
+    screen: Register,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Register',
+      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FF9800'
+      },
+      headerTintColor: '#fff',
+    })
+  },
+});
+
+
+const Login_StackNavigator = createStackNavigator({
+  Second: {
+    screen: Login,
+    navigationOptions: ({ navigation }) => {
+      return ({
+      title: 'Login',
+      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FF9800'
+      },
+      headerTintColor: '#fff',
+    })}
+  },
+});
+
+
+const Main_StackNavigator = createStackNavigator({
+  Third: {
+    screen: Main,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Map',
+      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FF9800'
+      },
+      headerTintColor: '#fff',
+    })
+  },
+});
+
+export default MyDrawerNavigator = createDrawerNavigator({
+    Register: {
+      screen: Register_StackNavigator
+    },
+    Login: {
+      screen: Login_StackNavigator
+    },
+    Map: {
+      screen: Main_StackNavigator
+    },
+    Logout: Logout
+  }, {
+    initialRouteName: 'Map',
+  }
+);
+
+

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import actions from './actions';
 import services from "./services";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
-import Navigation from './Navigation';
 import { Actions } from 'react-native-router-flux';
 
 class AddPoint extends React.Component {

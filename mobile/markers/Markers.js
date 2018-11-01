@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../actions';
-// import Danger from './Danger';
 import UserPlace from './UserPlace';
 import { StyleSheet, Text, View } from 'react-native';
 import Danger from './Danger';
+import SectorPolygon from './SectorPolygon';
+
 
 class Markers extends React.Component {
 
@@ -15,8 +16,14 @@ class Markers extends React.Component {
           return <UserPlace key={id} point={point} showInfo={this.showInfo}/>;
         })}
         {this.props.dangers.map((point, id) => {
-          return <Danger key={id} point={point} showInfo={this.showInfo}/>;
+          return <Danger key={id} point={point} showInfo={this.showInfo}/>
         })}
+        {this.props.dangers.map((point, id) => {
+          return <SectorPolygon
+            key={id} point={point}
+          />
+        })}
+
       </View>
     );
   }

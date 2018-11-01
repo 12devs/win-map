@@ -7,8 +7,6 @@ import actions from './actions';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 
-
-
 const screen = Dimensions.get('window');
 
 class Login extends Component {
@@ -37,7 +35,7 @@ class Login extends Component {
               latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
             }
           });
-          Actions.AddPoint()
+          // Actions.AddPoint()
         }}
         provider={PROVIDER_DEFAULT}
         style={styles.map}
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    maxHeight: '40%',
+    // maxHeight: '40%',
     flex: 10,
   }
 });
