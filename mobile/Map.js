@@ -37,7 +37,6 @@ class Login extends Component {
               latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
             }
           });
-          Actions.AddPoint()
         }}
         provider={PROVIDER_DEFAULT}
         style={styles.map}
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    maxHeight: '40%',
+    maxHeight: '100%',
     flex: 10,
   }
 });

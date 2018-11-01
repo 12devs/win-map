@@ -2,7 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './actions';
 import services from "./services";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Button,
+  Alert,
+  TouchableHighlight,
+  Modal
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 class AddPoint extends React.Component {
@@ -44,10 +54,7 @@ class AddPoint extends React.Component {
     })
       .then(res => {
         const { danger, place } = res;
-        let places = this.props.places;
-        let dangers = this.props.dangers;
-        let stationsData = this.props.stationsData;
-        const stations = this.props.stations;
+        let { places, dangers, stationsData, stations } = this.props;
         stationsData = { ...stationsData, ...res.stationsData };
         if (danger) {
           dangers.push(danger);
@@ -68,29 +75,37 @@ class AddPoint extends React.Component {
       return null;
     }
     return (
-      <View style={styles.container}>
-        <TextInput style={styles.input}
-                   underlineColorAndroid="transparent"
-                   placeholder="Point Name"
-                   placeholderTextColor="#9a73ef"
-                   autoCapitalize="none"
-                   onChangeText={(e) => {
-                     this.setState({ name: e });
-                   }}/>
-        <Button
-          onPress={() => {
-            this.addMarker('My Place');
-            Actions.Main();
-          }}
-          title='My Place'/>
-        <Button
-          onPress={() => {
-            this.addMarker('Danger');
-            Actions.Main();
-          }}
-          title='Danger'
-          color='red'/>
-      </View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={show}
+        onRequestClose={() => {
+          this.props.updateReduxState({ savePointSettings: { show: false } });
+        }}>
+        <View style={{ marginTop: 22 }}>
+          <View>
+            <TextInput style={styles.input}
+                       underlineColorAndroid="transparent"
+                       placeholder="Point Name"
+                       placeholderTextColor="#9a73ef"
+                       autoCapitalize="none"
+                       onChangeText={(e) => {
+                         this.setState({ name: e });
+                       }}/>
+            <Button
+              onPress={() => {
+                this.addMarker('My Place');
+              }}
+              title='My Place'/>
+            <Button
+              onPress={() => {
+                this.addMarker('Danger');
+              }}
+              title='Danger'
+              color='red'/>
+          </View>
+        </View>
+      </Modal>
     );
   }
 }

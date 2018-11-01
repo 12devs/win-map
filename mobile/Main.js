@@ -4,7 +4,8 @@ import Navigation from "./Navigation";
 import actions from './actions';
 import { connect } from "react-redux";
 import Map from './Map';
-import ModalEX from './ModalEX'
+import AddPoint from './AddPoint';
+import PointSettings from './PointSettings';
 
 class Login extends Component {
   state = {
@@ -18,12 +19,13 @@ class Login extends Component {
       <View style={styles.container}>
         <Navigation/>
         <Map/>
-        <ScrollView>
+       {/* <ScrollView>
+          <Text>{JSON.stringify(this.props.savePointSettings, null, 4)}</Text>
           <Text>{JSON.stringify(this.props.places, null, 4)}</Text>
           <Text>{JSON.stringify(this.props.dangers, null, 4)}</Text>
-          <Text>{JSON.stringify(this.props.savePointSettings, null, 4)}</Text>
-        </ScrollView>
-        <ModalEX/>
+        </ScrollView>*/}
+        <AddPoint/>
+        <PointSettings/>
       </View>
     );
   }
@@ -40,6 +42,8 @@ function mapStateToProps(state) {
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+    info: state.get('info'),
+
   };
 }
 

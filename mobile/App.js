@@ -24,10 +24,10 @@ store.dispatch({
     actionType: "Add",
     scaleWind: 5000,
     notificationSettings: [],
-    savePointSettings: {},
+    savePointSettings: {show: false},
     notifications: [],
     info: {
-      place: null,
+      point: null,
       type: null
     }
   }
