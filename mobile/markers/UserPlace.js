@@ -2,7 +2,7 @@ import React from 'react';
 import services from '../services/index';
 import { connect } from 'react-redux';
 import actions from '../actions';
-import blueIcon from '../assets/map_blue.png';
+import blueIcon from '../assets/point_blue-mobile.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 
