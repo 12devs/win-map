@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
-import { Actions } from 'react-native-router-flux';
 
 class Navigation extends Component {
 
@@ -10,41 +9,41 @@ class Navigation extends Component {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => Actions.Register()
+            () => console.log('All Markers')
           }>
-          <Text style={styles.submitButtonText}>Register</Text>
+          <Text style={styles.submitButtonText}>All Markers</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => Actions.Login()
+            () =>console.log('View Type')
           }>
-          <Text style={styles.submitButtonText}>Login</Text>
+          <Text style={styles.submitButtonText}>View Type</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => Actions.Main()
+            () =>console.log('Notifications')
           }>
-          <Text style={styles.submitButtonText}>Main</Text>
+          <Text style={styles.submitButtonText}>Notifications</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => AsyncStorage.setItem('windToken', '')
+            () => console.log('Subscription')
           }>
-          <Text style={styles.submitButtonText}>Logout</Text>
+          <Text style={styles.submitButtonText}>Subscription</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => Actions.Test()
+            () => console.log('Map View')
           }>
-          <Text style={styles.submitButtonText}>Test</Text>
+          <Text style={styles.submitButtonText}>Map View</Text>
         </TouchableOpacity>
       </View>
     )

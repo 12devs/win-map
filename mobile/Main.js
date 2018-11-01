@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import actions from './actions';
 import { connect } from "react-redux";
 import Map from './Map';
+import Navigation from './Navigation';
 import services from "./services";
 import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
@@ -22,6 +23,7 @@ class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Navigation/>
         <Map style={{flex:15}}/>
         <AddPoint/>
         <PointSettings/>
