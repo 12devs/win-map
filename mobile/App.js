@@ -47,7 +47,7 @@ const App = () => {
           <Scene key="Main" component={Main} title="Main"/>
           <Scene key="Test" component={Test} title="Test" initial={true}/>
           <Scene key="AddPoint" component={AddPoint} title="Add Point"/>
-          <Scene key="PointSettings" component={PointSettings} title="PointSettings"/>
+          <Scene key="PointSettings" component={PointSettings} title="Point Settings"/>
         </Scene>
       </Router>
     </Provider>

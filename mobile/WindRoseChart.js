@@ -9,7 +9,6 @@ class WindRoseChart extends React.Component {
     super(props);
     this.state = {
       config: {},
-      options: {}
     };
     this.newChart = this.newChart.bind(this);
   }
@@ -23,14 +22,13 @@ class WindRoseChart extends React.Component {
   newChart() {
     this.setState({
       config: this.props.stationsData[this.props.stationId].windRoseData,
-      options: {}
     });
   }
 
   render() {
     return (
       <ScrollView>
-        <ChartView style={{ height: 300 }} config={this.state.config} options={this.state.options}/>
+        <ChartView style={{ height: 300 }} config={this.state.config} more={true}/>
       </ScrollView>
     );
   }

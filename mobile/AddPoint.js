@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import actions from './actions';
 import services from "./services";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
-import Navigation from './Navigation';
 import { Actions } from 'react-native-router-flux';
 
 class AddPoint extends React.Component {
@@ -68,15 +67,11 @@ class AddPoint extends React.Component {
     if (!show) {
       return null;
     }
-    console.log(this.state.name);
     return (
-
-
       <View style={styles.container}>
-        <Text style={styles.submitButtonText}> {JSON.stringify(this.props.savePointSettings, null, 4)} </Text>
         <TextInput style={styles.input}
                    underlineColorAndroid="transparent"
-                   placeholder="Name"
+                   placeholder="Point Name"
                    placeholderTextColor="#9a73ef"
                    autoCapitalize="none"
                    onChangeText={(e) => {
