@@ -69,6 +69,7 @@ const getWindRoseData = async (lat, lng) => {
     windRoseData.credits.text = 'highcharts.com';
     windRoseData.tooltip.shared = false;
     windRoseData.legend.itemDistance = 2;
+    windRoseData.chart.zoomType= 'Xy';
     return ({history, period, windRoseData});
   } catch (err) {
     return ({history: {}, period: 0, windRoseData: {}});

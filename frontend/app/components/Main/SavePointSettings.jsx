@@ -60,6 +60,7 @@ class SavePointSettings extends React.Component {
   };
 
   render() {
+    console.log('savePointSettings')
     const { show } = this.props.savePointSettings;
 
     if (!show) {

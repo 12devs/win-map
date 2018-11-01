@@ -81,7 +81,7 @@ class SectorPolygon extends React.Component {
     if (direction) {
       const positions = getPolygon(point, dist, direction);
       return (
-        <Polygon color="purple" positions={positions}/>
+        <Polygon color="#5F57CA" positions={positions}/>
       )
     } else {
       return null

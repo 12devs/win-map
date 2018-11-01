@@ -93,7 +93,6 @@ class Main extends React.Component {
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
                min="0" max="1000000" onChange={(e) => this.props.updateReduxState({scaleWind: e.target.value})}/>
-        <button onClick={this.showAll}>showAll</button>
         </div>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
