@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
-import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-maps';
+import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
-import { Actions } from 'react-native-router-flux';
-
-const screen = Dimensions.get('window');
+import Navigation from "./Navigation";
 
 class Login extends Component {
   state = {
@@ -20,33 +18,46 @@ class Login extends Component {
   };
 
   render() {
+
     const ASPECT_RATIO = 10;
+    const mapPadding = 50;
     const LATITUDE = 53.78825;
     const LONGITUDE = 24.4324;
     const LATITUDE_DELTA = 0.0922;
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
     return (
-      <MapView
-        onPress={(e) => {
-          console.log({ lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude });
-          this.props.updateReduxState({
-            savePointSettings: {
-              show: true,
-              latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
-            }
-          });
-        }}
-        provider={PROVIDER_DEFAULT}
-        style={styles.map}
-        initialRegion={{
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
-      >
-        <Markers/>
-      </MapView>
+      <View style={styles.container}>
+        <MapView
+          onPress={(e) => {
+            this.props.updateReduxState({
+              savePointSettings: {
+                show: true,
+                latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
+              }
+            });
+          }}
+          provider={PROVIDER_DEFAULT}
+          style={styles.map}
+          initialRegion={{
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+          region={this.props.mapRegion}
+          mapPadding={{
+            top: mapPadding,
+            right: mapPadding,
+            bottom: mapPadding,
+            left: mapPadding
+          }}
+        >
+          <Markers/>
+        </MapView>
+        <Callout>
+          <Navigation/>
+        </Callout>
+      </View>
     );
   }
 }
@@ -60,6 +71,7 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
+    mapRegion: state.get('mapRegion'),
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
   };
 }

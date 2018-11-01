@@ -3,18 +3,22 @@ import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-nati
 import actions from './actions';
 import { connect } from "react-redux";
 import Map from './Map';
-import Navigation from './Navigation';
 import services from "./services";
 import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
+import { calcMapRegionAll } from './utils';
 
 class Main extends Component {
 
   componentDidMount = () => {
     return services.getInfo()
       .then(res => {
-        if (res.unauthorized){
+        if (res.unauthorized) {
           return this.props.navigation.navigate('Login')
+        }
+        const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
+        if (mapRegion) {
+          res.mapRegion = mapRegion
         }
         return this.props.updateReduxState(res)
       })
@@ -23,8 +27,7 @@ class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Navigation/>
-        <Map style={{flex:15}}/>
+        <Map style={styles.map}/>
         <AddPoint/>
         <PointSettings/>
       </View>
@@ -52,14 +55,7 @@ export default connect(mapStateToProps, actions)(Main);
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    // justifyContent: 'center',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    flex: 15,
+    flex: 1,
   },
-  map: {
-    // maxHeight: '40%',
-    flex: 10,
-  }
+  map: {}
 });

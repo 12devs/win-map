@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
+import actions from "./actions";
+import { connect } from "react-redux";
+import { calcMapRegionAll } from './utils';
 
 class Navigation extends Component {
 
@@ -9,15 +12,25 @@ class Navigation extends Component {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () => console.log('All Markers')
-          }>
+            () => {
+              const mapRegion = calcMapRegionAll([...this.props.places, ...this.props.dangers]);
+              if (mapRegion) {
+                this.props.updateReduxState({ mapRegion })
+              }
+            }}>
           <Text style={styles.submitButtonText}>All Markers</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () =>console.log('View Type')
+            () => {
+              if (this.props.viewType === 'Current') {
+                this.props.updateReduxState({ viewType: 'Historical' })
+              } else {
+                this.props.updateReduxState({ viewType: 'Current' })
+              }
+            }
           }>
           <Text style={styles.submitButtonText}>View Type</Text>
         </TouchableOpacity>
@@ -25,7 +38,7 @@ class Navigation extends Component {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={
-            () =>console.log('Notifications')
+            () => console.log('Notifications')
           }>
           <Text style={styles.submitButtonText}>Notifications</Text>
         </TouchableOpacity>
@@ -50,7 +63,22 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    savePointSettings: state.get('savePointSettings'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    markerType: state.get('markerType'),
+    viewType: state.get('viewType'),
+    actionType: state.get('actionType'),
+    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+    info: state.get('info'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Navigation);
 
 const styles = StyleSheet.create({
   container: {
@@ -60,9 +88,9 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#7a42f4',
     padding: 10,
-    margin: 5,
+    margin: 25,
     height: 40,
-    flex: 1,
+    // flex: 1,
   },
   submitButtonText: {
     color: 'white'

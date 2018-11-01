@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { calcMapRegionOne } from './utils';
 import {
   View,
   Text,
@@ -39,6 +40,18 @@ class PointSettings extends Component {
           <Text>Lat: {point.lat}</Text>
           <Text>Lng: {point.lng}</Text>
           <WindRoseChart stationId={point.station_id}/>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={
+              () => {
+                const mapRegion = calcMapRegionOne(point);
+                if (mapRegion) {
+                  this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+                }
+              }
+            }>
+            <Text style={styles.submitButtonText}>Go to marker</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     );
@@ -58,5 +71,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 1,
-  }
+  },
+  submitButton: {
+    backgroundColor: '#7a42f4',
+    padding: 10,
+    margin: 25,
+    height: 40,
+    // flex: 1,
+  },
 });
