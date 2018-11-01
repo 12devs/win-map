@@ -1,7 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
 import constants from '../constants'
-import { Actions } from 'react-native-router-flux';
 
 const API_URL_PREFIX = constants.api.URL_PREFIX;
 import { AsyncStorage } from 'react-native';
@@ -25,7 +24,7 @@ const fetch = (method, url, body) => {
             })
             .catch(err => {
               if (err.response.status === 401) {
-                Actions.Login()
+                return { unauthorized: true }
               } else {
                 return err.response.data;
               }
@@ -43,7 +42,7 @@ const fetch = (method, url, body) => {
     })
 };
 
-const postPutDelete = (url, method, body) => {
+const postPutDelete = (url, method, body, onErrCb) => {
   return AsyncStorage.getItem('windToken')
     .then(windToken => {
       const options = {
@@ -61,7 +60,7 @@ const postPutDelete = (url, method, body) => {
         })
         .catch(err => {
           if (err.response.status === 401) {
-            Actions.Login()
+            return { unauthorized: true }
           } else {
             return err.response.data;
           }

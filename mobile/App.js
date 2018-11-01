@@ -3,6 +3,7 @@ import Login from './Login.js'
 import Register from './Register.js'
 import Main from './Main.js'
 import Test from './Test.js'
+import Menu from './Menu.js'
 import PointSettings from './PointSettings.js'
 import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
@@ -24,10 +25,10 @@ store.dispatch({
     actionType: "Add",
     scaleWind: 5000,
     notificationSettings: [],
-    savePointSettings: {},
+    savePointSettings: {show: false},
     notifications: [],
     info: {
-      place: null,
+      point: null,
       type: null
     }
   }
@@ -40,16 +41,7 @@ store.dispatch({
 const App = () => {
   return (
     <Provider store={store}>
-      <Router>
-        <Scene key="root">
-          <Scene key="Login" component={Login} title="Login"/>
-          <Scene key="Register" component={Register} title="Register"/>
-          <Scene key="Main" component={Main} title="Main"/>
-          <Scene key="Test" component={Test} title="Test" initial={true}/>
-          <Scene key="AddPoint" component={AddPoint} title="Add Point"/>
-          <Scene key="PointSettings" component={PointSettings} title="Point Settings"/>
-        </Scene>
-      </Router>
+      <Menu/>
     </Provider>
   )
 };

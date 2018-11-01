@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import services from './services'
 import { Actions } from 'react-native-router-flux';
-import Navigation from "./Navigation";
 
 class Register extends Component {
   state = {
@@ -29,7 +28,6 @@ class Register extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Navigation/>
         <TextInput style={styles.input}
                    underlineColorAndroid="transparent"
                    placeholder="Login"

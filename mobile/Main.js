@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import Navigation from "./Navigation";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import actions from './actions';
 import { connect } from "react-redux";
 import Map from './Map';
-import ModalEX from './ModalEX'
+import Navigation from './Navigation';
+import services from "./services";
+import AddPoint from './AddPoint';
+import PointSettings from './PointSettings';
 
-class Login extends Component {
-  state = {
-    email: '',
-    password: ''
+class Main extends Component {
+
+  componentDidMount = () => {
+    return services.getInfo()
+      .then(res => {
+        if (res.unauthorized){
+          return this.props.navigation.navigate('Login')
+        }
+        return this.props.updateReduxState(res)
+      })
   };
-
 
   render() {
     return (
       <View style={styles.container}>
         <Navigation/>
-        <Map/>
-        <ScrollView>
-          <Text>{JSON.stringify(this.props.places, null, 4)}</Text>
-          <Text>{JSON.stringify(this.props.dangers, null, 4)}</Text>
-          <Text>{JSON.stringify(this.props.savePointSettings, null, 4)}</Text>
-        </ScrollView>
-        <ModalEX/>
+        <Map style={{flex:15}}/>
+        <AddPoint/>
+        <PointSettings/>
       </View>
     );
   }
@@ -40,10 +43,11 @@ function mapStateToProps(state) {
     viewType: state.get('viewType'),
     actionType: state.get('actionType'),
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+    info: state.get('info'),
   };
 }
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect(mapStateToProps, actions)(Main);
 
 
 const styles = StyleSheet.create({
@@ -52,10 +56,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    flex: 1,
+    flex: 15,
   },
   map: {
-    maxHeight: '40%',
+    // maxHeight: '40%',
     flex: 10,
   }
 });

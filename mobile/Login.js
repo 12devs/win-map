@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
 import services from "./services";
-import { Actions } from 'react-native-router-flux';
-import Navigation from "./Navigation";
 
 class Login extends Component {
   state = {
@@ -17,10 +15,10 @@ class Login extends Component {
   };
   login = () => {
     const { login, password } = this.state;
-    services.login(login, password)
+    return services.login(login, password)
       .then(res => {
         AsyncStorage.setItem('windToken', res.token);
-        Actions.Main();
+        return this.props.navigation.navigate('Map')
 
       })
       .catch((error) => {
@@ -30,7 +28,6 @@ class Login extends Component {
   render() {
     return (
       <View style = {styles.container}>
-        <Navigation/>
         <TextInput style = {styles.input}
                    underlineColorAndroid = "transparent"
                    placeholder = " Login"
