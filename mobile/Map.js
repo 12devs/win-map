@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ScrollView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
 import Navigation from "./Navigation";
+
+const screen = Dimensions.get('window');
 
 class Map extends Component {
 
