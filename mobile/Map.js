@@ -5,27 +5,11 @@ import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'reac
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
-import { Actions } from 'react-native-router-flux';
-import GPlaces from './GPlaces';
-
-const screen = Dimensions.get('window');
 import Navigation from "./Navigation";
 
-const remote = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik00OTcuOTEzLDQ5Ny45MTNjLTE4Ljc4MiwxOC43ODItNDkuMjI1LDE4Ljc4Mi02OC4wMDgsMGwtODQuODYyLTg0Ljg2M2MtMzQuODg5LDIyLjM4Mi03Ni4xMywzNS43MTctMTIwLjY1OSwzNS43MTcgIEMxMDAuNDY5LDQ0OC43NjcsMCwzNDguMzEyLDAsMjI0LjM4M1MxMDAuNDY5LDAsMjI0LjM4NCwwYzEyMy45MzEsMCwyMjQuMzg0LDEwMC40NTIsMjI0LjM4NCwyMjQuMzgzICBjMCw0NC41MTQtMTMuMzUyLDg1Ljc3MS0zNS43MTgsMTIwLjY3Nmw4NC44NjMsODQuODYzQzUxNi42OTUsNDQ4LjcwNCw1MTYuNjk1LDQ3OS4xMzEsNDk3LjkxMyw0OTcuOTEzeiBNMjI0LjM4NCw2NC4xMDkgIGMtODguNTExLDAtMTYwLjI3NCw3MS43NDctMTYwLjI3NCwxNjAuMjczYzAsODguNTI2LDcxLjc2NCwxNjAuMjc0LDE2MC4yNzQsMTYwLjI3NGM4OC41MjUsMCwxNjAuMjczLTcxLjc0OCwxNjAuMjczLTE2MC4yNzQgIEMzODQuNjU3LDEzNS44NTYsMzEyLjkwOSw2NC4xMDksMjI0LjM4NCw2NC4xMDl6Ii8+PC9zdmc+';
+const screen = Dimensions.get('window');
 
 class Map extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      onSearch: false
-    };
-  }
-
-  onPress = () => {
-
-    this.setState({ onSearch: !this.state.onSearch });
-  };
 
   render() {
 
@@ -91,32 +75,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(Map);
 
 const styles = StyleSheet.create({
-  searchContainer: {
-    marginBottom: 0,
-    paddingBottom: 0,
-    margin: 10,
-    marginRight: 50,
-    flexDirection: "row",
-    backgroundColor: 'white'
-  },
-  calloutView: {
-    flexDirection: "row",
-    // justifyContent: 'right',
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    borderRadius: 10,
-    width: "80%",
-    marginLeft: "10%",
-    marginRight: "10%",
-    // marginTop: 20,
-  },
-  calloutSearch: {
-    borderColor: "transparent",
-    marginLeft: 10,
-    width: "90%",
-    marginRight: 10,
-    height: 40,
-    borderWidth: 0.0
-  },
   container: {
     flexDirection: 'column',
     // justifyContent: 'center',
