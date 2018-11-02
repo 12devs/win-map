@@ -51,6 +51,7 @@ class Login extends Component {
             bottom: mapPadding,
             left: mapPadding
           }}
+          mapType={this.props.mapViewType || 'standard'}
         >
           <Markers/>
         </MapView>
@@ -73,6 +74,7 @@ function mapStateToProps(state) {
     actionType: state.get('actionType'),
     mapRegion: state.get('mapRegion'),
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
+    mapViewType: state.get('mapViewType'),
   };
 }
 
@@ -89,5 +91,9 @@ const styles = StyleSheet.create({
   map: {
     // maxHeight: '40%',
     flex: 10,
+  },
+  nav: {
+    // maxHeight: '40%',
+    flex: 2,
   }
 });
