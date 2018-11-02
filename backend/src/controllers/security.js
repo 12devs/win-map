@@ -8,7 +8,6 @@ export default {
   async register(req, res) {
     try {
       const { login, password } = req.body;
-      console.log('cre', login, password);
       const saltRound = config.auth.saltRound;
       const salt = bcrypt.genSaltSync(saltRound);
 
@@ -34,7 +33,6 @@ export default {
   async login(req, res) {
     try {
       const { login, password } = req.body;
-      console.log('login', login, password);
       Account.findOne({ where: { login } })
         .then(async acc => {
           await acc.comparePassword(password);

@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
+import { calcMapRegionOne } from './utils';
 import {
   View,
   Text,
-  TouchableOpacity,
-  TextInput,
   StyleSheet,
-  AsyncStorage,
   Modal,
-  Button
 } from 'react-native';
 import actions from "./actions";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
 import services from './services';
+import Button from './Button';
 
 class PointSettings extends Component {
   constructor() {
@@ -62,7 +60,15 @@ class PointSettings extends Component {
           <Text>Lng: {point.lng}</Text>
           <WindRoseChart stationId={point.station_id}/>
           <Button
-            title='Remove point'
+            label='Go to marker'
+            onPress={() => {
+              const mapRegion = calcMapRegionOne(point);
+              if (mapRegion) {
+                this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+              }
+            }}/>
+          <Button
+            label='Remove point'
             onPress={() => {
               this.delMarker()
                 .then(() => {
@@ -97,5 +103,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 1,
+  },
+  button: {
+    margin: 20
   }
 });

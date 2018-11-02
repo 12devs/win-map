@@ -15,6 +15,9 @@ class Register extends Component {
   register() {
     const { login, password } = this.state;
     return services.register(login, password)
+      .then(()=>{
+        location.assign('/login');
+      })
   }
 
   render() {
