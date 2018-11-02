@@ -85,8 +85,8 @@ class SectorPolygon extends React.Component {
         <Polygon
           coordinates={positions}
           strokeWidth={1}
-          strokeColor={'blue'}
-          fillColor={'red'}
+          strokeColor={'rgba(95, 87, 202, 0.7)'}
+          fillColor={'rgba(95, 87, 202, 0.5)'}
         />
       )
     } else {
