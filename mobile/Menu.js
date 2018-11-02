@@ -7,6 +7,7 @@ import Login from './Login';
 import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
+import notificationSettings from './notificationSettings';
 
 class HamburgerIcon extends Component {
   toggleDrawer = () => {
@@ -48,13 +49,14 @@ const Login_StackNavigator = createStackNavigator({
     screen: Login,
     navigationOptions: ({ navigation }) => {
       return ({
-      title: 'Login',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#FF9800'
-      },
-      headerTintColor: '#fff',
-    })}
+        title: 'Login',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#FF9800'
+        },
+        headerTintColor: '#fff',
+      })
+    }
   },
 });
 
@@ -73,6 +75,20 @@ const Main_StackNavigator = createStackNavigator({
   },
 });
 
+const notificationSettings_StackNavigator = createStackNavigator({
+  Third: {
+    screen: notificationSettings,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Notification Settings',
+      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FF9800'
+      },
+      headerTintColor: '#fff',
+    })
+  },
+});
+
 export default MyDrawerNavigator = createDrawerNavigator({
     Register: {
       screen: Register_StackNavigator
@@ -82,6 +98,9 @@ export default MyDrawerNavigator = createDrawerNavigator({
     },
     Map: {
       screen: Main_StackNavigator
+    },
+  notificationSettings: {
+      screen: notificationSettings_StackNavigator
     },
     Logout: Logout
   }, {

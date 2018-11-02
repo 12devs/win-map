@@ -25,13 +25,14 @@ class PointSettings extends Component {
       [type]: { id },
     })
       .then(res => {
+        console.log(res);
         if (type === 'place') {
           const places = this.props.places.filter(el => !(el.id === id));
-          this.props.updateReduxState({ places });
+          this.props.updateReduxState({ places, info: { point: null, type: null } });
         }
         if (type === 'danger') {
           const dangers = this.props.dangers.filter(el => !(el.id === id));
-          this.props.updateReduxState({ dangers });
+          this.props.updateReduxState({ dangers, info: { point: null, type: null } });
         }
       });
   };

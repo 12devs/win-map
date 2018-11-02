@@ -29,6 +29,10 @@ class AddPoint extends React.Component {
     const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
 
+    if (!name){
+      return
+    }
+
     let key;
     if (markerType === 'Danger') {
       key = 'danger';
@@ -63,8 +67,7 @@ class AddPoint extends React.Component {
           places.push(place);
         }
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({ places, dangers, stationsData, stations });
-        this.props.updateReduxState({ savePointSettings: { show: false } });
+        this.props.updateReduxState({ places, dangers, stationsData, stations, savePointSettings: { show: false } });
       });
   };
 
