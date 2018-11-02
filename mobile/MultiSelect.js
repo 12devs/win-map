@@ -5,13 +5,10 @@ import { connect } from "react-redux";
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 
-
 class MultiSelectExample extends Component {
 
   onSelectedItemsChange = selectedItems => {
-    console.log('onSelectedItemsChange');
     const { place } = this.props;
-    console.log(place);
     const notificationSettings = this.props.notificationSettings;
     const index = _.findIndex(notificationSettings, o => (o.place.value == place.id));
     if (index === -1) {
@@ -41,7 +38,6 @@ class MultiSelectExample extends Component {
     if (!selectedItems){
       selectedItems = []
     }
-    console.log(selectedItems);
     return (
       <View style={{ flex: 1, padding: 20 }}>
         <MultiSelect

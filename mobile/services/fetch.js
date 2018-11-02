@@ -59,6 +59,7 @@ const postPutDelete = (url, method, body, onErrCb) => {
           return result.data
         })
         .catch(err => {
+          console.log(err);
           if (err.response.status === 401) {
             return { unauthorized: true }
           } else {

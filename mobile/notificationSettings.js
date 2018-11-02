@@ -4,44 +4,7 @@ import actions from './actions';
 import { connect } from "react-redux";
 import MultiSelect from './MultiSelect';
 
-
-class Row extends Component {
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={{
-          width: '20%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderWidth: 2,
-          borderColor: 'steelblue',
-          borderRadius: 20,
-        }}>
-          <Text style={{
-            textAlign: 'center',
-            borderWidth: 2,
-            borderColor: 'silver',
-            borderRadius: 20,
-            textAlignVertical: "center",
-            color: 'silver',
-            padding: 10,
-          }}>
-            {this.props.place.name}
-          </Text>
-        </View>
-        <MultiSelect style={{ width: '80%' }} place={this.props.place}/>
-      </View>
-    );
-  }
-}
-
-
 class notificationSettings extends Component {
-
-  state = {
-    notificationSettings
-  };
 
   render() {
     return (
@@ -50,9 +13,33 @@ class notificationSettings extends Component {
         justifyContent: 'center'
       }}>
         {this.props.places.map((place, i) => {
-          return (<Row key={i} place={place}/>)
+          // return (<Row key={i} place={place}/>)
+          return (
+            <View key={i} style={styles.container}>
+              <View style={{
+                width: '20%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 2,
+                borderColor: 'steelblue',
+                borderRadius: 20,
+              }}>
+                <Text style={{
+                  textAlign: 'center',
+                  borderWidth: 2,
+                  borderColor: 'silver',
+                  borderRadius: 20,
+                  textAlignVertical: "center",
+                  color: 'silver',
+                  padding: 10,
+                }}>
+                  {place.name}
+                </Text>
+              </View>
+              <MultiSelect style={{ width: '80%' }} place={place}/>
+            </View>
+          );
         })}
-
       </ScrollView>
     );
   }
