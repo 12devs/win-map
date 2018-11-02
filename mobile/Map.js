@@ -7,15 +7,7 @@ import actions from './actions';
 import { connect } from "react-redux";
 import Navigation from "./Navigation";
 
-class Login extends Component {
-  state = {
-    email: '',
-    password: ''
-  };
-
-  onClick = (e) => {
-    console.log('werf', e.nativeEvent.coordinate);
-  };
+class Map extends Component {
 
   render() {
 
@@ -78,7 +70,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect(mapStateToProps, actions)(Map);
 
 const styles = StyleSheet.create({
   container: {

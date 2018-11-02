@@ -131,7 +131,6 @@ export default {
   },
 
   async withData(req, res) {
-    console.log(req.user.id);
     try {
       const { places, dangers, stations, stationsData, notificationSettings, notifications } = await Promise.all([
         getPlacesDangersStationsDataStations(req.user.id),

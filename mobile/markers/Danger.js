@@ -17,7 +17,6 @@ class Danger extends React.Component {
 
   updatePosition(id, e) {
     let { latitude, longitude } = e.nativeEvent.coordinate;
-    console.log(e.nativeEvent.coordinate);
     let lngCorrect = longitude;
     lngCorrect = lngCorrect % 360;
     if (lngCorrect > 180) {
