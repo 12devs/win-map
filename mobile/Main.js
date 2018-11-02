@@ -7,6 +7,8 @@ import Navigation from './Navigation';
 import services from "./services";
 import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
+import GPlaces from './GPlaces';
+
 
 class Main extends Component {
 
@@ -23,6 +25,7 @@ class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
+        {/*<GPlaces/>*/}
         <Navigation/>
         <Map style={{flex:15}}/>
         <AddPoint/>

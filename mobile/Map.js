@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ScrollView, TextInput } from 'react-native';
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
-import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-maps';
+import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
+import GPlaces from './GPlaces';
 
 const screen = Dimensions.get('window');
 
@@ -26,27 +27,35 @@ class Login extends Component {
     const LATITUDE_DELTA = 0.0922;
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
     return (
-      <MapView
-        onPress={(e) => {
-          console.log({ lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude });
-          this.props.updateReduxState({
-            savePointSettings: {
-              show: true,
-              latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
-            }
-          });
-        }}
-        provider={PROVIDER_DEFAULT}
-        style={styles.map}
-        initialRegion={{
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
-      >
-        <Markers/>
-      </MapView>
+      <View style={styles.container}>
+        <MapView
+          loadingEnabled={true}
+          onPress={(e) => {
+            console.log({ lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude });
+            this.props.updateReduxState({
+              savePointSettings: {
+                show: true,
+                latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
+              }
+            });
+          }}
+          provider={PROVIDER_DEFAULT}
+          style={styles.map}
+          initialRegion={{
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+        >
+          <Markers/>
+        </MapView>
+        <Callout style={{ width: '100%' }}>
+          <View style={styles.calloutView}>
+            <GPlaces/>
+          </View>
+        </Callout>
+      </View>
     );
   }
 }
@@ -68,6 +77,23 @@ export default connect(mapStateToProps, actions)(Login);
 
 
 const styles = StyleSheet.create({
+  calloutView: {
+    flexDirection: "row",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: 10,
+    width: "80%",
+    marginLeft: "10%",
+    marginRight: "10%",
+    marginTop: 20
+  },
+  calloutSearch: {
+    borderColor: "transparent",
+    marginLeft: 10,
+    width: "90%",
+    marginRight: 10,
+    height: 40,
+    borderWidth: 0.0
+  },
   container: {
     flexDirection: 'column',
     // justifyContent: 'center',
