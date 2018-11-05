@@ -19,7 +19,7 @@ import { Callout } from "react-native-maps";
 class Navigation extends Component {
 
   change(value) {
-    this.props.updateReduxState({ scaleWind: parseFloat(value) });
+    this.props.updateReduxState({ scaleWind: parseFloat(value)*100 });
   }
 
   render() {
@@ -35,7 +35,7 @@ class Navigation extends Component {
         <Slider
           style={styles.submitButton}
           step={1}
-          maximumValue={10000000}
+          maximumValue={10000}
           onValueChange={this.change.bind(this)}
           value={this.props.scaleWind}
         />

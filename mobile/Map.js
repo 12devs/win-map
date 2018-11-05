@@ -96,5 +96,17 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 10,
-  }
+  },
+  submitButton: {
+    // backgroundColor: 'white',
+    // padding: 10,
+    margin: 5,
+    marginTop: 80,
+    // height: 140,
+    // flex: 1,
+    right: 0,
+    // width: 140
+    // paddingBottom: 0,
+    // marginBottom: 0
+  },
 });

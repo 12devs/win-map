@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, StyleSheet, View } from "react-native";
 import actions from "../actions/index";
 import { connect } from "react-redux";
+import _ from 'lodash';
 
 class MapViewType extends Component {
 
@@ -12,10 +13,12 @@ class MapViewType extends Component {
       { label: 'satellite', value: 'satellite' },
       { label: 'hybrid', value: 'hybrid' },
     ];
+    const index = _.findIndex(radio_props, o => (o.value == this.props.mapViewType));
+    console.log(this.props.mapViewType);
     return (
       <RadioForm
         radio_props={radio_props}
-        initial={0}
+        initial={index}
         onPress={(value) => {
           this.props.updateReduxState({ mapViewType: value })
         }}

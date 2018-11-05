@@ -22,6 +22,7 @@ store.dispatch({
     stationsData: {},
     markerType: "My Place",
     viewType: "Current",
+    mapViewType: "standard",
     actionType: "Add",
     scaleWind: 5000,
     notificationSettings: [],
