@@ -38,6 +38,7 @@ class Test extends Component {
 function mapStateToProps(state) {
   return {
     savePointSettings: state.get('savePointSettings'),
+    notifications: state.get('notifications'),
     places: state.get('places'),
     dangers: state.get('dangers'),
     stations: state.get('stations'),

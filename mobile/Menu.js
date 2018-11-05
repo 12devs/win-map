@@ -8,6 +8,7 @@ import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
 import Test from './Test';
+import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 
 class HamburgerIcon extends Component {
@@ -104,6 +105,20 @@ const test_StackNavigator = createStackNavigator({
   },
 });
 
+const notifications_StackNavigator = createStackNavigator({
+  Third: {
+    screen: Notifications,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Notifications',
+      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FF9800'
+      },
+      headerTintColor: '#fff',
+    })
+  },
+});
+
 export default MyDrawerNavigator = createDrawerNavigator({
     Register: {
       screen: Register_StackNavigator
@@ -119,6 +134,9 @@ export default MyDrawerNavigator = createDrawerNavigator({
     },
     test: {
       screen: test_StackNavigator
+    },
+    notifications: {
+      screen: notifications_StackNavigator
     },
     Logout: Logout
   }, {
