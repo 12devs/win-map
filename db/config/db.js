@@ -1,9 +1,17 @@
 const config = require("config")
 
+let configDatabase = config.database;
+
+if (process.env.NODE_ENV = 'test') {
+  configDatabase = config.database_test;
+}
+
+console.log(config)
+
 module.exports = {
-  username: config.database.username,
-  password: config.database.password,
-  database: config.database.database,
-  host: config.database.host,
-  dialect: config.database.dialect
+  username: configDatabase.username,
+  password: configDatabase.password,
+  database: configDatabase.database,
+  host: configDatabase.host,
+  dialect: configDatabase.dialect
 }

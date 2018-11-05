@@ -9,9 +9,17 @@ export const getInstance = () => {
     return db
   }
 
-  db = new Sequelize(config.database.database, config.database.username, config.database.password, {
-    host: config.database.host,
-    dialect: config.database.dialect,
+  let configDatabase = config.database;
+
+  if (process.env.NODE_ENV = "test") {
+    configDatabase = config.database_test;
+  }
+
+  console.log(configDatabase)
+
+  db = new Sequelize(configDatabase.database, configDatabase.username, configDatabase.password, {
+    host: configDatabase.host,
+    dialect: configDatabase.dialect,
     logging: false,
   });
 

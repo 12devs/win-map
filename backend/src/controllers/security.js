@@ -1,5 +1,4 @@
 import { Account } from './../models';
-import Models from './../models';
 import config from "config";
 import bcrypt from "bcryptjs";
 
@@ -27,7 +26,7 @@ export default {
         })
         .catch(err => {
           return res.status(500).json({ error: err.message });
-        })
+        });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -42,7 +41,7 @@ export default {
       Account.findOne({ where: { login } })
         .then(async acc => {
           await acc.comparePassword(password);
-          return acc
+          return acc;
         })
         .then(acc => {
           const token = acc.generateJWT();
@@ -50,7 +49,7 @@ export default {
         })
         .catch((err) => {
           return res.status(500).json({ error: err.message });
-        })
+        });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
