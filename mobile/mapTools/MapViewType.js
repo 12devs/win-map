@@ -1,7 +1,7 @@
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import React, { Component } from 'react';
 import { AsyncStorage, StyleSheet, View } from "react-native";
-import actions from "./actions";
+import actions from "../actions/index";
 import { connect } from "react-redux";
 
 class MapViewType extends Component {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     // flex:1
   },
   submitButton: {
-    backgroundColor: '#7a42f4',
+    backgroundColor: 'white',
     padding: 10,
     margin: 5,
     height: 40,
