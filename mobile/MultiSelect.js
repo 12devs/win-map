@@ -27,16 +27,18 @@ class MultiSelectExample extends Component {
       }
     }
     this.props.updateReduxState({ notificationSettings });
+    this.forceUpdate()
   };
 
   render() {
-    console.log('render');
     const { place } = this.props;
     let selectedItems = (this.props.notificationSettings.filter(elem => {
       return elem.place.value == place.id
-    })[0]||{}).danger;
-    if (!selectedItems){
+    })[0] || {}).danger;
+    if (!selectedItems) {
       selectedItems = []
+    } else {
+      selectedItems = selectedItems.map(elem => elem.value);
     }
     return (
       <View style={{ flex: 1, padding: 20 }}>

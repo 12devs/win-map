@@ -7,6 +7,7 @@
     "test": "jest",
     "dev": "babel-node ./server.js",
     "dev:watch": "babel-watch src/index.js | bunyan",
+    "dev_test:watch": "NODE_ENV=test babel-watch src/index.js | bunyan",
     "start": "node ./dist",
     "build": "babel ./src -d dist ; cp -r src/views dist;",
     "script": "babel-watch src/scripts/index.js | bunyan",
