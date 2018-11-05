@@ -8,6 +8,9 @@ export default {
   async register(req, res) {
     try {
       const { login, password } = req.body;
+      if (!login || !password) {
+        return res.status(400).json({ message: 'Required params are missing' });
+      }
       const saltRound = config.auth.saltRound;
       const salt = bcrypt.genSaltSync(saltRound);
 
@@ -20,19 +23,22 @@ export default {
 
       Account.create(acc)
         .then(() => {
-          return res.status(200).json({ message: 'OK' })
+          return res.status(200).json({ message: 'OK' });
         })
         .catch(err => {
-          return res.status(500).json({ error: err.message })
+          return res.status(500).json({ error: err.message });
         })
     } catch (err) {
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   },
 
   async login(req, res) {
     try {
       const { login, password } = req.body;
+      if (!login || !password) {
+        return res.status(400).json({ message: 'Required params are missing' });
+      }
       Account.findOne({ where: { login } })
         .then(async acc => {
           await acc.comparePassword(password);
@@ -40,13 +46,13 @@ export default {
         })
         .then(acc => {
           const token = acc.generateJWT();
-          return res.status(200).json({ message: 'OK', token })
+          return res.status(200).json({ message: 'OK', token });
         })
         .catch((err) => {
-          return res.status(500).json({ error: err.message })
+          return res.status(500).json({ error: err.message });
         })
     } catch (err) {
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   }
 }

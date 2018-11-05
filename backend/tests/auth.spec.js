@@ -8,7 +8,7 @@ describe('Auth', () => {
     container
       .post('/publicRouts/login')
       .set('Content-Type', 'application/json')
-      .expect(500)
+      .expect(400)
       .end((err) => {
         if (err) {
           done(err);
@@ -55,6 +55,21 @@ describe('Auth', () => {
       });
   });
 
+  it('registration with empty request body', (done) => {
+    container
+      .post('/publicRouts/register')
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .end((err) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        done();
+      });
+  });
+
   it('registration with correct data', (done) => {
     container
       .post('/publicRouts/register')
@@ -70,5 +85,4 @@ describe('Auth', () => {
         done();
       });
   });
-
 });
