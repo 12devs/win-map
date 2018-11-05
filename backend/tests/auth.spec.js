@@ -39,4 +39,36 @@ describe('Auth', () => {
       });
   });
 
+  it('authorization with incorrect username or password', (done) => {
+    container
+      .post('/publicRouts/login')
+      .set('Content-Type', 'application/json')
+      .send({ login: "test1", password: "test1" })
+      .expect(500)
+      .end((err) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        done();
+      });
+  });
+
+  it('registration with correct data', (done) => {
+    container
+      .post('/publicRouts/register')
+      .set('Content-Type', 'application/json')
+      .send({ login: "jest_test", password: "jest_test" })
+      .expect(200)
+      .end((err) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        done();
+      });
+  });
+
 });
