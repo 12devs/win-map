@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, Dimensions, Keyboard } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import services from '../services/index';
@@ -20,16 +20,13 @@ class Search extends Component {
   }
 
   onChange = selectedItems => {
-    console.log(selectedItems);
-    const places = [];
     if (selectedItems.length > 1) {
       return services.search(selectedItems).then(res => {
-        res.data.forEach((el, id) => {
+        const places = res.data.map((el, id) => {
           const { display_name, lat, lon } = el;
-          places.push({ id: id.toString(), display_name, lat, lon });
+          return { id: id.toString(), display_name, lat, lon };
         });
         this.setState({ items: places });
-        console.log(this.state.items);
       });
     }
     else {
@@ -38,12 +35,12 @@ class Search extends Component {
   };
 
   onSelectedItemsChange = selectedItems => {
-    console.log(selectedItems);
     const { lat, lon } = this.state.items[selectedItems];
     const mapRegion = calcMapRegionOne({ lat, lon });
     if (mapRegion) {
       this.props.updateReduxState({ mapRegion });
       this.setState({ items: [] });
+      Keyboard.dismiss();
     }
 
   };
@@ -91,6 +88,6 @@ export default connect(mapStateToProps, actions)(Search);
 
 const styles = StyleSheet.create({
   searchContainer: {
-    width: width
+    width
   },
 });
