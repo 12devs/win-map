@@ -105,10 +105,10 @@ export default {
           stationsData = await getStationsData([{
             station_id: savedDanger.station_id,
             lat: savedDanger.lat,
-            lng: savedDanger.lng
+            lng: savedDanger.lng,
           }]);
         }
-        res.status(200).json({ danger: savedDanger, stationsData })
+        res.status(200).json({ danger: savedDanger, stationsData });
       } else {
         const { lat, lng } = place;
         place.account_id = user.id;
@@ -119,14 +119,14 @@ export default {
           stationsData = await getStationsData([{
             station_id: savedPlace.station_id,
             lat: savedPlace.lat,
-            lng: savedPlace.lng
+            lng: savedPlace.lng,
           }]);
         }
-        res.status(200).json({ place: savedPlace, stationsData })
+        res.status(200).json({ place: savedPlace, stationsData });
       }
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   },
 

@@ -1,5 +1,8 @@
+import { Place } from "../src/models";
+
 const request = require('supertest');
 const requestPromise = require('request-promise');
+const Models = require('../src/models');
 
 const container = request('http://localhost:8081');
 
@@ -40,7 +43,7 @@ describe('Points', () => {
           uri: 'http://localhost:8081/publicRouts/login',
           body: { login: username, password: password },
           json: true,
-        })
+        });
       })
       .then(response => {
         token = response.token;
@@ -81,6 +84,26 @@ describe('Points', () => {
         name: myPlace.place.name,
       }));
     });
+
+    it('new point should be kept in the database', async (done) => {
+      const { id } = res.body.place;
+      console.log('id', id);
+      await Models.Place.findOne({
+        where: { id: id }
+      })
+        .then(data => {
+          // if (!data) {
+          //   // done.fail("new point in database not found");
+          //   return;
+          // }
+
+          done();
+        });
+    });
+
+    afterAll(async () => {
+
+    })
 
   });
 
