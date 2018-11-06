@@ -70,7 +70,7 @@ const Main_StackNavigator = createStackNavigator({
       title: 'Map',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })

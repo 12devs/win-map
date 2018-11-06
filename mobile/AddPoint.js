@@ -4,16 +4,11 @@ import actions from './actions';
 import services from "./services";
 import {
   StyleSheet,
-  Text,
   TextInput,
-  TouchableOpacity,
   View,
-  // Button,
-  Alert,
-  TouchableHighlight,
   Modal
 } from 'react-native';
-import { FormInput, FormLabel, FormValidationMessage, Header, Button } from 'react-native-elements';
+import { Header, Button } from 'react-native-elements';
 
 class AddPoint extends React.Component {
   constructor(props) {
@@ -97,7 +92,6 @@ class AddPoint extends React.Component {
         />
         <View style={{ height: '100%', backgroundColor: '#fff' }}>
           <View>
-            {/*<Text>Pint Name</Text>*/}
             <TextInput style={styles.input}
                        allowFontScaling={true}
                        underlineColorAndroid="transparent"
@@ -118,7 +112,6 @@ class AddPoint extends React.Component {
                 this.addMarker('My Place');
               }}/>
             <Button
-              // buttonStyle={{ elevation: 0 }}
               containerViewStyle={{ margin: 10 }}
               backgroundColor={'red'}
               large

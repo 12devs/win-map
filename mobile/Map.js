@@ -9,6 +9,7 @@ import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
 import Layers from './mapTools/Layers';
+import MapViewType from './mapTools/MapViewType';
 
 const screen = Dimensions.get('window');
 
@@ -59,7 +60,7 @@ class Map extends Component {
           <Slider/>
         </Callout>
         <Callout style={styles.submitButton}>
-          <Layers/>
+          <MapViewType/>
         </Callout>
         <Callout style={{ top: 0 }}>
           <Search/>
