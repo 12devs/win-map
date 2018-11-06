@@ -35,6 +35,7 @@ class Search extends Component {
   };
 
   onSelectedItemsChange = selectedItems => {
+    console.log(this.state.items)
     const { lat, lon } = this.state.items[selectedItems];
     const mapRegion = calcMapRegionOne({ lat, lon });
     if (mapRegion) {
@@ -51,6 +52,7 @@ class Search extends Component {
     return (
       <View style={styles.searchContainer}>
         <SearchBar
+          lightTheme
           showLoading
           clearIcon
           searchIcon={{ size: 24 }}
@@ -62,9 +64,8 @@ class Search extends Component {
             items.map((l, i) => (
               <ListItem
                 key={i}
-                leftAvatar={{ source: { uri: l.avatar_url } }}
                 title={l.display_name}
-                subtitle={l.subtitle}
+                subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
                 onPress={() => this.onSelectedItemsChange(i)}
               />
             ))

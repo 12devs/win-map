@@ -8,12 +8,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Button,
+  // Button,
   Alert,
   TouchableHighlight,
   Modal
 } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { FormInput, FormLabel, FormValidationMessage, Header, Button } from 'react-native-elements';
 
 class AddPoint extends React.Component {
   constructor(props) {
@@ -29,8 +29,8 @@ class AddPoint extends React.Component {
     const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
 
-    if (!name){
-      return
+    if (!name) {
+      return;
     }
 
     let key;
@@ -85,27 +85,49 @@ class AddPoint extends React.Component {
         onRequestClose={() => {
           this.props.updateReduxState({ savePointSettings: { show: false } });
         }}>
-        <View style={{ marginTop: 22 }}>
+        <Header
+          leftComponent={{
+            icon: 'arrow-back', color: '#fff',
+            onPress: () => {
+              this.props.updateReduxState({ savePointSettings: { show: false } });
+            }
+          }}
+          centerComponent={{ text: 'Add Point', style: { color: '#fff', fontSize: 20 } }}
+          outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+        />
+        <View style={{ height: '100%', backgroundColor: '#fff' }}>
           <View>
+            {/*<Text>Pint Name</Text>*/}
             <TextInput style={styles.input}
+                       allowFontScaling={true}
                        underlineColorAndroid="transparent"
                        placeholder="Point Name"
-                       placeholderTextColor="#9a73ef"
+                       placeholderTextColor="#3D6DCC"
                        autoCapitalize="none"
                        onChangeText={(e) => {
                          this.setState({ name: e });
                        }}/>
             <Button
+              containerViewStyle={{ margin: 10 }}
+              backgroundColor={'#3D6DCC'}
+              large
+              borderRadius={50}
+              icon={{ name: 'home' }}
+              title='My Place'
               onPress={() => {
                 this.addMarker('My Place');
-              }}
-              title='My Place'/>
+              }}/>
             <Button
+              // buttonStyle={{ elevation: 0 }}
+              containerViewStyle={{ margin: 10 }}
+              backgroundColor={'red'}
+              large
+              borderRadius={50}
+              icon={{ name: 'error' }}
+              title='Danger'
               onPress={() => {
                 this.addMarker('Danger');
-              }}
-              title='Danger'
-              color='red'/>
+              }}/>
           </View>
         </View>
       </Modal>
@@ -144,10 +166,16 @@ const styles = StyleSheet.create({
     left: 0
   },
   input: {
-    margin: 5,
-    height: 40,
-    borderColor: '#7a42f4',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    height: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderColor: '#3D6DCC',
     borderWidth: 1,
+    borderRadius: 50
     // flex:1
   },
 });
