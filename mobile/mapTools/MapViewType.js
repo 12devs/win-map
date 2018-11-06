@@ -1,8 +1,9 @@
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import React, { Component } from 'react';
 import { AsyncStorage, StyleSheet, View } from "react-native";
-import actions from "./actions";
+import actions from "../actions/index";
 import { connect } from "react-redux";
+import _ from 'lodash';
 
 class MapViewType extends Component {
 
@@ -12,10 +13,12 @@ class MapViewType extends Component {
       { label: 'satellite', value: 'satellite' },
       { label: 'hybrid', value: 'hybrid' },
     ];
+    const index = _.findIndex(radio_props, o => (o.value == this.props.mapViewType));
+    console.log(this.props.mapViewType);
     return (
       <RadioForm
         radio_props={radio_props}
-        initial={0}
+        initial={index}
         onPress={(value) => {
           this.props.updateReduxState({ mapViewType: value })
         }}
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     // flex:1
   },
   submitButton: {
-    backgroundColor: '#7a42f4',
+    backgroundColor: 'white',
     padding: 10,
     margin: 5,
     height: 40,

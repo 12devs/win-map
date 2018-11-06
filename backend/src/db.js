@@ -11,7 +11,7 @@ export const getInstance = () => {
 
   let configDatabase = config.database;
 
-  if (process.env.NODE_ENVIRONMENT = "test") {
+  if (process.env.NODE_ENVIRONMENT === "test") {
     configDatabase = config.database_test;
   }
 

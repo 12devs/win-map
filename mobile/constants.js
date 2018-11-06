@@ -3,7 +3,7 @@
 export default {
 
     api: {
-        URL_PREFIX: 'http:192.168.1.87:8081'
+        URL_PREFIX: 'http:192.168.1.218:8081'
     },
 
     asyncStorage: {

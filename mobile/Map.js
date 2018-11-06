@@ -5,7 +5,10 @@ import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'reac
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
-import Navigation from "./Navigation";
+import Navigation from "./mapTools/Navigation";
+import Search from './mapTools/Search';
+import Slider from './mapTools/Slider';
+import Layers from './mapTools/Layers';
 
 const screen = Dimensions.get('window');
 
@@ -52,6 +55,15 @@ class Map extends Component {
         <Callout>
           <Navigation/>
         </Callout>
+        <Callout style={{ bottom: 0, width: screen.width }}>
+          <Slider/>
+        </Callout>
+        <Callout style={styles.submitButton}>
+          <Layers/>
+        </Callout>
+        <Callout style={{ top: 0 }}>
+          <Search/>
+        </Callout>
       </View>
     );
   }
@@ -83,11 +95,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    // maxHeight: '40%',
     flex: 10,
   },
-  nav: {
-    // maxHeight: '40%',
-    flex: 2,
-  }
+  submitButton: {
+    // backgroundColor: 'white',
+    // padding: 10,
+    margin: 5,
+    marginTop: 80,
+    // height: 140,
+    // flex: 1,
+    right: 0,
+    // width: 140
+    // paddingBottom: 0,
+    // marginBottom: 0
+  },
 });

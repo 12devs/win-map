@@ -1,4 +1,5 @@
 import { fetch } from './fetch';
+import axios from 'axios';
 
 const login = (login, password) => {
   return fetch('post', '/publicRouts/login', { login, password });
@@ -43,6 +44,10 @@ const deleteNotificationToken = (token) => {
 const viewNotifications = (body) => {
   return fetch('post', '/api/subscriptions/onViewNotification', body);
 };
+const search = (place) => {
+  return axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${place}`)
+};
+
 
 export default {
   login,
@@ -55,5 +60,6 @@ export default {
   saveNotificationToken,
   deleteNotificationToken,
   sendSubscriptions,
-  viewNotifications
+  viewNotifications,
+  search
 };
