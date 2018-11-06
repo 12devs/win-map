@@ -1,6 +1,7 @@
 const request = require('supertest');
-const container = request('http://localhost:8081');
 const Models = require('../src/models');
+
+const container = request('http://localhost:8081');
 
 describe('Auth', () => {
 
@@ -8,7 +9,6 @@ describe('Auth', () => {
   const password = 'test_pass';
 
   afterAll(async () => {
-    console.log('destroy1');
     await Models.Account.destroy({ where: { login: username } });
   });
 
