@@ -120,12 +120,14 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imageContainer: {
-    borderRadius: 80, backgroundColor: 'white'
+    borderRadius: 80,
+    backgroundColor: '#3D6DCC'
   },
   image: {
     width: 20,
     height: 20,
     margin: 15,
+    tintColor: '#fff'
     // zIndex: 100
   }
 });
