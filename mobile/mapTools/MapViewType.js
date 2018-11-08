@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     margin: 15,
-    tintColor: '#fff'
+    tintColor: '#00498f'
     // zIndex: 100
   },
   container: {
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 80,
-    backgroundColor: '#3D6DCC'
+    backgroundColor: '#fff',
+    elevation: 5
   },
 });

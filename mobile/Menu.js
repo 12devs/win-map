@@ -22,7 +22,7 @@ class HamburgerIcon extends Component {
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-            style={{ width: 25, height: 25, marginLeft: 5 }}
+            style={{ width: 25, height: 25, marginLeft: 5, tintColor: '#fff' }}
           />
         </TouchableOpacity>
       </View>
@@ -38,7 +38,7 @@ const Register_StackNavigator = createStackNavigator({
       title: 'Register',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -54,7 +54,7 @@ const Login_StackNavigator = createStackNavigator({
         title: 'Login',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
-          backgroundColor: '#FF9800'
+          backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
       })
@@ -84,7 +84,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
       title: 'Notification Settings',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -98,7 +98,7 @@ const test_StackNavigator = createStackNavigator({
       title: 'Test',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -112,7 +112,7 @@ const notifications_StackNavigator = createStackNavigator({
       title: 'Notifications',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
