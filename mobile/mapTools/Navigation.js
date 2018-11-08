@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   searchContainer: {
     // marginTop: 90,
     paddingBottom: 0,
-    margin: 10,
-    marginRight: 50,
+    margin: 5,
+    // marginRight: 50,
     // flexDirection: "row",
   },
   calloutView: {
@@ -120,15 +120,17 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imageContainer: {
+    padding: 2,
     borderRadius: 80,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    elevation: 5
+
   },
   image: {
     width: 20,
     height: 20,
     margin: 15,
     tintColor: '#00498f',
-    elevation: 5
 
     // zIndex: 100
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, Dimensions, Keyboard } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, Dimensions, Keyboard, Modal } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import services from '../services/index';
@@ -35,7 +35,7 @@ class Search extends Component {
   };
 
   onSelectedItemsChange = selectedItems => {
-    console.log(this.state.items)
+    console.log(this.state.items);
     const { lat, lon } = this.state.items[selectedItems];
     const mapRegion = calcMapRegionOne({ lat, lon });
     if (mapRegion) {
@@ -48,29 +48,48 @@ class Search extends Component {
 
   render() {
     const { items } = this.state;
-
+    console.log(height);
     return (
       <View style={styles.searchContainer}>
-        <SearchBar
-          lightTheme
-          showLoading
-          clearIcon
-          searchIcon={{ size: 24 }}
-          onChangeText={this.onChange}
-          // onClear={}
-          placeholder='Type Here...'/>
-        <View style={{ backgroundColor: 'white' }}>
-          {
-            items.map((l, i) => (
-              <ListItem
-                key={i}
-                title={l.display_name}
-                subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
-                onPress={() => this.onSelectedItemsChange(i)}
-              />
-            ))
-          }
-        </View>
+        {items.length > 1 ? <SearchBar
+            lightTheme
+            clearIcon
+            searchIcon={{ size: 24 }}
+            onChangeText={this.onChange}
+            containerStyle={{
+              backgroundColor: '#eeeeee', borderBottomColor: 'transparent',
+              borderTopColor: 'transparent'
+            }}
+            inputStyle={{ backgroundColor: '#fff', elevation: 5 }}
+            placeholder='Type Here...'/> :
+          <SearchBar
+            lightTheme
+            clearIcon
+            searchIcon={{ size: 24 }}
+            onChangeText={this.onChange}
+            // onClear={}
+            containerStyle={{
+              backgroundColor: 'transparent', borderBottomColor: 'transparent',
+              borderTopColor: 'transparent'
+            }}
+            inputStyle={{ backgroundColor: '#fff', elevation: 5 }}
+            placeholder='Type Here...'/>}
+
+        {items.length > 1 ?
+          <ScrollView style={{height:height/1.5 ,backgroundColor: '#eeeeee'}}>
+            {
+              items.map((l, i) => (
+                <ListItem
+                  containerStyle={{ backgroundColor: '#fff', marginRight: width / 40, marginLeft: width / 40 }}
+                  key={i}
+                  title={l.display_name}
+                  subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
+                  onPress={() => this.onSelectedItemsChange(i)}
+                />
+              ))
+            }
+
+          </ScrollView> : null}
       </View>
     );
   }
@@ -89,6 +108,10 @@ export default connect(mapStateToProps, actions)(Search);
 
 const styles = StyleSheet.create({
   searchContainer: {
-    width
+    width,
+    // width: width - 2 * (width * 0.1),
+    // marginTop: height / 55,
+    // marginRight: width * 0.1,
+    // marginLeft: width * 0.1,
   },
 });

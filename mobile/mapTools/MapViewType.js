@@ -99,15 +99,19 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     margin: 15,
-    tintColor: '#00498f'
+    tintColor: '#00498f',
+
     // zIndex: 100
   },
   container: {
     backgroundColor: 'white',
   },
   imageContainer: {
+    padding: 2,
     borderRadius: 80,
+    elevation: 5,
+    margin: 5,
+    marginRight: 0,
     backgroundColor: '#fff',
-    elevation: 5
   },
 });

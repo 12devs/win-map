@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     // padding: 10,
     margin: 5,
-    marginTop: 80,
+    marginTop: 70,
     // height: 140,
     // flex: 1,
     right: 0,
