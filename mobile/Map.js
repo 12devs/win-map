@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView, TextInput, Image, TouchableOpacity } from 'react-native';
-import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
-import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { PROVIDER_DEFAULT } from 'react-native-maps';
+import MapView, { ProviderPropType, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
 import actions from './actions';
 import { connect } from "react-redux";
@@ -89,7 +89,6 @@ export default connect(mapStateToProps, actions)(Map);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    // justifyContent: 'center',
     justifyContent: 'space-between',
     alignItems: 'stretch',
     flex: 1,
@@ -98,15 +97,8 @@ const styles = StyleSheet.create({
     flex: 10,
   },
   submitButton: {
-    // backgroundColor: 'white',
-    // padding: 10,
     margin: 5,
     marginTop: 80,
-    // height: 140,
-    // flex: 1,
     right: 0,
-    // width: 140
-    // paddingBottom: 0,
-    // marginBottom: 0
   },
 });

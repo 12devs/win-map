@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox } from 'react-native';
+import { StyleSheet, Platform, View, Text, Image, TouchableOpacity } from 'react-native';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Login from './Login';

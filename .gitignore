@@ -4,4 +4,6 @@ public
 local.json
 .idea
 breath.iml
-
+.expo
+.gradle
+build
