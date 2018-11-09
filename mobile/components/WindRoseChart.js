@@ -20,8 +20,18 @@ class WindRoseChart extends React.Component {
   }
 
   newChart() {
+    let chart = this.props.stationsData[this.props.stationId].windRoseData;
+    chart.series[0].color = '#e8eaf6';
+    chart.series[1].color = '#c5cae9';
+    chart.series[2].color = '#9fa8da';
+    chart.series[3].color = '#7986cb';
+    chart.series[4].color = '#5c6bc0';
+    chart.series[5].color = '#3f51b5';
+    chart.series[6].color = '#3949ab';
+    chart.series[7].color = '#303f9f';
+    chart.series[8].color = '#283593';
     this.setState({
-      config: this.props.stationsData[this.props.stationId].windRoseData,
+      config: chart,
     });
   }
 

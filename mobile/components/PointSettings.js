@@ -10,7 +10,6 @@ import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
 import services from '../services/index';
-// import Button from './Button';
 import { Header,Button } from 'react-native-elements';
 
 class PointSettings extends Component {
