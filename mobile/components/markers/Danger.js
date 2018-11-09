@@ -50,7 +50,7 @@ class Danger extends React.Component {
           }}
           onDragEnd={(e) => this.updatePosition(point.id, e)}
           onPress={() => {
-            this.props.updateReduxState({ info: { point, type: 'place' } });
+            this.props.updateReduxState({ info: { point, type: 'danger' } });
           }}
           draggable
           image={redIcon}/>

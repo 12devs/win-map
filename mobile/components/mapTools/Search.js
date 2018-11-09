@@ -26,7 +26,7 @@ class Search extends Component {
   handleBackPress = () => {
     if (this.state.items) {
       this.setState({ items: [] });
-      return true
+      return true;
     }
     else
       return false;
@@ -56,7 +56,6 @@ class Search extends Component {
       this.setState({ items: [] });
       Keyboard.dismiss();
     }
-
   };
 
   render() {
@@ -64,32 +63,24 @@ class Search extends Component {
     return (
       <View style={styles.searchContainer}>
         {items.length > 1 ? <SearchBar
-            // lightTheme
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
-            containerStyle={{
-              backgroundColor: '#eeeeee', borderBottomColor: 'transparent',
-              borderTopColor: 'transparent'
-            }}
-            inputStyle={{ backgroundColor: '#fff', elevation: 5 }}
+            containerStyle={[{ backgroundColor: '#eeeeee' }, styles.containerStyle]}
+            inputStyle={styles.inputStyle}
             placeholder='Type Here...'/> :
           <SearchBar
-            // lightTheme
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
-            containerStyle={{
-              backgroundColor: 'transparent', borderBottomColor: 'transparent',
-              borderTopColor: 'transparent'
-            }}
-            inputStyle={{ backgroundColor: '#fff', elevation: 5 }}
+            containerStyle={[{ backgroundColor: 'transparent' }, styles.containerStyle]}
+            inputStyle={styles.inputStyle}
             placeholder='Type Here...'/>}
 
         {items.length > 1 ?
-          <ScrollView style={{ height: height * 0.8, backgroundColor: '#eeeeee' }}>
+          <ScrollView style={styles.scrollContainer}>
             {
               items.map((l, i) => (
                 <ListItem
-                  containerStyle={{ backgroundColor: '#fff', marginRight: width / 40, marginLeft: width / 40 }}
+                  containerStyle={styles.listContainer}
                   key={i}
                   title={l.display_name}
                   subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
@@ -97,8 +88,7 @@ class Search extends Component {
                 />
               ))
             }
-          </ScrollView>
-          : null}
+          </ScrollView> : null}
       </View>
     );
   }
@@ -118,9 +108,22 @@ export default connect(mapStateToProps, actions)(Search);
 const styles = StyleSheet.create({
   searchContainer: {
     width,
-    // width: width - 2 * (width * 0.1),
-    // marginTop: height / 55,
-    // marginRight: width * 0.1,
-    // marginLeft: width * 0.1,
   },
+  containerStyle: {
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent'
+  },
+  inputStyle: {
+    backgroundColor: '#fff',
+    elevation: 5
+  },
+  scrollContainer: {
+    height: height * 0.8,
+    backgroundColor: '#eeeeee'
+  },
+  listContainer: {
+    backgroundColor: '#fff',
+    marginRight: width / 40,
+    marginLeft: width / 40
+  }
 });

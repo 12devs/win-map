@@ -10,7 +10,7 @@ import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
 import services from '../services/index';
-import { Header,Button } from 'react-native-elements';
+import { Header, Button } from 'react-native-elements';
 
 class PointSettings extends Component {
   constructor() {
@@ -65,10 +65,10 @@ class PointSettings extends Component {
             centerComponent={{ text: 'Point Info', style: { color: '#fff', fontSize: 20 } }}
             outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
           />
-          <Text style={{textAlign: 'center'}}>Name: {point.name}</Text>
-          <Text style={{textAlign: 'center'}}>Type: {type}</Text>
-          <Text style={{textAlign: 'center'}}>Lat: {point.lat}</Text>
-          <Text style={{textAlign: 'center'}}>Lng: {point.lng}</Text>
+          <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+          <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+          <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+          <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
           <WindRoseChart stationId={point.station_id}/>
           <Button
             containerViewStyle={{ margin: 10 }}
