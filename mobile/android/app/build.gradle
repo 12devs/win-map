@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: "com.android.application"
 project.ext.vectoricons = [
     iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
@@ -142,10 +152,11 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-maps')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:24.0.0"
-    compile "com.facebook.react:react-native:+"  // From node_modules
+    compile project(':react-native-onesignal')
+    implementation project(':react-native-maps')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:24.0.0"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 
 // Run this once to be able to run the application with BUCK
