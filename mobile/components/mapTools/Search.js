@@ -48,7 +48,6 @@ class Search extends Component {
   };
 
   onSelectedItemsChange = selectedItems => {
-    console.log(this.state.items);
     const { lat, lon } = this.state.items[selectedItems];
     const mapRegion = calcMapRegionOne({ lat, lon });
     if (mapRegion) {

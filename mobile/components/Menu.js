@@ -19,10 +19,6 @@ class HamburgerIcon extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <StatusBar
-          backgroundColor={'transparent'}
-          translucent
-        />
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}

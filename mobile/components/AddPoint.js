@@ -75,7 +75,6 @@ class AddPoint extends React.Component {
   render() {
     const { show } = this.props.savePointSettings;
     const { markerType } = this.props;
-    console.log(markerType);
 
     if (!show) {
       return null;
@@ -174,4 +173,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
 });
