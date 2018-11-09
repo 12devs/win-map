@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView, TextInput, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
-import actions from './actions';
+import actions from '../actions/index';
 import { connect } from "react-redux";
 import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
-import Layers from './mapTools/Layers';
 import MapViewType from './mapTools/MapViewType';
 
 const screen = Dimensions.get('window');

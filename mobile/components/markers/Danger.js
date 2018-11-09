@@ -1,10 +1,9 @@
 import React from 'react';
-import services from '../services/index';
+import services from '../../services/index';
 import { connect } from 'react-redux';
-import actions from '../actions';
-import redIcon from '../assets/point_red-mobile.png';
+import actions from '../../actions/index';
+import redIcon from '../../assets/point_red-mobile.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
-import { Actions } from 'react-native-router-flux';
 import { View } from "react-native";
 import SectorPolygon from "./SectorPolygon";
 import WindRose from "./WindRose";

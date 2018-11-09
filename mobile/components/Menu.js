@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox } from 'react-native';
+import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox, StatusBar } from 'react-native';
 
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
 import Login from './Login';
 import Logout from './Logout';
 import Register from './Register';
@@ -14,11 +14,15 @@ import notificationSettings from './notificationSettings';
 class HamburgerIcon extends Component {
   toggleDrawer = () => {
     this.props.navigationProps.toggleDrawer();
-  }
+  };
 
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
+        <StatusBar
+          backgroundColor={'transparent'}
+          translucent
+        />
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
@@ -57,7 +61,7 @@ const Login_StackNavigator = createStackNavigator({
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
-      })
+      });
     }
   },
 });

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, Dimensions, Keyboard, Modal } from 'react-native';
-import actions from '../actions/index';
+import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions, Keyboard, Modal } from 'react-native';
+import actions from '../../actions/index';
 import { connect } from "react-redux";
-import services from '../services/index';
-import { calcMapRegionOne } from '../utils';
+import services from '../../services/index';
+import { calcMapRegionOne } from '../../utils';
 import { SearchBar, ListItem } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('window');
@@ -18,6 +18,19 @@ class Search extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSelectedItemsChange = this.onSelectedItemsChange.bind(this);
   }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    if (this.state.items) {
+      this.setState({ items: [] });
+      return true
+    }
+    else
+      return false;
+  };
 
   onChange = selectedItems => {
     if (selectedItems.length > 1) {
@@ -48,12 +61,10 @@ class Search extends Component {
 
   render() {
     const { items } = this.state;
-    console.log(height);
     return (
       <View style={styles.searchContainer}>
         {items.length > 1 ? <SearchBar
-            lightTheme
-            clearIcon
+            // lightTheme
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
             containerStyle={{
@@ -63,11 +74,9 @@ class Search extends Component {
             inputStyle={{ backgroundColor: '#fff', elevation: 5 }}
             placeholder='Type Here...'/> :
           <SearchBar
-            lightTheme
-            clearIcon
+            // lightTheme
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
-            // onClear={}
             containerStyle={{
               backgroundColor: 'transparent', borderBottomColor: 'transparent',
               borderTopColor: 'transparent'
@@ -76,7 +85,7 @@ class Search extends Component {
             placeholder='Type Here...'/>}
 
         {items.length > 1 ?
-          <ScrollView style={{height:height/1.5 ,backgroundColor: '#eeeeee'}}>
+          <ScrollView style={{ height: height * 0.8, backgroundColor: '#eeeeee' }}>
             {
               items.map((l, i) => (
                 <ListItem
@@ -88,8 +97,8 @@ class Search extends Component {
                 />
               ))
             }
-
-          </ScrollView> : null}
+          </ScrollView>
+          : null}
       </View>
     );
   }

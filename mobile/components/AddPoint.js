@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import actions from './actions';
-import services from "./services";
+import actions from '../actions/index';
+import services from "../services/index";
 import {
   StyleSheet,
   TextInput,

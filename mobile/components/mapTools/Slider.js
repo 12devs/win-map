@@ -9,9 +9,9 @@ import {
   Slider,
   Image,
 } from 'react-native';
-import actions from "../actions/index";
+import actions from "../../actions/index";
 import { connect } from "react-redux";
-import { calcMapRegionAll } from '../utils';
+import { calcMapRegionAll } from '../../utils';
 import MapViewType from "./MapViewType";
 import Search from './Search';
 import { Callout } from "react-native-maps";
@@ -19,28 +19,18 @@ import { Callout } from "react-native-maps";
 class Navigation extends Component {
 
   change(value) {
-    this.props.updateReduxState({ scaleWind: parseFloat(value)*100 });
+    this.props.updateReduxState({ scaleWind: parseFloat(value) });
   }
 
   render() {
     return (
-      <View style={{marginTop: 70}}>
-
-       {/* <View style={styles.container}>
-
-          <MapViewType style={styles.submitButton}/>
-
-
-        </View>*/}
-        <Slider
-          style={styles.submitButton}
-          step={1}
-          maximumValue={10000}
-          onValueChange={this.change.bind(this)}
-          value={this.props.scaleWind}
-        />
-
-      </View>
+      <Slider
+        style={styles.submitButton}
+        step={1}
+        maximumValue={1000000}
+        onValueChange={this.change.bind(this)}
+        value={this.props.scaleWind}
+      />
     );
   }
 }

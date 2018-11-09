@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native'
-import services from "./services";
+import services from "../services/index";
 
 class Login extends Component {
   state = {

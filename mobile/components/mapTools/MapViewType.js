@@ -1,7 +1,7 @@
 import RadioForm from 'react-native-simple-radio-button';
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import actions from "../actions/index";
+import actions from "../../actions/index";
 import { connect } from "react-redux";
 import _ from 'lodash';
 
@@ -22,7 +22,6 @@ class MapViewType extends Component {
       { label: 'hybrid', value: 'hybrid' },
     ];
     const index = _.findIndex(radio_props, o => (o.value == this.props.mapViewType));
-    console.log(this.props.mapViewType);
     return (
       <View>
         {!isShow ?

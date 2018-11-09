@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import actions from "../actions/index";
+import actions from "../../actions/index";
 import { connect } from "react-redux";
 import MapViewType from "./MapViewType";
 

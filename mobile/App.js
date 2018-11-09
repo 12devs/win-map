@@ -1,15 +1,15 @@
 import React from 'react';
-import Login from './Login.js'
-import Register from './Register.js'
-import Main from './Main.js'
-import Test from './Test.js'
-import Menu from './Menu.js'
-import PointSettings from './PointSettings.js'
+import Login from './components/Login.js'
+import Register from './components/Register.js'
+import Main from './components/Main.js'
+import Test from './components/Test.js'
+import Menu from './components/Menu.js'
+import PointSettings from './components/PointSettings.js'
 import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
-import AddPoint from './AddPoint';
+import AddPoint from './components/AddPoint';
 
 const store = createStore(reducer);
 

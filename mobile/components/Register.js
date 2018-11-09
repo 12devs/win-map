@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import services from './services'
+import services from '../services/index'
 import { Actions } from 'react-native-router-flux';
 
 class Register extends Component {

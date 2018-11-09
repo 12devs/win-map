@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import actions from '../actions';
+import actions from '../../actions';
 import UserPlace from './UserPlace';
 import { StyleSheet, Text, View } from 'react-native';
 import Danger from './Danger';
-import SectorPolygon from './SectorPolygon';
 
 
 class Markers extends React.Component {

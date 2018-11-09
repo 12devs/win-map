@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { calcMapRegionOne } from './utils';
+import { calcMapRegionOne } from '../utils';
 import {
   View,
   Text,
   StyleSheet,
   Modal,
 } from 'react-native';
-import actions from "./actions";
+import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
-import services from './services';
+import services from '../services/index';
 // import Button from './Button';
 import { Header,Button } from 'react-native-elements';
 

@@ -5,9 +5,9 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import actions from "../actions/index";
+import actions from "../../actions/index";
 import { connect } from "react-redux";
-import { calcMapRegionAll } from '../utils';
+import { calcMapRegionAll } from '../../utils';
 
 class Navigation extends Component {
 

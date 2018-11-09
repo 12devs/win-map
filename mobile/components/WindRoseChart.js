@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import actions from './actions';
+import actions from '../actions/index';
 import ChartView from 'react-native-highcharts';
 import { ScrollView, Text, View } from 'react-native';
 

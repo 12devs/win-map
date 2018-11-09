@@ -23,6 +23,7 @@
     "react-native-multiple-select": "^0.4.4",
     "react-native-router-flux": "^4.0.5",
     "react-native-simple-radio-button": "^2.7.3",
+    "react-navigation": "^2.18.2",
     "react-redux": "^5.1.0",
     "redux": "^4.0.1"
   }
