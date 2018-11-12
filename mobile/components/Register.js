@@ -56,12 +56,14 @@ class Register extends Component {
                    onChangeText={this.handleLogin}/>
         <TextInput style={styles.input}
                    underlineColorAndroid="transparent"
+                   secureTextEntry={true}
                    placeholder="Password"
                    placeholderTextColor="#3D6DCC"
                    autoCapitalize="none"
                    onChangeText={this.handlePassword}/>
         <TextInput style={styles.input}
                    underlineColorAndroid="transparent"
+                   secureTextEntry={true}
                    placeholder="Repeat Password"
                    placeholderTextColor="#3D6DCC"
                    autoCapitalize="none"

@@ -45,6 +45,7 @@ class Login extends Component {
                    onChangeText={this.handleEmail}/>
 
         <TextInput style={styles.input}
+                   secureTextEntry={true}
                    underlineColorAndroid="transparent"
                    placeholder="password"
                    placeholderTextColor="#3D6DCC"
