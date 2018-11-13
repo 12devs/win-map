@@ -1,9 +1,16 @@
-import Menu from './Menu.js'
+import React, { Component } from 'react';
+import Login from './components/Login.js'
+import Register from './components/Register.js'
+import Main from './components/Main.js'
+import Test from './components/Test.js'
+import Menu from './components/Menu.js'
+import PointSettings from './components/PointSettings.js'
+import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
+import AddPoint from './components/AddPoint';
 
-import React, { Component } from 'react';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 const store = createStore(reducer);

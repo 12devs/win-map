@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { calcMapRegionOne } from './utils';
+import { calcMapRegionOne } from '../utils';
 import {
   View,
   Text,
   StyleSheet,
   Modal,
 } from 'react-native';
-import actions from "./actions";
+import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
-import services from './services';
-import Button from './Button';
+import services from '../services/index';
+import { Header, Button } from 'react-native-elements';
 
 class PointSettings extends Component {
   constructor() {
@@ -54,14 +54,29 @@ class PointSettings extends Component {
         onRequestClose={() => {
           this.props.updateReduxState({ info: { point: null, type: null } });
         }}>
-        <View style={{ marginTop: 22 }}>
-          <Text>Name: {point.name}</Text>
-          <Text>Type: {type}</Text>
-          <Text>Lat: {point.lat}</Text>
-          <Text>Lng: {point.lng}</Text>
+        <View>
+          <Header
+            leftComponent={{
+              icon: 'arrow-back', color: '#fff',
+              onPress: () => {
+                this.props.updateReduxState({ info: { point: null, type: null } });
+              }
+            }}
+            centerComponent={{ text: 'Point Info', style: { color: '#fff', fontSize: 20 } }}
+            outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+          />
+          <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+          <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+          <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+          <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
           <WindRoseChart stationId={point.station_id}/>
           <Button
-            label='Go to marker'
+            containerViewStyle={{ margin: 10 }}
+            backgroundColor={'#3D6DCC'}
+            large
+            borderRadius={50}
+            icon={{ name: 'location-on' }}
+            title='Go o marker'
             onPress={() => {
               const mapRegion = calcMapRegionOne(point);
               if (mapRegion) {
@@ -69,7 +84,12 @@ class PointSettings extends Component {
               }
             }}/>
           <Button
-            label='Remove point'
+            containerViewStyle={{ margin: 10 }}
+            backgroundColor={'red'}
+            large
+            borderRadius={50}
+            icon={{ name: 'location-off' }}
+            title='Remove point'
             onPress={() => {
               this.delMarker()
                 .then(() => {

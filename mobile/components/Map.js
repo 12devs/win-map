@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { PROVIDER_DEFAULT } from 'react-native-maps';
-import MapView, { ProviderPropType, Callout } from 'react-native-maps';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
+import MapView, { ProviderPropType, Marker, AnimatedRegion, Callout } from 'react-native-maps';
 import Markers from './markers/Markers';
-import actions from './actions';
+import actions from '../actions/index';
 import { connect } from "react-redux";
 import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
-import Layers from './mapTools/Layers';
-import { calcMapRegionOne } from "./utils";
+import MapViewType from './mapTools/MapViewType';
 
 const screen = Dimensions.get('window');
 
@@ -23,6 +26,12 @@ class Map extends Component {
     const LONGITUDE = 24.4324;
     const LATITUDE_DELTA = 0.0922;
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+    const initialRegion = {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
     return (
       <View style={styles.container}>
         <MapView
@@ -40,13 +49,8 @@ class Map extends Component {
           }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
-          region={this.props.mapRegion}
+          initialRegion={initialRegion}
+          region={this.props.mapRegion || initialRegion}
           mapPadding={{
             top: mapPadding * 2,
             right: mapPadding,
@@ -64,7 +68,7 @@ class Map extends Component {
           <Slider/>
         </Callout>
         <Callout style={styles.submitButton}>
-          <Layers/>
+          <MapViewType/>
         </Callout>
         <Callout style={{ top: 0 }}>
           <Search/>
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     margin: 5,
-    marginTop: 80,
+    marginTop: 70,
     right: 0,
   },
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import actions from '../actions';
+import actions from '../../actions/index';
 import SectorPolygon from './SectorPolygon';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import _ from 'lodash';

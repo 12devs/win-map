@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Platform, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox, StatusBar } from 'react-native';
 
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
 import Login from './Login';
 import Logout from './Logout';
 import Register from './Register';
@@ -14,7 +14,7 @@ import notificationSettings from './notificationSettings';
 class HamburgerIcon extends Component {
   toggleDrawer = () => {
     this.props.navigationProps.toggleDrawer();
-  }
+  };
 
   render() {
     return (
@@ -22,7 +22,7 @@ class HamburgerIcon extends Component {
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-            style={{ width: 25, height: 25, marginLeft: 5 }}
+            style={{ width: 25, height: 25, marginLeft: 5, tintColor: '#fff' }}
           />
         </TouchableOpacity>
       </View>
@@ -38,7 +38,7 @@ const Register_StackNavigator = createStackNavigator({
       title: 'Register',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -54,10 +54,10 @@ const Login_StackNavigator = createStackNavigator({
         title: 'Login',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
-          backgroundColor: '#FF9800'
+          backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
-      })
+      });
     }
   },
 });
@@ -70,7 +70,7 @@ const Main_StackNavigator = createStackNavigator({
       title: 'Map',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -84,7 +84,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
       title: 'Notification Settings',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -98,7 +98,7 @@ const test_StackNavigator = createStackNavigator({
       title: 'Test',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })
@@ -112,7 +112,7 @@ const notifications_StackNavigator = createStackNavigator({
       title: 'Notifications',
       headerLeft: <HamburgerIcon navigationProps={navigation}/>,
       headerStyle: {
-        backgroundColor: '#FF9800'
+        backgroundColor: '#3D6DCC'
       },
       headerTintColor: '#fff',
     })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
-import actions from './actions';
+import actions from '../actions/index';
 import { connect } from "react-redux";
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';

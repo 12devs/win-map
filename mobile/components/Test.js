@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native'
-import services from './services'
+import services from '../services/index'
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
-import actions from "./actions";
+import actions from "../actions/index";
 import { connect } from "react-redux";
 
 class Test extends Component {
@@ -48,7 +48,6 @@ function mapStateToProps(state) {
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     notificationSettings: state.get('notificationSettings'),
     logs: state.get('logs'),
-    tempRegion: state.get('tempRegion'),
   };
 }
 

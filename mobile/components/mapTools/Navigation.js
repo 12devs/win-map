@@ -1,45 +1,57 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
-  AsyncStorage,
-  Slider,
   Image,
 } from 'react-native';
-import actions from "../actions/index";
+import actions from "../../actions/index";
 import { connect } from "react-redux";
-import { calcMapRegionAll } from '../utils';
-import MapViewType from "./MapViewType";
-import Search from './Search';
-import { Callout } from "react-native-maps";
+import { calcMapRegionAll } from '../../utils';
+import icons from '../icons';
 
 class Navigation extends Component {
 
-  change(value) {
-    this.props.updateReduxState({ scaleWind: parseFloat(value)*100 });
-  }
-
   render() {
     return (
-      <View style={{marginTop: 70}}>
+      <View style={{ marginTop: 70 }}>
+        <View style={styles.searchContainer}>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={
+              () => {
+                const mapRegion = calcMapRegionAll([...this.props.places, ...this.props.dangers]);
+                if (mapRegion) {
+                  this.props.updateReduxState({ mapRegion });
+                }
+              }}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: icons.marker
+              }}/>
+          </TouchableOpacity>
+        </View>
 
-       {/* <View style={styles.container}>
-
-          <MapViewType style={styles.submitButton}/>
-
-
-        </View>*/}
-        <Slider
-          style={styles.submitButton}
-          step={1}
-          maximumValue={10000}
-          onValueChange={this.change.bind(this)}
-          value={this.props.scaleWind}
-        />
-
+        <View style={styles.searchContainer}>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={
+              () => {
+                if (this.props.viewType === 'Current') {
+                  this.props.updateReduxState({ viewType: 'Historical' });
+                } else {
+                  this.props.updateReduxState({ viewType: 'Current' });
+                }
+              }
+            }>
+            <Image
+              style={styles.image}
+              source={{
+                uri: icons.clock
+              }}/>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -74,10 +86,9 @@ const styles = StyleSheet.create({
   searchContainer: {
     // marginTop: 90,
     paddingBottom: 0,
-    margin: 10,
-    marginRight: 50,
+    margin: 5,
+    // marginRight: 50,
     // flexDirection: "row",
-    backgroundColor: 'green'
   },
   calloutView: {
     flexDirection: "row",
@@ -97,10 +108,10 @@ const styles = StyleSheet.create({
     // marginTop: 20,
   },
   submitButton: {
-    // backgroundColor: '#7a42f4',
+    backgroundColor: '#7a42f4',
     padding: 10,
     margin: 5,
-    height: 30,
+    height: 140,
     flex: 1,
     // paddingBottom: 0,
     // marginBottom: 0
@@ -109,12 +120,18 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   imageContainer: {
-    borderRadius: 80, backgroundColor: 'white'
+    padding: 2,
+    borderRadius: 80,
+    backgroundColor: '#fff',
+    elevation: 5
+
   },
   image: {
     width: 20,
     height: 20,
     margin: 15,
+    tintColor: '#00498f',
+
     // zIndex: 100
   }
 });

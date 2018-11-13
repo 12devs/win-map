@@ -42,14 +42,20 @@ const reducer = function (state = immutable.Map(), action) {
     case "SET_STATE":
       return immutable.fromJS(action.state);
     case "updateReduxState":
+      let a;
+      if (!('tempRegion' in action.state)) {
+        a = state.update("mapRegion", () => immutable.fromJS(state.get('tempRegion')));
+      } else {
+        a = state
+      }
       return immutable.fromJS(immutable.mergeWith((oldVal, newVal, key) => {
         return newVal;
-      }, state, action.state));
+      }, a, action.state));
     case "updateStatistic":
       return state.update("statistic", () => immutable.fromJS(getStats(state.get('places'), state.get('dangers'), state.get('stationsData'))));
     case "log":
       return state.update("logs", (log) => {
-        if (log){
+        if (log) {
           return immutable.fromJS(log.push(action.state))
         } else {
           return immutable.fromJS([action.state])

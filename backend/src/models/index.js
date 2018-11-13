@@ -11,7 +11,7 @@ const db = {};
 
 let dbConfig = config.database;
 
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENVIRONMENT === "test") {
   dbConfig = config.database_test;
 }
 

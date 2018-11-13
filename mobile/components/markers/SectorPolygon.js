@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Polygon } from 'react-native-maps';
 import { connect } from 'react-redux';
-import actions from '../actions/index';
+import actions from '../../actions/index';
 
 const sectors = {
   North: [348.75, 11.5],

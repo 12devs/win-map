@@ -4,10 +4,10 @@
   "description": "Backend part",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV= jest",
+    "test": "NODE_ENV= NODE_ENVIRONMENT='test' jest --detectOpenHandles --forceExit",
     "dev": "babel-node ./server.js",
     "dev:watch": "babel-watch src/index.js | bunyan",
-    "dev_test:watch": "babel-watch src/index.js | bunyan",
+    "dev_test:watch": "NODE_ENVIRONMENT='test' babel-watch src/index.js | bunyan",
     "start": "node ./dist",
     "build": "babel ./src -d dist ; cp -r src/views dist;",
     "script": "babel-watch src/scripts/index.js | bunyan",

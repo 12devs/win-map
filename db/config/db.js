@@ -6,8 +6,6 @@ if (process.env.NODE_ENV = 'test') {
   configDatabase = config.database_test;
 }
 
-console.log(config)
-
 module.exports = {
   username: configDatabase.username,
   password: configDatabase.password,
