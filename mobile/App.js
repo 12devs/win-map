@@ -45,21 +45,11 @@ export default class App extends Component {
     log('App 2');
     log('App 3');
     super(properties);
-    // OneSignal.init("27ccd574-12cd-4bc2-9f7e-988b6b92ad49");
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
     OneSignal.addEventListener('ids', this.onIds);
 
   }
-
-  // componentDidMount(){
-  //   setTimeout(()=>{
-  //     log('time');
-  //     OneSignal.addEventListener('received', this.onReceived);
-  //     OneSignal.addEventListener('opened', this.onOpened);
-  //     OneSignal.addEventListener('ids', this.onIds);
-  //   },5000);
-  // }
 
   componentWillUnmount() {
     log('componentWillUnmount');
