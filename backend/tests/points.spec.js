@@ -87,24 +87,26 @@ describe('Points', () => {
 
     it('new point should be kept in the database', async (done) => {
       const { id } = res.body.place;
-      console.log('id', id);
       await Models.Place.findOne({
-        where: { id: id }
+         where: { id: id }
       })
         .then(data => {
-          // if (!data) {
-          //   // done.fail("new point in database not found");
-          //   return;
-          // }
+          if (!data) {
+            done.fail("new point in database not found");
+            return;
+          }
 
           done();
         });
     });
 
     afterAll(async () => {
-
-    })
+      const { id } = res.body.place;
+      await Models.Place.destroy({ where: { id: id } });
+      await Models.Account.destroy({ where: { login: username } });
+    });
 
   });
+
 
 });
