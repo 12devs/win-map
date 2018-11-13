@@ -67,7 +67,7 @@ class AddPoint extends React.Component {
           places.push(place);
         }
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({ places, dangers, stationsData, stations, savePointSettings: { show: false } });
+        this.props.updateReduxState({ places, dangers, stationsData, stations, savePointSettings: { show: false }, mapRegion: this.props.tempRegion });
       });
   };
 
@@ -83,7 +83,7 @@ class AddPoint extends React.Component {
         transparent={false}
         visible={show}
         onRequestClose={() => {
-          this.props.updateReduxState({ savePointSettings: { show: false } });
+          this.props.updateReduxState({ savePointSettings: { show: false }, mapRegion: this.props.tempRegion });
         }}>
         <View style={{ marginTop: 22 }}>
           <View>
@@ -123,6 +123,7 @@ function mapStateToProps(state) {
     notificationSettings: state.get('notificationSettings'),
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
+    tempRegion: state.get('tempRegion'),
   };
 }
 

@@ -38,7 +38,7 @@ class Navigation extends Component {
             onPress={
               () => {
                 if (this.props.viewType === 'Current') {
-                  this.props.updateReduxState({ viewType: 'Historical' });
+                  this.props.updateReduxState({ viewType: 'Historical', mapRegion: this.props.tempRegion});
                 } else {
                   this.props.updateReduxState({ viewType: 'Current' });
                 }
@@ -70,6 +70,7 @@ function mapStateToProps(state) {
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     info: state.get('info'),
     scaleWind: state.get('scaleWind'),
+    tempRegion: state.get('tempRegion'),
   };
 }
 

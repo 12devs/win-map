@@ -9,6 +9,7 @@ import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
 import Layers from './mapTools/Layers';
+import { calcMapRegionOne } from "./utils";
 
 const screen = Dimensions.get('window');
 
@@ -26,12 +27,16 @@ class Map extends Component {
       <View style={styles.container}>
         <MapView
           onPress={(e) => {
+            const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate;
             this.props.updateReduxState({
               savePointSettings: {
                 show: true,
-                latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
-              }
+                latlng: { lat, lng }
+              },
             });
+          }}
+          onRegionChangeComplete={(mapRegion) => {
+            this.props.updateReduxState({ tempRegion: mapRegion });
           }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}

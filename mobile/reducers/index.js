@@ -37,6 +37,7 @@ const getStats = (places, dangers, stationsData) => {
 };
 
 const reducer = function (state = immutable.Map(), action) {
+
   switch (action.type) {
     case "SET_STATE":
       return immutable.fromJS(action.state);
@@ -46,6 +47,14 @@ const reducer = function (state = immutable.Map(), action) {
       }, state, action.state));
     case "updateStatistic":
       return state.update("statistic", () => immutable.fromJS(getStats(state.get('places'), state.get('dangers'), state.get('stationsData'))));
+    case "log":
+      return state.update("logs", (log) => {
+        if (log){
+          return immutable.fromJS(log.push(action.state))
+        } else {
+          return immutable.fromJS([action.state])
+        }
+      });
   }
 };
 

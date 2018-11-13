@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "android": "react-native run-android",
+    "android": "react-native run-android && react-native log-android",
     "ios": "react-native run-ios"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
     "react-native-highcharts": "^1.0.2",
     "react-native-maps": "^0.22.0",
     "react-native-multiple-select": "^0.4.4",
-    "react-native-onesignal": "^3.2.8",
+    "react-native-onesignal": "3.1.4",
     "react-native-router-flux": "^4.0.5",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-sound-player": "^0.5.3",
