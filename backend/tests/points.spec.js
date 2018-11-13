@@ -27,7 +27,7 @@ describe('Points', () => {
       }],
   };
 
-  const Mydanger = {
+  const MyDanger = {
     danger:
       {
         lat: 53.643009642582335,
@@ -130,7 +130,7 @@ describe('Points', () => {
         .post('/api/points/save')
         .set('Authorization', `Token ${token}`)
         .set('Content-Type', 'application/json')
-        .send(Mydanger);
+        .send(MyDanger);
     });
 
     it('response code should be 200', () => {
@@ -147,9 +147,9 @@ describe('Points', () => {
     it('new place should be created with the correct parameters', () => {
       const { danger } = res.body;
       expect(danger).toEqual(expect.objectContaining({
-        lat: Mydanger.danger.lat,
-        lng: Mydanger.danger.lng,
-        name: Mydanger.danger.name,
+        lat: MyDanger.danger.lat,
+        lng: MyDanger.danger.lng,
+        name: MyDanger.danger.name,
       }));
     });
 
