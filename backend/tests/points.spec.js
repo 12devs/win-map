@@ -27,6 +27,21 @@ describe('Points', () => {
       }],
   };
 
+  const MyDanger = {
+    danger:
+      {
+        lat: 53.643009642582335,
+        lng: 23.75621795654297,
+        name: 'test_danger'
+      },
+    stations:
+      [{
+        station_id: 'UMMG',
+        lat: '53.68462508940614',
+        lng: '23.852275279350586'
+      }],
+  };
+
   beforeAll(async () => {
     const options = {
       method: 'POST',
@@ -87,24 +102,80 @@ describe('Points', () => {
 
     it('new point should be kept in the database', async (done) => {
       const { id } = res.body.place;
-      console.log('id', id);
       await Models.Place.findOne({
-        where: { id: id }
+         where: { id: id }
       })
         .then(data => {
-          // if (!data) {
-          //   // done.fail("new point in database not found");
-          //   return;
-          // }
+          if (!data) {
+            done.fail("new point in database not found");
+            return;
+          }
 
           done();
         });
     });
 
     afterAll(async () => {
+      const { id } = res.body.place;
+      await Models.Place.destroy({ where: { id: id } });
+    });
 
-    })
+  });
 
+  describe('when adding a new point "Danger" with correct data', () => {
+    let res;
+
+    beforeAll(async () => {
+      res = await container
+        .post('/api/points/save')
+        .set('Authorization', `Token ${token}`)
+        .set('Content-Type', 'application/json')
+        .send(MyDanger);
+    });
+
+    it('response code should be 200', () => {
+      expect(res.status).toBe(200);
+    });
+
+    it('response body should be object. Body contains objects place and stationsData.', () => {
+      const { danger, stationsData } = res.body;
+      expect(res.body).toEqual(expect.any(Object));
+      expect(danger).toEqual(expect.any(Object));
+      expect(stationsData).toEqual(expect.any(Object));
+    });
+
+    it('new place should be created with the correct parameters', () => {
+      const { danger } = res.body;
+      expect(danger).toEqual(expect.objectContaining({
+        lat: MyDanger.danger.lat,
+        lng: MyDanger.danger.lng,
+        name: MyDanger.danger.name,
+      }));
+    });
+
+    it('new point should be kept in the database', async (done) => {
+      const { id } = res.body.danger;
+      await Models.Danger.findOne({
+        where: { id: id }
+      })
+        .then(data => {
+          if (!data) {
+            done.fail("new point in database not found");
+            return;
+          }
+
+          done();
+        });
+    });
+
+    afterAll(async () => {
+      const { id } = res.body.danger;
+      await Models.Danger.destroy({ where: { id: id } });
+    });
+  });
+
+  afterAll(async () => {
+    await Models.Account.destroy({ where: { login: username } });
   });
 
 });
