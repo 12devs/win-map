@@ -23,8 +23,8 @@ class Login extends Component {
     return services.login(login, password)
       .then(res => {
         console.log(res);
-        if (e.message !== 'OK') {
-          this.setState({ error: `${e.error}${e.message}` });
+        if (res.message !== 'OK') {
+          this.setState({ error: `${res.error} ${res.message}` });
         }
         else {
           AsyncStorage.setItem('windToken', res.token);

@@ -72,7 +72,7 @@ class Search extends Component {
             onChangeText={this.onChange}
             containerStyle={[{ backgroundColor: 'transparent' }, styles.containerStyle]}
             inputStyle={styles.inputStyle}
-            placeholder='Type Here...'/>}
+            placeholder='Search...'/>}
 
         {items.length > 1 ?
           <ScrollView style={styles.scrollContainer}>

@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Platform, View, Text, Image, TouchableOpacity, YellowBox, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  YellowBox,
+  StatusBar,
+  Dimensions
+} from 'react-native';
 
 import { createDrawerNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
 import Login from './Login';
@@ -11,6 +21,8 @@ import Test from './Test';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 
+const { width, height } = Dimensions.get('window');
+
 class HamburgerIcon extends Component {
   toggleDrawer = () => {
     this.props.navigationProps.toggleDrawer();
@@ -18,11 +30,11 @@ class HamburgerIcon extends Component {
 
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
+      <View style={{ flexDirection: 'row'}}>
+        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }} onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-            style={{ width: 25, height: 25, marginLeft: 5, tintColor: '#fff' }}
+            style={{ width: 25, height: 25, tintColor: '#fff' }}
           />
         </TouchableOpacity>
       </View>
@@ -30,96 +42,113 @@ class HamburgerIcon extends Component {
   }
 }
 
-
 const Register_StackNavigator = createStackNavigator({
-  First: {
-    screen: Register,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Register',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#3D6DCC'
-      },
-      headerTintColor: '#fff',
-    })
+    First: {
+      screen: Register,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Register',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC',
+          textAlign: 'center'
+        },
+        headerTintColor: '#fff',
+      })
+    },
   },
-});
-
+  {
+    headerLayoutPreset: 'center'
+  });
 
 const Login_StackNavigator = createStackNavigator({
-  Second: {
-    screen: Login,
-    navigationOptions: ({ navigation }) => {
-      return ({
-        title: 'Login',
+    Second: {
+      screen: Login,
+      navigationOptions: ({ navigation }) => {
+        return ({
+          title: 'Login',
+          headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+          headerStyle: {
+            backgroundColor: '#3D6DCC'
+          },
+          headerTintColor: '#fff',
+        });
+      }
+    },
+  },
+  {
+    headerLayoutPreset: 'center'
+  });
+
+const Main_StackNavigator = createStackNavigator({
+    Third: {
+      screen: Main,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Map',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerTitleStyle: { textAlign: 'center' },
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    headerLayoutPreset: 'center',
+  });
+
+const notificationSettings_StackNavigator = createStackNavigator({
+    Third: {
+      screen: notificationSettings,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Notification Settings',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
-      });
-    }
+      })
+    },
   },
-});
-
-
-const Main_StackNavigator = createStackNavigator({
-  Third: {
-    screen: Main,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Map',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#3D6DCC'
-      },
-      headerTintColor: '#fff',
-    })
-  },
-});
-
-const notificationSettings_StackNavigator = createStackNavigator({
-  Third: {
-    screen: notificationSettings,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Notification Settings',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#3D6DCC'
-      },
-      headerTintColor: '#fff',
-    })
-  },
-});
+  {
+    headerLayoutPreset: 'center'
+  });
 
 const test_StackNavigator = createStackNavigator({
-  Third: {
-    screen: Test,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Test',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#3D6DCC'
-      },
-      headerTintColor: '#fff',
-    })
+    Third: {
+      screen: Test,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Test',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
   },
-});
+  {
+    headerLayoutPreset: 'center'
+  });
 
 const notifications_StackNavigator = createStackNavigator({
-  Third: {
-    screen: Notifications,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Notifications',
-      headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#3D6DCC'
-      },
-      headerTintColor: '#fff',
-    })
+    Third: {
+      screen: Notifications,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Notifications',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
   },
-});
+  {
+    headerLayoutPreset: 'center'
+  });
 
-export default MyDrawerNavigator = createDrawerNavigator({
+export default createDrawerNavigator({
     Register: {
       screen: Register_StackNavigator
     },
