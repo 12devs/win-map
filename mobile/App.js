@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
-import Login from './components/Login.js'
-import Register from './components/Register.js'
-import Main from './components/Main.js'
-import Test from './components/Test.js'
 import Menu from './components/Menu.js'
-import PointSettings from './components/PointSettings.js'
-import { Router, Scene } from 'react-native-router-flux'
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
-import AddPoint from './components/AddPoint';
 
-import OneSignal from 'react-native-onesignal'; // Import package from node modules
+import OneSignal from 'react-native-onesignal';
 
 const store = createStore(reducer);
 
-const log = (data) => {
-  console.log('-------', data);
+const log = function () {
+  [].slice.call(arguments, 0).forEach(elem=>{
+    console.log('-------', elem);
+  });
   return store.dispatch({
     type: "log",
-    state: data
-  });
+    state: [].slice.call(arguments, 0),
+  })
 };
 
 store.dispatch({
@@ -48,10 +43,9 @@ store.dispatch({
 export default class App extends Component {
 
   constructor(properties) {
-    log('App constructor');
-    log('App 2');
-    log('App 3');
     super(properties);
+    OneSignal.init("27ccd574-12cd-4bc2-9f7e-988b6b92ad49");
+    OneSignal.configure();
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
     OneSignal.addEventListener('ids', this.onIds);
@@ -77,8 +71,7 @@ export default class App extends Component {
   }
 
   onIds(device) {
-    log('Device info: ');
-    log(device);
+    log('Device info: ', device);
   }
 
   render() {
