@@ -26,26 +26,31 @@ class Map extends Component {
     const LONGITUDE = 24.4324;
     const LATITUDE_DELTA = 0.0922;
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+    const initialRegion = {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
     return (
       <View style={styles.container}>
         <MapView
           onPress={(e) => {
+            const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate;
             this.props.updateReduxState({
               savePointSettings: {
                 show: true,
-                latlng: { lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude }
-              }
+                latlng: { lat, lng }
+              },
             });
+          }}
+          onRegionChangeComplete={(mapRegion) => {
+            this.props.updateReduxState({ tempRegion: mapRegion });
           }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
-          region={this.props.mapRegion}
+          initialRegion={initialRegion}
+          region={this.props.mapRegion || initialRegion}
           mapPadding={{
             top: mapPadding * 2,
             right: mapPadding,
@@ -93,7 +98,6 @@ export default connect(mapStateToProps, actions)(Map);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    // justifyContent: 'center',
     justifyContent: 'space-between',
     alignItems: 'stretch',
     flex: 1,
@@ -102,15 +106,8 @@ const styles = StyleSheet.create({
     flex: 10,
   },
   submitButton: {
-    // backgroundColor: 'white',
-    // padding: 10,
     margin: 5,
     marginTop: 70,
-    // height: 140,
-    // flex: 1,
     right: 0,
-    // width: 140
-    // paddingBottom: 0,
-    // marginBottom: 0
   },
 });

@@ -69,7 +69,13 @@ class AddPoint extends React.Component {
           places.push(place);
         }
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({ places, dangers, stationsData, stations, savePointSettings: { show: false } });
+        this.props.updateReduxState({
+          places,
+          dangers,
+          stationsData,
+          stations,
+          savePointSettings: { show: false }
+        });
       });
   };
 
@@ -96,7 +102,7 @@ class AddPoint extends React.Component {
           leftComponent={{
             icon: 'arrow-back', color: '#fff',
             onPress: () => {
-              this.props.updateReduxState({ savePointSettings: { show: false } });
+              this.props.updateReduxState({ savePointSettings: { show: false }});
             }
           }}
           rightComponent={{
