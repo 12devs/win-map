@@ -28,6 +28,14 @@ const columns = {
     type: DataTypes.STRING(255),
     defaultValue: '',
   },
+  attemptsCode: {
+    type: DataTypes.INTEGER(),
+    defaultValue: 0,
+  },
+  attemptsChangePasswordCode: {
+    type: DataTypes.INTEGER(),
+    defaultValue: 0,
+  },
   email: {
     type: DataTypes.STRING(255),
     defaultValue: '',
