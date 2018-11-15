@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 
 import {
+  StyleSheet,
+  Platform,
   View,
+  Text,
   Image,
   TouchableOpacity,
+  YellowBox,
+  StatusBar,
   Dimensions
 } from 'react-native';
 
@@ -13,9 +18,10 @@ import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
 import Test from './Test';
-import ChangePassword from './ChangePassword';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
+import Details from './Details';
+import AddPoint from './AddPoint';
 
 const { width, height } = Dimensions.get('window');
 
@@ -62,25 +68,6 @@ const Login_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return ({
           title: 'Login',
-          headerLeft: <HamburgerIcon navigationProps={navigation}/>,
-          headerStyle: {
-            backgroundColor: '#3D6DCC'
-          },
-          headerTintColor: '#fff',
-        });
-      }
-    },
-  },
-  {
-    headerLayoutPreset: 'center'
-  });
-
-const ChangePassword_StackNavigator = createStackNavigator({
-    Second: {
-      screen: ChangePassword,
-      navigationOptions: ({ navigation }) => {
-        return ({
-          title: 'Change Password',
           headerLeft: <HamburgerIcon navigationProps={navigation}/>,
           headerStyle: {
             backgroundColor: '#3D6DCC'
@@ -162,6 +149,23 @@ const notifications_StackNavigator = createStackNavigator({
   {
     headerLayoutPreset: 'center'
   });
+const addedMarker_StackNavigator = createStackNavigator({
+    Details: {
+      screen: Details,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Add Point',
+        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center'
+  });
 
 export default createDrawerNavigator({
     Register: {
@@ -169,9 +173,6 @@ export default createDrawerNavigator({
     },
     Login: {
       screen: Login_StackNavigator
-    },
-    ChangePassword: {
-      screen: ChangePassword_StackNavigator
     },
     Map: {
       screen: Main_StackNavigator
@@ -181,6 +182,12 @@ export default createDrawerNavigator({
     },
     test: {
       screen: test_StackNavigator
+    },
+    Details: {
+      screen: addedMarker_StackNavigator,
+      navigationOptions: {
+        drawerLabel: () => null,
+      }
     },
     notifications: {
       screen: notifications_StackNavigator

@@ -1,21 +1,18 @@
 const nodemailer = require('nodemailer');
 const emailExistence = require('email-existence');
 const config = require('config');
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: config.nodemailerAuth
-});
+const transporter = nodemailer.createTransport(config.nodemailerOptions);
 
 const verifyEmail = (email) => {
   return new Promise((resolve, reject) => {
     return emailExistence.check(email, (error, response) => {
       if (error || (!response)) {
-        return reject(new Error(`Email ${email} doesn't exist`))
+        return reject(new Error(`Email ${email} doesn't exist`));
       } else {
-        return resolve(true)
+        return resolve(true);
       }
-    })
-  })
+    });
+  });
 };
 
 const sendEmail = (email, subject, text) => {
@@ -24,7 +21,7 @@ const sendEmail = (email, subject, text) => {
   return verifyEmail(email)
     .then(() => {
       const mailOptions = {
-        from: config.nodemailerAuth.user,
+        from: config.nodemailerOptions.auth.user,
         to: email,
         subject,
         text
@@ -36,9 +33,9 @@ const sendEmail = (email, subject, text) => {
         }
         return true;
       });
-    })
+    });
 };
 
 export {
   sendEmail
-}
+};

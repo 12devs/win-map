@@ -12,10 +12,10 @@ class Markers extends React.Component {
     return (
       <View>
         {this.props.places.map((point, id) => {
-          return <UserPlace key={id} point={point} showInfo={this.showInfo}/>;
+          return <UserPlace key={id} point={point} showInfo={this.showInfo} navigation={this.props.navigation}/>;
         })}
         {this.props.dangers.map((point, id) => {
-          return <Danger key={id} point={point} showInfo={this.showInfo}/>;
+          return <Danger key={id} point={point} showInfo={this.showInfo} navigation={this.props.navigation}/>;
         })}
       </View>
     );

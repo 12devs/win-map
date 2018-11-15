@@ -59,7 +59,7 @@ class Map extends Component {
           }}
           mapType={this.props.mapViewType || 'standard'}
         >
-          <Markers/>
+          <Markers navigation={this.props.navigation}/>
         </MapView>
         <Callout>
           <Navigation/>

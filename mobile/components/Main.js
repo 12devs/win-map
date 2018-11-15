@@ -27,7 +27,7 @@ class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Map style={styles.map}/>
+        <Map style={styles.map} navigation={this.props.navigation}/>
         <AddPoint/>
         <PointSettings/>
       </View>
