@@ -2,7 +2,7 @@ const config = require("config")
 
 let configDatabase = config.database;
 
-if (process.env.NODE_ENV = 'test') {
+if (process.env.NODE_ENV === 'test') {
   configDatabase = config.database_test;
 }
 
@@ -12,4 +12,4 @@ module.exports = {
   database: configDatabase.database,
   host: configDatabase.host,
   dialect: configDatabase.dialect
-}
+};

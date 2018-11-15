@@ -1,42 +1,46 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native';
-import services from "../services/index";
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import services from '../services/index';
 import { Button } from 'react-native-elements';
 
-class Login extends Component {
+class ChangePassword extends Component {
   state = {
     login: '',
     password: '',
-    code: '',
     email: '',
+    repeatPassword: '',
     error: '',
-    chowCode: false,
+    changePasswordCode:'',
+    showCode: false,
   };
 
-  login = () => {
-    const { login, password, code } = this.state;
-    return services.login({ login, password, code })
-      .then(res => {
-        console.log(res);
-        const { message, email, error, token } = res;
-        this.setState({ code: '' });
-        if (message === 'code') {
-          return this.setState({ chowCode: true, email });
-        }
-        if (message !== 'OK') {
-          this.setState({ error });
-        } else {
-          AsyncStorage.setItem('windToken', token);
-          return this.props.navigation.navigate('Map');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  send = () => {
+    const { login, password, repeatPassword, changePasswordCode } = this.state;
+    if (password === repeatPassword) {
+      services.changePassword({ login, password, changePasswordCode })
+        .then((res) => {
+          console.log(res);
+          const { error, message, email } = res;
+          if (message === 'code') {
+            return this.setState({ email, showCode: true });
+          }
+          if (message !== 'OK') {
+            this.setState({ error });
+          } else {
+            return this.props.navigation.navigate('Login');
+          }
+        })
+        .catch((error) => {
+          this.setState({ error: error.toString() });
+        });
+    }
+    else {
+      this.setState({ error: 'Passwords do not match' });
+    }
   };
 
   render() {
-    if (this.state.chowCode) {
+    if (this.state.showCode){
       return (
         <View style={styles.container}>
           <TextInput style={styles.input}
@@ -45,7 +49,7 @@ class Login extends Component {
                      placeholder={"code from " + this.state.email}
                      placeholderTextColor="#3D6DCC"
                      autoCapitalize="none"
-                     onChangeText={(code) => this.setState({ code })}/>
+                     onChangeText={(changePasswordCode)=>this.setState({changePasswordCode})}/>
           {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
           <Button
             containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
@@ -54,44 +58,51 @@ class Login extends Component {
             borderRadius={50}
             title='SEND'
             color={'#fff'}
-            onPress={this.login}/>
+            onPress={this.send}/>
         </View>
       )
     } else {
       return (
         <View style={styles.container}>
           <TextInput style={styles.input}
+                     underlineColorAndroid="transparent"
+                     placeholder="Username"
+                     placeholderTextColor="#3D6DCC"
+                     autoCapitalize="none"
                      value={this.state.login}
-                     underlineColorAndroid="transparent"
-                     placeholder="username"
-                     placeholderTextColor="#3D6DCC"
-                     autoCapitalize="none"
-                     onChangeText={(login) => this.setState({ login })}/>
-
+                     onChangeText={(login)=>this.setState({login})}/>
           <TextInput style={styles.input}
-                     value={this.state.password}
-                     secureTextEntry={true}
                      underlineColorAndroid="transparent"
-                     placeholder="password"
+                     secureTextEntry={true}
+                     placeholder="Password"
                      placeholderTextColor="#3D6DCC"
                      autoCapitalize="none"
-                     onChangeText={(password) => this.setState({ password })}/>
+                     value={this.state.password}
+                     onChangeText={(password)=>this.setState({password})}/>
+          <TextInput style={styles.input}
+                     underlineColorAndroid="transparent"
+                     secureTextEntry={true}
+                     placeholder="Repeat Password"
+                     placeholderTextColor="#3D6DCC"
+                     autoCapitalize="none"
+                     value={this.state.repeatPassword}
+                     onChangeText={(repeatPassword)=>this.setState({repeatPassword})}/>
           {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
           <Button
             containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
             backgroundColor={'#3D6DCC'}
             large
             borderRadius={50}
-            title='LOGIN'
+            title='Register'
             color={'#fff'}
-            onPress={this.login}/>
+            onPress={this.send}/>
         </View>
       );
     }
   }
 }
 
-export default Login;
+export default ChangePassword;
 
 const styles = StyleSheet.create({
   container: {

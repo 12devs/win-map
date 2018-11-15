@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  Platform,
   View,
-  Text,
   Image,
   TouchableOpacity,
-  YellowBox,
-  StatusBar,
   Dimensions
 } from 'react-native';
 
@@ -18,6 +13,7 @@ import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
 import Test from './Test';
+import ChangePassword from './ChangePassword';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 
@@ -30,7 +26,7 @@ class HamburgerIcon extends Component {
 
   render() {
     return (
-      <View style={{ flexDirection: 'row'}}>
+      <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }} onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
@@ -66,6 +62,25 @@ const Login_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return ({
           title: 'Login',
+          headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+          headerStyle: {
+            backgroundColor: '#3D6DCC'
+          },
+          headerTintColor: '#fff',
+        });
+      }
+    },
+  },
+  {
+    headerLayoutPreset: 'center'
+  });
+
+const ChangePassword_StackNavigator = createStackNavigator({
+    Second: {
+      screen: ChangePassword,
+      navigationOptions: ({ navigation }) => {
+        return ({
+          title: 'Change Password',
           headerLeft: <HamburgerIcon navigationProps={navigation}/>,
           headerStyle: {
             backgroundColor: '#3D6DCC'
@@ -154,6 +169,9 @@ export default createDrawerNavigator({
     },
     Login: {
       screen: Login_StackNavigator
+    },
+    ChangePassword: {
+      screen: ChangePassword_StackNavigator
     },
     Map: {
       screen: Main_StackNavigator

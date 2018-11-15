@@ -14,7 +14,6 @@ export const getInstance = () => {
   if (process.env.NODE_ENVIRONMENT === "test") {
     configDatabase = config.database_test;
   }
-
   db = new Sequelize(configDatabase.database, configDatabase.username, configDatabase.password, {
     host: configDatabase.host,
     dialect: configDatabase.dialect,

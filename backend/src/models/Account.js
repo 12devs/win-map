@@ -21,6 +21,18 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: '',
       allowNull: false,
     },
+    code: {
+      type: DataTypes.STRING(255),
+      defaultValue: '',
+    },
+    changePasswordCode: {
+      type: DataTypes.STRING(255),
+      defaultValue: '',
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      defaultValue: '',
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,

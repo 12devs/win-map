@@ -1,12 +1,16 @@
 import { fetch } from './fetch';
 import axios from 'axios';
 
-const login = (login, password) => {
-  return fetch('post', '/publicRouts/login', { login, password });
+const login = (body) => {
+  return fetch('post', '/publicRouts/login', body);
 };
 
-const register = (login, password) => {
-  return fetch('post', '/publicRouts/register', { login, password });
+const changePassword = (body) => {
+  return fetch('post', '/publicRouts/changePassword', body);
+};
+
+const register = (body) => {
+  return fetch('post', '/publicRouts/register', body);
 };
 
 const test = () => {
@@ -51,6 +55,7 @@ const search = (place) => {
 
 export default {
   login,
+  changePassword,
   register,
   test,
   savePoint,
