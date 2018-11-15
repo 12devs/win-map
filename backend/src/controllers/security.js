@@ -50,9 +50,20 @@ export default {
       if (acc.changePasswordCode) {
         if (changePasswordCode) {
           if (acc.changePasswordCode != changePasswordCode) {
+            acc.attemptsChangePasswordCode++;
+            if (acc.attemptsChangePasswordCode > 2) {
+              const changePasswordCode = _.random(0, 999999999);
+              await sendEmail(acc.email, 'Wind-map change password code', changePasswordCode);
+              acc.changePasswordCode = changePasswordCode;
+              acc.attemptsChangePasswordCode = 0;
+              await acc.save();
+              throw new Error('3 attempts are complete! A new code has been sent to your email.')
+            }
+            await acc.save();
             throw new Error('invalid code!');
           }
           acc.changePasswordCode = '';
+          acc.attemptsChangePasswordCode = 0;
           const saltRound = config.auth.saltRound;
           const salt = bcrypt.genSaltSync(saltRound);
           acc.encrypted_password = bcrypt.hashSync(password, salt);
@@ -81,9 +92,20 @@ export default {
       if (acc.code) {
         if (code) {
           if (acc.code != code) {
+            acc.attemptsCode++;
+            if (acc.attemptsCode > 2){
+              const code = _.random(0, 99999);
+              await sendEmail(acc.email, 'Wind-map activation code', code);
+              acc.code = code;
+              acc.attemptsCode = 0;
+              await acc.save();
+              throw new Error('3 attempts are complete! A new code has been sent to your email.')
+            }
+            await acc.save();
             throw new Error('invalid code!')
           }
           acc.code = '';
+          acc.attemptsCode = 0;
           await acc.save()
         } else {
           return res.status(200).json({ message: 'code', email: acc.email });
