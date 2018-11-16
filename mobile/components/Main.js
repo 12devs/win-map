@@ -28,8 +28,6 @@ class Main extends Component {
     return (
       <View style={styles.container}>
         <Map style={styles.map} navigation={this.props.navigation}/>
-        <AddPoint/>
-        <PointSettings/>
       </View>
     );
   }

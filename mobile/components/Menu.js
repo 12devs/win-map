@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
   Platform,
   View,
   Text,
   Image,
   TouchableOpacity,
   YellowBox,
-  StatusBar,
   Dimensions
 } from 'react-native';
 
@@ -20,8 +18,10 @@ import Main from './Main';
 import Test from './Test';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
-import Details from './Details';
 import AddPoint from './AddPoint';
+import PointSettings from './PointSettings';
+import Back from './mapTools/Back';
+import SentPoint from './SentPoint';
 
 const { width, height } = Dimensions.get('window');
 
@@ -151,10 +151,29 @@ const notifications_StackNavigator = createStackNavigator({
   });
 const addedMarker_StackNavigator = createStackNavigator({
     Details: {
-      screen: Details,
+      screen: AddPoint,
       navigationOptions: ({ navigation }) => ({
         title: 'Add Point',
-        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerLeft: <Back navigation={navigation}/>,
+        headerRight: <SentPoint navigation={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center'
+  });
+
+const pointSettings_StackNavigator = createStackNavigator({
+    Details: {
+      screen: PointSettings,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Point Info',
+        headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC'
         },
@@ -183,8 +202,14 @@ export default createDrawerNavigator({
     test: {
       screen: test_StackNavigator
     },
-    Details: {
+    AddPoint: {
       screen: addedMarker_StackNavigator,
+      navigationOptions: {
+        drawerLabel: () => null,
+      }
+    },
+    PointSettings: {
+      screen: pointSettings_StackNavigator,
       navigationOptions: {
         drawerLabel: () => null,
       }
