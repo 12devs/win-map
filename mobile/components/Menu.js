@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  Platform,
   View,
-  Text,
   Image,
   TouchableOpacity,
-  YellowBox,
-  StatusBar,
   Dimensions
 } from 'react-native';
 
-import { createDrawerNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Login from './Login';
 import Logout from './Logout';
 import Register from './Register';
@@ -21,7 +16,7 @@ import Test from './Test';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 import Details from './Details';
-import AddPoint from './AddPoint';
+import NavigateMenu from './NavigateMenu';
 
 const { width, height } = Dimensions.get('window');
 
@@ -185,9 +180,6 @@ export default createDrawerNavigator({
     },
     Details: {
       screen: addedMarker_StackNavigator,
-      navigationOptions: {
-        drawerLabel: () => null,
-      }
     },
     notifications: {
       screen: notifications_StackNavigator
@@ -195,6 +187,7 @@ export default createDrawerNavigator({
     Logout: Logout
   }, {
     initialRouteName: 'Map',
+    contentComponent: NavigateMenu
   }
 );
 

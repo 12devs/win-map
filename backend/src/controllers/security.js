@@ -52,7 +52,7 @@ export default {
           if (acc.changePasswordCode != changePasswordCode) {
             acc.attemptsChangePasswordCode++;
             if (acc.attemptsChangePasswordCode > 2) {
-              const changePasswordCode = _.random(0, 999999999);
+              const changePasswordCode = _.random(0, 99999);
               await sendEmail(acc.email, 'Wind-map change password code', changePasswordCode);
               acc.changePasswordCode = changePasswordCode;
               acc.attemptsChangePasswordCode = 0;
@@ -72,7 +72,7 @@ export default {
         }
         return res.status(200).json({ message: 'code', email: acc.email });
       } else {
-        const changePasswordCode = _.random(0, 999999999);
+        const changePasswordCode = _.random(0, 99999);
         await sendEmail(acc.email, 'Wind-map change password code', changePasswordCode);
         acc.changePasswordCode = changePasswordCode;
         await acc.save();

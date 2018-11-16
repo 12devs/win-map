@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native';
 import services from "../services/index";
 import { Button } from 'react-native-elements';
+import { connect } from "react-redux";
+import actions from "../actions";
 
 class Login extends Component {
   state = {
@@ -27,6 +29,7 @@ class Login extends Component {
           this.setState({ error });
         } else {
           AsyncStorage.setItem('windToken', token);
+          this.props.updateReduxState({menuRule: 'logged'});
           return this.props.navigation.navigate('Map');
         }
       })
@@ -91,7 +94,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, actions)(Login);
 
 const styles = StyleSheet.create({
   container: {
