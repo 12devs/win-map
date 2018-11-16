@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { Marker } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -57,14 +57,8 @@ class UserPlace extends React.Component {
 function mapStateToProps(state) {
   return {
     places: state.get('places'),
-    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    statistic: state.get('statistic'),
-
   };
 }
 

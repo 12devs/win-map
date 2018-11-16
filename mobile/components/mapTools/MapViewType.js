@@ -65,15 +65,6 @@ class MapViewType extends Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    mapRegion: state.get('mapRegion'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     mapViewType: state.get('mapViewType'),
   };
 }

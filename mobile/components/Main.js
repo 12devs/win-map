@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
@@ -38,15 +38,8 @@ class Main extends Component {
 function mapStateToProps(state) {
   return {
     places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
     dangers: state.get('dangers'),
     stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
-    info: state.get('info'),
   };
 }
 

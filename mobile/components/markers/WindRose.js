@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../../actions/index';
 import SectorPolygon from './SectorPolygon';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import _ from 'lodash';
 
 class WindRose extends React.Component {
@@ -32,13 +32,8 @@ class WindRose extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
     scaleWind: state.get('scaleWind'),
   };
 }

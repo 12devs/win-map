@@ -95,9 +95,7 @@ class Search extends Component {
 
 function mapStateToProps(state) {
   return {
-    notificationSettings: state.get('notificationSettings'),
     places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
     dangers: state.get('dangers'),
   };
 }

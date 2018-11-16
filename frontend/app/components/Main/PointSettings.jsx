@@ -85,7 +85,6 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     info: state.get('info'),
-    notificationSettings: state.get('notificationSettings')
   };
 }
 

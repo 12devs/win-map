@@ -4,12 +4,9 @@ import actions from '../actions/index';
 import services from "../services/index";
 import {
   StyleSheet,
-  TextInput,
   View,
-  Modal, Text
+  Text
 } from 'react-native';
-import { Header, Button } from 'react-native-elements';
-import Loader from './Loader';
 
 class Details extends React.Component {
   constructor(props) {
@@ -102,8 +99,6 @@ function mapStateToProps(state) {
     dangers: state.get('dangers'),
     stations: state.get('stations'),
     markerType: state.get('markerType'),
-    info: state.get('info'),
-    notificationSettings: state.get('notificationSettings'),
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
   };

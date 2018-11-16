@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native';
+import { View, Text, TextInput, StyleSheet, AsyncStorage } from 'react-native';
 import services from "../services/index";
 import { Button } from 'react-native-elements';
 import { connect } from "react-redux";
@@ -12,7 +12,7 @@ class Login extends Component {
     code: '',
     email: '',
     error: '',
-    chowCode: false,
+    showCode: false,
   };
 
   login = () => {
@@ -23,7 +23,7 @@ class Login extends Component {
         const { message, email, error, token } = res;
         this.setState({ code: '' });
         if (message === 'code') {
-          return this.setState({ chowCode: true, email });
+          return this.setState({ showCode: true, email });
         }
         if (message !== 'OK') {
           this.setState({ error });
@@ -39,7 +39,7 @@ class Login extends Component {
   };
 
   render() {
-    if (this.state.chowCode) {
+    if (this.state.showCode) {
       return (
         <View style={styles.container}>
           <TextInput style={styles.input}

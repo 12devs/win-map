@@ -26,16 +26,6 @@ class Navigation extends Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
-    dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
-    info: state.get('info'),
     scaleWind: state.get('scaleWind'),
   };
 }

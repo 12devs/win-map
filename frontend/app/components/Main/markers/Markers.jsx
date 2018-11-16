@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import actions from '../../../actions/points';
 import Danger from './Danger';
 import UserPlace from './UserPlace';
-import PointSettings from '../PointSettings';
 
 class Markers extends React.Component {
   constructor(props) {
@@ -45,10 +44,6 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
   };
 }
 

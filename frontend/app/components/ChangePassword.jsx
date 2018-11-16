@@ -42,7 +42,6 @@ class ChangePassword extends Component {
 
   render() {
     const { login, password, showCode, email, changePasswordCode, error, repeatPassword } = this.state;
-    console.log(showCode);
     if (showCode) {
       return (
         <div className="login">
@@ -90,8 +89,6 @@ class ChangePassword extends Component {
         </div>
       )
     }
-
-
   }
 }
 
