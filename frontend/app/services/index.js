@@ -1,11 +1,15 @@
 import { fetch } from './fetch';
 
-const login = (login, password) => {
-  return fetch('post', '/publicRouts/login', { login, password });
+const login = (body) => {
+  return fetch('post', '/publicRouts/login', body);
 };
 
-const register = (login, password) => {
-  return fetch('post', '/publicRouts/register', { login, password });
+const register = (body) => {
+  return fetch('post', '/publicRouts/register', body);
+};
+
+const changePassword = (body) => {
+  return fetch('post', '/publicRouts/changePassword', body);
 };
 
 const test = () => {
@@ -55,5 +59,6 @@ export default {
   saveNotificationToken,
   deleteNotificationToken,
   sendSubscriptions,
-  viewNotifications
+  viewNotifications,
+  changePassword
 };

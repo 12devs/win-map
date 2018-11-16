@@ -1,16 +1,16 @@
 import { createStore } from "redux";
 import React, { Component } from "react";
 import reducer from "./../reducers";
-import { connect, Provider } from "react-redux";
+import { Provider } from "react-redux";
 import {
   Switch,
   Route,
-  Redirect,
   BrowserRouter as Router,
   Link
 } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
+import ChangePassword from "./ChangePassword";
 import Main from "./Main/Main";
 
 const store = createStore(reducer);
@@ -54,11 +54,13 @@ class App extends Component {
               <Link className="map__navigation-user-link" to="/main">Main</Link>
               <Link className="map__navigation-user-link" to="/register">Register</Link>
               <Link className="map__navigation-user-link" to="/login">Login</Link>
+              <Link className="map__navigation-user-link" to="/ChangePassword">ChangePassword</Link>
             </div>
             <Switch>
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
               <Route path="/main" component={Main} />
+              <Route path="/ChangePassword" component={ChangePassword} />
               <Route children={() => <h2>Not found</h2>} />
             </Switch>
           </div>
