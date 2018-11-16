@@ -51,7 +51,10 @@ class PointSettings extends Component {
   };
 
   render() {
-    const { point, type } = this.props.info;
+    let { point, type } = this.props.info;
+     if (!point){
+       point = {}
+     }
     const show = !!(point && type);
 
     return (

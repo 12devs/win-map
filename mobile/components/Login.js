@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, AsyncStorage } from 'react-native';
+import { View, Text, TextInput, StyleSheet, AsyncStorage } from 'react-native';
 import services from "../services/index";
 import { Button } from 'react-native-elements';
 
@@ -26,8 +26,10 @@ class Login extends Component {
         if (message !== 'OK') {
           this.setState({ error });
         } else {
-          AsyncStorage.setItem('windToken', token);
-          return this.props.navigation.navigate('Map');
+          return AsyncStorage.setItem('windToken', token)
+            .then(()=>{
+              return this.props.navigation.navigate('Map');
+            })
         }
       })
       .catch((error) => {

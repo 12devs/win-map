@@ -11,17 +11,19 @@ import { calcMapRegionAll } from '../utils';
 class Main extends Component {
 
   componentDidMount = () => {
-    return services.getInfo()
-      .then(res => {
-        if (res.unauthorized) {
-          return this.props.navigation.navigate('Login')
-        }
-        const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
-        if (mapRegion) {
-          res.mapRegion = mapRegion
-        }
-        return this.props.updateReduxState(res)
-      })
+    if (!this.props.isGetMainData){
+      return services.getInfo()
+        .then(res => {
+          if (res.unauthorized) {
+            return this.props.navigation.navigate('Login')
+          }
+          const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
+          if (mapRegion) {
+            res.mapRegion = mapRegion
+          }
+          return this.props.updateReduxState({...res, isGetMainData: true})
+        })
+    }
   };
 
   render() {
@@ -35,16 +37,7 @@ class Main extends Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
-    dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
-    info: state.get('info'),
+    isGetMainData: state.get('isGetMainData'),
   };
 }
 
