@@ -1,23 +1,29 @@
-import { Account } from './../models';
+import _ from "lodash";
 import config from "config";
 import bcrypt from "bcryptjs";
-import _ from "lodash";
-import { sendEmail } from "../api/email";
+import logger from '../logger';
+import { Account } from './../models';
+import { sendEmail, verifyEmail } from "../api/email";
 
 export default {
 
   async register(req, res) {
     try {
-      let { login, password, email } = req.body;
-      email = email.trim().toLowerCase();
-      if (!login || !password) {
+      const { login, password } = req.body;
+      let { email } = req.body;
+
+      if (!login || !password || !email) {
+        logger.error('register | ERROR - Required params are missing');
+
         return res.status(400).json({ message: 'Required params are missing' });
       }
-      const saltRound = config.auth.saltRound;
-      const salt = bcrypt.genSaltSync(saltRound);
+
+      email = email.trim().toLowerCase();
+      const salt = bcrypt.genSaltSync(config.auth.saltRound);
+
       const code = _.random(0, 99999);
-      await sendEmail(email, 'Wind-map activation code', code);
-      let acc = {
+
+      const acc = {
         login,
         email,
         code,
@@ -26,14 +32,14 @@ export default {
         updated_at: new Date(),
       };
 
-      Account.create(acc)
-        .then(() => {
-          return res.status(200).json({ message: 'OK' });
-        })
-        .catch(err => {
-          return res.status(500).json({ error: err.message });
-        });
+      await verifyEmail(email);
+      await Account.create(acc);
+      await sendEmail(email, 'Wind-map activation code', code);
+
+      return res.status(200).json({ message: 'OK' });
     } catch (err) {
+      logger.error(`register | ERROR - ${err.message}`);
+
       return res.status(500).json({ error: err.message });
     }
   },
@@ -49,7 +55,7 @@ export default {
       const acc = await Account.findOne({ where: { login } });
       if (acc.changePasswordCode) {
         if (changePasswordCode) {
-          if (acc.changePasswordCode != changePasswordCode) {
+          if (acc.changePasswordCode !== changePasswordCode) {
             acc.attemptsChangePasswordCode++;
             if (acc.attemptsChangePasswordCode > 2) {
               const changePasswordCode = _.random(0, 99999);
@@ -85,13 +91,18 @@ export default {
   async login(req, res) {
     try {
       const { login, password, code } = req.body;
+
       if (!login || !password) {
+        logger.error('login | ERROR - Required params are missing!');
+
         return res.status(400).json({ message: 'Required params are missing' });
       }
+
       const acc = await Account.findOne({ where: { login } });
+
       if (acc.code) {
         if (code) {
-          if (acc.code != code) {
+          if (acc.code !== code) {
             acc.attemptsCode++;
             if (acc.attemptsCode > 2){
               const code = _.random(0, 99999);
@@ -108,13 +119,18 @@ export default {
           acc.attemptsCode = 0;
           await acc.save()
         } else {
+
           return res.status(200).json({ message: 'code', email: acc.email });
         }
       }
+
       await acc.comparePassword(password);
       const token = acc.generateJWT();
+
       return res.status(200).json({ message: 'OK', token });
     } catch (err) {
+      logger.error(`login | ERROR - ${err.message}`);
+
       return res.status(500).json({ error: err.message });
     }
   }
