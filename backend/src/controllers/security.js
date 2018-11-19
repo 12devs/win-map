@@ -32,6 +32,12 @@ export default {
         updated_at: new Date(),
       };
 
+      const currentAccount = await Account.findOne({ where: { login } });
+
+      if (currentAccount) {
+        return res.status(403).json({ error: 'User with this login already exists' })
+      }
+
       await verifyEmail(email);
       await Account.create(acc);
       await sendEmail(email, 'Wind-map activation code', code);
@@ -104,7 +110,7 @@ export default {
         if (code) {
           if (acc.code !== code) {
             acc.attemptsCode++;
-            if (acc.attemptsCode > 2){
+            if (acc.attemptsCode > 2) {
               const code = _.random(0, 99999);
               await sendEmail(acc.email, 'Wind-map activation code', code);
               acc.code = code;
