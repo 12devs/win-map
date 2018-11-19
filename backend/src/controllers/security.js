@@ -106,6 +106,11 @@ export default {
 
       const acc = await Account.findOne({ where: { login } });
 
+      if (!acc) {
+
+        return res.status(403).json({ error: `User with login ${login} is not found` });
+      }
+
       if (acc.code) {
         if (code) {
           if (acc.code !== code) {
