@@ -1,7 +1,6 @@
-const nodemailer = require('nodemailer');
-const emailExistence = require('email-existence');
-const config = require('config');
-import logger from '../logger';
+import nodemailer from 'nodemailer';
+import emailExistence from 'email-existence';
+import config from 'config';
 
 const transporter = nodemailer.createTransport(config.nodemailerOptions);
 
@@ -29,7 +28,6 @@ const sendEmail = (email, subject, text) => {
 
   return transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      logger.error(`send email | ERROR ${error}`);
       throw new Error(`error Email ${email}`);
     }
     return true;
