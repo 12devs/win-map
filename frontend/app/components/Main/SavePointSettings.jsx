@@ -123,8 +123,6 @@ function mapStateToProps(state) {
     dangers: state.get('dangers'),
     stations: state.get('stations'),
     markerType: state.get('markerType'),
-    info: state.get('info'),
-    notificationSettings: state.get('notificationSettings'),
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
   };

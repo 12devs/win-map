@@ -15,7 +15,7 @@ class Navigation extends Component {
   render() {
     return (
       <View style={{ marginTop: 70 }}>
-        <View style={styles.searchContainer}>
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={
@@ -33,7 +33,7 @@ class Navigation extends Component {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchContainer}>
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={
@@ -60,16 +60,8 @@ class Navigation extends Component {
 function mapStateToProps(state) {
   return {
     places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
     dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
     viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
-    info: state.get('info'),
-    scaleWind: state.get('scaleWind'),
   };
 }
 
@@ -77,61 +69,19 @@ export default connect(mapStateToProps, actions)(Navigation);
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    flex: 1,
-    width: 400,
-  },
-  searchContainer: {
-    // marginTop: 90,
     paddingBottom: 0,
-    margin: 5,
-    // marginRight: 50,
-    // flexDirection: "row",
-  },
-  calloutView: {
-    flexDirection: "row",
-    // justifyContent: 'right',
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    // borderRadius: 10,
-    width: "88%",
-    marginLeft: '-10%',
-    paddingLeft: '10%',
-    borderBottomRightRadius: 50,
-    borderTopRightRadius: 50,
-    // backgroundColor: "blue",
-    // padding: 20,
-    // width: this.state.fadeAnim
-    // marginLeft: "10%",
-    // marginRight: "10%",
-    // marginTop: 20,
-  },
-  submitButton: {
-    backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 5,
-    height: 140,
-    flex: 1,
-    // paddingBottom: 0,
-    // marginBottom: 0
-  },
-  submitButtonText: {
-    color: 'white'
+    margin: 10,
   },
   imageContainer: {
     padding: 2,
     borderRadius: 80,
     backgroundColor: '#fff',
     elevation: 5
-
   },
   image: {
     width: 20,
     height: 20,
     margin: 15,
     tintColor: '#00498f',
-
-    // zIndex: 100
   }
 });

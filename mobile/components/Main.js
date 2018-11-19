@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
@@ -37,6 +37,9 @@ class Main extends Component {
 
 function mapStateToProps(state) {
   return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+    stations: state.get('stations'),
     isGetMainData: state.get('isGetMainData'),
   };
 }

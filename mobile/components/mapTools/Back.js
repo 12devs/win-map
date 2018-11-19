@@ -16,7 +16,7 @@ class Back extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }}
+        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.04 }}
                           onPress={() => {
                             this.props.updateReduxState({ info: { point: null, type: null } });
                             this.props.navigation.navigate('Map');

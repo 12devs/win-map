@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-nati
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
-import MultiSelect from './MultiSelect';
 
 class Notifications extends Component {
 
@@ -82,11 +81,7 @@ class Notifications extends Component {
 
 function mapStateToProps(state) {
   return {
-    notificationSettings: state.get('notificationSettings'),
     notifications: state.get('notifications'),
-    places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
-    dangers: state.get('dangers'),
   };
 }
 
@@ -103,7 +98,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'steelblue',
     borderRadius: 20,
-    // alignItems: 'center',
   },
   map: {},
   submitButton: {

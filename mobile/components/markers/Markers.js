@@ -5,7 +5,6 @@ import UserPlace from './UserPlace';
 import { View } from 'react-native';
 import Danger from './Danger';
 
-
 class Markers extends React.Component {
 
   render() {
@@ -26,12 +25,6 @@ function mapStateToProps(state) {
   return {
     places: state.get('places'),
     dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
   };
 }
 

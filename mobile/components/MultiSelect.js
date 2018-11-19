@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import MultiSelect from 'react-native-multiple-select';
@@ -67,8 +67,6 @@ class MultiSelectExample extends Component {
 function mapStateToProps(state) {
   return {
     notificationSettings: state.get('notificationSettings'),
-    places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
     dangers: state.get('dangers'),
   };
 }

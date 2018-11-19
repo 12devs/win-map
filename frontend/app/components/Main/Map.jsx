@@ -6,7 +6,7 @@ import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
 import Modal from 'react-modal';
 
-const { BaseLayer, Overlay } = LayersControl;
+const { BaseLayer } = LayersControl;
 
 Modal.setAppElement('#root');
 
@@ -85,16 +85,7 @@ class MyMap extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    mapCenter: state.get('mapCenter'),
     mapBounds: state.get('mapBounds'),
-    notifications: state.get('notifications'),
   };
 }
 

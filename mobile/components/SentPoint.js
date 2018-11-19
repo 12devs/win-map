@@ -88,12 +88,13 @@ class SentPoint extends React.Component {
     const { addPoint } = this.props;
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }}
-                          onPress={async () => {
-                            await this.addMarker();
-                            if (addPoint.name !== '')
-                              this.props.navigation.navigate('Map');
-                          }}
+        <TouchableOpacity
+          style={{ padding: 5, marginRight: width * 0.04 }}
+          onPress={async () => {
+            await this.addMarker();
+            if (addPoint.name !== '')
+              this.props.navigation.navigate('Map');
+          }}
         >
           <Image
             source={{ uri: icons.sent }}

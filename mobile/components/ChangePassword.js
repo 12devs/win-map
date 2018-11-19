@@ -14,7 +14,7 @@ class ChangePassword extends Component {
     showCode: false,
   };
 
-  send = () => {
+  changePassword = () => {
     const { login, password, repeatPassword, changePasswordCode } = this.state;
     if (password === repeatPassword) {
       services.changePassword({ login, password, changePasswordCode })
@@ -58,7 +58,7 @@ class ChangePassword extends Component {
             borderRadius={50}
             title='SEND'
             color={'#fff'}
-            onPress={this.send}/>
+            onPress={this.changePassword}/>
         </View>
       )
     } else {
@@ -95,7 +95,7 @@ class ChangePassword extends Component {
             borderRadius={50}
             title='Register'
             color={'#fff'}
-            onPress={this.send}/>
+            onPress={this.changePassword}/>
         </View>
       );
     }

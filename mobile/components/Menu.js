@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 
 import {
-  Platform,
   View,
-  Text,
   Image,
   TouchableOpacity,
-  YellowBox,
   Dimensions
 } from 'react-native';
 
-import { createDrawerNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Login from './Login';
 import Logout from './Logout';
 import Register from './Register';
@@ -18,6 +15,7 @@ import Main from './Main';
 import Test from './Test';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
+import NavigateMenu from './NavigateMenu';
 import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
 import Back from './mapTools/Back';
@@ -33,7 +31,7 @@ class HamburgerIcon extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }} onPress={this.toggleDrawer.bind(this)}>
+        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.04 }} onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
             style={{ width: 25, height: 25, tintColor: '#fff' }}
@@ -220,6 +218,7 @@ export default createDrawerNavigator({
     Logout: Logout
   }, {
     initialRouteName: 'Map',
+    contentComponent: NavigateMenu
   }
 );
 

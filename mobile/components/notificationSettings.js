@@ -58,13 +58,10 @@ function mapStateToProps(state) {
   return {
     notificationSettings: state.get('notificationSettings'),
     places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
-    dangers: state.get('dangers'),
   };
 }
 
 export default connect(mapStateToProps, actions)(notificationSettings);
-
 
 const styles = StyleSheet.create({
   container: {
@@ -76,7 +73,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'steelblue',
     borderRadius: 20,
-    // alignItems: 'center',
   },
   map: {},
   submitButton: {
