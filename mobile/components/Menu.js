@@ -15,8 +15,11 @@ import Main from './Main';
 import Test from './Test';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
-import Details from './Details';
 import NavigateMenu from './NavigateMenu';
+import AddPoint from './AddPoint';
+import PointSettings from './PointSettings';
+import Back from './mapTools/Back';
+import SentPoint from './SentPoint';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,7 +31,7 @@ class HamburgerIcon extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.02 }} onPress={this.toggleDrawer.bind(this)}>
+        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.04 }} onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
             style={{ width: 25, height: 25, tintColor: '#fff' }}
@@ -146,10 +149,29 @@ const notifications_StackNavigator = createStackNavigator({
   });
 const addedMarker_StackNavigator = createStackNavigator({
     Details: {
-      screen: Details,
+      screen: AddPoint,
       navigationOptions: ({ navigation }) => ({
         title: 'Add Point',
-        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerLeft: <Back navigation={navigation}/>,
+        headerRight: <SentPoint navigation={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center'
+  });
+
+const pointSettings_StackNavigator = createStackNavigator({
+    Details: {
+      screen: PointSettings,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Point Info',
+        headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC'
         },
@@ -178,8 +200,17 @@ export default createDrawerNavigator({
     test: {
       screen: test_StackNavigator
     },
-    Details: {
+    AddPoint: {
       screen: addedMarker_StackNavigator,
+      navigationOptions: {
+        drawerLabel: () => null,
+      }
+    },
+    PointSettings: {
+      screen: pointSettings_StackNavigator,
+      navigationOptions: {
+        drawerLabel: () => null,
+      }
     },
     notifications: {
       screen: notifications_StackNavigator

@@ -15,7 +15,7 @@ class Navigation extends Component {
   render() {
     return (
       <View style={{ marginTop: 70 }}>
-        <View style={styles.searchContainer}>
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={
@@ -33,7 +33,7 @@ class Navigation extends Component {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchContainer}>
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={
@@ -69,33 +69,8 @@ export default connect(mapStateToProps, actions)(Navigation);
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    flex: 1,
-    width: 400,
-  },
-  searchContainer: {
     paddingBottom: 0,
-    margin: 5,
-  },
-  calloutView: {
-    flexDirection: "row",
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    width: "88%",
-    marginLeft: '-10%',
-    paddingLeft: '10%',
-    borderBottomRightRadius: 50,
-    borderTopRightRadius: 50,
-  },
-  submitButton: {
-    backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 5,
-    height: 140,
-    flex: 1,
-  },
-  submitButtonText: {
-    color: 'white'
+    margin: 10,
   },
   imageContainer: {
     padding: 2,

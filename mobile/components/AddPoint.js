@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../actions/index';
-import services from "../services/index";
 import {
   StyleSheet,
   TextInput,
   View,
-  Modal, Text
+  Text,
+  BackHandler
 } from 'react-native';
-import { Header, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import Loader from './Loader';
 
 class AddPoint extends React.Component {
@@ -17,66 +17,19 @@ class AddPoint extends React.Component {
     this.state = {
       name: '',
       markerType: '',
-      isSentButton: false,
       error: ''
     };
-    this.addMarker = this.addMarker.bind(this);
     this.markerType = this.markerType.bind(this);
+    this.props.updateReduxState({ addPoint: { name: '', error: '', isSentButton: false } });
   }
 
-  addMarker() {
-    const { latlng } = this.props.savePointSettings;
-    const { markerType } = this.props;
-    const { name } = this.state;
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
 
-    this.setState({ isSentButton: true });
-
-    if (!name) {
-      return this.state;
-    }
-
-    let key;
-    if (markerType === 'Danger') {
-      key = 'danger';
-    } else {
-      key = 'place';
-    }
-
-    let lngCorrect = latlng.lng;
-    lngCorrect = lngCorrect % 360;
-    if (lngCorrect > 180) {
-      lngCorrect -= 360;
-    }
-    if (lngCorrect < -180) {
-      lngCorrect += 360;
-    }
-    return services.savePoint({
-      [key]: {
-        lat: latlng.lat,
-        lng: lngCorrect,
-        name
-      },
-      stations: [...this.props.stations]
-    })
-      .then(res => {
-        const { danger, place } = res;
-        let { places, dangers, stationsData, stations } = this.props;
-        stationsData = { ...stationsData, ...res.stationsData };
-        if (danger) {
-          dangers.push(danger);
-        }
-        if (place) {
-          places.push(place);
-        }
-        stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({
-          places,
-          dangers,
-          stationsData,
-          stations,
-          savePointSettings: { show: false }
-        });
-      });
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
   };
 
   markerType(markerType) {
@@ -84,38 +37,12 @@ class AddPoint extends React.Component {
   };
 
   render() {
-    const { markerType, savePointSettings } = this.props;
+    const { markerType, savePointSettings, addPoint } = this.props;
     const { show } = savePointSettings;
 
-    if (!show) {
-      return null;
-    }
     return (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={show}
-        onRequestClose={() => {
-          this.props.updateReduxState({ savePointSettings: { show: false } });
-        }}>
-        <Header
-          leftComponent={{
-            icon: 'arrow-back', color: '#fff',
-            onPress: () => {
-              this.props.updateReduxState({ savePointSettings: { show: false }});
-            }
-          }}
-          rightComponent={{
-            icon: 'done', color: '#fff',
-            onPress: async () => {
-              await this.addMarker();
-              this.setState({ isSentButton: false });
-            }
-          }}
-          centerComponent={{ text: 'Add Point', style: { color: '#fff', fontSize: 20 } }}
-          outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
-        />
-        {!this.state.isSentButton ?
+      <View>
+        {(!addPoint.isSentButton) ?
           <View style={{ height: '100%', backgroundColor: '#fff' }}>
             <View>
               <Text style={{ textAlign: 'center', marginTop: 10 }}>Enter marker name:</Text>
@@ -126,8 +53,9 @@ class AddPoint extends React.Component {
                          placeholderTextColor="#3D6DCC"
                          autoCapitalize="none"
                          onChangeText={(e) => {
-                           this.setState({ name: e });
+                           this.props.updateReduxState({ addPoint: { name: e, error: '' } });
                          }}/>
+              {addPoint.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {addPoint.error}</Text> : null}
               <Text style={{ textAlign: 'center' }}>Choose marker type:</Text>
               <Button
                 containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
@@ -153,7 +81,7 @@ class AddPoint extends React.Component {
                 }}/>
             </View>
           </View> : <Loader size='large' color='#3D6DCC'/>}
-      </Modal>
+      </View>
     );
   }
 }
@@ -166,6 +94,7 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
+    addPoint: state.get('addPoint'),
   };
 }
 

@@ -28,9 +28,11 @@ class Login extends Component {
         if (message !== 'OK') {
           this.setState({ error });
         } else {
-          AsyncStorage.setItem('windToken', token);
-          this.props.updateReduxState({menuRule: 'logged'});
-          return this.props.navigation.navigate('Map');
+          return AsyncStorage.setItem('windToken', token)
+            .then(()=>{
+              this.props.updateReduxState({menuRule: 'logged'});
+              return this.props.navigation.navigate('Map');
+            })
         }
       })
       .catch((error) => {

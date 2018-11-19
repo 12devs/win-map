@@ -11,25 +11,25 @@ import { calcMapRegionAll } from '../utils';
 class Main extends Component {
 
   componentDidMount = () => {
-    return services.getInfo()
-      .then(res => {
-        if (res.unauthorized) {
-          return this.props.navigation.navigate('Login')
-        }
-        const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
-        if (mapRegion) {
-          res.mapRegion = mapRegion
-        }
-        return this.props.updateReduxState(res)
-      })
+    if (!this.props.isGetMainData){
+      return services.getInfo()
+        .then(res => {
+          if (res.unauthorized) {
+            return this.props.navigation.navigate('Login')
+          }
+          const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
+          if (mapRegion) {
+            res.mapRegion = mapRegion
+          }
+          return this.props.updateReduxState({...res, isGetMainData: true})
+        })
+    }
   };
 
   render() {
     return (
       <View style={styles.container}>
         <Map style={styles.map} navigation={this.props.navigation}/>
-        <AddPoint/>
-        <PointSettings/>
       </View>
     );
   }
@@ -40,6 +40,7 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     stations: state.get('stations'),
+    isGetMainData: state.get('isGetMainData'),
   };
 }
 
