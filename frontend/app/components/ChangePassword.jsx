@@ -63,6 +63,9 @@ class ChangePassword extends Component {
       return (
         <div className="login">
           <div className="login__form">
+            <div className={"form_name"}>
+              Change password form
+            </div>
             <div>
               <label className="login__label" htmlFor="login">
                 <input placeholder="Login" className="login__input" type="text"
@@ -71,7 +74,7 @@ class ChangePassword extends Component {
             </div>
             <div>
               <label className="login__label" htmlFor="password">
-                <input placeholder="Password" className="login__input" type="text"
+                <input placeholder="New password" className="login__input" type="text"
                        onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
               </label>
             </div>
@@ -83,7 +86,18 @@ class ChangePassword extends Component {
             </div>
             {error ? <div className="login__label"> {error}</div> : null}
             <div>
-              <button className="login__btn-submit" onClick={this.changePassword}>changePassword</button>
+              <button className="login__btn-submit" onClick={this.changePassword}>Change password</button>
+            </div>
+
+            <div className={"login__label"}>
+              <br/>
+              <div>Don't have an account?
+                <a href={'#'} onClick={()=>location.assign('/register')}> You can register here.</a>
+              </div>
+              <br/>
+              <div>
+                <a href={'#'}  onClick={()=>location.assign('/login')}> Come back</a>
+              </div>
             </div>
           </div>
         </div>

@@ -6,7 +6,6 @@ import {
   Switch,
   Route,
   BrowserRouter as Router,
-  Link
 } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -50,12 +49,6 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <div className="map__navigation-user">
-              <Link className="map__navigation-user-link" to="/main">Main</Link>
-              <Link className="map__navigation-user-link" to="/register">Register</Link>
-              <Link className="map__navigation-user-link" to="/login">Login</Link>
-              <Link className="map__navigation-user-link" to="/ChangePassword">ChangePassword</Link>
-            </div>
             <Switch>
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />

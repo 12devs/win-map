@@ -8,6 +8,8 @@ import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
 import Notifications from './Notifications';
 import { calcBoundsAll } from "./../../utils";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 class Main extends React.Component {
   constructor() {
@@ -30,14 +32,6 @@ class Main extends React.Component {
 
   openNotificationSettings() {
     this.setState({ isNotificationSettingsOpen: true })
-  }
-
-  deleteAll() {
-    return services.deleteAllPoints()
-      .then(() => {
-        this.props.updateReduxState({places:[], dangers:[]});
-        this.props.updateStatistic();
-      })
   }
 
   changeViewType() {
@@ -74,22 +68,68 @@ class Main extends React.Component {
     }
   }
 
-  logout() {
-    return localStorage.setItem('windToken', '')
-  }
+  logout = () => {
+    confirmAlert({
+      customUI: par => {
+        const {onClose} = par;
+        return (
+          <div className={'confirm__alert'}>
+            <div style={{margin: '50px'}}>
+              <h1>Are you sure?</h1>
+              <p>You want to logout?</p>
+              <button className={"confirm__button"} onClick={onClose}>No</button>
+              <button className={"confirm__button"} onClick={() => {
+                localStorage.setItem('windToken', '');
+                location.assign('/login')
+                onClose()
+              }}>Yes, I want to logout!</button>
+            </div>
+          </div>
+        )
+      },
+    })
+  };
+
+  deleteAll = () => {
+    confirmAlert({
+      customUI: par => {
+        const {onClose} = par;
+        return (
+          <div className={'confirm__alert'}>
+            <div style={{margin: '50px'}}>
+              <h1>Are you sure?</h1>
+              <p>You want to delete all your points?</p>
+              <button className={"confirm__button"} onClick={onClose}>No</button>
+              <button className={"confirm__button"} onClick={() => {
+                return services.deleteAllPoints()
+                  .then(() => {
+                    this.props.updateReduxState({places:[], dangers:[]});
+                    this.props.updateStatistic();
+                    onClose()
+                  })
+                  .catch(()=>{
+                    onClose()
+                  })
+              }}>Yes, delete all!</button>
+            </div>
+          </div>
+        )
+      },
+    })
+  };
 
   render() {
     return (
       <div>
         <div className="map__navigation">
           <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
-          <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.deleteAll}/>
+          <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
           <button className="map__navigation-btn map__navigation-btn--settings"
                   onClick={this.openNotificationSettings}/>
           <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
-                 min="0" max="1000000" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
+                 min="0" max="50000" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
         </div>
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>

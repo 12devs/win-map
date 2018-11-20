@@ -28,11 +28,11 @@ const sectors = {
 
 const computeDestinationPoint = (start, distance, bearing) => {
 
-  const {lat, lng} = start;
+  const { lat, lng } = start;
 
   const radius = 6371000;
 
-  const b = distance/ radius; // angular distance in radians
+  const b = distance / radius; // angular distance in radians
   const Q = bearing * Math.PI / 180;
 
   const f1 = lat * Math.PI / 180;
@@ -81,7 +81,7 @@ class SectorPolygon extends React.Component {
     if (direction) {
       const positions = getPolygon(point, dist, direction);
       return (
-        <Polygon color="#5F57CA" positions={positions}/>
+        <Polygon color="#5F57CA" weight={1} positions={positions}/>
       )
     } else {
       return null
