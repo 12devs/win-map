@@ -20,6 +20,7 @@ import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
 import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
+import { Icon } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('window');
 
@@ -186,19 +187,30 @@ const pointSettings_StackNavigator = createStackNavigator({
 
 export default createDrawerNavigator({
     Register: {
-      screen: Register_StackNavigator
+      screen: Register_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='add'/>
+      }
     },
     Login: {
-      screen: Login_StackNavigator
+      screen: Login_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='account-circle'/>
+      }
     },
     Map: {
-      screen: Main_StackNavigator
+      screen: Main_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='map'/>
+      }
+
     },
     notificationSettings: {
-      screen: notificationSettings_StackNavigator
-    },
-    test: {
-      screen: test_StackNavigator
+      screen: notificationSettings_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Notification Settings',
+        drawerIcon: <Icon name='settings'/>
+      }
     },
     AddPoint: {
       screen: addedMarker_StackNavigator,
@@ -213,12 +225,27 @@ export default createDrawerNavigator({
       }
     },
     notifications: {
-      screen: notifications_StackNavigator
+      screen: notifications_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Notifications',
+        drawerIcon: <Icon name='notifications'/>
+
+      }
     },
-    Logout: Logout
-  }, {
+    Logout: {
+      screen: Logout,
+      navigationOptions: {
+        drawerIcon: <Icon name='exit-to-app'/>
+
+      }
+    },
+    test: {
+      screen: test_StackNavigator
+    },
+  },
+  {
     initialRouteName: 'Map',
-    contentComponent: NavigateMenu
+    contentComponent: NavigateMenu,
   }
 );
 

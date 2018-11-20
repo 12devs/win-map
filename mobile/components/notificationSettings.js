@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
 import MultiSelect from './MultiSelect';
+import { Button } from 'react-native-elements';
+
+const { width, height } = Dimensions.get('window');
 
 class notificationSettings extends Component {
 
@@ -13,42 +16,32 @@ class notificationSettings extends Component {
         flexDirection: 'column',
         justifyContent: 'center'
       }}>
+        <View style={styles.container}>
+          <Text style={styles.textContainer}>
+            Select the dangers for each blue marker that notify you
+          </Text>
+        </View>
         {this.props.places.map((place, i) => {
           return (
             <View key={i} style={styles.container}>
-              <View style={{
-                width: '20%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: 'steelblue',
-                borderRadius: 20,
-              }}>
-                <Text style={{
-                  textAlign: 'center',
-                  borderWidth: 2,
-                  borderColor: 'silver',
-                  borderRadius: 20,
-                  textAlignVertical: "center",
-                  color: 'silver',
-                  padding: 10,
-                }}>
-                  {place.name}
-                </Text>
-              </View>
+              <Text style={styles.textContainer}>
+                {place.name}
+              </Text>
               <MultiSelect style={{ width: '80%' }} place={place}/>
             </View>);
         })}
-        <TouchableOpacity
-          style = {styles.submitButton}
-          onPress = {
-            () => services.sendSubscriptions({subscriptions: this.props.notificationSettings})
-              .then(res=>{
-                console.log(res)
+        <Button
+          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20, marginTop: 15 }}
+          backgroundColor={'#3D6DCC'}
+          borderRadius={50}
+          color={'#fff'}
+          title='Save'
+          onPress={
+            () => services.sendSubscriptions({ subscriptions: this.props.notificationSettings })
+              .then(res => {
+                console.log(res);
               })
-          }>
-          <Text style = {styles.submitButtonText}> Save </Text>
-        </TouchableOpacity>
+          }/>
       </ScrollView>
     );
   }
@@ -66,19 +59,17 @@ export default connect(mapStateToProps, actions)(notificationSettings);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     margin: 5,
-    backgroundColor: 'steelblue',
-    borderWidth: 2,
+    backgroundColor: '#3c5fbd',
+    elevation: 7,
     borderColor: 'steelblue',
-    borderRadius: 20,
   },
-  map: {},
-  submitButton: {
-    backgroundColor: '#7a42f4',
+  textContainer:{
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: '#fff',
     padding: 10,
-    margin: 5,
-    height: 40,
-  },
+  }
 });

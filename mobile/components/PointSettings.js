@@ -52,49 +52,51 @@ class PointSettings extends Component {
 
   render() {
     let { point, type } = this.props.info;
-     if (!point){
-       point = {}
-     }
+    if (!point) {
+      point = {};
+    }
     const show = !!(point && type);
 
     return (
-      <View>
-        <ScrollView style={{ height: height * 0.85 }}>
-          <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
-          <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
-          <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
-          <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
-          <WindRoseChart stationId={point.station_id}/>
-          <Button
-            containerViewStyle={{ margin: 10 }}
-            backgroundColor={'#3D6DCC'}
-            large
-            borderRadius={50}
-            icon={{ name: 'location-on' }}
-            title='Go to marker'
-            onPress={() => {
-              this.props.navigation.navigate('Map');
-              const mapRegion = calcMapRegionOne(point);
-              if (mapRegion) {
-                this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
-              }
-            }}/>
-          <Button
-            containerViewStyle={{ margin: 10 }}
-            backgroundColor={'red'}
-            large
-            borderRadius={50}
-            icon={{ name: 'location-off' }}
-            title='Remove point'
-            onPress={() => {
-              this.delMarker()
-                .then(() => {
-                  this.props.updateReduxState({ info: { point: null, type: null } });
-                });
-              this.props.navigation.navigate('Map');
-            }}/>
-        </ScrollView>
-      </View>
+      <ScrollView contentContainerStyle={{
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}>
+        <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+        <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+        <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+        <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
+        <WindRoseChart stationId={point.station_id}/>
+        <Button
+          containerViewStyle={{ margin: 10 }}
+          backgroundColor={'#3D6DCC'}
+          large
+          borderRadius={50}
+          icon={{ name: 'location-on' }}
+          title='Go to marker'
+          onPress={() => {
+            this.props.navigation.navigate('Map');
+            const mapRegion = calcMapRegionOne(point);
+            if (mapRegion) {
+              this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+            }
+          }}/>
+        <Button
+          containerViewStyle={{ margin: 10 }}
+          backgroundColor={'red'}
+          large
+          borderRadius={50}
+          icon={{ name: 'location-off' }}
+          title='Remove point'
+          onPress={() => {
+            this.delMarker()
+              .then(() => {
+                this.props.updateReduxState({ info: { point: null, type: null } });
+              });
+            this.props.navigation.navigate('Map');
+          }}/>
+      </ScrollView>
+
     );
   }
 }

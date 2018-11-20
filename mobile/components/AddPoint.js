@@ -6,7 +6,7 @@ import {
   TextInput,
   View,
   Text,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Loader from './Loader';
@@ -80,7 +80,7 @@ class AddPoint extends React.Component {
                   this.markerType('Danger');
                 }}/>
             </View>
-          </View> : <Loader size='large' color='#3D6DCC'/>}
+          </View> : <View style={{ height: '100%' }}><Loader size='large' color='#3D6DCC'/></View>}
       </View>
     );
   }

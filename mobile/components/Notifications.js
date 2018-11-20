@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
+import { Button, List, ListItem } from 'react-native-elements';
+
+const { width, height } = Dimensions.get('window');
 
 class Notifications extends Component {
 
@@ -17,7 +20,8 @@ class Notifications extends Component {
 
   render() {
     const unviewedNotifications = this.props.notifications.filter(elem => !elem.view_at);
-    if (!unviewedNotifications.length){
+
+    if (!unviewedNotifications.length) {
       return <View style={{
         flex: 1,
         justifyContent: 'center',
@@ -34,46 +38,41 @@ class Notifications extends Component {
         }}>
           {'No notifications'}
         </Text>
-      </View>
+      </View>;
     }
     return (
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
         justifyContent: 'center'
       }}>
-        {unviewedNotifications.map((notification, i) => {
-          return (
-            <View key={i} style={styles.container}>
-              <View style={{
-                width: '100%',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderWidth: 2,
-                borderColor: 'steelblue',
-                borderRadius: 20,
-              }}>
-                <Text style={{
-                  textAlign: 'center',
-                  borderWidth: 2,
-                  borderColor: 'silver',
-                  borderRadius: 20,
-                  textAlignVertical: "center",
-                  color: 'silver',
-                  padding: 10,
-                }}>
-                  {notification.message}
-                </Text>
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={() => {
-                    this.handleClick(notification.id)
-                  }}>
-                  <Text style={styles.submitButtonText}> OK </Text>
-                </TouchableOpacity>
-              </View>
-            </View>);
-        })}
+        <List containerStyle={{ marginBottom: 20 }}>
+          {
+            unviewedNotifications.map((notification, i) => (
+              <ListItem
+                key={i}
+                title={notification.message}
+                subtitle={notification.created_at}
+                leftIcon={{ name: 'notifications' }}
+                rightIcon={{ name: 'close' }}
+                containerStyle={{ borderBottomColor: '#eee', borderTopColor: '#eee', marginLeft: 10, marginRight: 10 }}
+                onPressRightIcon={() => {
+                  this.handleClick(notification.id);
+                }}
+              />
+            ))
+          }
+        </List>
+        <Button
+          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20 }}
+          backgroundColor={'#3D6DCC'}
+          // large
+          borderRadius={50}
+          // icon={{ name: 'remove-circle', color: '#fff' }}
+          color={'#fff'}
+          title='Clear All'
+          onPress={() => {
+
+          }}/>
       </ScrollView>
     );
   }

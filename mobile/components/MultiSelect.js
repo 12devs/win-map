@@ -49,15 +49,17 @@ class MultiSelectExample extends Component {
           searchInputPlaceholderText=""
           selectedItems={selectedItems}
           tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor="#CCC"
-          itemTextColor="#000"
+          tagBorderColor="#fff"
+          tagTextColor="#fff"
+          selectedItemTextColor="#000"
+          selectedItemIconColor="#000"
+          itemTextColor="#CCC"
           displayKey="label"
-          submitButtonColor="#CCC"
-          submitButtonText="Close"
+          // submitButtonColor="#3D6DCC"
+          // submitButtonText="Close"
           autoFocusInput={false}
+          hideSubmitButton={true}
+          // hideTags={true}
         />
       </View>
     );
