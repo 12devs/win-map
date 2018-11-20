@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 import actions from "../../actions/index";
 import { connect } from "react-redux";
@@ -49,6 +50,28 @@ class Navigation extends Component {
               style={styles.image}
               source={{
                 uri: icons.clock
+              }}/>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={() => {
+              Alert.alert(
+                'Alert',
+                'Do you really want to delete all markers?',
+                [
+                  {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
+            }}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: icons.markerOff
               }}/>
           </TouchableOpacity>
         </View>
