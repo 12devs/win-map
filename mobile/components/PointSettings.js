@@ -55,18 +55,22 @@ class PointSettings extends Component {
     if (!point) {
       point = {};
     }
-    const show = !!(point && type);
 
     return (
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
       }}>
-        <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
-        <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
-        <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
-        <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
-        <WindRoseChart stationId={point.station_id}/>
+        <View style={{ margin: 10 }}>
+          <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+          <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+          <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+          <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
+        </View>
+        <View>
+          <WindRoseChart stationId={point.station_id}/>
+        </View>
         <Button
           containerViewStyle={{ margin: 10 }}
           backgroundColor={'#3D6DCC'}
@@ -112,12 +116,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(PointSettings);
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: 1,
-  },
-  button: {
-    margin: 20
-  }
+
 });

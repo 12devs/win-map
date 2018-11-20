@@ -14,7 +14,8 @@ class notificationSettings extends Component {
     return (
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
       }}>
         <View style={styles.container}>
           <Text style={styles.textContainer}>
@@ -61,15 +62,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    margin: 5,
-    backgroundColor: '#3c5fbd',
-    elevation: 7,
+    margin: 10,
+    backgroundColor: '#f7f7f7',
+    elevation: 5,
     borderColor: 'steelblue',
   },
   textContainer:{
     textAlign: 'center',
     textAlignVertical: "center",
-    color: '#fff',
+    color: '#525966',
     padding: 10,
   }
 });
