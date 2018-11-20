@@ -6,7 +6,6 @@ import Map from './Map'
 import NotificationSettings from './NotificationSettings';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
-import Notifications from './Notifications';
 import { calcBoundsAll } from "./../../utils";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
@@ -134,7 +133,6 @@ class Main extends React.Component {
         <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>
-        <Notifications/>
         <Map/>
       </div>
     )

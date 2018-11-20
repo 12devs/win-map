@@ -83,6 +83,13 @@ class PointSettings extends React.Component {
   render() {
     const { point, type } = this.props.info;
 
+    let color;
+    if (type === 'place'){
+      color = 'rgba(0, 138, 230, 1)'
+    } else {
+      color = 'rgba(255, 112, 77, 1)'
+    }
+
     if (!(point && type)) {
       return null;
     }
@@ -94,7 +101,7 @@ class PointSettings extends React.Component {
           this.props.updateReduxState({ info: { point: null, type: null } });
         }}>
         </div>
-        <div className="point__data">
+        <div className="point__data" style={{backgroundColor: color}}>
           {!this.state.edit ?
             <div className="point__data-name" onClick={() => this.setState({ edit: true })}>{point.name}</div> :
             <div>
@@ -110,7 +117,7 @@ class PointSettings extends React.Component {
             </div>
             }
 
-          <div className="point__data-type">Type {type}</div>
+          <div className="point__data-type">{type}</div>
           <div onClick={()=>this.updatePoint()}><WindRoseChart  stationId={point.station_id}/></div>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>

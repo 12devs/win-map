@@ -4,16 +4,29 @@ import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
 import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
+import Switch from "react-switch";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { checked: false };
     this.handleClick = this.handleClick.bind(this);
+    this.changeDeviceSettings = this.changeDeviceSettings.bind(this);
   }
 
   handleClick = () => {
     this.props.close();
     return services.sendSubscriptions({ subscriptions: this.props.notificationSettings });
+  };
+
+  changeDeviceSettings = (e) => {
+    if (e.target.checked){
+      console.log('ask');
+      return askForPermissioToReceiveNotifications(e)
+    } else {
+      console.log('delete');
+      return deleteToken(e)
+    }
   };
 
   render() {
@@ -45,12 +58,13 @@ class NotificationSettings extends React.Component {
             )}
             </tbody>
           </table>
-          <button className="notification__btn notification__btn--sub" onClick={askForPermissioToReceiveNotifications}>
-            Subscribe
-          </button>
-          <button className="notification__btn notification__btn--unsub" onClick={deleteToken}>
-            Unsubscribe
-          </button>
+          <div className="notification__settings-item notification__settings-item--title">
+            <span>Send notification to this device </span>
+            <Switch
+              onChange={(e)=>this.setState({checked: e})}
+              checked={this.state.checked}
+            />
+          </div>
           <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
           <button className="notification__settings-close" onClick={this.props.close}/>
         </div>
