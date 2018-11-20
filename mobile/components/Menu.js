@@ -112,7 +112,8 @@ const notificationSettings_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle:{backgroundColor: '#fff'}
   });
 
 const test_StackNavigator = createStackNavigator({
