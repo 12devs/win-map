@@ -48,8 +48,17 @@ const deleteNotificationToken = (token) => {
 const viewNotifications = (body) => {
   return fetch('post', '/api/subscriptions/onViewNotification', body);
 };
+
 const search = (place) => {
   return axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${place}`)
+};
+
+const deleteAllPoints = (body) => {
+  return fetch('post', '/api/points/deleteAllPoints', body);
+};
+
+const viewAllNotification = (body) => {
+  return fetch('post', '/api/subscriptions/ViewAllNotification', body);
 };
 
 
@@ -66,5 +75,7 @@ export default {
   deleteNotificationToken,
   sendSubscriptions,
   viewNotifications,
-  search
+  search,
+  deleteAllPoints,
+  viewAllNotification
 };
