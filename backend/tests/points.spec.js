@@ -4,13 +4,14 @@ const config = require('config');
 const bcrypt = require('bcryptjs');
 const Models = require('../src/models');
 
-const container = request('http://localhost:8081');
+const container = request(`http://${config.app.host}:${config.app.port}`);
 
 describe('Points', () => {
 
   const user = {
     username: 'test__user',
     password: 'test__password',
+    email: 'test@test_12devs.com',
     id: null,
   };
 
@@ -55,6 +56,7 @@ describe('Points', () => {
         login: user.username,
       },
       defaults: {
+        email: user.email,
         encrypted_password: bcrypt.hashSync(
           user.password,
           bcrypt.genSaltSync(config.auth.saltRound),
@@ -67,7 +69,7 @@ describe('Points', () => {
 
     await requestPromise({
       method: 'POST',
-      uri: 'http://localhost:8081/publicRouts/login',
+      uri: `http://${config.app.host}:${config.app.port}/publicRouts/login`,
       body: { login: user.username, password: user.password },
       json: true,
     })
@@ -303,7 +305,6 @@ describe('Points', () => {
   });
 
   afterAll(async () => {
-    await Models.Account.destroy({ where: { login: user.username } });
     await Models.Danger.destroy({ where: { id: myDangerPoint.danger.id } });
   });
 
