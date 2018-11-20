@@ -20,6 +20,7 @@
     "react-native-multiple-select": "^0.4.4",
     "react-native-onesignal": "^3.2.8",
     "react-native-router-flux": "^4.0.5",
+    "react-native-sectioned-multi-select": "^0.6.2",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-sound-player": "^0.5.3",
     "react-native-vector-icons": "^4.4.2",

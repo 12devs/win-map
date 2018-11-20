@@ -70,4 +70,14 @@ export default {
     }
   },
 
+  async ViewAllNotification(req, res) {
+    try {
+      const { user } = req;
+      await Notification.update({view_at: new Date()}, { where: { account_id: user.id } });
+      return res.status(200).json({ message: 'OK' });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: err.message });
+    }
+  },
 }
