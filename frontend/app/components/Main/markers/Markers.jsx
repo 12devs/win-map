@@ -13,7 +13,6 @@ class Markers extends React.Component {
     };
     this.showInfo = this.showInfo.bind(this);
     this.closeInfo = this.closeInfo.bind(this);
-
   }
 
   closeInfo() {
@@ -23,7 +22,6 @@ class Markers extends React.Component {
   showInfo(point, type) {
     this.setState({ point, type })
   }
-
 
   render() {
     return (
@@ -43,7 +41,7 @@ function mapStateToProps(state) {
   return {
     places: state.get('places'),
     dangers: state.get('dangers'),
-    stations: state.get('stations'),
+    savePointSettings: state.get('savePointSettings'),
   };
 }
 

@@ -8,8 +8,12 @@ import geolib from "geolib";
 class PointSettings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      name: '',
+    };
     this.delMarker = this.delMarker.bind(this);
     this.goToMarker = this.goToMarker.bind(this);
+    this.updatePoint = this.updatePoint.bind(this);
   }
 
   delMarker() {
@@ -25,6 +29,34 @@ class PointSettings extends React.Component {
         }
         if (type === 'danger') {
           const dangers = this.props.dangers.filter(el => !(el.id === id));
+          this.props.updateReduxState({ dangers });
+        }
+      });
+  };
+
+  updatePoint() {
+    const { point, type } = this.props.info;
+    point.name = this.state.name;
+    return services.updatePoint({
+      [type]: point,
+    })
+      .then(res => {
+        if (type === 'place') {
+          let places = this.props.places.map(elem => {
+            if (elem.id === point.id) {
+              elem.name = this.state.name;
+            }
+            return elem
+          });
+          this.props.updateReduxState({ places });
+        }
+        if (type === 'danger') {
+          let dangers = this.props.dangers.map(elem => {
+            if (elem.id === point.id) {
+              elem.name = this.state.name;
+            }
+            return elem
+          });
           this.props.updateReduxState({ dangers });
         }
       });
@@ -57,6 +89,11 @@ class PointSettings extends React.Component {
         </div>
         <div className="point__data">
           <div className="point__data-name">{point.name}</div>
+          <input className="point__input-text" placeholder="new Name" type="text" value={this.state.name}
+                 onChange={(e) => {
+                   this.setState({ name: e.target.value });
+                 }}/>
+          <button style={{padding: '1rem', fontSize: '1.5rem',  borderRadius: '8rem'}} onClick={this.updatePoint}> Save</button>
           <div className="point__data-type">Type {type}</div>
           <WindRoseChart stationId={point.station_id}/>
           <div className="point__data-text">Lat: {point.lat}</div>
@@ -76,7 +113,8 @@ class PointSettings extends React.Component {
           </button>
           <WindRoseChart stationId={point.station_id}/>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

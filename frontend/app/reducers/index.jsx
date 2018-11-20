@@ -37,6 +37,7 @@ const getStats = (places, dangers, stationsData) => {
 };
 
 const reducer = function (state = immutable.Map(), action) {
+  console.log(Object.keys(action.state||{}));
   switch (action.type) {
     case "SET_STATE":
       return immutable.fromJS(action.state);

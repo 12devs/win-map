@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
-import Modal from 'react-modal';
 
 const { BaseLayer } = LayersControl;
-
-Modal.setAppElement('#root');
 
 class MyMap extends React.Component {
   constructor(props) {
@@ -26,7 +23,7 @@ class MyMap extends React.Component {
     return (
       <div style={{ height: '100%' }}>
         <Map
-          onClick={(e) => this.props.updateReduxState({savePointSettings:{ show: true, latlng: e.latlng }})}
+          onClick={(e) => this.props.updateReduxState({ savePointSettings: { show: true, latlng: e.latlng } })}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}
