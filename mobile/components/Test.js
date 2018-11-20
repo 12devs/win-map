@@ -28,7 +28,7 @@ class Test extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text>{JSON.stringify(this.props.logs, null, 4)}</Text>
+        <Text>{JSON.stringify(this.props.addPoint, null, 4)}</Text>
       </ScrollView>
     )
   }
@@ -48,6 +48,7 @@ function mapStateToProps(state) {
     isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
     notificationSettings: state.get('notificationSettings'),
     logs: state.get('logs'),
+    addPoint: state.get('addPoint'),
   };
 }
 

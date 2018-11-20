@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Menu from './components/Menu.js'
+import Menu from './components/Menu.js';
 import reducer from "./reducers";
 import { connect, Provider } from "react-redux";
 import { createStore } from "redux";
@@ -9,13 +9,13 @@ import OneSignal from 'react-native-onesignal';
 const store = createStore(reducer);
 
 const log = function () {
-  [].slice.call(arguments, 0).forEach(elem=>{
+  [].slice.call(arguments, 0).forEach(elem => {
     console.log('-------', elem);
   });
   return store.dispatch({
     type: "log",
     state: [].slice.call(arguments, 0),
-  })
+  });
 };
 
 store.dispatch({
@@ -36,7 +36,8 @@ store.dispatch({
     info: {
       point: null,
       type: null
-    }
+    },
+    addPoint: { name: '', error: '', isSentButton: false }
   }
 });
 
@@ -79,6 +80,6 @@ export default class App extends Component {
       <Provider store={store}>
         <Menu/>
       </Provider>
-    )
+    );
   }
 }

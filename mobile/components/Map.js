@@ -43,6 +43,7 @@ class Map extends Component {
                 latlng: { lat, lng }
               },
             });
+            this.props.navigation.navigate('AddPoint');
           }}
           onRegionChangeComplete={(mapRegion) => {
             this.props.updateReduxState({ tempRegion: mapRegion });

@@ -51,8 +51,8 @@ const options = {
 
 https.createServer(options, app).listen(8082, err => {
   if (err) {
-    console.error(err, 'Internal server error');
+    logger.error(err, 'Internal server error');
     return;
   }
-  console.info(`Server is up on ${8082}'s port`);
+  logger.info(`Server is up on ${8082}'s port`);
 });

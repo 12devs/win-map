@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ScrollView } from "react-native";
+import { AsyncStorage, ScrollView, View, Image, Text, Dimensions, StyleSheet } from "react-native";
 import { DrawerItems } from "react-navigation";
 import { connect } from "react-redux";
 import actions from "../actions";
 
 const Rules = {
   notLogged: ['Register', 'Login', 'test'],
-  logged: ['Register', 'Login', 'Map', 'notificationSettings', 'test', 'notifications', 'Logout'],
+  logged: ['Map', 'notificationSettings', 'test', 'notifications', 'Logout'],
 };
+
+const { width, height } = Dimensions.get('window');
+
 
 class CustomDrawerContentComponent extends Component {
 
@@ -15,11 +18,11 @@ class CustomDrawerContentComponent extends Component {
     return AsyncStorage.getItem('windToken')
       .then(windToken => {
         if (windToken) {
-          this.props.updateReduxState({ menuRule: 'logged' })
+          this.props.updateReduxState({ menuRule: 'logged' });
         } else {
-          this.props.updateReduxState({ menuRule: 'notLogged' })
+          this.props.updateReduxState({ menuRule: 'notLogged' });
         }
-      })
+      });
   }
 
   render() {
@@ -28,6 +31,11 @@ class CustomDrawerContentComponent extends Component {
 
     return (
       <ScrollView>
+        <View style={styles.headerContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>Wind App</Text>
+          </View>
+        </View>
         <DrawerItems items={filteredItems} {...rest}/>
       </ScrollView>
     );
@@ -39,5 +47,22 @@ function mapStateToProps(state) {
     menuRule: state.get('menuRule'),
   };
 }
+
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 25
+  },
+  headerContainer: {
+    backgroundColor: '#3D6DCC',
+    height: height / 4.5
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+});
 
 export default connect(mapStateToProps, actions)(CustomDrawerContentComponent);

@@ -4,8 +4,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Modal,
-  ScrollView, Dimensions
+  ScrollView,
+  Dimensions,
+  BackHandler
 } from 'react-native';
 import actions from "../actions/index";
 import { connect } from "react-redux";
@@ -20,6 +21,15 @@ class PointSettings extends Component {
     super();
     this.delMarker = this.delMarker.bind(this);
   }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
+  };
 
   delMarker() {
     const { point, type } = this.props.info;
@@ -41,68 +51,52 @@ class PointSettings extends Component {
   };
 
   render() {
-    const { point, type } = this.props.info;
+    let { point, type } = this.props.info;
+    if (!point) {
+      point = {};
+    }
     const show = !!(point && type);
 
-    if (!show) {
-      return null;
-    }
-
     return (
-      <Modal
-        style={styles.container}
-        animationType="slide"
-        transparent={false}
-        visible={show}
-        onRequestClose={() => {
-          this.props.updateReduxState({ info: { point: null, type: null } });
-        }}>
-        <View>
-          <Header
-            leftComponent={{
-              icon: 'arrow-back', color: '#fff',
-              onPress: () => {
+      <ScrollView contentContainerStyle={{
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}>
+        <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+        <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+        <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+        <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
+        <WindRoseChart stationId={point.station_id}/>
+        <Button
+          containerViewStyle={{ margin: 10 }}
+          backgroundColor={'#3D6DCC'}
+          large
+          borderRadius={50}
+          icon={{ name: 'location-on' }}
+          title='Go to marker'
+          onPress={() => {
+            this.props.navigation.navigate('Map');
+            const mapRegion = calcMapRegionOne(point);
+            if (mapRegion) {
+              this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+            }
+          }}/>
+        <Button
+          containerViewStyle={{ margin: 10 }}
+          backgroundColor={'red'}
+          large
+          borderRadius={50}
+          icon={{ name: 'location-off' }}
+          title='Remove point'
+          onPress={() => {
+            this.delMarker()
+              .then(() => {
                 this.props.updateReduxState({ info: { point: null, type: null } });
-              }
-            }}
-            centerComponent={{ text: 'Point Info', style: { color: '#fff', fontSize: 20 } }}
-            outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
-          />
-          <ScrollView style={{ height: height * 0.85 }}>
-            <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
-            <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
-            <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
-            <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
-            <WindRoseChart stationId={point.station_id}/>
-            <Button
-              containerViewStyle={{ margin: 10 }}
-              backgroundColor={'#3D6DCC'}
-              large
-              borderRadius={50}
-              icon={{ name: 'location-on' }}
-              title='Go o marker'
-              onPress={() => {
-                const mapRegion = calcMapRegionOne(point);
-                if (mapRegion) {
-                  this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
-                }
-              }}/>
-            <Button
-              containerViewStyle={{ margin: 10 }}
-              backgroundColor={'red'}
-              large
-              borderRadius={50}
-              icon={{ name: 'location-off' }}
-              title='Remove point'
-              onPress={() => {
-                this.delMarker()
-                  .then(() => {
-                    this.props.updateReduxState({ info: { point: null, type: null } });
-                  });
-              }}/>
-          </ScrollView>
-        </View>
-      </Modal>
+              });
+            this.props.navigation.navigate('Map');
+          }}/>
+      </ScrollView>
+
     );
   }
 }
