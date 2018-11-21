@@ -10,6 +10,7 @@ class PointSettings extends React.Component {
     super(props);
     this.state = {
       name: '',
+      edit: false,
     };
     this.delMarker = this.delMarker.bind(this);
     this.goToMarker = this.goToMarker.bind(this);
@@ -36,7 +37,12 @@ class PointSettings extends React.Component {
 
   updatePoint() {
     const { point, type } = this.props.info;
-    point.name = this.state.name;
+    const { name } = this.state;
+    this.setState({ name: '', edit: false });
+    if (!name) {
+      return
+    }
+    point.name = name;
     return services.updatePoint({
       [type]: point,
     })
@@ -44,7 +50,7 @@ class PointSettings extends React.Component {
         if (type === 'place') {
           let places = this.props.places.map(elem => {
             if (elem.id === point.id) {
-              elem.name = this.state.name;
+              elem.name = name;
             }
             return elem
           });
@@ -53,7 +59,7 @@ class PointSettings extends React.Component {
         if (type === 'danger') {
           let dangers = this.props.dangers.map(elem => {
             if (elem.id === point.id) {
-              elem.name = this.state.name;
+              elem.name = name;
             }
             return elem
           });
@@ -77,6 +83,13 @@ class PointSettings extends React.Component {
   render() {
     const { point, type } = this.props.info;
 
+    let color;
+    if (type === 'place'){
+      color = 'rgba(0, 138, 230, 1)'
+    } else {
+      color = 'rgba(255, 112, 77, 1)'
+    }
+
     if (!(point && type)) {
       return null;
     }
@@ -84,18 +97,28 @@ class PointSettings extends React.Component {
     return (
       <div>
         <div className='point__container' onClick={() => {
+          this.updatePoint();
           this.props.updateReduxState({ info: { point: null, type: null } });
         }}>
         </div>
-        <div className="point__data">
-          <div className="point__data-name">{point.name}</div>
-          <input className="point__input-text" placeholder="new Name" type="text" value={this.state.name}
-                 onChange={(e) => {
-                   this.setState({ name: e.target.value });
-                 }}/>
-          <button style={{padding: '1rem', fontSize: '1.5rem',  borderRadius: '8rem'}} onClick={this.updatePoint}> Save</button>
-          <div className="point__data-type">Type {type}</div>
-          <WindRoseChart stationId={point.station_id}/>
+        <div className="point__data" style={{backgroundColor: color}}>
+          {!this.state.edit ?
+            <div className="point__data-name" onClick={() => this.setState({ edit: true })}>{point.name}</div> :
+            <div>
+              <input className="point__input-text" placeholder="new Name" type="text" value={this.state.name}
+                     onChange={(e) => {
+                       this.setState({ name: e.target.value });
+                     }}
+                     onBlur={() => {
+                       this.updatePoint();
+                     }}
+                     autoFocus={true}
+              />
+            </div>
+            }
+
+          <div className="point__data-type">{type}</div>
+          <div onClick={()=>this.updatePoint()}><WindRoseChart  stationId={point.station_id}/></div>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>
           <button className="point__data-btn-close" onClick={() => {
@@ -111,7 +134,6 @@ class PointSettings extends React.Component {
             return false
           }}>Remove point
           </button>
-          <WindRoseChart stationId={point.station_id}/>
         </div>
       </div>
     );

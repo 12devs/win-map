@@ -59,6 +59,9 @@ class Login extends Component {
       return (
         <div className="login">
           <div className="login__form">
+            <div className={"form_name"}>
+              Login form
+            </div>
             <div>
               <label className="login__label" htmlFor="login">
                 <input placeholder="Login" className="login__input" type="text"
@@ -75,6 +78,18 @@ class Login extends Component {
             <div>
               <button className="login__btn-submit" onClick={this.login}>Login</button>
             </div>
+
+            <div className={"login__label"}>
+              <br/>
+              <div>Don't have an account?
+                <a href={'#'} onClick={() => location.assign('/register')}> You can register here.</a>
+              </div>
+              <br/>
+              <div>Forgot your password?
+                <a href={'#'} onClick={() => location.assign('/ChangePassword')}> You can reset it here.</a>
+              </div>
+            </div>
+
           </div>
         </div>
       )

@@ -42,6 +42,9 @@ class Register extends Component {
     return (
       <div className="login">
         <div className="login__form">
+          <div className={"form_name"}>
+            Register form
+          </div>
           <div>
             <label className="login__label" htmlFor="login">
               <input placeholder="Login" className="login__input" type="text"
@@ -70,6 +73,12 @@ class Register extends Component {
           {this.state.error ? <div className="login__label"> {this.state.error}</div> : null}
           <div>
             <button className="login__btn-submit" onClick={this.register}>Register</button>
+          </div>
+          <div className={"login__label"}>
+            <br/>
+            <div>Already have account?
+              <a href={'#'}  onClick={()=>location.assign('/login')}> You can come in it here.</a>
+            </div>
           </div>
         </div>
       </div>

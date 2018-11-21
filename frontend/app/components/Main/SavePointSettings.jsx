@@ -9,6 +9,7 @@ class SavePointSettings extends React.Component {
     this.state = {
       name: '',
       markerType: '',
+      error: '',
     };
     this.addMarker = this.addMarker.bind(this);
   }
@@ -16,6 +17,11 @@ class SavePointSettings extends React.Component {
   addMarker(markerType) {
     const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
+
+    if (!name){
+      this.setState({error: 'Name cannot be empty'});
+      return
+    }
 
     let key;
     if (markerType === 'Danger') {
@@ -56,6 +62,7 @@ class SavePointSettings extends React.Component {
         stations.push(...Object.keys((res.stationsData || {})));
         this.props.updateReduxState({ places, dangers, stationsData, stations });
         this.props.updateReduxState({ savePointSettings: { show: false } });
+        this.setState({ name: '', markerType: '', error: '' });
       });
   };
 
@@ -69,6 +76,7 @@ class SavePointSettings extends React.Component {
     return (
       <div>
         <div className='point__container' onClick={() => {
+          this.setState({ name: '', markerType: '' });
           this.props.updateReduxState({ savePointSettings: { show: false } });
         }}>
         </div>
@@ -82,13 +90,14 @@ class SavePointSettings extends React.Component {
                      }}/>
             </label>
           </div>
+          {this.state.error ? <div><span className="point__create-map-title" style={{color: 'red'}}>{this.state.error}</span></div> : null}
           <div className="point__create-map">
             <label className="point__create-map-label point__create-map-label--green">
               <input
                 className="point__create-map-radio"
                 type="radio"
                 value={'My Place'}
-                onChange={() => {
+                onClick={() => {
                   this.addMarker('My Place');
                 }}/>
               <span className="point__create-map-title">My place</span>
@@ -100,7 +109,7 @@ class SavePointSettings extends React.Component {
                 className="point__create-map-radio"
                 type="radio"
                 value={'Danger'}
-                onChange={() => {
+                onClick={() => {
                   this.addMarker('Danger');
                 }}/>
 
@@ -108,6 +117,7 @@ class SavePointSettings extends React.Component {
             </label>
           </div>
           <button className="point__create-map-close" onClick={() => {
+            this.setState({ name: '', markerType: '' });
             this.props.updateReduxState({ savePointSettings: { show: false } });
           }}/>
         </div>
