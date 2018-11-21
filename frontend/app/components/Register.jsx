@@ -47,26 +47,26 @@ class Register extends Component {
           </div>
           <div>
             <label className="login__label" htmlFor="login">
-              <input placeholder="Login" className="login__input" type="text"
+              <input placeholder="Login" className="login__input" type="text" style={{color: login ? 'white' : null}}
                      onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
             </label>
           </div>
           <div>
             <label className="login__label" htmlFor="password">
-              <input placeholder="Password" className="login__input" type="text"
+              <input placeholder="Password" className="login__input" type="text" style={{color: password ? 'white' : null}}
                      onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
             </label>
           </div>
           <div>
             <label className="login__label" htmlFor="repeatPassword">
-              <input placeholder="Repeat Password" className="login__input" type="text"
+              <input placeholder="Repeat Password" className="login__input" type="text" style={{color: repeatPassword ? 'white' : null}}
                      onChange={(event) => this.setState({ repeatPassword: event.target.value })}
                      value={repeatPassword}/>
             </label>
           </div>
           <div>
             <label className="login__label" htmlFor="email">
-              <input placeholder="email" className="login__input" type="text"
+              <input placeholder="email" className="login__input" type="text" style={{color: email ? 'white' : null}}
                      onChange={(event) => this.setState({ email: event.target.value })} value={email}/>
             </label>
           </div>
@@ -76,8 +76,8 @@ class Register extends Component {
           </div>
           <div className={"login__label"}>
             <br/>
-            <div>Already have account?
-              <a href={'#'}  onClick={()=>location.assign('/login')}> You can come in it here.</a>
+            <div>Already have an account?
+              <a style={{color: 'white'}} href={'#'}  onClick={()=>location.assign('/login')}> You can come in it here.</a>
             </div>
           </div>
         </div>

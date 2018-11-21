@@ -73,7 +73,9 @@ class MyMap extends React.Component {
           />
 
           <Markers/>
-          <Rectangle bounds={[[90, -180], [-90, 180]]}/>
+          <Rectangle
+            fillOpacity={0}
+            bounds={[[90, -180], [-90, 180]]}/>
         </Map>
       </div>
     );
