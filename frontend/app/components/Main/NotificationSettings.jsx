@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
-import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
+import { askForPermissioToReceiveNotifications, deleteToken, subscribeToNotifications } from "../../services/push-notification";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
@@ -45,7 +45,8 @@ class NotificationSettings extends React.Component {
             )}
             </tbody>
           </table>
-          <button className="notification__btn notification__btn--sub" onClick={askForPermissioToReceiveNotifications}>
+          <div className='onesignal-customlink-container'></div>
+          <button className="notification__btn notification__btn--sub" onClick={subscribeToNotifications}>
             Subscribe
           </button>
           <button className="notification__btn notification__btn--unsub" onClick={deleteToken}>

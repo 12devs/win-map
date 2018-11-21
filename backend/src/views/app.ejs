@@ -6,24 +6,25 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="./../../public/app.css" rel="stylesheet">
+    <link href="./../app.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-messaging.js"></script>
-    <script>
-      var config = {
-        apiKey: "AIzaSyDcjmYYSWndKdlgiLhy-_OHuoGstoxtfFQ",
-        authDomain: "wind-13ca6.firebaseapp.com",
-        databaseURL: "https://wind-13ca6.firebaseio.com",
-        projectId: "wind-13ca6",
-        storageBucket: "wind-13ca6.appspot.com",
-        messagingSenderId: "18277453447"
-      };
-      firebase.initializeApp(config);
-    </script>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <link rel="manifest" href="./../../manifest.json">
+    <!--<script>-->
+      <!--const OneSignal = window.OneSignal || [];-->
+      <!--OneSignal.push(function() {-->
+        <!--OneSignal.init({-->
+          <!--appId: "27ccd574-12cd-4bc2-9f7e-988b6b92ad49",-->
+          <!--autoRegister: true,-->
+          <!--notifyButton: {-->
+            <!--enable: true,-->
+          <!--},-->
+        <!--});-->
+      <!--});-->
+    <!--</script>-->
 </head>
 <body>
 <div id="root"></div>
-<script src="./../../public/app.js"></script>
+<script src="./../app.js"></script>
 </body>
 </html>
