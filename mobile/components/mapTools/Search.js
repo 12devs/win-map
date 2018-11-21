@@ -85,6 +85,7 @@ class Search extends Component {
                   subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
                   onPress={() => this.onSelectedItemsChange(i)}
                   rightIcon={{ name: '' }}
+                  chevron={false}
 
                 />
               ))

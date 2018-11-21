@@ -60,7 +60,6 @@ class PointSettings extends Component {
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: '#fff'
       }}>
         <View style={{ margin: 10 }}>
           <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
