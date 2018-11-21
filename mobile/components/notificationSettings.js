@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
@@ -38,6 +38,14 @@ class notificationSettings extends Component {
             () => services.sendSubscriptions({ subscriptions: this.props.notificationSettings })
               .then(res => {
                 console.log(res);
+                Alert.alert(
+                  'Alert',
+                  'Settings have been saved!',
+                  [
+                    { text: 'Ok', onPress: () => console.log('No Pressed'), style: 'cancel' },
+                  ],
+                  { cancelable: false }
+                );
               })
           }/>
       </ScrollView>
