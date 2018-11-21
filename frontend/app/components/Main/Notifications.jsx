@@ -1,56 +1,74 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import actions from './../../actions';
-import {Dropdown, Icon, Menu} from 'antd';
-import services from '../../services';
-import { redIcon } from '../icons';
+import MultiSelect from './MultiSelect';
+import services from "./../../services";
+import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
+import Switch from "react-switch";
+import MyNotifications from "./MyNotifications";
+import NotificationSettings from "./NotificationSettings";
+
+const COMPONENTS = {
+  MyNotifications,
+  NotificationSettings
+}
+
 
 class Notifications extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      component: 'MyNotifications'
     };
     this.handleClick = this.handleClick.bind(this);
-    this.visibleChange = this.visibleChange.bind(this);
+    this.changeComponent = this.changeComponent.bind(this);
   }
 
-  handleClick = (id) => {
-    const notifications = this.props.notifications;
-    const index = notifications.findIndex(el => el.id === id);
-    notifications[index].view_at = new Date();
-    this.props.updateReduxState({notifications});
-    return services.viewNotifications({notification: notifications[index]})
+  handleClick = () => {
+    this.props.close();
+    return services.sendSubscriptions({ subscriptions: this.props.notificationSettings });
   };
 
-  visibleChange = (e) => {
-    this.setState({visible: e});
+  changeComponent = (e) => {
+    let { component } = this.state;
+    if (component === 'MyNotifications') {
+      component = 'NotificationSettings';
+      this.setState({ component })
+      return
+    }
+    if (component === 'NotificationSettings') {
+      component = 'MyNotifications';
+      this.setState({ component });
+      return
+    }
   };
 
   render() {
-    const filter = this.props.notifications.filter(el => el.view_at === null);
-    const menu = (
-      <Menu>
-        {filter.map((el) =>
-          <Menu.Item key={el.id}>
-            <span style={{paddingRight: '25px'}}>{el.message}</span>
-            <a onClick={() => this.handleClick(el.id)} style={{cursor: 'pointer', float: 'right'}}><Icon type="close"/></a>
-          </Menu.Item>
-        )}
-      </Menu>
-    );
+
+    if (!this.props.open) {
+      return null;
+    }
+    console.log(this.state.component);
+    const Component = COMPONENTS[this.state.component];
 
     return (
-      <Dropdown overlay={menu} onVisibleChange={this.visibleChange} visible={this.state.visible} trigger={['click']}>
-        <Icon style={{border:'1px solid', width: '2rem !important', height: '2rem !important'}} type="bell"/>
-      </Dropdown>
+      <div>
+        <div className='point__container' onClick={this.props.close}>
+        </div>
+        <div className="notification">
+          <button className="map__navigation-btn map__navigation-btn--settings" onClick={this.changeComponent}/>
+          <Component open={this.props.open} close={this.props.close}/>
+        </div>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    notifications: state.get('notifications')
+    places: state.get('places'),
+    notificationSettings: state.get('notificationSettings'),
+    notifications: state.get('notifications'),
   };
 }
 

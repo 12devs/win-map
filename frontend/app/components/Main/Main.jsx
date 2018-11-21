@@ -3,7 +3,7 @@ import services from "./../../services";
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import Map from './Map'
-import NotificationSettings from './NotificationSettings';
+import Notifications from './Notifications';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
 import { calcBoundsAll } from "./../../utils";
@@ -76,12 +76,12 @@ class Main extends React.Component {
             <div style={{margin: '50px'}}>
               <h1>Are you sure?</h1>
               <p>You want to logout?</p>
-              <button className={"confirm__button"} onClick={onClose}>No</button>
               <button className={"confirm__button"} onClick={() => {
                 localStorage.setItem('windToken', '');
                 location.assign('/login')
                 onClose()
-              }}>Yes, I want to logout!</button>
+              }}>Yes</button>
+              <button className={"confirm__button"} onClick={onClose}>No</button>
             </div>
           </div>
         )
@@ -98,7 +98,6 @@ class Main extends React.Component {
             <div style={{margin: '50px'}}>
               <h1>Are you sure?</h1>
               <p>You want to delete all your points?</p>
-              <button className={"confirm__button"} onClick={onClose}>No</button>
               <button className={"confirm__button"} onClick={() => {
                 return services.deleteAllPoints()
                   .then(() => {
@@ -109,7 +108,8 @@ class Main extends React.Component {
                   .catch(()=>{
                     onClose()
                   })
-              }}>Yes, delete all!</button>
+              }}>Yes</button>
+              <button className={"confirm__button"} onClick={onClose}>No</button>
             </div>
           </div>
         )
@@ -123,14 +123,14 @@ class Main extends React.Component {
         <div className="map__navigation">
           <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
           <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
-          <button className="map__navigation-btn map__navigation-btn--settings"
+          <button className="map__navigation-btn map__navigation-btn--notifications"
                   onClick={this.openNotificationSettings}/>
           <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
                  min="0" max="50000" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
         </div>
-        <NotificationSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
+        <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>
         <Map/>

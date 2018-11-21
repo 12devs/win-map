@@ -9,7 +9,9 @@ import Switch from "react-switch";
 class NotificationSettings extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { checked: false };
+    this.state = {
+      checked: false,
+    };
     this.handleClick = this.handleClick.bind(this);
     this.changeDeviceSettings = this.changeDeviceSettings.bind(this);
   }
@@ -20,7 +22,7 @@ class NotificationSettings extends React.Component {
   };
 
   changeDeviceSettings = (e) => {
-    if (e.target.checked){
+    if (e.target.checked) {
       console.log('ask');
       return askForPermissioToReceiveNotifications(e)
     } else {
@@ -36,38 +38,36 @@ class NotificationSettings extends React.Component {
     }
 
     return (
-      <div>
-        <div className='point__container' onClick={this.props.close}>
-        </div>
-        <div className="notification">
-          <table className="notification__settings" width="100%" cellPadding="0" cellSpacing="0">
-            <tbody>
-            <tr>
-              <th className="notification__settings-item notification__settings-item--title">Place</th>
-              <th className="notification__settings-item notification__settings-item--title">Danger</th>
+      <div className="notification__block">
+        <button className="notification__settings-close" onClick={this.props.close}/>
+        <table className="notification__settings" width="100%" cellPadding="0" cellSpacing="0">
+          <tbody width="100%">
+          <tr width="100%">
+            <th width="100%" className="notification__settings-item notification__settings-item--title">Place</th>
+            <th width="100%" className="notification__settings-item notification__settings-item--title"> Danger</th>
+          </tr>
+          {this.props.places.map((point, id) =>
+            <tr key={id}>
+              <td className="notification__settings-item notification__settings-item--name">
+                {point.name}
+              </td>
+              <td className="notification__settings-item notification__settings-item--name">
+                <MultiSelect point={point}/>
+              </td>
             </tr>
-            {this.props.places.map((point, id) =>
-              <tr key={id}>
-                <td className="notification__settings-item notification__settings-item--name">
-                  {point.name}
-                </td>
-                <td className="notification__settings-item notification__settings-item--name">
-                  <MultiSelect point={point}/>
-                </td>
-              </tr>
-            )}
-            </tbody>
-          </table>
-          <div className="notification__settings-item notification__settings-item--title">
-            <span>Send notification to this device </span>
-            <Switch
-              onChange={(e)=>this.setState({checked: e})}
-              checked={this.state.checked}
-            />
-          </div>
+          )}
+          </tbody>
+        </table>
+        <div className="notification__settings-item notification__settings-item--title">
+          <span>Send notification to this device </span>
+          <Switch
+            onChange={(e) => this.setState({ checked: e })}
+            checked={this.state.checked}
+          />
           <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
-          <button className="notification__settings-close" onClick={this.props.close}/>
         </div>
+
+
       </div>
     );
   }
