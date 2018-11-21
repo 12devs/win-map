@@ -49,8 +49,8 @@ class MultiSelectExample extends Component {
           searchInputPlaceholderText=""
           selectedItems={selectedItems}
           tagRemoveIconColor="#CCC"
-          tagBorderColor="#fff"
-          tagTextColor="#fff"
+          tagBorderColor="#3D6DCC"
+          tagTextColor="#525966"
           selectedItemTextColor="#000"
           selectedItemIconColor="#000"
           itemTextColor="#CCC"

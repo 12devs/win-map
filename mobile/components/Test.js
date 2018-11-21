@@ -28,7 +28,7 @@ class Test extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text>{JSON.stringify(this.props.addPoint, null, 4)}</Text>
+        <Text>{JSON.stringify(this.props, null, 4)}</Text>
       </ScrollView>
     )
   }

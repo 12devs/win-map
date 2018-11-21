@@ -112,7 +112,8 @@ const notificationSettings_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
   });
 
 const test_StackNavigator = createStackNavigator({
@@ -146,7 +147,9 @@ const notifications_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+
   });
 const addedMarker_StackNavigator = createStackNavigator({
     Details: {
@@ -182,7 +185,9 @@ const pointSettings_StackNavigator = createStackNavigator({
   },
   {
     mode: 'modal',
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+
   });
 
 export default createDrawerNavigator({

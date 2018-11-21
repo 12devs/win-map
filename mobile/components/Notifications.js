@@ -4,6 +4,7 @@ import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
 import { Button, List, ListItem } from 'react-native-elements';
+import service from '../services';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +17,16 @@ class Notifications extends Component {
     this.props.updateReduxState({ notifications });
     services.viewNotifications({ notification: notifications[index] });
     this.forceUpdate();
+  };
+
+  viewAllNotification() {
+    const notifications = this.props.notifications;
+    return service.viewAllNotification().then(res => {
+      notifications.map(el => el.view_at = new Date());
+      this.props.updateReduxState({ notifications });
+      console.log(res);
+      this.forceUpdate();
+    });
   };
 
   render() {
@@ -45,7 +56,7 @@ class Notifications extends Component {
         flexDirection: 'column',
         justifyContent: 'center'
       }}>
-        <List containerStyle={{ marginBottom: 20 }}>
+        <View>
           {
             unviewedNotifications.map((notification, i) => (
               <ListItem
@@ -54,24 +65,29 @@ class Notifications extends Component {
                 subtitle={notification.created_at}
                 leftIcon={{ name: 'notifications' }}
                 rightIcon={{ name: 'close' }}
-                containerStyle={{ borderBottomColor: '#eee', borderTopColor: '#eee', marginLeft: 10, marginRight: 10 }}
+                containerStyle={{
+                  borderBottomColor: '#eee',
+                  // marginTop: 5,
+                  marginBottom: 2,
+                  borderTopColor: 'transparent',
+                  marginLeft: 10,
+                  marginRight: 10
+                }}
                 onPressRightIcon={() => {
                   this.handleClick(notification.id);
                 }}
               />
             ))
           }
-        </List>
+        </View>
         <Button
-          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20 }}
+          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20, marginTop: 20 }}
           backgroundColor={'#3D6DCC'}
-          // large
           borderRadius={50}
-          // icon={{ name: 'remove-circle', color: '#fff' }}
           color={'#fff'}
           title='Clear All'
           onPress={() => {
-
+            this.viewAllNotification();
           }}/>
       </ScrollView>
     );

@@ -84,6 +84,9 @@ class Search extends Component {
                   title={l.display_name}
                   subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
                   onPress={() => this.onSelectedItemsChange(i)}
+                  rightIcon={{ name: '' }}
+                  chevron={false}
+
                 />
               ))
             }
@@ -116,11 +119,15 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     height: height * 0.8,
-    backgroundColor: '#eeeeee'
+    backgroundColor: '#eeeeee',
+    // flexDirection: 'column',
+    // justifyContent: 'center',
   },
   listContainer: {
     backgroundColor: '#fff',
     marginRight: width / 40,
-    marginLeft: width / 40
+    marginLeft: width / 40,
+    borderBottomColor: '#eee',
+    borderTopColor: '#eee'
   }
 });
