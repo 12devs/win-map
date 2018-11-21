@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
-import { askForPermissioToReceiveNotifications, deleteToken, subscribeToNotifications } from "../../services/push-notification";
+import { unSubscribeToNotifications, subscribeToNotifications } from "../../services/push-notification";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class NotificationSettings extends React.Component {
           <button className="notification__btn notification__btn--sub" onClick={subscribeToNotifications}>
             Subscribe
           </button>
-          <button className="notification__btn notification__btn--unsub" onClick={deleteToken}>
+          <button className="notification__btn notification__btn--unsub" onClick={unSubscribeToNotifications}>
             Unsubscribe
           </button>
           <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
