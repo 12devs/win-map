@@ -40,9 +40,6 @@ class Notifications extends Component {
       }}>
         <Text style={{
           textAlign: 'center',
-          borderWidth: 2,
-          borderColor: 'silver',
-          borderRadius: 20,
           textAlignVertical: "center",
           color: 'silver',
           padding: 10,

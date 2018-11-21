@@ -19,7 +19,7 @@ class notificationSettings extends Component {
       }}>
         <Card containerStyle={styles.container}>
           <Text style={styles.textContainer}>
-            Select the dangers for each blue marker that notify you
+            Select the dangers for each blue marker to get notifications on them.
           </Text>
         </Card>
         {this.props.places.map((place, i) => {

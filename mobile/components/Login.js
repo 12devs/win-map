@@ -109,20 +109,33 @@ class Login extends Component {
               </View>
             </View>
             {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Register');
-              }}
-            >
-              <Text style={styles.textContainer}>Don't have an account? You can register here.</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('ChangePassword');
-              }}
-            >
-              <Text style={styles.textContainer}>Forgot your password? You can reset it here.</Text>
-            </TouchableOpacity>
+
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+              <Text style={styles.textContainer}>Don't have an account?</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('Register');
+                }}>
+                <Text style={styles.secondaryTextContainer}>You can register here.</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+              <Text style={styles.textContainer}>Forgot your password?</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('ChangePassword');
+                }}>
+                <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
+              </TouchableOpacity>
+            </View>
+
             <Button
               containerViewStyle={styles.buttonContainer}
               backgroundColor={'#3D6DCC'}
@@ -180,6 +193,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: "center",
     color: '#525966',
+    padding: 10,
+  },
+  secondaryTextContainer: {
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: '#3D6DCC',
     padding: 10,
   },
   buttonContainer: {

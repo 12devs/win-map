@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import actions from "../actions";
 
 const Rules = {
-  notLogged: ['ChangePassword','Register', 'Login', 'test'],
-  logged: ['ChangePassword', 'Map', 'notificationSettings', 'test', 'notifications', 'Logout'],
+  notLogged: ['ChangePassword', 'Register', 'Login', 'test'],
+  logged: ['Map', 'notificationSettings', 'test', 'notifications', 'Logout'],
 };
 
 const { width, height } = Dimensions.get('window');

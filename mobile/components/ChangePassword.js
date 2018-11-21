@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    textAlign: 'center',
+    textAlign: 'right',
     textAlignVertical: "center",
-    color: '#525966',
+    color: '#3D6DCC',
     padding: 10,
   },
   buttonContainer: {
