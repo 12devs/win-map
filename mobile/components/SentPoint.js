@@ -81,6 +81,7 @@ class SentPoint extends React.Component {
           stations,
           savePointSettings: { show: false }
         });
+        this.props.updateStatistic();
       });
   };
 
@@ -88,19 +89,20 @@ class SentPoint extends React.Component {
     const { addPoint } = this.props;
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
-          style={{ padding: 5, marginRight: width * 0.04 }}
-          onPress={async () => {
-            await this.addMarker();
-            if (addPoint.name !== '')
-              this.props.navigation.navigate('Map');
-          }}
-        >
-          <Image
-            source={{ uri: icons.sent }}
-            style={{ width: 25, height: 25, tintColor: '#fff' }}
-          />
-        </TouchableOpacity>
+        {!addPoint.isSentButton ?
+          <TouchableOpacity
+            style={{ padding: 5, marginRight: width * 0.04 }}
+            onPress={async () => {
+              await this.addMarker();
+              if (addPoint.name !== '')
+                this.props.navigation.navigate('Map');
+            }}
+          >
+            <Image
+              source={{ uri: icons.sent }}
+              style={{ width: 25, height: 25, tintColor: '#fff' }}
+            />
+          </TouchableOpacity> : null}
       </View>
     );
   }
