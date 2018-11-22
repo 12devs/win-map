@@ -4,25 +4,24 @@ import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
 import services from "../services/index";
-import AddPoint from './AddPoint';
-import PointSettings from './PointSettings';
 import { calcMapRegionAll } from '../utils';
 
 class Main extends Component {
 
   componentDidMount = () => {
-    if (!this.props.isGetMainData){
+    if (!this.props.isGetMainData) {
       return services.getInfo()
         .then(res => {
           if (res.unauthorized) {
-            return this.props.navigation.navigate('Login')
+            return this.props.navigation.navigate('Login');
           }
           const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
           if (mapRegion) {
-            res.mapRegion = mapRegion
+            res.mapRegion = mapRegion;
           }
-          return this.props.updateReduxState({...res, isGetMainData: true})
-        })
+          this.props.updateReduxState({ ...res, isGetMainData: true });
+          return this.props.updateStatistic();
+        });
     }
   };
 

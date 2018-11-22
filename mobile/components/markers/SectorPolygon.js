@@ -83,6 +83,7 @@ class SectorPolygon extends React.Component {
       const positions = getPolygon(point, dist, direction);
       return (
         <Polygon
+          // lineCap={'round'}
           coordinates={positions}
           strokeWidth={1}
           strokeColor={'rgba(95, 87, 202, 0.7)'}
