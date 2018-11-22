@@ -118,7 +118,11 @@ class PointSettings extends React.Component {
             }
 
           <div className="point__data-type">{type}</div>
-          <div onClick={()=>this.updatePoint()}><WindRoseChart  stationId={point.station_id}/></div>
+          <div onClick={()=>this.updatePoint()}>
+            {/*<button className="point__data-btn-meta">dfdfdf</button>*/}
+            {/*<button className="point__data-btn-meta">dfdfdfdf</button>*/}
+            <WindRoseChart  stationId={point.station_id}/>
+          </div>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>
           <button className="point__data-btn-close" onClick={() => {
