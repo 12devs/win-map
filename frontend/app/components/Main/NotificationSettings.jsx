@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
-import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
+import {
+  unSubscribeToNotifications,
+  subscribeToNotifications,
+  isPushNotificationsEnabled
+} from "../../services/push-notification";
 import Switch from "react-switch";
 
 class NotificationSettings extends React.Component {
@@ -16,18 +20,27 @@ class NotificationSettings extends React.Component {
     this.changeDeviceSettings = this.changeDeviceSettings.bind(this);
   }
 
+  componentDidMount() {
+    return isPushNotificationsEnabled()
+      .then(checked => {
+        this.setState({ checked });
+      })
+  }
+
   handleClick = () => {
     this.props.close();
     return services.sendSubscriptions({ subscriptions: this.props.notificationSettings });
   };
 
   changeDeviceSettings = (e) => {
-    if (e.target.checked) {
+    this.setState({ checked: e });
+    console.log(e);
+    if (e) {
       console.log('ask');
-      return askForPermissioToReceiveNotifications(e)
+      return subscribeToNotifications()
     } else {
       console.log('delete');
-      return deleteToken(e)
+      return unSubscribeToNotifications()
     }
   };
 
@@ -43,8 +56,8 @@ class NotificationSettings extends React.Component {
         <div className={'notification__settings'}>
           {this.props.places.map((point, id) =>
             <div key={id} className={'notification__item'}>
-              <div className={'notification__settings-item'} >Place: {point.name}</div>
-              <div  className={'notification__settings-item'} ><MultiSelect point={point}/></div>
+              <div className={'notification__settings-item'}>Place: {point.name}</div>
+              <div className={'notification__settings-item'}><MultiSelect point={point}/></div>
             </div>
           )}
         </div>
@@ -52,13 +65,11 @@ class NotificationSettings extends React.Component {
         <div className="notification__settings-item notification__settings-item--title">
           <span>Send notification to this device </span>
           <Switch
-            onChange={(e) => this.setState({ checked: e })}
+            onChange={this.changeDeviceSettings}
             checked={this.state.checked}
           />
           <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
         </div>
-
-
       </div>
     );
   }

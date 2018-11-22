@@ -7,15 +7,15 @@ import 'leaflet/dist/leaflet.css'
 import App from './components/App';
 import configureStore from './configureStore';
 
-import { initializeFirebase } from './services/push-notification';
+import { initOneSignal } from './services/push-notification';
 
 const store = configureStore();
 
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <App/>
+  </Provider>,
+  document.getElementById('root')
 );
 
-initializeFirebase();
+initOneSignal();

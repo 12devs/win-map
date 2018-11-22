@@ -30,10 +30,7 @@ class Notifications extends React.Component {
   };
 
   render() {
-    console.log('render');
     const filter = this.props.notifications.filter(el => el.view_at === null);
-    // const filter = this.props.notifications;
-    console.log(filter);
     return (
       <div>
         {filter.map((el) =>
@@ -45,12 +42,6 @@ class Notifications extends React.Component {
         <button className="notification__settings-close" onClick={this.props.close}/>
       </div>
     );
-
-    // return (
-    //   <Dropdown overlay={menu} onVisibleChange={this.visibleChange} visible={this.state.visible} trigger={['click']}>
-    //     <Icon style={{border:'1px solid', width: '2rem !important', height: '2rem !important'}} type="bell"/>
-    //   </Dropdown>
-    // );
   }
 }
 
