@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import actions from "../actions";
 
 const Rules = {
-  notLogged: ['Register', 'Login', 'test'],
+  notLogged: ['ChangePassword', 'Register', 'Login', 'test'],
   logged: ['Map', 'notificationSettings', 'test', 'notifications', 'Logout'],
 };
 

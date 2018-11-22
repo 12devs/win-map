@@ -72,10 +72,10 @@ class Navigation extends Component {
                 'Alert',
                 'Do you really want to delete all markers?',
                 [
-                  { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                  { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
                   {
-                    text: 'OK', onPress: () => {
-                      console.log('OK Pressed');
+                    text: 'Yes', onPress: () => {
+                      console.log('Yes Pressed');
                       this.deleteAllMarkers();
                     }
                   },

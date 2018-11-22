@@ -13,6 +13,7 @@ import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
 import Test from './Test';
+import ChangePassword from './ChangePassword';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 import NavigateMenu from './NavigateMenu';
@@ -48,7 +49,7 @@ const Register_StackNavigator = createStackNavigator({
       screen: Register,
       navigationOptions: ({ navigation }) => ({
         title: 'Register',
-        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC',
           textAlign: 'center'
@@ -67,7 +68,7 @@ const Login_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return ({
           title: 'Login',
-          headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+          // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
           headerStyle: {
             backgroundColor: '#3D6DCC'
           },
@@ -189,6 +190,24 @@ const pointSettings_StackNavigator = createStackNavigator({
     cardStyle: { backgroundColor: '#fff' }
 
   });
+const ChangePassword_StackNavigator = createStackNavigator({
+    Details: {
+      screen: ChangePassword,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Change Password',
+        // headerLeft: <Back navigation={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center',
+
+  });
 
 export default createDrawerNavigator({
     Register: {
@@ -239,6 +258,13 @@ export default createDrawerNavigator({
     },
     Logout: {
       screen: Logout,
+      navigationOptions: {
+        drawerIcon: <Icon name='exit-to-app'/>
+
+      }
+    },
+    ChangePassword: {
+      screen: ChangePassword_StackNavigator,
       navigationOptions: {
         drawerIcon: <Icon name='exit-to-app'/>
 
