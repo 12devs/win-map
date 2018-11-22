@@ -15,7 +15,7 @@ class WindRoseChart extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.stationId) {
+    if (this.props.point.station_id) {
       this.newChart(this.props);
     }
   }
@@ -27,7 +27,7 @@ class WindRoseChart extends React.Component {
   }
 
   newChart() {
-    new Highcharts.Chart('container', this.props.stationsData[this.props.stationId].windRoseData);
+    new Highcharts.Chart('container', this.props.stationsData[this.props.point.station_id].windRoseData);
   }
 
   render() {

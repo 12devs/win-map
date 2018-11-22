@@ -34,6 +34,7 @@ class UserPlace extends React.Component {
         stationsData = {...stationsData, ...res.stationsData};
         stations.push(...Object.keys((res.stationsData || {})));
         this.props.updateReduxState({places, stationsData, stations});
+        this.props.updateStatistic();
       });
   };
 

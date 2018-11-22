@@ -54,12 +54,17 @@ class NotificationSettings extends React.Component {
       <div className="notification__block">
         <button className="notification__settings-close" onClick={this.props.close}/>
         <div className={'notification__settings'}>
-          {this.props.places.map((point, id) =>
-            <div key={id} className={'notification__item'}>
-              <div className={'notification__settings-item'}>Place: {point.name}</div>
-              <div className={'notification__settings-item'}><MultiSelect point={point}/></div>
-            </div>
-          )}
+          {this.props.places.length ?
+            (this.props.places.map((point, id) => {
+                return (
+                  <div key={id} className={'notification__item'}>
+                    <div className={'notification__settings-item'}>Place: {point.name}</div>
+                    <div className={'notification__settings-item'}><MultiSelect point={point}/></div>
+                  </div>
+                  )})):(
+          <div className={'notification__item'}>
+            <div className={'notification__settings-item'}>There are not places</div>
+          </div>)}
         </div>
 
         <div className="notification__settings-item notification__settings-item--title">
@@ -68,7 +73,7 @@ class NotificationSettings extends React.Component {
             onChange={this.changeDeviceSettings}
             checked={this.state.checked}
           />
-          <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
+          <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Save</button>
         </div>
       </div>
     );
