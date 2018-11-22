@@ -32,7 +32,8 @@ var sendNotification = function(data) {
 var message = {
   app_id: "27ccd574-12cd-4bc2-9f7e-988b6b92ad49",
   contents: {"en": "English Message"},
-  included_segments: ["All"]
+  // included_segments: ["All"]
+  include_player_ids: ["5a0bf168-26a3-48d0-8464-cd799f849af2"]
 };
 
 sendNotification(message);

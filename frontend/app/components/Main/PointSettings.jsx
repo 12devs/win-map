@@ -97,9 +97,9 @@ class PointSettings extends React.Component {
 
     let color;
     if (type === 'place') {
-      color = 'rgba(0, 138, 230, 1)'
+      color = '#0A5BB9'
     } else {
-      color = 'rgba(255, 112, 77, 1)'
+      color = '#DE3231'
     }
 
     if (!(point && type)) {

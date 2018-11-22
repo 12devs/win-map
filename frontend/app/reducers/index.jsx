@@ -11,7 +11,6 @@ const getStats = (places, dangers, stationsData) => {
   places.forEach(place => {
     stats[place.id] = dangers.map(danger => {
       const direction = getCompassDirection(danger, place);
-      console.log(Math.round(stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100), direction);
       return {
         name: place.name,
         type: place.type,
@@ -37,7 +36,7 @@ const reducer = function (state = immutable.Map(), action) {
         return newVal;
       }, state, action.state));
       if (_.intersection(keys, ["places", "dangers", "stationsData"]).length) {
-        return updatedState.update("statistic", () => immutable.fromJS(getStats(state.get('places'), state.get('dangers'), state.get('stationsData'))));
+        return updatedState.update("statistic", () => immutable.fromJS(getStats(updatedState.get('places'), updatedState.get('dangers'), updatedState.get('stationsData'))));
       } else {
         return updatedState
       }
