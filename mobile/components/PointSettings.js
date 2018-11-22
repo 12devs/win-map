@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Dimensions,
   BackHandler
 } from 'react-native';
 import actions from "../actions/index";
@@ -15,8 +14,6 @@ import services from '../services/index';
 import { Header, Button, Card, Divider } from 'react-native-elements';
 import Loader from './Loader';
 import { Table, Row, Rows } from 'react-native-table-component';
-
-const { width, height } = Dimensions.get('window');
 
 class PointSettings extends Component {
   constructor() {
@@ -52,7 +49,7 @@ class PointSettings extends Component {
         if (type === 'danger') {
           const dangers = this.props.dangers.filter(el => !(el.id === id));
           this.props.updateReduxState({ dangers, info: { point: null, type: null } });
-          this.props.updateStatistic()
+          this.props.updateStatistic();
         }
       });
   };
@@ -61,7 +58,6 @@ class PointSettings extends Component {
     let { info, statistic } = this.props;
     let { point, type } = info;
     const { isDelButton } = this.state;
-    console.log('wefwefwe', this.props.statistic.get('63'));
     if (!point) {
       point = {};
     }
@@ -155,7 +151,18 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(PointSettings);
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: { height: 50, backgroundColor: '#fff' },
-  text: { margin: 6, textAlign: 'center' }
+  container: {
+    flex: 1,
+    padding: 16,
+    paddingTop: 30,
+    backgroundColor: '#fff'
+  },
+  head: {
+    height: 50,
+    backgroundColor: '#fff'
+  },
+  text: {
+    margin: 6,
+    textAlign: 'center'
+  }
 });
