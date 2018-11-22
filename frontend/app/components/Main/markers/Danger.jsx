@@ -35,6 +35,7 @@ class Danger extends React.Component {
         stationsData = { ...stationsData, ...(res.stationsData || {}) };
         stations.push(...Object.keys((res.stationsData || {})));
         this.props.updateReduxState({ dangers, stations, stationsData });
+        this.props.updateStatistic();
       });
   };
 

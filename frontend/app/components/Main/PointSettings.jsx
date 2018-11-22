@@ -3,7 +3,13 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import services from "./../../services";
 import WindRoseChart from './WindRoseChart';
+import Stats from './Stats';
 import geolib from "geolib";
+
+const COMPONENTS = {
+  WindRoseChart,
+  Stats,
+};
 
 class PointSettings extends React.Component {
   constructor(props) {
@@ -11,6 +17,7 @@ class PointSettings extends React.Component {
     this.state = {
       name: '',
       edit: false,
+      component: 'WindRoseChart',
     };
     this.delMarker = this.delMarker.bind(this);
     this.goToMarker = this.goToMarker.bind(this);
@@ -82,9 +89,14 @@ class PointSettings extends React.Component {
 
   render() {
     const { point, type } = this.props.info;
+    let { component } = this.state;
+    if (type === 'danger') {
+      component = 'WindRoseChart'
+    }
+    const Component = COMPONENTS[component];
 
     let color;
-    if (type === 'place'){
+    if (type === 'place') {
       color = 'rgba(0, 138, 230, 1)'
     } else {
       color = 'rgba(255, 112, 77, 1)'
@@ -101,7 +113,7 @@ class PointSettings extends React.Component {
           this.props.updateReduxState({ info: { point: null, type: null } });
         }}>
         </div>
-        <div className="point__data" style={{backgroundColor: color}}>
+        <div className="point__data" style={{ backgroundColor: color }}>
           {!this.state.edit ?
             <div className="point__data-name" onClick={() => this.setState({ edit: true })}>{point.name}</div> :
             <div>
@@ -115,20 +127,32 @@ class PointSettings extends React.Component {
                      autoFocus={true}
               />
             </div>
-            }
+          }
 
           <div className="point__data-type">{type}</div>
-          <div onClick={()=>this.updatePoint()}>
-            {/*<button className="point__data-btn-meta">dfdfdf</button>*/}
-            {/*<button className="point__data-btn-meta">dfdfdfdf</button>*/}
-            <WindRoseChart  stationId={point.station_id}/>
+          <div onClick={() => this.updatePoint()}>
+            {type === 'place' ?
+              <div className="point__create-map">
+                <button className="point__data-btn-meta point__data-btn-meta--marker"
+                        style={{ marginLeft: '1rem', marginRight: '1rem' }}
+                        onClick={() => this.setState({ component: 'WindRoseChart' })}>Wind Rose Chart
+                </button>
+                <button className="point__data-btn-meta point__data-btn-meta--marker"
+                        style={{ marginLeft: '1rem', marginRight: '1rem' }}
+                        onClick={() => this.setState({ component: 'Stats' })}>Statistics info
+                </button>
+              </div> : null
+            }
+            <Component point={point}/>
           </div>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>
           <button className="point__data-btn-close" onClick={() => {
             this.props.updateReduxState({ info: { point: null, type: null } });
           }}/>
-          <button className="point__data-btn-meta point__data-btn-meta--marker" onClick={this.goToMarker}>Go to marker
+          <button
+            className="point__data-btn-meta point__data-btn-meta--marker"
+            onClick={this.goToMarker}>Go to marker
           </button>
           <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
             this.delMarker()
