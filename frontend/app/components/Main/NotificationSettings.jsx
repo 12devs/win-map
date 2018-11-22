@@ -40,24 +40,15 @@ class NotificationSettings extends React.Component {
     return (
       <div className="notification__block">
         <button className="notification__settings-close" onClick={this.props.close}/>
-        <table className="notification__settings" width="100%" cellPadding="0" cellSpacing="0">
-          <tbody width="100%">
-          <tr width="100%">
-            <th width="100%" className="notification__settings-item notification__settings-item--title">Place</th>
-            <th width="100%" className="notification__settings-item notification__settings-item--title"> Danger</th>
-          </tr>
+        <div className={'notification__settings'}>
           {this.props.places.map((point, id) =>
-            <tr key={id}>
-              <td className="notification__settings-item notification__settings-item--name">
-                {point.name}
-              </td>
-              <td className="notification__settings-item notification__settings-item--name">
-                <MultiSelect point={point}/>
-              </td>
-            </tr>
+            <div key={id} className={'notification__item'}>
+              <div className={'notification__settings-item'} >Place: {point.name}</div>
+              <div  className={'notification__settings-item'} ><MultiSelect point={point}/></div>
+            </div>
           )}
-          </tbody>
-        </table>
+        </div>
+
         <div className="notification__settings-item notification__settings-item--title">
           <span>Send notification to this device </span>
           <Switch

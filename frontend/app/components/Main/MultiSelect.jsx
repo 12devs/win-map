@@ -49,6 +49,7 @@ class MultiSelect extends React.Component {
           components={makeAnimated()}
           onChange={this.handleChange}
           defaultValue={defaultValue}
+          placeholder={'Select some dangerous'}
           isMulti
           options={danger}
         />
