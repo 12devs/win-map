@@ -28,7 +28,7 @@
   },
   "auth": {
     "saltRound": 10,
-    "iv": "AUTH_IV"
+    "secret": "AUTH_SECRET"
   },
   "openweathermap": {
     "api_key": "API_KEY_OPENWEATHERMAP",
