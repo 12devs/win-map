@@ -25,15 +25,16 @@ class WindRoseChart extends React.Component {
           <div style={{ width: '33%', fontSize: '1.1rem' }}><b>'In danger' period</b></div>
         </div>
         {statistic[point.id].map((elem, i) => {
+          const style = { width: '33%' }
           return <div className={'notification__settings-item notification__settings-item--name'}
                       style={{ display: 'flex' }} key={i}>
-            <div style={{ width: '33%' }}>
+            <div style={style}>
               {elem.dangerName}
             </div>
-            <div style={{ width: '33%' }}>
+            <div style={style}>
               {elem.currently ? "Yes" : "No"}
             </div>
-            <div style={{ width: '33%' }}>
+            <div style={style}>
               {elem.period}
             </div>
           </div>

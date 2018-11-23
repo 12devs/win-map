@@ -6,6 +6,16 @@ const getCompassDirection = (from, to) => {
   return geolib.getCompassDirection(from, to).exact;
 };
 
+const getGeolibDirection = (dir) => {
+  const ref = {
+    North: 'N',
+    West: 'W',
+    East: 'E',
+    South: 'S',
+  };
+  return (ref[dir] || dir)
+};
+
 const getStats = (places, dangers, stationsData) => {
   const stats = {};
   places.forEach(place => {
@@ -18,7 +28,7 @@ const getStats = (places, dangers, stationsData) => {
         dangerId: danger.id,
         direction: direction,
         period: `${Math.round(stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100)} / ${stationsData[place.station_id].period}`,
-        currently: direction === stationsData[danger.station_id].current.dir
+        currently: direction === getGeolibDirection(stationsData[danger.station_id].current.dir)
       }
     })
   });

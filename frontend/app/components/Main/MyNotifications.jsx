@@ -34,11 +34,8 @@ class Notifications extends React.Component {
     console.log(filter.length);
     if (!filter.length) {
       return (
-        <div>
-          <div className={'notification__item'}>
-            <span className="notification__settings-item notification__settings-item--name">There are not new notifications</span>
-          </div>
-          <button className="notification__settings-close" onClick={this.props.close}/>
+        <div style={{display: 'flex'}}>
+            <span style={{margin: 'auto'}} className="notification__settings-item notification__settings-item--name">No new notifications</span>
         </div>
       )
     }
