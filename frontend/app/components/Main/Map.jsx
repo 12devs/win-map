@@ -23,6 +23,11 @@ class MyMap extends React.Component {
     return (
       <div style={{ height: '100%' }}>
         <Map
+          // onViewportChanged={(e) => {
+          //   console.log(e);
+          //   const { zoom } = e;
+          //   this.props.updateReduxState({ zoom })
+          // }}
           onClick={(e) => this.props.updateReduxState({ savePointSettings: { show: true, latlng: e.latlng } })}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}

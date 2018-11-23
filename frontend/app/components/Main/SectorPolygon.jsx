@@ -94,6 +94,7 @@ function mapStateToProps(state) {
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     scaleWind: state.get('scaleWind'),
+    zoom: state.get('zoom'),
   };
 }
 

@@ -128,7 +128,7 @@ class Main extends React.Component {
           <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
           <input className="map__navigation-range" type="range" id="start" name="size"
-                 min="0" max="50000" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
+                 min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
         </div>
         <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
