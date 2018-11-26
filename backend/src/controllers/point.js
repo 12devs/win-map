@@ -172,17 +172,10 @@ export default {
   async deleteAllPoints(req, res) {
     try {
       const userId = req.user.id;
-      const dangers = await Danger.findAll({ where: { account_id: userId } });
-      const places = await Place.findAll({ where: { account_id: userId } });
-      await BluebirdPromise.mapSeries(dangers, async danger => {
-        await Danger.destroy({ where: { id: danger.id } });
-        await Subscription.destroy({ where: { danger_id: danger.id } });
-      });
+      await Subscription.destroy({ where: { account_id: userId } });
+      await Danger.destroy({ where: { account_id: userId } });
+      await Place.destroy({ where: { account_id: userId } });
 
-      await BluebirdPromise.mapSeries(places, async place => {
-        await Place.destroy({ where: { id: place.id } });
-        await Subscription.destroy({ where: { place_id: place.id } });
-      });
       res.status(200).json({ message: 'All points were successful deleted' })
     } catch (err) {
       return res.status(500).json({ error: err.message })

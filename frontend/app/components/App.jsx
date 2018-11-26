@@ -24,7 +24,7 @@ store.dispatch({
     markerType: "My Place",
     viewType: "Current",
     actionType: "Add",
-    scaleWind: 5000,
+    scaleWind: 100,
     notificationSettings: [],
     savePointSettings: {},
     notifications: [],

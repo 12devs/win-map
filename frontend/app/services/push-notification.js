@@ -1,7 +1,16 @@
 import services from '../services';
 
 const OneSignal = window.OneSignal || [];
-const isPushSupported = OneSignal.isPushNotificationsSupported();
+
+const getIsPushNotificationsSupported = () => {
+  try {
+    return OneSignal.isPushNotificationsSupported();
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+const isPushSupported = getIsPushNotificationsSupported();
 
 const subscribeToNotifications = () => {
   if (!isPushSupported) return;

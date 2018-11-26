@@ -1,11 +1,15 @@
-import config from 'config';
 import logger from '../logger';
 import { Notification, Device, Account, Subscription, Danger } from '../models';
 import https from 'https';
+import BluebirdPromise from 'bluebird';
 
 const sendNotification = data => {
 
   return new Promise((resolve, reject) => {
+
+    if (!data.include_player_ids.length){
+      resolve({})
+    }
 
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
@@ -40,97 +44,51 @@ const sendNotifications = async () => {
 
   logger.info('sendNotifications|START');
 
-  let limit = 1;
+  const accounts = await Account.findAll({ attributes: ['id'], raw: true });
+  console.log('accounts', accounts);
+  await  BluebirdPromise.mapSeries(accounts, async account => {
+    const notifications = await Notification.findAll({ where: { account_id: account.id, sent_at: null } });
+    const tokens = await Device.findAll({ where: { account_id: account.id } }).map(device => device.token);
 
-  do {
-    const query = {
-      limit,
-      where: {
-        sent_at: null,
-      },
-      subQuery: false,
-      order: ['id'],
-      include: [{
-        model: Account,
-        as: "account",
-        include: [{
-          model: Device,
-          as: 'devices'
-        }]
-      }],
-    };
-
-    try {
-      const notifications = await Notification.findAll(query);
-      console.log('notifications.length', notifications.length, limit);
-      if (!notifications.length) break;
-
-      const options = createOptions(notifications);
-      await sendMassages(options);
-    } catch (error) {
-      logger.error('sendNotifications|ERROR', error)
+    if (!notifications.length) {
+      return
     }
+    console.log(tokens);
+    const promises = notifications.map(notification => {
+      const { id, message } = notification;
+      const options = {
+        id,
+        tokens,
+        message,
+      };
+      return sendMessage(options)
+        .then(res => {
+          const change = { sent_at: Date() };
+          const query = { where: { id } };
+          return Notification.update(change, query);
+        });
+    });
 
-  } while (true);
-};
-
-const createOptions = (notifications) => {
-  const currentMessages = notifications.map(item => {
-    const { devices } = item.account;
-    const { message, id } = item;
-    const tokens = devices.map(device => device.token);
-    return {
-      id,
-      tokens,
-      message,
-    };
-  });
-
-  return currentMessages;
-};
-
-const sendMassages = (options) => {
-
-  const promises = options.map(item => {
-    const { message, tokens, id } = item;
-    return sendMessage(message, tokens)
-      .then(() => {
-        const change = { sent_at: Date() };
-        const query = { where: { id } };
-        return Notification.update(change, query);
+    return Promise.all(promises)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(res => {
+        console.log(res);
       })
   });
-  return Promise.all(promises)
-    .then(res => {
-      console.log(res);
-    })
-    .catch(res => {
-      console.log(res);
-    })
 };
 
-const sendMessage = (text, ids) => {
-  console.log('sendMessage', text, ids);
-  const message = {
+const sendMessage = (options) => {
+  const { message, tokens } = options;
+
+  const opt = {
     app_id: "27ccd574-12cd-4bc2-9f7e-988b6b92ad49",
-    contents: { "en": text },
-    include_player_ids: ids,
+    contents: { "en": message },
+    include_player_ids: tokens,
   };
 
-  return sendNotification(message)
-    .then(result => {
-      if (result.status === 200) {
-        const change = {
-          sent_at: Date(),
-        };
-        const query = {
-          where: {
-            id: ids,
-          }
-        };
-        return Notification.update(change, query);
-      }
-    });
+  return sendNotification(opt)
 };
 
 export {
