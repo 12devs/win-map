@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from './../../actions';
 import services from "./../../services";
+import { Menu, Icon } from 'antd';
+import '../../assets/sass/components/_menu.scss';
 
 class SavePointSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: 'Marker Name',
       markerType: '',
       error: '',
     };
@@ -17,13 +19,8 @@ class SavePointSettings extends React.Component {
   addMarker(markerType) {
     const { latlng } = this.props.savePointSettings;
     const { name } = this.state;
-
-    if (!name){
-      this.setState({error: 'Name cannot be empty'});
-      return
-    }
-
     let key;
+
     if (markerType === 'Danger') {
       key = 'danger';
     } else {
@@ -62,13 +59,14 @@ class SavePointSettings extends React.Component {
         stations.push(...Object.keys((res.stationsData || {})));
         this.props.updateReduxState({ places, dangers, stationsData, stations });
         this.props.updateReduxState({ savePointSettings: { show: false } });
-        this.setState({ name: '', markerType: '', error: '' });
+        this.setState({ markerType: '', error: '' });
+        this.props.updateReduxState({ info: { point: res[key], type: key }, isLoader: false });
       });
   };
 
   render() {
-    const { show } = this.props.savePointSettings;
-
+    const { show, containerPoint } = this.props.savePointSettings;
+    const { isLoader } = this.props;
     if (!show) {
       return null;
     }
@@ -76,50 +74,34 @@ class SavePointSettings extends React.Component {
     return (
       <div>
         <div className='point__container' onClick={() => {
-          this.setState({ name: '', markerType: '' });
+          this.setState({ markerType: '' });
           this.props.updateReduxState({ savePointSettings: { show: false } });
         }}>
         </div>
-        <div className="point">
-          <div className="point__title">Add point</div>
-          <div>
-            <label>
-              <input className="point__input-text" placeholder="Name" type="text" value={this.state.name}
-                     onChange={(e) => {
-                       this.setState({ name: e.target.value });
-                     }}/>
-            </label>
-          </div>
-          {this.state.error ? <div><span className="point__create-map-title" style={{color: 'red'}}>{this.state.error}</span></div> : null}
-          <div className="point__create-map">
-            <label className="point__create-map-label point__create-map-label--green">
-              <input
-                className="point__create-map-radio"
-                type="radio"
-                value={'My Place'}
-                onClick={() => {
-                  this.addMarker('My Place');
-                }}/>
-              <span className="point__create-map-title">My place</span>
-            </label>
+        <div
+          style={{ top: `${containerPoint.y + 48}px`, left: `${containerPoint.x + 76}px` }}
+          className="point">
+          <Menu
+            onClick={this.handleClick}
+            mode="vertical">
+            <Menu.Item
+              onClick={() => {
+                this.props.updateReduxState({ isLoader: true });
+                this.addMarker('My Place');
+                this.props.updateReduxState({ savePointSettings: { show: false } });
+              }}
+              key="1">
+              Add Place Marker
+            </Menu.Item>
 
-
-            <label className="point__create-map-label point__create-map-label--red">
-              <input
-                className="point__create-map-radio"
-                type="radio"
-                value={'Danger'}
-                onClick={() => {
-                  this.addMarker('Danger');
-                }}/>
-
-              <span className="point__create-map-title">Danger</span>
-            </label>
-          </div>
-          <button className="point__create-map-close" onClick={() => {
-            this.setState({ name: '', markerType: '' });
-            this.props.updateReduxState({ savePointSettings: { show: false } });
-          }}/>
+            <Menu.Item onClick={() => {
+              this.props.updateReduxState({ isLoader: true });
+              this.addMarker('Danger');
+              this.props.updateReduxState({ savePointSettings: { show: false } });
+            }} key="2">
+              Add Danger Marker
+            </Menu.Item>
+          </Menu>
         </div>
       </div>
 
@@ -135,6 +117,8 @@ function mapStateToProps(state) {
     markerType: state.get('markerType'),
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
+    info: state.get('info'),
+    isLoader: state.get('isLoader'),
   };
 }
 

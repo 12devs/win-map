@@ -17,6 +17,7 @@ const store = createStore(reducer);
 store.dispatch({
   type: "SET_STATE",
   state: {
+    isLoader: false,
     stations: [],
     places: [],
     dangers: [],
