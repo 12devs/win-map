@@ -93,26 +93,31 @@ const getPolygon = (point, dist, direction, a) => {
     console.log('Uncoreect direction');
     return []
   }
-  const center = computeDestinationPoint(point, dist, direction);
-  const point1 = computeDestinationPoint(point, 2.5, direction);
-  const angles = getArrMinMaxCount(-90 + direction, 90 + direction, 0);
+  // const center = computeDestinationPoint(point, dist, direction);
+  // const point1 = computeDestinationPoint(point, 2.5, direction);
+  // const angles = getArrMinMaxCount(-90 + direction, 90 + direction, 0);
+  const angles = getArrMinMaxCount(-a + direction, a + direction, 5);
   const correctAngles = angles.map(elem => getCorrectDirection(elem));
   const result = [];
 
   correctAngles.forEach(bearing => {
-    const p = computeDestinationPoint(center, dist * Math.sin(a * Math.PI / 180), bearing);
+    // const p = computeDestinationPoint(center, dist * Math.sin(a * Math.PI / 180), bearing);
+    const p = computeDestinationPoint(point, dist , bearing);
     result.push({
       lat: p.lat,
       lng: p.lng,
     })
   });
-  getArrMinMaxCount(-90 + direction + 180, 90 + direction + 180, 3).map(elem=>getCorrectDirection(elem)).forEach(bearing => {
-    const p = computeDestinationPoint(point1, 2.5, bearing);
-    result.push({
-      lat: p.lat,
-      lng: p.lng,
-    })
-  });
+
+  // getArrMinMaxCount(-90 + direction + 180, 90 + direction + 180, 3).map(elem=>getCorrectDirection(elem)).forEach(bearing => {
+  //   const p = computeDestinationPoint(point1, 2.5, bearing);
+  //   result.push({
+  //     lat: p.lat,
+  //     lng: p.lng,
+  //   })
+  // });
+
+  result.push(point);
 
   return result
 };

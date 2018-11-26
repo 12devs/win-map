@@ -10,17 +10,14 @@ const { BaseLayer } = LayersControl;
 class MyMap extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      viewport: null,
-    }
   }
 
   render() {
-
+    const { isLoader } = this.props;
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
 
     if (this.props.mapBounds) {
-      bounds = this.props.mapBounds
+      bounds = this.props.mapBounds;
     }
 
     return (
@@ -30,14 +27,30 @@ class MyMap extends React.Component {
             console.log(e);
             const { zoom } = e;
             this.props.updateReduxState({ zoom });
-            this.props.updateReduxState({viewport: e})
           }}
-          // viewport={this.props.viewport || null}
-          onClick={(e) => this.props.updateReduxState({ savePointSettings: { show: true, latlng: e.latlng } })}
+          onClick={(e) => {
+            this.props.updateReduxState({
+              savePointSettings: {
+                show: true,
+                latlng: e.latlng,
+                containerPoint: e.containerPoint
+              }
+            });
+          }}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}
         >
+          {!isLoader ? <div/> :
+            <div className='loader__container'>
+              <div className="lds-ring">
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+              </div>
+            </div>}
+
           <ReactLeafletSearch position="topleft"/>
 
           <LayersControl position="topright">
@@ -95,7 +108,7 @@ class MyMap extends React.Component {
 function mapStateToProps(state) {
   return {
     mapBounds: state.get('mapBounds'),
-    viewport: state.get('viewport'),
+    isLoader: state.get('isLoader'),
   };
 }
 
