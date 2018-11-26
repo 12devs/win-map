@@ -184,14 +184,12 @@ export default {
 
   async update(req, res) {
     try {
-      console.log('update');
-      const {danger, place} = req.body;
-      if (place){
-        await Place.update({name:place.name}, { where: { id: place.id } });
+      const { danger, place } = req.body;
+      if (place) {
+        await Place.update({ name: place.name }, { where: { id: place.id } });
       }
-      if (danger){
-        console.log(danger);
-        await Danger.update({name: danger.name}, { where: { id: danger.id } });
+      if (danger) {
+        await Danger.update({ name: danger.name, dangerRadius: danger.dangerRadius }, { where: { id: danger.id } });
       }
       res.status(200).json({ message: 'Successful updated' })
     } catch (err) {

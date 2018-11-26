@@ -28,6 +28,11 @@ const columns = {
     type: DataTypes.DECIMAL,
     allowNull: false,
   },
+  dangerRadius: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 5000,
+  },
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,

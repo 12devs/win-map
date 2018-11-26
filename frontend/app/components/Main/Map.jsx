@@ -10,6 +10,9 @@ const { BaseLayer } = LayersControl;
 class MyMap extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      viewport: null,
+    }
   }
 
   render() {
@@ -26,8 +29,10 @@ class MyMap extends React.Component {
           onViewportChanged={(e) => {
             console.log(e);
             const { zoom } = e;
-            this.props.updateReduxState({ zoom })
+            this.props.updateReduxState({ zoom });
+            this.props.updateReduxState({viewport: e})
           }}
+          // viewport={this.props.viewport || null}
           onClick={(e) => this.props.updateReduxState({ savePointSettings: { show: true, latlng: e.latlng } })}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
@@ -90,6 +95,7 @@ class MyMap extends React.Component {
 function mapStateToProps(state) {
   return {
     mapBounds: state.get('mapBounds'),
+    viewport: state.get('viewport'),
   };
 }
 

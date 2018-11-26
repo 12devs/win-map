@@ -16,7 +16,9 @@ class PointSettings extends React.Component {
     super(props);
     this.state = {
       name: '',
-      edit: false,
+      dangerRadius: '',
+      editName: false,
+      editDangerRadius: false,
       component: 'WindRoseChart',
     };
     this.delMarker = this.delMarker.bind(this);
@@ -44,12 +46,17 @@ class PointSettings extends React.Component {
 
   updatePoint() {
     const { point, type } = this.props.info;
-    const { name } = this.state;
-    this.setState({ name: '', edit: false });
-    if (!name) {
+    const { name, dangerRadius } = this.state;
+    this.setState({ name: '', editName: false, editDangerRadius: false, dangerRadius: '' });
+    if (!name && !dangerRadius) {
       return
     }
-    point.name = name;
+    if (name) {
+      point.name = name;
+    }
+    if (dangerRadius) {
+      point.dangerRadius = parseInt(dangerRadius, 10);
+    }
     return services.updatePoint({
       [type]: point,
     })
@@ -57,7 +64,12 @@ class PointSettings extends React.Component {
         if (type === 'place') {
           let places = this.props.places.map(elem => {
             if (elem.id === point.id) {
-              elem.name = name;
+              if (name) {
+                elem.name = name;
+              }
+              if (dangerRadius) {
+                elem.dangerRadius = parseInt(dangerRadius, 10);
+              }
             }
             return elem
           });
@@ -66,7 +78,12 @@ class PointSettings extends React.Component {
         if (type === 'danger') {
           let dangers = this.props.dangers.map(elem => {
             if (elem.id === point.id) {
-              elem.name = name;
+              if (name) {
+                elem.name = name;
+              }
+              if (dangerRadius) {
+                elem.dangerRadius = parseInt(dangerRadius, 10);
+              }
             }
             return elem
           });
@@ -114,8 +131,8 @@ class PointSettings extends React.Component {
         }}>
         </div>
         <div className="point__data" style={{ backgroundColor: color }}>
-          {!this.state.edit ?
-            <div className="point__data-name" onClick={() => this.setState({ edit: true })}>{point.name}</div> :
+          {!this.state.editName ?
+            <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
             <div>
               <input className="point__input-text" placeholder="new Name" type="text" value={this.state.name}
                      onChange={(e) => {
@@ -128,7 +145,21 @@ class PointSettings extends React.Component {
               />
             </div>
           }
-
+          {!this.state.editDangerRadius ?
+            <div className="point__data-name"
+                 onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
+            <div>
+              <input className="point__input-text" placeholder="new Name" type="text" value={this.state.dangerRadius}
+                     onChange={(e) => {
+                       this.setState({ dangerRadius: e.target.value });
+                     }}
+                     onBlur={() => {
+                       this.updatePoint();
+                     }}
+                     autoFocus={true}
+              />
+            </div>
+          }
           <div className="point__data-type">{type}</div>
           <div onClick={() => this.updatePoint()}>
             {type === 'place' ?

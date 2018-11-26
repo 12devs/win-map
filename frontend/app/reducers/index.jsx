@@ -21,6 +21,11 @@ const getStats = (places, dangers, stationsData) => {
   places.forEach(place => {
     stats[place.id] = dangers.map(danger => {
       const direction = getCompassDirection(danger, place);
+      const distance = geolib.getDistanceSimple(danger, place);
+      let currently = false;
+      if (distance < danger.dangerRadius && direction === getGeolibDirection(stationsData[danger.station_id].current.dir)) {
+        currently = true;
+      }
       return {
         name: place.name,
         type: place.type,
@@ -28,7 +33,7 @@ const getStats = (places, dangers, stationsData) => {
         dangerId: danger.id,
         direction: direction,
         period: `${Math.round(stationsData[place.station_id].history[direction] * stationsData[place.station_id].period / 100)} / ${stationsData[place.station_id].period}`,
-        currently: direction === getGeolibDirection(stationsData[danger.station_id].current.dir)
+        currently,
       }
     })
   });
