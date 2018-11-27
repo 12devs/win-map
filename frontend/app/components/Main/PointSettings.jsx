@@ -138,6 +138,11 @@ class PointSettings extends React.Component {
                      onChange={(e) => {
                        this.setState({ name: e.target.value });
                      }}
+                     onKeyDown={e=>{
+                       if (e.keyCode === 13){
+                         this.updatePoint();
+                       }
+                     }}
                      onBlur={() => {
                        this.updatePoint();
                      }}
@@ -152,6 +157,11 @@ class PointSettings extends React.Component {
               <input className="point__input-text" placeholder="new Name" type="text" value={this.state.dangerRadius}
                      onChange={(e) => {
                        this.setState({ dangerRadius: e.target.value });
+                     }}
+                     onKeyDown={e=>{
+                       if (e.keyCode === 13){
+                         this.updatePoint();
+                       }
                      }}
                      onBlur={() => {
                        this.updatePoint();
