@@ -7,4 +7,4 @@ npm --production=false i
 npm run build
 
 ./build.sh
-./run.sh
+run.sh.example
