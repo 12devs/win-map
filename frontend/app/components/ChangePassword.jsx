@@ -25,6 +25,7 @@ class ChangePassword extends Component {
         .then((res) => {
           const { error, message, email } = res;
           if (message === 'code') {
+            this.setState({ error: '' });
             this.setState({ isLoader: false });
             return this.setState({ email, showCode: true });
           }
@@ -32,7 +33,6 @@ class ChangePassword extends Component {
             this.setState({ isLoader: false });
             error ? this.setState({ error }) : this.setState({ error: message });
           } else {
-            this.setState({ isLoader: false });
             return location.assign('/login');
           }
         })
@@ -41,6 +41,7 @@ class ChangePassword extends Component {
         });
     }
     else {
+      this.setState({ isLoader: false });
       this.setState({ error: 'Passwords do not match' });
     }
   };
@@ -103,7 +104,7 @@ class ChangePassword extends Component {
               {error ? <div className="login__label" style={{ color: 'red' }}> {error}</div> : null}
               <div>
                 <button className="login__btn-submit" onClick={() => {
-                  this.setState({ isLoader: true });
+                  // this.setState({ isLoader: true });
                   this.changePassword();
                 }}>Change password
                 </button>

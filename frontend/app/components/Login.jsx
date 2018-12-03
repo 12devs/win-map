@@ -24,6 +24,7 @@ class Login extends Component {
         const { message, email, error, token } = res;
         this.setState({ code: '' });
         if (message === 'code') {
+          this.setState({ error: '' });
           this.setState({ isLoader: false });
           return this.setState({ showCode: true, email });
         }
