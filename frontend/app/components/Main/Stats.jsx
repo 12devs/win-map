@@ -14,7 +14,7 @@ class WindRoseChart extends React.Component {
       return null
     }
     return (
-      <div style={{maxHeight: '40rem', overflow: 'auto'}}>
+      <div style={{minHeight: '40rem', overflow: 'auto'}}>
         <div className={'notification__settings-item notification__settings-item--name'}
              style={{ display: 'flex', align: "center" }}>
           <div style={{ display: 'flex', margin: 'auto' }}><b>Statistics info</b></div>
