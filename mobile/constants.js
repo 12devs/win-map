@@ -3,7 +3,7 @@
 export default {
 
     api: {
-        URL_PREFIX: 'http:192.168.1.87:8083'
+        URL_PREFIX: 'https://windmap.12devs.com/'
     }
 }
 

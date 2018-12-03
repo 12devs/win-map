@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
+import Loader from '../Loader';
 
 const { BaseLayer } = LayersControl;
 
@@ -41,15 +42,7 @@ class MyMap extends React.Component {
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}
         >
-          {!isLoader ? <div/> :
-            <div className='loader__container'>
-              <div className="lds-ring">
-                <div/>
-                <div/>
-                <div/>
-                <div/>
-              </div>
-            </div>}
+          {!isLoader ? <div/> : <Loader/>}
 
           <ReactLeafletSearch position="topleft"/>
 

@@ -139,7 +139,10 @@ class Main extends React.Component {
             <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           </Popover>
           <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
+            <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
+              this.props.updateReduxState({ isLoader:true });
+              this.logout();
+            }}/>
           </Popover>
           <input className="map__navigation-range" type="range" id="start" name="size"
                  min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
@@ -158,6 +161,7 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     viewType: state.get('viewType'),
+    isLoader: state.get('isLoader'),
   };
 }
 
