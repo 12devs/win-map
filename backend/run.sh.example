@@ -3,16 +3,16 @@
 docker run \
   --name wind-map-backend \
   --restart=always \
-  -p 8080:8080 \
+  -p 8090:8090 \
   -e NODE_ENV=production \
   -e APP_HOST=0.0.0.0 \
-  -e APP_PORT=8080 \
+  -e APP_PORT=8090 \
   -e DB_DIALECT=postgres \
   -e DB_HOST="" \
-  -e DB_USER= \
+  -e DB_USER="" \
   -e DB_PASS="" \
   -e DB_NAME="" \
-   e AUTH_SECRET="" \
+  -e AUTH_SECRET="" \
   -e API_KEY_OPENWEATHERMAP="" \
   -e API_KEY_GOOGLE="" \
   -e API_KEY_DARKSKY="" \
