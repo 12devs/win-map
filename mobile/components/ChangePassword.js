@@ -24,10 +24,11 @@ class ChangePassword extends Component {
           console.log(res);
           const { error, message, email } = res;
           if (message === 'code') {
+            this.setState({ error: '' });
             return this.setState({ email, showCode: true });
           }
           if (message !== 'OK') {
-            this.setState({ error });
+            error ? this.setState({ error }) : this.setState({ error: message });
           } else {
             return this.props.navigation.navigate('Login');
           }
@@ -67,7 +68,7 @@ class ChangePassword extends Component {
               containerViewStyle={styles.buttonContainer}
               backgroundColor={'#3D6DCC'}
               // large
-              borderRadius={50}
+              // borderRadius={50}
               title='SEND'
               color={'#fff'}
               onPress={this.changePassword}/>
@@ -126,22 +127,22 @@ class ChangePassword extends Component {
               </View>
             </View>
             {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Login');
-              }}
-            >
-              <Text style={styles.textContainer}>You can login here.</Text>
-            </TouchableOpacity>
             <Button
               containerViewStyle={styles.buttonContainer}
               backgroundColor={'#3D6DCC'}
               // large
-              borderRadius={50}
+              // borderRadius={50}
               title='Change'
               color={'#fff'}
               onPress={this.changePassword}/>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Login');
+            }}
+          >
+            <Text style={styles.textContainer}>You can login here.</Text>
+          </TouchableOpacity>
         </View>
       );
     }
@@ -152,17 +153,19 @@ export default ChangePassword;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: 10,
+    // marginTop: 10,
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 2,
+    backgroundColor: '#fff',
+
   },
   container: {
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: '#fff',
-    margin: 10,
-    elevation: 5
+    // margin: 10,
+    // elevation: 5
   },
   iconContainer: {
     borderBottomColor: '#3D6DCC',
@@ -184,16 +187,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    textAlign: 'right',
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: '#3D6DCC',
+    padding: 10,
+  },
+  secondaryTextContainer: {
+    textAlign: 'center',
     textAlignVertical: "center",
     color: '#3D6DCC',
     padding: 10,
   },
   buttonContainer: {
-    marginTop: 15,
+    marginTop: 35,
     marginBottom: 10,
-    marginLeft: width * 0.15,
-    marginRight: width * 0.15,
+    // width: width / 1.3,
+    //
+    marginLeft: width * 0.06,
+    marginRight: width * 0.06,
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }
