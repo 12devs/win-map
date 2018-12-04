@@ -24,11 +24,12 @@ class Login extends Component {
         console.log(res);
         const { message, email, error, token } = res;
         this.setState({ code: '' });
+        this.setState({ error: '' });
         if (message === 'code') {
           return this.setState({ showCode: true, email });
         }
         if (message !== 'OK') {
-          this.setState({ error });
+          error ? this.setState({ error }) : this.setState({ error: message });
         } else {
           return AsyncStorage.setItem('windToken', token)
             .then(() => {
@@ -66,7 +67,7 @@ class Login extends Component {
             <Button
               containerViewStyle={styles.buttonContainer}
               backgroundColor={'#3D6DCC'}
-              borderRadius={50}
+              // borderRadius={50}
               title='SEND'
               color={'#fff'}
               onPress={this.login}/>
@@ -110,39 +111,39 @@ class Login extends Component {
             </View>
             {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
 
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <Text style={styles.textContainer}>Don't have an account?</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('Register');
-                }}>
-                <Text style={styles.secondaryTextContainer}>You can register here.</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <Text style={styles.textContainer}>Forgot your password?</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('ChangePassword');
-                }}>
-                <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
-              </TouchableOpacity>
-            </View>
-
             <Button
               containerViewStyle={styles.buttonContainer}
               backgroundColor={'#3D6DCC'}
-              borderRadius={50}
+              // borderRadius={50}
               title='LOGIN'
               color={'#fff'}
               onPress={this.login}/>
+          </View>
+
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+            <Text style={styles.textContainer}>Don't have an account?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Register');
+              }}>
+              <Text style={styles.secondaryTextContainer}>You can register here.</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+            <Text style={styles.textContainer}>Forgot your password?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('ChangePassword');
+              }}>
+              <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -158,17 +159,19 @@ export default connect(mapStateToProps, actions)(Login);
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: 10,
+    // marginTop: 10,
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 2,
+    backgroundColor: '#fff',
+
   },
   container: {
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: '#fff',
-    margin: 10,
-    elevation: 5
+    // margin: 10,
+    // elevation: 5
   },
   iconContainer: {
     borderBottomColor: '#3D6DCC',
@@ -202,10 +205,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonContainer: {
-    marginTop: 15,
+    marginTop: 35,
     marginBottom: 10,
-    marginLeft: width * 0.15,
-    marginRight: width * 0.15,
+    // width: width / 1.3,
+    //
+    marginLeft: width * 0.06,
+    marginRight: width * 0.06,
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }

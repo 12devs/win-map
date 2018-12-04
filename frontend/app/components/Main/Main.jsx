@@ -2,13 +2,15 @@ import React from 'react';
 import services from "./../../services";
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import Map from './Map'
+import Map from './Map';
 import Notifications from './Notifications';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
 import { calcBoundsAll } from "./../../utils";
 import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Popover } from 'antd';
+import 'antd/lib/popover/style/index.css';
 
 class Main extends React.Component {
   constructor() {
@@ -26,23 +28,23 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    return this.getInfo()
+    return this.getInfo();
   }
 
   openNotificationSettings() {
-    this.setState({ isNotificationSettingsOpen: true })
+    this.setState({ isNotificationSettingsOpen: true });
   }
 
   changeViewType() {
     if (this.props.viewType === 'Current') {
-      this.props.updateReduxState({ viewType: 'Historical' })
+      this.props.updateReduxState({ viewType: 'Historical' });
     } else {
-      this.props.updateReduxState({ viewType: 'Current' })
+      this.props.updateReduxState({ viewType: 'Current' });
     }
   }
 
   closeNotificationSettings() {
-    this.setState({ isNotificationSettingsOpen: false })
+    this.setState({ isNotificationSettingsOpen: false });
   }
 
   getInfo() {
@@ -52,7 +54,7 @@ class Main extends React.Component {
         res.mapBounds = calcBoundsAll([...res.places, ...res.dangers]);
         this.props.updateReduxState(res);
         this.props.updateStatistic();
-      })
+      });
   }
 
   showAll() {
@@ -70,63 +72,78 @@ class Main extends React.Component {
   logout = () => {
     confirmAlert({
       customUI: par => {
-        const {onClose} = par;
+        const { onClose } = par;
         return (
           <div className={'confirm__alert'}>
-            <div style={{margin: '50px'}}>
+            <div style={{ margin: '50px' }}>
               <h1>Are you sure?</h1>
               <p>You want to logout?</p>
               <button className={"confirm__button"} onClick={() => {
                 localStorage.setItem('windToken', '');
-                location.assign('/login')
-                onClose()
-              }}>Yes</button>
+                location.assign('/login');
+                onClose();
+              }}>Yes
+              </button>
               <button className={"confirm__button"} onClick={onClose}>No</button>
             </div>
           </div>
-        )
+        );
       },
-    })
+    });
   };
 
   deleteAll = () => {
     confirmAlert({
       customUI: par => {
-        const {onClose} = par;
+        const { onClose } = par;
         return (
           <div className={'confirm__alert'}>
-            <div style={{margin: '50px'}}>
+            <div style={{ margin: '50px' }}>
               <h1>Are you sure?</h1>
               <p>You want to delete all your points?</p>
               <button className={"confirm__button"} onClick={() => {
                 return services.deleteAllPoints()
                   .then(() => {
-                    this.props.updateReduxState({places:[], dangers:[]});
+                    this.props.updateReduxState({ places: [], dangers: [] });
                     this.props.updateStatistic();
-                    onClose()
+                    onClose();
                   })
-                  .catch(()=>{
-                    onClose()
-                  })
-              }}>Yes</button>
+                  .catch(() => {
+                    onClose();
+                  });
+              }}>Yes
+              </button>
               <button className={"confirm__button"} onClick={onClose}>No</button>
             </div>
           </div>
-        )
+        );
       },
-    })
+    });
   };
 
   render() {
     return (
       <div>
         <div className="map__navigation">
-          <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
-          <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
-          <button className="map__navigation-btn map__navigation-btn--notifications"
-                  onClick={this.openNotificationSettings}/>
-          <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
-          <button className="map__navigation-btn map__navigation-btn--logout" onClick={this.logout}/>
+          <Popover content={'View all markers'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
+          </Popover>
+          <Popover content={'Remove all markers'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
+          </Popover>
+          <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn--notifications"
+                    onClick={this.openNotificationSettings}/>
+          </Popover>
+          <Popover content={'Current/History'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
+          </Popover>
+          <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
+              this.props.updateReduxState({ isLoader:true });
+              this.logout();
+            }}/>
+          </Popover>
           <input className="map__navigation-range" type="range" id="start" name="size"
                  min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
         </div>
@@ -135,7 +152,7 @@ class Main extends React.Component {
         <SavePointSettings/>
         <Map/>
       </div>
-    )
+    );
   }
 }
 
@@ -144,6 +161,7 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     viewType: state.get('viewType'),
+    isLoader: state.get('isLoader'),
   };
 }
 

@@ -22,7 +22,7 @@ class Register extends Component {
         .then(res => {
           const { message, error } = res;
           if (message !== 'OK') {
-            this.setState({ error });
+            error ? this.setState({ error }) : this.setState({ error: message });
           }
           else
             return this.props.navigation.navigate('Login');
@@ -103,26 +103,27 @@ class Register extends Component {
             </View>
           </View>
           {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-            <Text style={styles.textContainer}>Do have an account?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Login');
-              }}>
-              <Text style={styles.secondaryTextContainer}>You can login here.</Text>
-            </TouchableOpacity>
-          </View>
           <Button
             containerViewStyle={styles.buttonContainer}
             backgroundColor={'#3D6DCC'}
             // large
-            borderRadius={50}
+            // borderRadius={50}
             title='Register'
             color={'#fff'}
             onPress={this.register}/>
+        </View>
+
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+          <Text style={styles.textContainer}>Do have an account?</Text>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.secondaryTextContainer}>You can login here.</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -133,17 +134,19 @@ export default Register;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: 10,
+    // marginTop: 10,
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 2,
+    backgroundColor: '#fff',
+
   },
   container: {
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: '#fff',
-    margin: 10,
-    elevation: 5
+    // margin: 10,
+    // elevation: 5
   },
   iconContainer: {
     borderBottomColor: '#3D6DCC',
@@ -177,10 +180,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonContainer: {
-    marginTop: 15,
+    marginTop: 35,
     marginBottom: 10,
-    marginLeft: width * 0.15,
-    marginRight: width * 0.15,
+    // width: width / 1.3,
+    //
+    marginLeft: width * 0.06,
+    marginRight: width * 0.06,
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }

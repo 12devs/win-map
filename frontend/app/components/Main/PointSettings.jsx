@@ -5,6 +5,7 @@ import services from "./../../services";
 import WindRoseChart from './WindRoseChart';
 import Stats from './Stats';
 import geolib from "geolib";
+import { Tabs } from 'antd';
 
 const COMPONENTS = {
   WindRoseChart,
@@ -49,7 +50,7 @@ class PointSettings extends React.Component {
     const { name, dangerRadius } = this.state;
     this.setState({ name: '', editName: false, editDangerRadius: false, dangerRadius: '' });
     if (!name && !dangerRadius) {
-      return
+      return;
     }
     if (name) {
       point.name = name;
@@ -71,7 +72,7 @@ class PointSettings extends React.Component {
                 elem.dangerRadius = parseInt(dangerRadius, 10);
               }
             }
-            return elem
+            return elem;
           });
           this.props.updateReduxState({ places });
         }
@@ -85,7 +86,7 @@ class PointSettings extends React.Component {
                 elem.dangerRadius = parseInt(dangerRadius, 10);
               }
             }
-            return elem
+            return elem;
           });
           this.props.updateReduxState({ dangers });
         }
@@ -108,15 +109,15 @@ class PointSettings extends React.Component {
     const { point, type } = this.props.info;
     let { component } = this.state;
     if (type === 'danger') {
-      component = 'WindRoseChart'
+      component = 'WindRoseChart';
     }
     const Component = COMPONENTS[component];
 
     let color;
     if (type === 'place') {
-      color = '#0A5BB9'
+      color = '#0A5BB9';
     } else {
-      color = '#DE3231'
+      color = '#DE3231';
     }
 
     if (!(point && type)) {
@@ -138,8 +139,8 @@ class PointSettings extends React.Component {
                      onChange={(e) => {
                        this.setState({ name: e.target.value });
                      }}
-                     onKeyDown={e=>{
-                       if (e.keyCode === 13){
+                     onKeyDown={e => {
+                       if (e.keyCode === 13) {
                          this.updatePoint();
                        }
                      }}
@@ -158,8 +159,8 @@ class PointSettings extends React.Component {
                      onChange={(e) => {
                        this.setState({ dangerRadius: e.target.value });
                      }}
-                     onKeyDown={e=>{
-                       if (e.keyCode === 13){
+                     onKeyDown={e => {
+                       if (e.keyCode === 13) {
                          this.updatePoint();
                        }
                      }}
@@ -173,18 +174,12 @@ class PointSettings extends React.Component {
           <div className="point__data-type">{type}</div>
           <div onClick={() => this.updatePoint()}>
             {type === 'place' ?
-              <div className="point__create-map">
-                <button className="point__data-btn-meta point__data-btn-meta--marker"
-                        style={{ marginLeft: '1rem', marginRight: '1rem' }}
-                        onClick={() => this.setState({ component: 'WindRoseChart' })}>Wind Rose Chart
-                </button>
-                <button className="point__data-btn-meta point__data-btn-meta--marker"
-                        style={{ marginLeft: '1rem', marginRight: '1rem' }}
-                        onClick={() => this.setState({ component: 'Stats' })}>Statistics info
-                </button>
-              </div> : null
+              <Tabs defaultActiveKey="1">
+                <Tabs.TabPane tab="Wind Rose Chart" key="1"><WindRoseChart point={point}/></Tabs.TabPane>
+                <Tabs.TabPane tab="Statistics info" key="2"><Stats point={point}/></Tabs.TabPane>
+              </Tabs> :
+              <WindRoseChart point={point}/>
             }
-            <Component point={point}/>
           </div>
           <div className="point__data-text">Lat: {point.lat}</div>
           <div className="point__data-text">Lng: {point.lng}</div>
@@ -200,7 +195,7 @@ class PointSettings extends React.Component {
               .then(() => {
                 this.props.updateReduxState({ info: { point: null, type: null } });
               });
-            return false
+            return false;
           }}>Remove point
           </button>
         </div>

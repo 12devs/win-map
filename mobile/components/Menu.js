@@ -187,7 +187,7 @@ const pointSettings_StackNavigator = createStackNavigator({
   {
     mode: 'modal',
     headerLayoutPreset: 'center',
-    cardStyle: { backgroundColor: '#fff' }
+    // cardStyle: { backgroundColor: '#fff' }
 
   });
 const ChangePassword_StackNavigator = createStackNavigator({
