@@ -2,7 +2,7 @@ import React from 'react';
 import { Polygon } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import { getPolygon, getArrMinMaxCount, getCorrectDirection } from './../../utils';
+import { getPolygon, getArrMinMaxCount } from './../../utils';
 
 class SectorPolygon extends React.Component {
   constructor() {
