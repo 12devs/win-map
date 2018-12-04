@@ -5,6 +5,7 @@
   },
   "static": {
     "public": "public",
+    "swPublic": "sw",
     "resources": "public/resources",
     "views": "/views"
   },
