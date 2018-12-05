@@ -59,7 +59,9 @@ class AddPoint extends React.Component {
                            placeholder="Marker Name"
                            placeholderTextColor="#3D6DCC"
                            autoCapitalize="none"
-                           onChangeText={(login) => this.setState({ login })}/>
+                           onChangeText={(e) => {
+                             this.props.updateReduxState({ addPoint: { name: e, error: '' } });
+                           }}/>
                 <View style={styles.iconContainer}>
                   <Icon name='location-on' color='#3D6DCC'/>
                 </View>
