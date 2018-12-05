@@ -12,7 +12,7 @@ class SectorPolygon extends React.Component {
   }
 
   render() {
-    const { point } = this.props;
+    const { point, simple } = this.props;
     const stationsData = this.props.stationsData;
     let dist;
     if (this.props.dist || this.props.dist === 0) {
@@ -22,9 +22,21 @@ class SectorPolygon extends React.Component {
     }
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null);
     if (direction) {
-      const angles = getArrMinMaxCount(0, 12.5, 100);
-      const dists = getArrMinMaxCount(0, dist, 100);
       try {
+        if (simple){
+          const positions = getPolygon(point, dist, direction, 11.25);
+          return (
+            <Polygon
+              // lineCap={'round'}
+              coordinates={positions}
+              strokeWidth={1}
+              strokeColor={'rgba(95, 87, 202, 0.7)'}
+              fillColor={'rgba(95, 87, 202, 0.5)'}
+            />
+          )
+        }
+        const angles = getArrMinMaxCount(0, 12.5, 30);
+        const dists = getArrMinMaxCount(0, dist, 30);
         return (
           <View>
             {angles.map((angle, i) => {
@@ -36,7 +48,7 @@ class SectorPolygon extends React.Component {
                   coordinates={positions}
                   strokeWidth={0}
                   strokeColor={'rgba(95, 87, 202, 0.7)'}
-                  fillColor={'rgba(95, 87, 202, 0.02)'}
+                  fillColor={'rgba(95, 87, 202, 0.06)'}
                 />
               )
             })}

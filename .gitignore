@@ -8,3 +8,4 @@ breath.iml
 .gradle
 build
 env.txt
+local.properties

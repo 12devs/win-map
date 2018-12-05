@@ -67,7 +67,7 @@ const getPolygon = (point, dist, direction, a) => {
     console.log('Uncoreect direction');
     return []
   }
-  const angles = getArrMinMaxCount(-a + direction, a + direction, 5);
+  const angles = getArrMinMaxCount(-a + direction, a + direction, 0);
   const correctAngles = angles.map(elem => getCorrectDirection(elem));
   const result = [];
 
