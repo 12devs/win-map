@@ -4,7 +4,6 @@ import { Polygon } from 'react-native-maps';
 import { connect } from 'react-redux';
 import actions from '../../actions/index';
 import { getPolygon, getArrMinMaxCount } from './../../utils';
-import { View } from "react-native";
 
 class SectorPolygon extends React.Component {
   constructor() {
@@ -23,37 +22,30 @@ class SectorPolygon extends React.Component {
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null);
     if (direction) {
       try {
-        if (simple){
+        if (simple) {
           const positions = getPolygon(point, dist, direction, 11.25);
-          return (
-            <Polygon
-              // lineCap={'round'}
-              coordinates={positions}
-              strokeWidth={1}
-              strokeColor={'rgba(95, 87, 202, 0.7)'}
-              fillColor={'rgba(95, 87, 202, 0.5)'}
-            />
-          )
+          return <Polygon
+            // lineCap={'round'}
+            key={`polygon ${point.type} ${point.id}`}
+            coordinates={positions}
+            strokeWidth={1}
+            strokeColor={'rgba(95, 87, 202, 0.7)'}
+            fillColor={'rgba(95, 87, 202, 0.5)'}
+          />;
         }
         const angles = getArrMinMaxCount(0, 12.5, 30);
         const dists = getArrMinMaxCount(0, dist, 30);
-        return (
-          <View>
-            {angles.map((angle, i) => {
-              const positions = getPolygon(point, dists[i], direction, angle);
-              return (
-                <Polygon
-                  // lineCap={'round'}
-                  key={i}
-                  coordinates={positions}
-                  strokeWidth={0}
-                  strokeColor={'rgba(95, 87, 202, 0.7)'}
-                  fillColor={'rgba(95, 87, 202, 0.06)'}
-                />
-              )
-            })}
-          </View>
-        )
+        return angles.map((angle, i) => {
+          const positions = getPolygon(point, dists[i], direction, angle);
+          return <Polygon
+            // lineCap={'round'}
+            key={`polygon ${point.type} ${point.id} ${i}`}
+            coordinates={positions}
+            strokeWidth={1}
+            strokeColor={'rgba(95, 87, 202, 0)'}
+            fillColor={'rgba(95, 87, 202, 0.06)'}
+          />
+        })
       } catch (err) {
         return null
       }

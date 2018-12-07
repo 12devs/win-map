@@ -12,6 +12,7 @@ COPY package.json /usr/src/app/
 COPY config /usr/src/app/config
 COPY dist /usr/src/app/dist
 COPY public /usr/src/app/public
+COPY sw /usr/src/app/sw
 
 RUN npm install --only=production
 

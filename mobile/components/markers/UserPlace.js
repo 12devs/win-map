@@ -48,7 +48,8 @@ class UserPlace extends React.Component {
           this.updatePosition(this.props.point.id, e);
           this.props.updateStatistic()
         }}
-        onPress={() => {
+        onPress={(e) => {
+          e.stopPropagation();
           this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
           this.props.navigation.navigate('PointSettings');
         }}

@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 import actions from '../../actions/index';
 import redIcon from '../../assets/point_red-mobile.png';
 import { Marker, ProviderPropType } from 'react-native-maps';
-import { View } from "react-native";
 import SectorPolygon from "./SectorPolygon";
 import WindRose from "./WindRose";
+
+const components = {
+  Current: SectorPolygon,
+  Historical: WindRose,
+};
 
 class Danger extends React.Component {
   constructor(props) {
@@ -41,29 +45,24 @@ class Danger extends React.Component {
 
   render() {
     const { viewType, point } = this.props;
-    return (
-      <View>
-        <Marker
-          coordinate={{
-            latitude: point.lat,
-            longitude: point.lng
-          }}
-          onDragEnd={(e) => this.updatePosition(point.id, e)}
-          onPress={() => {
-            this.props.updateReduxState({ info: { point, type: 'danger' } });
-            this.props.navigation.navigate('PointSettings')
-          }}
-          draggable
-          image={redIcon}/>
-        {(() => {
-          if (viewType === "Current") {
-            return <SectorPolygon point={point}/>
-          } else {
-            return <WindRose point={point}/>
-          }
-        })()}
-      </View>
-    )
+    const marker = <Marker
+      key={`marker ${point.type} ${point.id}`}
+      coordinate={{
+        latitude: point.lat,
+        longitude: point.lng
+      }}
+      onDragEnd={(e) => this.updatePosition(point.id, e)}
+      onPress={(e) => {
+        e.stopPropagation();
+        this.props.updateReduxState({ info: { point, type: 'danger' } });
+        this.props.navigation.navigate('PointSettings')
+      }}
+      draggable
+      image={redIcon}/>;
+
+    const Component = components[viewType];
+
+    return [].concat(marker, <Component point={point}/>)
   }
 }
 
