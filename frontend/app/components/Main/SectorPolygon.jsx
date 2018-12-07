@@ -26,8 +26,8 @@ class SectorPolygon extends React.Component {
     }
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null);
     if (direction) {
-      const angles = getArrMinMaxCount(0, 12.5, 100);
-      const dists = getArrMinMaxCount(0, dist, 100);
+      const angles = getArrMinMaxCount(0, 12.5, 10);
+      const dists = getArrMinMaxCount(0, dist, 10);
       try {
         return (
           <div>
@@ -40,7 +40,7 @@ class SectorPolygon extends React.Component {
                   weight={0}
                   // fill={false}
                   positions={positions}
-                  fillOpacity={0.02}
+                  fillOpacity={0.2}
                 />
               )
             })}

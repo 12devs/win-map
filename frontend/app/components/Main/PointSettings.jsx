@@ -21,6 +21,7 @@ class PointSettings extends React.Component {
       editName: false,
       editDangerRadius: false,
       component: 'WindRoseChart',
+      validDistance: true,
     };
     this.delMarker = this.delMarker.bind(this);
     this.goToMarker = this.goToMarker.bind(this);
@@ -54,6 +55,9 @@ class PointSettings extends React.Component {
     }
     if (name) {
       point.name = name;
+    }
+    if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
+      return;
     }
     if (dangerRadius) {
       point.dangerRadius = parseInt(dangerRadius, 10);
@@ -135,7 +139,7 @@ class PointSettings extends React.Component {
           {!this.state.editName ?
             <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
             <div>
-              <input className="point__input-text" placeholder="new Name" type="text" value={this.state.name}
+              <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
                      onChange={(e) => {
                        this.setState({ name: e.target.value });
                      }}
@@ -155,9 +159,12 @@ class PointSettings extends React.Component {
             <div className="point__data-name"
                  onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
             <div>
-              <input className="point__input-text" placeholder="new Name" type="text" value={this.state.dangerRadius}
+              <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
+                     placeholder="new Name" type="text" value={this.state.dangerRadius}
                      onChange={(e) => {
-                       this.setState({ dangerRadius: e.target.value });
+                       let valid;
+                       valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
+                       this.setState({ validDistance: valid, dangerRadius: e.target.value });
                      }}
                      onKeyDown={e => {
                        if (e.keyCode === 13) {
