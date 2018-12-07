@@ -163,6 +163,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
     compile project(':react-native-onesignal')
     implementation project(':react-native-maps')
     implementation fileTree(dir: "libs", include: ["*.jar"])

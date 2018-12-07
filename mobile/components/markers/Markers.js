@@ -8,13 +8,14 @@ import Danger from './Danger';
 class Markers extends React.Component {
 
   render() {
+    const {places, dangers, navigation, viewType} = this.props;
     return (
       <View>
-        {this.props.places.map((point, id) => {
-          return <UserPlace key={id} point={point} showInfo={this.showInfo} navigation={this.props.navigation}/>;
+        {places.map((point, id) => {
+          return <UserPlace key={id} point={point} showInfo={this.showInfo} navigation={navigation}/>;
         })}
-        {this.props.dangers.map((point, id) => {
-          return <Danger key={id} point={point} showInfo={this.showInfo} navigation={this.props.navigation}/>;
+        {dangers.map((point, id) => {
+          return <Danger key={new Date() + id} point={point} showInfo={this.showInfo} navigation={navigation}/>;
         })}
       </View>
     );
@@ -25,6 +26,7 @@ function mapStateToProps(state) {
   return {
     places: state.get('places'),
     dangers: state.get('dangers'),
+    viewType: state.get('viewType'),
   };
 }
 

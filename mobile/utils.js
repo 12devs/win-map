@@ -62,12 +62,11 @@ const computeDestinationPoint = (start, distance, bearing) => {
 };
 
 const getPolygon = (point, dist, direction, a) => {
-  direction = sectors[direction];
-  if (!direction && direction !== 0) {
-    console.log('Uncoreect direction');
+  const angle = sectors[direction];
+  if (!angle && angle !== 0) {
     return []
   }
-  const angles = getArrMinMaxCount(-a + direction, a + direction, 0);
+  const angles = getArrMinMaxCount(-a + angle, a + angle, 0);
   const correctAngles = angles.map(elem => getCorrectDirection(elem));
   const result = [];
 

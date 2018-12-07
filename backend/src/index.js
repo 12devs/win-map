@@ -10,7 +10,7 @@ import { getInstance } from "./db"
 const app = express();
 
 app.use('/public', express.static(config.static.public));
-app.use('/', express.static(config.static.swPublic));
+app.use(['/sw', '/'], express.static(config.static.swPublic));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + config.static.views);
 

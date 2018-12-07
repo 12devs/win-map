@@ -49,7 +49,8 @@ class Danger extends React.Component {
             longitude: point.lng
           }}
           onDragEnd={(e) => this.updatePosition(point.id, e)}
-          onPress={() => {
+          onPress={(e) => {
+            e.stopPropagation();
             this.props.updateReduxState({ info: { point, type: 'danger' } });
             this.props.navigation.navigate('PointSettings')
           }}

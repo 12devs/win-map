@@ -37,7 +37,7 @@ sendNotification({
   contents: { "en": 'Test' },
   // included_segments: ['All'],
   // include_player_ids: ['d406baf5-6119-4db7-be15-8d5c982b3bfe']
-  include_player_ids: ['a52400c6-4de7-47be-bef8-b8220f48d1a6']
+  include_player_ids: ['a564bd0f-ba93-4573-9038-d7a4ad2448fa']
 })
   .then(res=>{
     console.log('res !!!!',res);
