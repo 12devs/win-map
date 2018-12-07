@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../../actions/index';
 import SectorPolygon from './SectorPolygon';
-import { View } from 'react-native';
 import _ from 'lodash';
 
 class WindRose extends React.Component {
@@ -14,17 +13,16 @@ class WindRose extends React.Component {
     const { point, scaleWind, stationsData } = this.props;
     const dist = scaleWind;
     const history = _.get(stationsData, [point.station_id, 'history'], {});
-    const arr = Object.keys(history);
+    const directions = Object.keys(history);
     const max = Math.max(..._.values(history));
     const k = dist / max;
-    return (
-      <View>
-        {arr.map((direction, i) => {
-          return (<SectorPolygon key={i} simple={true} point={point} dist={history[direction] * k}
-                                 direction={direction}/>)
-        })}
-      </View>
-    )
+    return directions.map((direction, i) => {
+      return (<SectorPolygon key={i}
+                             simple={true}
+                             point={point}
+                             dist={history[direction] * k}
+                             direction={direction}/>)
+    })
   }
 }
 
