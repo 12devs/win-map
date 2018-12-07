@@ -62,7 +62,7 @@ class Danger extends React.Component {
 
     const Component = components[viewType];
 
-    return [].concat(marker, <Component point={point}/>)
+    return [].concat(marker, <Component key={'sectorPolygon'} point={point}/>)
   }
 }
 
