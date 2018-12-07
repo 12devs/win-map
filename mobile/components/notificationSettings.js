@@ -4,13 +4,28 @@ import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
 import MultiSelect from './MultiSelect';
-import { Button, Card } from 'react-native-elements';
+import { Button, Card, ListItem } from 'react-native-elements';
+import Accordion from './Accordion';
 
 const { width, height } = Dimensions.get('window');
 
 class notificationSettings extends Component {
+  constructor() {
+    super();
+    this.state = {
+      touch: ''
+    };
+    this.onClickPlace = this.onClickPlace.bind(this);
+  }
+
+  onClickPlace(id) {
+    const { touch } = this.state;
+
+    return this.setState({ touch: touch === id ? '' : id });
+  }
 
   render() {
+    console.log(this.state.touch);
     return (
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
@@ -24,9 +39,24 @@ class notificationSettings extends Component {
         </Card>
         {this.props.places.map((place, i) => {
           return (
-            <Card containerStyle={styles.container} title={place.name} key={i}>
-              <MultiSelect place={place}/>
-            </Card>);
+            <View key={i}>
+              <ListItem
+                onPress={() => this.onClickPlace(place.id)}
+                containerStyle={{
+                  borderBottomColor: '#eee',
+                  // marginTop: 5,
+                  // marginBottom: 2,
+                  // borderTopColor: 'transparent',
+                  // marginLeft: 10,
+                  // marginRight: 10
+                }}
+                title={place.name}
+                leftIcon={{ name: 'location-on', color: '#3D6DCC' }}
+                rightIcon={place.id === this.state.touch ? { name: 'expand-more' } : {}}/>
+
+
+              <Accordion place={place} touch={this.state.touch}/>
+            </View>);
         })}
         <Button
           containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20, marginTop: 15 }}
@@ -48,6 +78,8 @@ class notificationSettings extends Component {
                 );
               })
           }/>
+        <Text>{JSON.stringify(this.props.notificationSettings, null, 4)}</Text>
+
       </ScrollView>
     );
   }
