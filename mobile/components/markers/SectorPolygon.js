@@ -26,6 +26,7 @@ class SectorPolygon extends React.Component {
           const positions = getPolygon(point, dist, direction, 11.25);
           return <Polygon
             // lineCap={'round'}
+            key={`polygon ${point.type} ${point.id}`}
             coordinates={positions}
             strokeWidth={1}
             strokeColor={'rgba(95, 87, 202, 0.7)'}
@@ -38,7 +39,7 @@ class SectorPolygon extends React.Component {
           const positions = getPolygon(point, dists[i], direction, angle);
           return <Polygon
             // lineCap={'round'}
-            key={i}
+            key={`polygon ${point.type} ${point.id} ${i}`}
             coordinates={positions}
             strokeWidth={1}
             strokeColor={'rgba(95, 87, 202, 0)'}

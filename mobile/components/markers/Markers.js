@@ -12,7 +12,7 @@ class Markers extends React.Component {
       return <UserPlace key={id} point={point} showInfo={this.showInfo} navigation={navigation}/>;
     });
     const Dangers = dangers.map((point, id) => {
-      return <Danger key={new Date() + id} point={point} showInfo={this.showInfo} navigation={navigation}/>;
+      return <Danger key={`Danger ${point.type} ${point.id}`} point={point} showInfo={this.showInfo} navigation={navigation}/>;
     });
     return [].concat(UserPlaces, Dangers);
   }

@@ -46,6 +46,7 @@ class Danger extends React.Component {
   render() {
     const { viewType, point } = this.props;
     const marker = <Marker
+      key={`marker ${point.type} ${point.id}`}
       coordinate={{
         latitude: point.lat,
         longitude: point.lng
