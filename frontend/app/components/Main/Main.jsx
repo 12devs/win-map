@@ -82,6 +82,7 @@ class Main extends React.Component {
                 localStorage.setItem('windToken', '');
                 location.assign('/login');
                 onClose();
+                this.props.updateReduxState({ isLoader:true });
               }}>Yes
               </button>
               <button className={"confirm__button"} onClick={onClose}>No</button>
@@ -140,7 +141,6 @@ class Main extends React.Component {
           </Popover>
           <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
             <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
-              this.props.updateReduxState({ isLoader:true });
               this.logout();
             }}/>
           </Popover>

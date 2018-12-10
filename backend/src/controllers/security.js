@@ -108,7 +108,7 @@ export default {
 
       if (!acc) {
 
-        return res.status(403).json({ error: `User with login ${login} is not found` });
+        return res.status(403).json({ error: `Wrong login or password` });
       }
 
       if (acc.code) {
@@ -142,7 +142,7 @@ export default {
     } catch (err) {
       logger.error(`login | ERROR - ${err.message}`);
 
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: 'Wrong login or password' });
     }
   }
 }
