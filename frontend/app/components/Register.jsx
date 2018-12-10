@@ -57,14 +57,14 @@ class Register extends Component {
             </div>
             <div>
               <label className="login__label" htmlFor="password">
-                <input placeholder="Password" className="login__input" type="text"
+                <input placeholder="Password" type="password" className="login__input"
                        style={{ color: password ? 'white' : null }}
                        onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
               </label>
             </div>
             <div>
               <label className="login__label" htmlFor="repeatPassword">
-                <input placeholder="Repeat Password" className="login__input" type="text"
+                <input placeholder="Repeat Password" type="password" className="login__input"
                        style={{ color: repeatPassword ? 'white' : null }}
                        onChange={(event) => this.setState({ repeatPassword: event.target.value })}
                        value={repeatPassword}/>
@@ -72,7 +72,7 @@ class Register extends Component {
             </div>
             <div>
               <label className="login__label" htmlFor="email">
-                <input placeholder="email" className="login__input" type="text"
+                <input placeholder="Email" className="login__input" type="text"
                        style={{ color: email ? 'white' : null }}
                        onChange={(event) => this.setState({ email: event.target.value })} value={email}/>
               </label>

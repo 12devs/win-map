@@ -86,14 +86,14 @@ class ChangePassword extends Component {
               </div>
               <div>
                 <label className="login__label" htmlFor="password">
-                  <input placeholder="New password" className="login__input" type="text"
+                  <input placeholder="New password" className="login__input" type="password"
                          style={{ color: password ? 'white' : null }}
                          onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
                 </label>
               </div>
               <div>
                 <label className="login__label" htmlFor="repeatPassword">
-                  <input placeholder="Repeat Password" className="login__input" type="text"
+                  <input placeholder="Repeat Password" className="login__input" type="password"
                          style={{ color: repeatPassword ? 'white' : null }}
                          onChange={(event) => this.setState({ repeatPassword: event.target.value })}
                          value={repeatPassword}/>
