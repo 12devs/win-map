@@ -71,7 +71,7 @@ class Login extends Component {
         <div className="login">
           {isLoader ? <Loader/> :
             <div className="login__form">
-              <div className="form_name">Login form</div>
+              <div className="form_name">Sign in</div>
               <div>
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
@@ -97,20 +97,16 @@ class Login extends Component {
                 </button>
               </div>
 
-              <div className={"login__label"}>
-                <br/>
-                <div>Don't have an account?
-                  <a style={{ color: 'white' }} href="#" onClick={() => {
+              <div className="login__label">
+                <div className="auth__link" onClick={() => {
                     this.setState({ isLoader: true });
                     this.props.history.push('/register');
-                  }}> You can register here.</a>
+                  }}>Don't have an account?
                 </div>
-                <br/>
-                <div>Forgot your password?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
+                <div className="auth__link" onClick={() => {
                     this.setState({ isLoader: true });
-                    this.props.history.push('/register');
-                  }}> You can reset it here.</a>
+                    this.props.history.push('/ChangePassword');
+                  }}>Forgot your password?
                 </div>
               </div>
 

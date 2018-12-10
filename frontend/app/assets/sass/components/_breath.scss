@@ -393,6 +393,28 @@
   position: absolute;
 }
 
+.auth {
+  &__link {
+    font-size: 1.4rem;
+    color: #fff;
+    transition: all .25s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .7;
+    }
+
+    &:first-child {
+      margin-top: 2rem;
+    }
+  }
+
+  &__label {
+    font-size: 1.5rem;
+    position: absolute;
+  }
+}
+
 .confirm__alert {
   font-size: 1.5rem;
   color: black;
@@ -422,6 +444,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  min-width: 30rem;
 }
 
 .login__label {
@@ -430,6 +453,7 @@
   font-size: 1.5rem;
   color: #606468;
   text-align: center;
+  position: relative;
 }
 
 .form_name {
@@ -447,8 +471,14 @@
   font-size: 1.8rem;
   padding: 1.5rem;
   background-color: #3b4148;
+  border: 1px solid rgba(255, 255, 255, 0);
   color: #606468;
   width: 100%;
+  transition: all .25s ease-in-out;
+
+  &:hover, &:focus {
+    border-color: #5F57CA;
+  }
 }
 
 .login__btn-submit {
@@ -462,6 +492,11 @@
   width: 100%;
   color: #FFFFFF;
   cursor: pointer;
+  transition: all .25s ease-in-out;
+
+  &:hover {
+    opacity: .7;
+  }
 }
 
 .notification {

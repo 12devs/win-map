@@ -76,9 +76,7 @@ class ChangePassword extends Component {
         <div className="login">
           {isLoader ? <Loader/> :
             <div className="login__form">
-              <div className={"form_name"}>
-                Change password form
-              </div>
+              <div className={"form_name"}>Change password</div>
               <div>
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
@@ -111,19 +109,15 @@ class ChangePassword extends Component {
               </div>
 
               <div className={"login__label"}>
-                <br/>
-                <div>Don't have an account?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
-                    this.setState({ isLoader: true });
-                    this.props.history.push('/register');
-                  }}> You can register here.</a>
+                <div className="auth__link" onClick={() => {
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/register');
+                  }}>Don't have an account?
                 </div>
-                <br/>
-                <div>
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
-                    this.setState({ isLoader: true });
-                    this.props.history.push('/login');
-                  }}> Come back</a>
+                <div className="auth__link" onClick={() => {
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/login');
+                  }}>Already have an account?
                 </div>
               </div>
             </div>}

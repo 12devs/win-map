@@ -47,9 +47,7 @@ class Register extends Component {
       <div className="login">
         {isLoader ? <Loader/> :
           <div className="login__form">
-            <div className={"form_name"}>
-              Register form
-            </div>
+            <div className={"form_name"}> Sign up</div>
             <div>
               <label className="login__label" htmlFor="login">
                 <input placeholder="Login" className="login__input" type="text"
@@ -88,14 +86,10 @@ class Register extends Component {
               </button>
             </div>
             <div className={"login__label"}>
-              <br/>
-              <div>Already have an account?
-                <a style={{ color: 'white' }} href={'#'} onClick={() => {
+              <div className="auth__link" onClick={() => {
                   this.setState({ isLoader: true });
                   this.props.history.push('/login');
-                  
-                }}> You can come in it
-                  here.</a>
+                }}>Already have an account?
               </div>
             </div>
           </div>}
