@@ -2,6 +2,7 @@ import { Point, Account, Danger, Place, Subscription, Notification, Station } fr
 import { getStationId, getHistoricalData, getDailyHistoricalData, getCurrenData } from '../api/wind';
 import getWindRoseData from '../api/windRoseParses';
 import _ from 'lodash';
+import BluebirdPromise from 'bluebird';
 
 const getNotificationSettings = async (userId) => {
   const query = {
@@ -163,6 +164,34 @@ export default {
         await Subscription.destroy({ where: { place_id: place.id } });
         res.status(200).json({ message: place.id + ' successful deleted' })
       }
+    } catch (err) {
+      return res.status(500).json({ error: err.message })
+    }
+  },
+
+  async deleteAllPoints(req, res) {
+    try {
+      const userId = req.user.id;
+      await Subscription.destroy({ where: { account_id: userId } });
+      await Danger.destroy({ where: { account_id: userId } });
+      await Place.destroy({ where: { account_id: userId } });
+
+      res.status(200).json({ message: 'All points were successful deleted' })
+    } catch (err) {
+      return res.status(500).json({ error: err.message })
+    }
+  },
+
+  async update(req, res) {
+    try {
+      const { danger, place } = req.body;
+      if (place) {
+        await Place.update({ name: place.name }, { where: { id: place.id } });
+      }
+      if (danger) {
+        await Danger.update({ name: danger.name, dangerRadius: danger.dangerRadius }, { where: { id: danger.id } });
+      }
+      res.status(200).json({ message: 'Successful updated' })
     } catch (err) {
       return res.status(500).json({ error: err.message })
     }

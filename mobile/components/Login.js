@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, AsyncStorage } from 'react-native';
+import { View, Text, TextInput, StyleSheet, AsyncStorage, Dimensions, TouchableOpacity } from 'react-native';
 import services from "../services/index";
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { connect } from "react-redux";
 import actions from "../actions";
+
+const { width, height } = Dimensions.get('window');
 
 class Login extends Component {
   state = {
@@ -22,17 +24,18 @@ class Login extends Component {
         console.log(res);
         const { message, email, error, token } = res;
         this.setState({ code: '' });
+        this.setState({ error: '' });
         if (message === 'code') {
           return this.setState({ showCode: true, email });
         }
         if (message !== 'OK') {
-          this.setState({ error });
+          error ? this.setState({ error }) : this.setState({ error: message });
         } else {
           return AsyncStorage.setItem('windToken', token)
-            .then(()=>{
-              this.props.updateReduxState({menuRule: 'logged'});
+            .then(() => {
+              this.props.updateReduxState({ menuRule: 'logged' });
               return this.props.navigation.navigate('Map');
-            })
+            });
         }
       })
       .catch((error) => {
@@ -43,53 +46,105 @@ class Login extends Component {
   render() {
     if (this.state.showCode) {
       return (
-        <View style={styles.container}>
-          <TextInput style={styles.input}
-                     value={this.state.code}
-                     underlineColorAndroid="transparent"
-                     placeholder={"code from " + this.state.email}
-                     placeholderTextColor="#3D6DCC"
-                     autoCapitalize="none"
-                     onChangeText={(code) => this.setState({ code })}/>
-          {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-          <Button
-            containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
-            backgroundColor={'#3D6DCC'}
-            large
-            borderRadius={50}
-            title='SEND'
-            color={'#fff'}
-            onPress={this.login}/>
+        <View style={styles.mainContainer}>
+          <View style={styles.container}>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+              <TextInput style={styles.input}
+                         value={this.state.code}
+                         underlineColorAndroid="transparent"
+                         placeholder={"code from " + this.state.email}
+                         placeholderTextColor="#3D6DCC"
+                         autoCapitalize="none"
+                         onChangeText={(code) => this.setState({ code })}/>
+              <View style={styles.iconContainer}>
+                <Icon name='lock-outline' color='#3D6DCC'/>
+              </View>
+            </View>
+            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+            <Button
+              containerViewStyle={styles.buttonContainer}
+              backgroundColor={'#3D6DCC'}
+              // borderRadius={50}
+              title='SEND'
+              color={'#fff'}
+              onPress={this.login}/>
+          </View>
         </View>
-      )
+      );
     } else {
       return (
-        <View style={styles.container}>
-          <TextInput style={styles.input}
-                     value={this.state.login}
-                     underlineColorAndroid="transparent"
-                     placeholder="username"
-                     placeholderTextColor="#3D6DCC"
-                     autoCapitalize="none"
-                     onChangeText={(login) => this.setState({ login })}/>
+        <View style={styles.mainContainer}>
+          <View style={styles.container}>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+              <TextInput style={styles.input}
+                         value={this.state.login}
+                         underlineColorAndroid="transparent"
+                         placeholder="Username"
+                         placeholderTextColor="#3D6DCC"
+                         autoCapitalize="none"
+                         onChangeText={(login) => this.setState({ login })}/>
+              <View style={styles.iconContainer}>
+                <Icon name='perm-identity' color='#3D6DCC'/>
+              </View>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+              <TextInput style={styles.input}
+                         value={this.state.password}
+                         secureTextEntry={true}
+                         underlineColorAndroid="transparent"
+                         placeholder="Password"
+                         placeholderTextColor="#3D6DCC"
+                         autoCapitalize="none"
+                         onChangeText={(password) => this.setState({ password })}/>
+              <View style={styles.iconContainer}>
+                <Icon name='lock-outline' color='#3D6DCC'/>
+              </View>
+            </View>
+            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
 
-          <TextInput style={styles.input}
-                     value={this.state.password}
-                     secureTextEntry={true}
-                     underlineColorAndroid="transparent"
-                     placeholder="password"
-                     placeholderTextColor="#3D6DCC"
-                     autoCapitalize="none"
-                     onChangeText={(password) => this.setState({ password })}/>
-          {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-          <Button
-            containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
-            backgroundColor={'#3D6DCC'}
-            large
-            borderRadius={50}
-            title='LOGIN'
-            color={'#fff'}
-            onPress={this.login}/>
+            <Button
+              containerViewStyle={styles.buttonContainer}
+              backgroundColor={'#3D6DCC'}
+              // borderRadius={50}
+              title='LOGIN'
+              color={'#fff'}
+              onPress={this.login}/>
+          </View>
+
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+            <Text style={styles.textContainer}>Don't have an account?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Register');
+              }}>
+              <Text style={styles.secondaryTextContainer}>You can register here.</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+            <Text style={styles.textContainer}>Forgot your password?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('ChangePassword');
+              }}>
+              <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -103,22 +158,60 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(Login);
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
+  mainContainer: {
+    // marginTop: 10,
     flexDirection: 'column',
     alignItems: 'stretch',
-    flex: 1,
+    flex: 2,
+    backgroundColor: '#fff',
+
+  },
+  container: {
+    paddingTop: 30,
+    paddingBottom: 30,
+    backgroundColor: '#fff',
+    // margin: 10,
+    // elevation: 5
+  },
+  iconContainer: {
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: 40,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   input: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 10,
+    // marginTop: 10,
     marginBottom: 10,
     height: 60,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderColor: '#3D6DCC',
-    borderWidth: 1,
-    borderRadius: 50
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: width / 1.3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  textContainer: {
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: '#525966',
+    padding: 10,
+  },
+  secondaryTextContainer: {
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: '#3D6DCC',
+    padding: 10,
+  },
+  buttonContainer: {
+    marginTop: 35,
+    marginBottom: 10,
+    // width: width / 1.3,
+    //
+    marginLeft: width * 0.06,
+    marginRight: width * 0.06,
+    borderWidth: 1,
+    borderColor: '#3D6DCC'
+  }
 });

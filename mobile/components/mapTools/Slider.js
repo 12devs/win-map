@@ -16,7 +16,7 @@ class Navigation extends Component {
         thumbTintColor={'#00498f'}
         style={styles.submitButton}
         step={1}
-        maximumValue={1000000}
+        maximumValue={100000}
         onValueChange={this.change.bind(this)}
         value={this.props.scaleWind}
       />
@@ -35,7 +35,9 @@ export default connect(mapStateToProps, actions)(Navigation);
 const styles = StyleSheet.create({
   submitButton: {
     padding: 10,
-    margin: 5,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
     height: 30,
   },
 

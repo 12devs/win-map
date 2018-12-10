@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
+import { Button, List, ListItem } from 'react-native-elements';
+import service from '../services';
+
+const { width, height } = Dimensions.get('window');
 
 class Notifications extends Component {
 
@@ -15,9 +19,20 @@ class Notifications extends Component {
     this.forceUpdate();
   };
 
+  viewAllNotification() {
+    const notifications = this.props.notifications;
+    return service.viewAllNotification().then(res => {
+      notifications.map(el => el.view_at = new Date());
+      this.props.updateReduxState({ notifications });
+      console.log(res);
+      this.forceUpdate();
+    });
+  };
+
   render() {
     const unviewedNotifications = this.props.notifications.filter(elem => !elem.view_at);
-    if (!unviewedNotifications.length){
+
+    if (!unviewedNotifications.length) {
       return <View style={{
         flex: 1,
         justifyContent: 'center',
@@ -25,55 +40,52 @@ class Notifications extends Component {
       }}>
         <Text style={{
           textAlign: 'center',
-          borderWidth: 2,
-          borderColor: 'silver',
-          borderRadius: 20,
           textAlignVertical: "center",
           color: 'silver',
           padding: 10,
         }}>
           {'No notifications'}
         </Text>
-      </View>
+      </View>;
     }
     return (
       <ScrollView contentContainerStyle={{
         flexDirection: 'column',
         justifyContent: 'center'
       }}>
-        {unviewedNotifications.map((notification, i) => {
-          return (
-            <View key={i} style={styles.container}>
-              <View style={{
-                width: '100%',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderWidth: 2,
-                borderColor: 'steelblue',
-                borderRadius: 20,
-              }}>
-                <Text style={{
-                  textAlign: 'center',
-                  borderWidth: 2,
-                  borderColor: 'silver',
-                  borderRadius: 20,
-                  textAlignVertical: "center",
-                  color: 'silver',
-                  padding: 10,
-                }}>
-                  {notification.message}
-                </Text>
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={() => {
-                    this.handleClick(notification.id)
-                  }}>
-                  <Text style={styles.submitButtonText}> OK </Text>
-                </TouchableOpacity>
-              </View>
-            </View>);
-        })}
+        <View>
+          {
+            unviewedNotifications.map((notification, i) => (
+              <ListItem
+                key={i}
+                title={notification.message}
+                subtitle={notification.created_at}
+                leftIcon={{ name: 'notifications' }}
+                rightIcon={{ name: 'close' }}
+                containerStyle={{
+                  borderBottomColor: '#eee',
+                  // marginTop: 5,
+                  marginBottom: 2,
+                  borderTopColor: 'transparent',
+                  marginLeft: 10,
+                  marginRight: 10
+                }}
+                onPressRightIcon={() => {
+                  this.handleClick(notification.id);
+                }}
+              />
+            ))
+          }
+        </View>
+        <Button
+          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20, marginTop: 20 }}
+          backgroundColor={'#3D6DCC'}
+          borderRadius={50}
+          color={'#fff'}
+          title='Clear All'
+          onPress={() => {
+            this.viewAllNotification();
+          }}/>
       </ScrollView>
     );
   }

@@ -3,17 +3,45 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import MultiSelect from './MultiSelect';
 import services from "./../../services";
-import { askForPermissioToReceiveNotifications, deleteToken } from "../../services/push-notification";
+import {
+  unSubscribeToNotifications,
+  subscribeToNotifications,
+  isPushNotificationsEnabled
+} from "../../services/push-notification";
+import Switch from "react-switch";
 
 class NotificationSettings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      checked: false,
+    };
     this.handleClick = this.handleClick.bind(this);
+    this.changeDeviceSettings = this.changeDeviceSettings.bind(this);
+  }
+
+  componentDidMount() {
+    return isPushNotificationsEnabled()
+      .then(checked => {
+        this.setState({ checked });
+      })
   }
 
   handleClick = () => {
     this.props.close();
     return services.sendSubscriptions({ subscriptions: this.props.notificationSettings });
+  };
+
+  changeDeviceSettings = (e) => {
+    this.setState({ checked: e });
+    console.log(e);
+    if (e) {
+      console.log('ask');
+      return subscribeToNotifications()
+    } else {
+      console.log('delete');
+      return unSubscribeToNotifications()
+    }
   };
 
   render() {
@@ -23,36 +51,29 @@ class NotificationSettings extends React.Component {
     }
 
     return (
-      <div>
-        <div className='point__container' onClick={this.props.close}>
+      <div className="notification__block">
+        <button className="notification__settings-close" onClick={this.props.close}/>
+        <div className={'notification__settings'}>
+          {this.props.places.length ?
+            (this.props.places.map((point, id) => {
+                return (
+                  <div key={id} className={'notification__item'}>
+                    <div className={'notification__settings-item'}>Place: {point.name}</div>
+                    <div className={'notification__settings-item'}><MultiSelect point={point}/></div>
+                  </div>
+                  )})):(
+          <div className={'notification__item'}>
+            <div className={'notification__settings-item'}>There are not places</div>
+          </div>)}
         </div>
-        <div className="notification">
-          <table className="notification__settings" width="100%" cellPadding="0" cellSpacing="0">
-            <tbody>
-            <tr>
-              <th className="notification__settings-item notification__settings-item--title">Place</th>
-              <th className="notification__settings-item notification__settings-item--title">Danger</th>
-            </tr>
-            {this.props.places.map((point, id) =>
-              <tr key={id}>
-                <td className="notification__settings-item notification__settings-item--name">
-                  {point.name}
-                </td>
-                <td className="notification__settings-item notification__settings-item--name">
-                  <MultiSelect point={point}/>
-                </td>
-              </tr>
-            )}
-            </tbody>
-          </table>
-          <button className="notification__btn notification__btn--sub" onClick={askForPermissioToReceiveNotifications}>
-            Subscribe
-          </button>
-          <button className="notification__btn notification__btn--unsub" onClick={deleteToken}>
-            Unsubscribe
-          </button>
-          <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Send</button>
-          <button className="notification__settings-close" onClick={this.props.close}/>
+
+        <div className="notification__settings-item notification__settings-item--title">
+          <span>Send notification to this device </span>
+          <Switch
+            onChange={this.changeDeviceSettings}
+            checked={this.state.checked}
+          />
+          <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Save</button>
         </div>
       </div>
     );

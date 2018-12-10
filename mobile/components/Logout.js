@@ -7,11 +7,12 @@ class Logout extends Component {
 
   componentDidMount = () => {
     AsyncStorage.setItem('windToken', '');
-    this.props.updateReduxState({menuRule: 'notLogged'});
+    this.props.updateReduxState({menuRule: 'notLogged', isGetMainData: false});
     return this.props.navigation.navigate('Login');
   };
 
   render() {
+
     return null
   }
 }

@@ -13,6 +13,7 @@ import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
 import MapViewType from './mapTools/MapViewType';
+import { getPolygons } from "./Polygons";
 
 const screen = Dimensions.get('window');
 
@@ -32,6 +33,11 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     };
+
+    const { dangers, stationsData, scaleWind, viewType } = this.props;
+
+    const polygons = getPolygons(dangers, stationsData, scaleWind, viewType);
+
     return (
       <View style={styles.container}>
         <MapView
@@ -61,6 +67,7 @@ class Map extends Component {
           mapType={this.props.mapViewType || 'standard'}
         >
           <Markers navigation={this.props.navigation}/>
+          {/*{polygons}*/}
         </MapView>
         <Callout>
           <Navigation/>
@@ -83,6 +90,11 @@ function mapStateToProps(state) {
   return {
     mapRegion: state.get('mapRegion'),
     mapViewType: state.get('mapViewType'),
+    viewType: state.get('viewType'),
+    stations: state.get('stations'),
+    stationsData: state.get('stationsData'),
+    scaleWind: state.get('scaleWind'),
+    dangers: state.get('dangers'),
   };
 }
 

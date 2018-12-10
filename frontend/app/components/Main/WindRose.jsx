@@ -11,9 +11,16 @@ class WindRose extends React.Component {
 
   render() {
 
-    const { point } = this.props;
-    const stationsData = this.props.stationsData;
-    const dist = this.props.scaleWind;
+    const { point, zoom, scaleWind, stationsData } = this.props;
+
+    let size;
+    if (zoom > 6){
+      size = Math.pow(2, 18 - zoom)
+    } else {
+      size = Math.pow(2, 12)
+    }
+
+    const dist = scaleWind * size;
     const history = _.get(stationsData, [point.station_id, 'history'], {});
     const arr = Object.keys(history);
     const max = Math.max(..._.values(history));
@@ -34,6 +41,7 @@ function mapStateToProps(state) {
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     scaleWind: state.get('scaleWind'),
+    zoom: state.get('zoom'),
   };
 }
 

@@ -40,22 +40,35 @@ class MapViewType extends Component {
 
         {isShow ?
           <View style={{
-            backgroundColor: 'white', padding: 20, borderRadius: 10, elevation: 3, margin: 3
+            backgroundColor: 'white',
+            padding: 20,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderRadius: 10,
+            elevation: 3,
+            margin: 3
           }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ isShow: !isShow });
-              }}>
-              <Text style={{ textAlign: 'right', marginBottom: 10 }}>X</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Text style={{ textAlign: 'right', marginBottom: 10 }}>Map Layers</Text>
+            </View>
             <RadioForm
-              // buttonColor={'#00498f'}
+              buttonColor={'#00498f'}
               radio_props={radio_props}
+              selectedButtonColor={'#00498f'}
               initial={index}
               onPress={(value) => {
                 this.props.updateReduxState({ mapViewType: value });
               }}
             />
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+              <TouchableOpacity
+                style={{ borderWidth: 1, borderRadius: 50,borderColor:'#00498f', padding: 5, paddingRight: 20, paddingLeft: 20 }}
+                onPress={() => {
+                  this.setState({ isShow: !isShow });
+                }}>
+                <Text style={{ color:'#00498f' }}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View> : null}
       </View>
 

@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import Markers from './markers/Markers';
 import { ReactLeafletSearch } from 'react-leaflet-search';
-import Modal from 'react-modal';
+import Loader from '../Loader';
 
 const { BaseLayer } = LayersControl;
-
-Modal.setAppElement('#root');
 
 class MyMap extends React.Component {
   constructor(props) {
@@ -16,21 +14,36 @@ class MyMap extends React.Component {
   }
 
   render() {
-
+    const { isLoader } = this.props;
     let bounds = [[50.505, -29.09], [52.505, 29.09]];
 
     if (this.props.mapBounds) {
-      bounds = this.props.mapBounds
+      bounds = this.props.mapBounds;
     }
 
     return (
       <div style={{ height: '100%' }}>
         <Map
-          onClick={(e) => this.props.updateReduxState({savePointSettings:{ show: true, latlng: e.latlng }})}
+          onViewportChanged={(e) => {
+            console.log(e);
+            const { zoom } = e;
+            this.props.updateReduxState({ zoom });
+          }}
+          onClick={(e) => {
+            this.props.updateReduxState({
+              savePointSettings: {
+                show: true,
+                latlng: e.latlng,
+                containerPoint: e.containerPoint
+              }
+            });
+          }}
           bounds={bounds}
           maxBounds={[[90, -180], [-90, 180]]}
           style={{ height: '100vh' }}
         >
+          {!isLoader ? <div/> : <Loader/>}
+
           <ReactLeafletSearch position="topleft"/>
 
           <LayersControl position="topright">
@@ -76,7 +89,9 @@ class MyMap extends React.Component {
           />
 
           <Markers/>
-          <Rectangle bounds={[[90, -180], [-90, 180]]}/>
+          <Rectangle
+            fillOpacity={0}
+            bounds={[[90, -180], [-90, 180]]}/>
         </Map>
       </div>
     );
@@ -86,6 +101,7 @@ class MyMap extends React.Component {
 function mapStateToProps(state) {
   return {
     mapBounds: state.get('mapBounds'),
+    isLoader: state.get('isLoader'),
   };
 }
 

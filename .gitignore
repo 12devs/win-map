@@ -7,3 +7,5 @@ breath.iml
 .expo
 .gradle
 build
+env.txt
+local.properties

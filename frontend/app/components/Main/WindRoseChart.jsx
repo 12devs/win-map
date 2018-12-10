@@ -15,7 +15,7 @@ class WindRoseChart extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.stationId) {
+    if (this.props.point.station_id) {
       this.newChart(this.props);
     }
   }
@@ -27,7 +27,44 @@ class WindRoseChart extends React.Component {
   }
 
   newChart() {
-    new Highcharts.Chart('container', this.props.stationsData[this.props.stationId].windRoseData);
+    try {
+      const data = this.props.stationsData[this.props.point.station_id].windRoseData;
+      console.log(data);
+      data.exporting.buttons.contextButton.theme = {
+        fill: '#F8C845',
+        stroke: '#F8C845',
+      };
+      data.exporting.buttons.contextButton.symbolFill = 'black';
+      data.exporting.buttons.contextButton.symbolStroke = 'black';
+      data.exporting.buttons.contextButton.verticalAlign = 'top';
+
+      data.series[0].color = '#ffecb3';
+      data.series[1].color = '#ffe082';
+      data.series[2].color = '#ffd54f';
+      data.series[3].color = '#ffca28';
+      data.series[4].color = '#ffc107';
+      data.series[5].color = '#ffb300';
+      data.series[6].color = '#ffa000';
+      data.series[7].color = '#ff8f00';
+      data.series[8].color = '#ff6f00';
+
+      data.credits.position = {
+        x: 0,
+        y: 0,
+      };
+
+      data.xAxis.labels = {
+        style: {
+          color: 'white'
+        }
+      };
+      data.legend.itemStyle = {
+        color: 'white',
+      };
+      new Highcharts.Chart('container', data);
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   render() {

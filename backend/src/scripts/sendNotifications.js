@@ -1,112 +1,94 @@
-import fetch from 'node-fetch';
-import config from 'config';
 import logger from '../logger';
-import { Notification, Device, Account } from '../models';
+import { Notification, Device, Account, Subscription, Danger } from '../models';
+import https from 'https';
+import BluebirdPromise from 'bluebird';
 
-const keys = config.apiKeys;
+const sendNotification = data => {
+
+  return new Promise((resolve, reject) => {
+
+    if (!data.include_player_ids.length){
+      resolve({})
+    }
+
+    const headers = {
+      "Content-Type": "application/json; charset=utf-8",
+      "Authorization": "Basic OWMxNDIzNTMtZGRlMC00Yjk4LTkyMTctNDBhMzQ5MmVkNDU2"
+    };
+
+    const options = {
+      host: "onesignal.com",
+      port: 443,
+      path: "/api/v1/notifications",
+      method: "POST",
+      headers: headers
+    };
+
+    const req = https.request(options, res => {
+      res.on('data', data => {
+        resolve(data)
+      });
+    });
+
+    req.on('error', e => {
+      reject(e)
+    });
+
+    req.write(JSON.stringify(data));
+    req.end();
+  });
+};
+
 
 const sendNotifications = async () => {
 
   logger.info('sendNotifications|START');
 
-  let offset = 0;
-  let limit = 1;
+  const accounts = await Account.findAll({ attributes: ['id'], raw: true });
+  console.log('accounts', accounts);
+  await  BluebirdPromise.mapSeries(accounts, async account => {
+    const notifications = await Notification.findAll({ where: { account_id: account.id, sent_at: null } });
+    const tokens = await Device.findAll({ where: { account_id: account.id } }).map(device => device.token);
 
-  do {
-    const query = {
-      offset,
-      limit,
-      where: {
-        sent_at: null,
-      },
-      include: [{
-        model: Account,
-        as: "account",
-        include: [{
-          model: Device,
-          as: 'devices'
-        }]
-      }],
-    };
-
-    try {
-      const notifications = await Notification.findAll(query);
-
-      if (!notifications.length) break;
-
-      const messages = createNotifications(notifications);
-      prepareToSend(messages);
-    } catch (error) {
-      logger.error('sendNotifications|ERROR', error)
+    if (!notifications.length) {
+      return
     }
-
-    offset++;
-  } while (true);
-
-}
-
-const createNotifications = (messages) => {
-  const currentMessages = messages.map(item => {
-    const { devices } = item.account;
-    const tokens = devices.map(device => device.token);
-
-    return {
-      id: item.id,
-      registration_ids: tokens,
-      notification: {
-        title: "wind-map", //@TODO
-        icon: "https://st3.depositphotos.com/14847044/17089/i/450/depositphotos_170894478-stock-photo-meteorology-wild-sign.jpg", //@TODO
-        body: item.message,
-        click_action: "http://localhost:8081", //@TODO
-        sound: "default",
-      },
-    };
-  });
-
-  return currentMessages;
-}
-
-const prepareToSend = (messages) => {
-
-  messages.forEach(value => {
-
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(value),
-      headers: {
-        Authorization: `key=${keys.fcm}`,
-        'Content-Type': 'application/json',
-      },
-    };
-
-    sendMessage(options, value.id);
-  });
-}
-
-const sendMessage = (options, ids) => {
-
-  return fetch('https://fcm.googleapis.com/fcm/send', options)
-    .then(result => {
-
-      if (result.status === 200) {
-
-        const change = {
-          sent_at: Date(),
-        };
-
-        const query = {
-          where: {
-            id: ids,
-          }
-        };
-
-        Notification.update(change, query);
-      }
-    })
-    .catch(err => {
-
-      return Promise.reject(err);
+    console.log(tokens);
+    const promises = notifications.map(notification => {
+      const { id, message } = notification;
+      const options = {
+        id,
+        tokens,
+        message,
+      };
+      return sendMessage(options)
+        .then(res => {
+          const change = { sent_at: Date() };
+          const query = { where: { id } };
+          return Notification.update(change, query);
+        });
     });
+
+    return Promise.all(promises)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(res => {
+        console.log(res);
+      })
+  });
+};
+
+const sendMessage = (options) => {
+  const { message, tokens } = options;
+
+  const opt = {
+    app_id: "27ccd574-12cd-4bc2-9f7e-988b6b92ad49",
+    contents: { "en": message },
+    include_player_ids: tokens,
+  };
+
+  return sendNotification(opt)
 };
 
 export {

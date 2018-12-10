@@ -6,7 +6,6 @@ import {
   Switch,
   Route,
   BrowserRouter as Router,
-  Link
 } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -18,6 +17,7 @@ const store = createStore(reducer);
 store.dispatch({
   type: "SET_STATE",
   state: {
+    isLoader: false,
     stations: [],
     places: [],
     dangers: [],
@@ -25,7 +25,7 @@ store.dispatch({
     markerType: "My Place",
     viewType: "Current",
     actionType: "Add",
-    scaleWind: 5000,
+    scaleWind: 100,
     notificationSettings: [],
     savePointSettings: {},
     notifications: [],
@@ -50,12 +50,6 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <div className="map__navigation-user">
-              <Link className="map__navigation-user-link" to="/main">Main</Link>
-              <Link className="map__navigation-user-link" to="/register">Register</Link>
-              <Link className="map__navigation-user-link" to="/login">Login</Link>
-              <Link className="map__navigation-user-link" to="/ChangePassword">ChangePassword</Link>
-            </div>
             <Switch>
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />

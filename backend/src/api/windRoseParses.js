@@ -19,12 +19,12 @@ const getWindRoseUrl = q => {
         attr: 'data-url'
       },
     })
-      .then(async ({data, response}) => {
+      .then(async ({ data, response }) => {
         if (response.statusCode !== 200) throw new Error(response.statusCode);
         else resolve(data.WindRoseUrl);
       })
       .catch((e) => {
-        resolve({done: false, err: `Couldn't scrape`, url: doc.loc, response: e});
+        resolve({ done: false, err: `Couldn't scrape`, url: doc.loc, response: e });
       });
   });
 };
@@ -56,7 +56,7 @@ const historyData = data => {
     history[labels[i]] = Number((el * 100 / period).toFixed(2));
   });
 
-  return {history, period: Number((period / 24).toFixed())};
+  return { history, period: Number((period / 24).toFixed()) };
 };
 
 const getWindRoseData = async (lat, lng) => {
@@ -64,7 +64,7 @@ const getWindRoseData = async (lat, lng) => {
     const cityDataUrl = await getCityDataUrl(lat, lng);
     const windRoseUrl = await getWindRoseUrl(cityDataUrl);
     let windRoseData = await getData(windRoseUrl);
-    const {history, period} = await historyData(JSON.parse(windRoseData));
+    const { history, period } = await historyData(JSON.parse(windRoseData));
     windRoseData = JSON.parse(windRoseData);
     windRoseData.credits.text = 'highcharts.com';
     windRoseData.tooltip.shared = false;
@@ -72,11 +72,16 @@ const getWindRoseData = async (lat, lng) => {
     // windRoseData.chart.alignTicks = true;
     // windRoseData.legend.margin = 0;
     windRoseData.legend.itemDistance = 2;
-    windRoseData.chart.zoomType= 'Xy';
-    return ({history, period, windRoseData});
+    windRoseData.chart.zoomType = 'Xy';
+    return ({ history, period, windRoseData });
   } catch (err) {
-    return ({history: {}, period: 0, windRoseData: {}});
+    return ({ history: {}, period: 0, windRoseData: {} });
   }
 };
+
+getWindRoseData('53.694071', '24.132062')
+  .then(res => {
+    console.log(res);
+  })
 
 export default getWindRoseData;

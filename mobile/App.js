@@ -37,7 +37,8 @@ store.dispatch({
       point: null,
       type: null
     },
-    addPoint: { name: '', error: '', isSentButton: false }
+    addPoint: { name: '', error: '', isSentButton: false },
+    isConnected: true
   }
 });
 

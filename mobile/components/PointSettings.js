@@ -5,20 +5,23 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Dimensions,
   BackHandler
 } from 'react-native';
 import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
 import services from '../services/index';
-import { Header, Button } from 'react-native-elements';
-
-const { width, height } = Dimensions.get('window');
+import { Header, Button, Card, Divider } from 'react-native-elements';
+import Loader from './Loader';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 class PointSettings extends Component {
   constructor() {
     super();
+    this.state = {
+      isDelButton: false,
+      tableHead: ['Danger name', 'In danger now', 'In danger for a period(days)'],
+    };
     this.delMarker = this.delMarker.bind(this);
   }
 
@@ -46,55 +49,92 @@ class PointSettings extends Component {
         if (type === 'danger') {
           const dangers = this.props.dangers.filter(el => !(el.id === id));
           this.props.updateReduxState({ dangers, info: { point: null, type: null } });
+          this.props.updateStatistic();
         }
       });
   };
 
   render() {
-    let { point, type } = this.props.info;
-     if (!point){
-       point = {}
-     }
-    const show = !!(point && type);
+    let { info, statistic } = this.props;
+    let { point, type } = info;
+    const { isDelButton } = this.state;
+    if (!point) {
+      point = {};
+    }
 
     return (
       <View>
-        <ScrollView style={{ height: height * 0.85 }}>
-          <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
-          <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
-          <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
-          <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
-          <WindRoseChart stationId={point.station_id}/>
-          <Button
-            containerViewStyle={{ margin: 10 }}
-            backgroundColor={'#3D6DCC'}
-            large
-            borderRadius={50}
-            icon={{ name: 'location-on' }}
-            title='Go to marker'
-            onPress={() => {
-              this.props.navigation.navigate('Map');
-              const mapRegion = calcMapRegionOne(point);
-              if (mapRegion) {
-                this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+        {
+          !isDelButton ?
+            <ScrollView contentContainerStyle={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}>
+              <Card containerStyle={{ elevation: 5 }}>
+                <View style={{ margin: 10 }}>
+                  <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
+                  <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
+                  <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
+                  <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
+                </View>
+                <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }}/>
+                <View>
+                  <WindRoseChart stationId={point.station_id}/>
+                </View>
+              </Card>
+
+              {
+                type === 'place' ?
+                  <Card containerStyle={{ elevation: 5 }}>
+                    <Table borderStyle={{ borderColor: 'transparent' }}>
+                      <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+                      <Divider style={{ margin: 5, marginLeft: 0, marginRight: 0 }}/>
+                      {
+                        statistic.get(point.id).map((danger, id) =>
+                          <Row key={id}
+                               data={[danger.get('dangerName'), danger.get('currently') === true ? 'yes' : 'no', danger.get('period')]}
+                               textStyle={styles.text}/>)
+                      }
+                    </Table>
+                  </Card> : null
               }
-            }}/>
-          <Button
-            containerViewStyle={{ margin: 10 }}
-            backgroundColor={'red'}
-            large
-            borderRadius={50}
-            icon={{ name: 'location-off' }}
-            title='Remove point'
-            onPress={() => {
-              this.delMarker()
-                .then(() => {
-                  this.props.updateReduxState({ info: { point: null, type: null } });
-                });
-              this.props.navigation.navigate('Map');
-            }}/>
-        </ScrollView>
+
+              <Button
+                containerViewStyle={{ margin: 10, marginTop: 20 }}
+                backgroundColor={'#3D6DCC'}
+                large
+                borderRadius={50}
+                icon={{ name: 'location-on' }}
+                title='Go to marker'
+                onPress={() => {
+                  this.props.navigation.navigate('Map');
+                  const mapRegion = calcMapRegionOne(point);
+                  if (mapRegion) {
+                    this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+                  }
+                }}/>
+              <Button
+                containerViewStyle={{ margin: 10 }}
+                backgroundColor={'red'}
+                large
+                borderRadius={50}
+                icon={{ name: 'location-off' }}
+                title='Remove point'
+                onPress={() => {
+                  this.setState({ isSentButton: true });
+                  this.delMarker()
+                    .then(() => {
+                      this.props.updateReduxState({ info: { point: null, type: null } });
+                      this.props.navigation.navigate('Map');
+                    });
+                }}/>
+            </ScrollView> :
+            <View style={{ height: '100%' }}>
+              <Loader size='large' color='#3D6DCC'/>
+            </View>
+        }
       </View>
+
     );
   }
 }
@@ -104,6 +144,7 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     info: state.get('info'),
+    statistic: state.get('statistic'),
   };
 }
 
@@ -111,11 +152,17 @@ export default connect(mapStateToProps, actions)(PointSettings);
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
     flex: 1,
+    padding: 16,
+    paddingTop: 30,
+    backgroundColor: '#fff'
   },
-  button: {
-    margin: 20
+  head: {
+    height: 50,
+    backgroundColor: '#fff'
+  },
+  text: {
+    margin: 6,
+    textAlign: 'center'
   }
 });

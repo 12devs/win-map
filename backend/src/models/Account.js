@@ -116,7 +116,7 @@ module.exports = (sequelize, DataTypes) => {
       id: this.id,
       // exp: 1539606285,
       exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, 'secret');
+    }, config.auth.secret);
   };
 
   Accounts.prototype.toAuthJSON = function() {

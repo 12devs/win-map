@@ -6,10 +6,13 @@ import {
   TextInput,
   View,
   Text,
-  BackHandler
+  BackHandler, Dimensions,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import Loader from './Loader';
+
+const { width, height } = Dimensions.get('window');
+
 
 class AddPoint extends React.Component {
   constructor(props) {
@@ -46,17 +49,25 @@ class AddPoint extends React.Component {
           <View style={{ height: '100%', backgroundColor: '#fff' }}>
             <View>
               <Text style={{ textAlign: 'center', marginTop: 10 }}>Enter marker name:</Text>
-              <TextInput style={styles.input}
-                         allowFontScaling={true}
-                         underlineColorAndroid="transparent"
-                         placeholder="Marker Name"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         onChangeText={(e) => {
-                           this.props.updateReduxState({ addPoint: { name: e, error: '' } });
-                         }}/>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <TextInput style={styles.input}
+                           value={this.state.login}
+                           underlineColorAndroid="transparent"
+                           placeholder="Marker Name"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           onChangeText={(e) => {
+                             this.props.updateReduxState({ addPoint: { name: e, error: '' } });
+                           }}/>
+                <View style={styles.iconContainer}>
+                  <Icon name='location-on' color='#3D6DCC'/>
+                </View>
+              </View>
               {addPoint.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {addPoint.error}</Text> : null}
-              <Text style={{ textAlign: 'center' }}>Choose marker type:</Text>
+              <Text style={{ textAlign: 'center', marginTop: 20 }}>Choose marker type:</Text>
               <Button
                 containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
                 backgroundColor={markerType === 'Danger' ? '#fff' : '#3D6DCC'}
@@ -80,7 +91,7 @@ class AddPoint extends React.Component {
                   this.markerType('Danger');
                 }}/>
             </View>
-          </View> : <Loader size='large' color='#3D6DCC'/>}
+          </View> : <View style={{ height: '100%' }}><Loader size='large' color='#3D6DCC'/></View>}
       </View>
     );
   }
@@ -101,16 +112,22 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(AddPoint);
 
 const styles = StyleSheet.create({
+  iconContainer: {
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: 40,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   input: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 10,
     marginBottom: 10,
     height: 60,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderColor: '#3D6DCC',
-    borderWidth: 1,
-    borderRadius: 50
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: width / 1.3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

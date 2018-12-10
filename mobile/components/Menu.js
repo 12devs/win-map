@@ -13,6 +13,7 @@ import Logout from './Logout';
 import Register from './Register';
 import Main from './Main';
 import Test from './Test';
+import ChangePassword from './ChangePassword';
 import Notifications from './Notifications';
 import notificationSettings from './notificationSettings';
 import NavigateMenu from './NavigateMenu';
@@ -20,6 +21,7 @@ import AddPoint from './AddPoint';
 import PointSettings from './PointSettings';
 import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
+import { Icon } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('window');
 
@@ -47,7 +49,7 @@ const Register_StackNavigator = createStackNavigator({
       screen: Register,
       navigationOptions: ({ navigation }) => ({
         title: 'Register',
-        headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC',
           textAlign: 'center'
@@ -66,7 +68,7 @@ const Login_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return ({
           title: 'Login',
-          headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+          // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
           headerStyle: {
             backgroundColor: '#3D6DCC'
           },
@@ -111,7 +113,8 @@ const notificationSettings_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
   });
 
 const test_StackNavigator = createStackNavigator({
@@ -145,7 +148,9 @@ const notifications_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+
   });
 const addedMarker_StackNavigator = createStackNavigator({
     Details: {
@@ -181,24 +186,55 @@ const pointSettings_StackNavigator = createStackNavigator({
   },
   {
     mode: 'modal',
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    // cardStyle: { backgroundColor: '#fff' }
+
+  });
+const ChangePassword_StackNavigator = createStackNavigator({
+    Details: {
+      screen: ChangePassword,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Change Password',
+        // headerLeft: <Back navigation={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center',
+
   });
 
 export default createDrawerNavigator({
     Register: {
-      screen: Register_StackNavigator
+      screen: Register_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='add'/>
+      }
     },
     Login: {
-      screen: Login_StackNavigator
+      screen: Login_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='account-circle'/>
+      }
     },
     Map: {
-      screen: Main_StackNavigator
+      screen: Main_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='map'/>
+      }
+
     },
     notificationSettings: {
-      screen: notificationSettings_StackNavigator
-    },
-    test: {
-      screen: test_StackNavigator
+      screen: notificationSettings_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Notification Settings',
+        drawerIcon: <Icon name='settings'/>
+      }
     },
     AddPoint: {
       screen: addedMarker_StackNavigator,
@@ -213,12 +249,34 @@ export default createDrawerNavigator({
       }
     },
     notifications: {
-      screen: notifications_StackNavigator
+      screen: notifications_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Notifications',
+        drawerIcon: <Icon name='notifications'/>
+
+      }
     },
-    Logout: Logout
-  }, {
+    Logout: {
+      screen: Logout,
+      navigationOptions: {
+        drawerIcon: <Icon name='exit-to-app'/>
+
+      }
+    },
+    ChangePassword: {
+      screen: ChangePassword_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='exit-to-app'/>
+
+      }
+    },
+    test: {
+      screen: test_StackNavigator
+    },
+  },
+  {
     initialRouteName: 'Map',
-    contentComponent: NavigateMenu
+    contentComponent: NavigateMenu,
   }
 );
 

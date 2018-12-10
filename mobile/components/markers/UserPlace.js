@@ -44,10 +44,14 @@ class UserPlace extends React.Component {
           latitude: this.props.point.lat,
           longitude: this.props.point.lng
         }}
-        onDragEnd={(e) => this.updatePosition(this.props.point.id, e)}
-        onPress={() => {
+        onDragEnd={(e) => {
+          this.updatePosition(this.props.point.id, e);
+          this.props.updateStatistic()
+        }}
+        onPress={(e) => {
+          e.stopPropagation();
           this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
-          this.props.navigation.navigate('PointSettings')
+          this.props.navigation.navigate('PointSettings');
         }}
         draggable
         image={blueIcon}

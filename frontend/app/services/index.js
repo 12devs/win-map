@@ -48,6 +48,18 @@ const viewNotifications = (body) => {
   return fetch('post', '/api/subscriptions/onViewNotification', body);
 };
 
+const ViewAllNotification = (body = {}) => {
+  return fetch('post', '/api/subscriptions/ViewAllNotification', body);
+};
+
+const deleteAllPoints = (body = {}) => {
+  return fetch('post', '/api/points/deleteAllPoints', body);
+};
+
+const updatePoint = (body = {}) => {
+  return fetch('post', '/api/points/update', body);
+};
+
 export default {
   login,
   register,
@@ -60,5 +72,8 @@ export default {
   deleteNotificationToken,
   sendSubscriptions,
   viewNotifications,
-  changePassword
+  changePassword,
+  ViewAllNotification,
+  deleteAllPoints,
+  updatePoint,
 };
