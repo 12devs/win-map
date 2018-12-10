@@ -68,6 +68,7 @@ class Accordion extends Component {
                   this.onSelectedItemsChange(l);
                 }}
                 containerStyle={styles.itemListContainer}
+                underlayColor={'#dbdbdb'}
                 key={l.id}
                 title={l.name}
                 titleStyle={{ color: '#7a7a7a' }}

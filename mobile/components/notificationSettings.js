@@ -60,6 +60,7 @@ class notificationSettings extends Component {
             return (
               <View key={i}>
                 <ListItem
+                  underlayColor={'#363f57'}
                   onPress={() => this.onClickPlace(place.id)}
                   containerStyle={styles.itemListContainer}
                   title={place.name}
