@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import _ from 'lodash';
-import { List, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 
 class Accordion extends Component {
   state = {
     items: []
   };
 
-
   onSelectedItemsChange = (l) => {
     const { place } = this.props;
     const notificationSettings = this.props.notificationSettings;
     const index = _.findIndex(notificationSettings, o => (o.place.value === place.id));
+
     if (index === -1) {
       notificationSettings.push({
         place: {
@@ -23,9 +23,11 @@ class Accordion extends Component {
         },
         danger: [{ value: l.id, label: l.name }]
       });
-    } else {
+    }
+    else {
       let danger = notificationSettings[index].danger;
       const value = _.findIndex(danger, el => (el.value === l.id));
+
       if (value !== -1) {
         danger = danger.filter(el => el.value !== l.id);
       }
@@ -40,6 +42,7 @@ class Accordion extends Component {
         danger
       };
     }
+
     this.props.updateReduxState({ notificationSettings });
     this.forceUpdate();
   };
@@ -47,7 +50,6 @@ class Accordion extends Component {
 
   render() {
     const { place, dangers } = this.props;
-
     let selectedItems = (this.props.notificationSettings.filter(elem => {
       return elem.place.value === place.id;
     })[0] || {}).danger;
@@ -55,36 +57,30 @@ class Accordion extends Component {
     if (!selectedItems) {
       selectedItems = [];
     }
-    else console.log('selectedIItems', selectedItems);
 
-    // this.setState({ items: selectedItems });
-    // console.log(selectedItems);
     return (
       <View style={{ flex: 1 }}>
         {this.props.touch === place.id ?
           <View>
-            {
-              dangers.map((l) => (
-                <ListItem
-                  onPress={() => {
-                    this.onSelectedItemsChange(l);
-                  }}
-                  containerStyle={{
-                    borderBottomColor: '#eee',
-                    // marginTop: 5,
-                    marginBottom: 2,
-                    borderTopColor: 'transparent',
-                    marginLeft: 10,
-                    marginRight: 10
-                  }}
-                  key={l.id}
-                  title={l.name}
-                  leftIcon={{ name: 'location-on', color: 'red' }}
-                  rightIcon={selectedItems.find(el => (el.value === l.id)) ? { name: 'done' } : { name: 'close' }}
-                />
-              ))
+            {dangers.map((l) => (
+              <ListItem
+                onPress={() => {
+                  this.onSelectedItemsChange(l);
+                }}
+                containerStyle={styles.itemListContainer}
+                key={l.id}
+                title={l.name}
+                titleStyle={{ color: '#7a7a7a' }}
+                leftIcon={{ name: 'location-on', color: 'red' }}
+                rightIcon={selectedItems.find(el => (el.value === l.id)) ? {
+                  name: 'done',
+                  color: '#2ea443'
+                } : { name: 'done' }}
+              />
+            ))
             }
-          </View> : null}
+          </View> : null
+        }
       </View>
     );
   }
@@ -98,3 +94,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, actions)(Accordion);
+
+const styles = StyleSheet.create({
+  itemListContainer: {
+    backgroundColor: '#eeeeee',
+    borderBottomColor: '#e1e1e1',
+    borderTopColor: 'transparent',
+  }
+});
