@@ -27,7 +27,7 @@ class Register extends Component {
             error ? this.setState({ error }) : this.setState({ error: message });
             this.setState({ isLoader: false });
           } else {
-            location.assign('/login');
+            this.props.history.push('/login');
           }
         })
         .catch((error) => {
@@ -92,7 +92,8 @@ class Register extends Component {
               <div>Already have an account?
                 <a style={{ color: 'white' }} href={'#'} onClick={() => {
                   this.setState({ isLoader: true });
-                  location.assign('/login');
+                  this.props.history.push('/login');
+                  
                 }}> You can come in it
                   here.</a>
               </div>

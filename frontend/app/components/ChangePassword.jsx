@@ -33,7 +33,7 @@ class ChangePassword extends Component {
             this.setState({ isLoader: false });
             error ? this.setState({ error }) : this.setState({ error: message });
           } else {
-            return location.assign('/login');
+            return this.props.history.push('/login');
           }
         })
         .catch((error) => {
@@ -115,14 +115,14 @@ class ChangePassword extends Component {
                 <div>Don't have an account?
                   <a style={{ color: 'white' }} href={'#'} onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/register');
+                    this.props.history.push('/register');
                   }}> You can register here.</a>
                 </div>
                 <br/>
                 <div>
                   <a style={{ color: 'white' }} href={'#'} onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/login');
+                    this.props.history.push('/login');
                   }}> Come back</a>
                 </div>
               </div>

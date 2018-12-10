@@ -43,6 +43,7 @@ class Login extends Component {
 
   render() {
     const { login, password, showCode, email, code, error, isLoader } = this.state;
+
     if (showCode) {
       return (
         <div className="login">
@@ -70,9 +71,7 @@ class Login extends Component {
         <div className="login">
           {isLoader ? <Loader/> :
             <div className="login__form">
-              <div className={"form_name"}>
-                Login form
-              </div>
+              <div className="form_name">Login form</div>
               <div>
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
@@ -87,7 +86,9 @@ class Login extends Component {
                          onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
                 </label>
               </div>
-              {error ? <div className="login__label" style={{ color: 'red' }}>{error}</div> : null}
+              {
+                error && <div className="login__label" style={{ color: 'red' }}>{error}</div>
+              }
               <div>
                 <button className="login__btn-submit" onClick={() => {
                   this.setState({ isLoader: true });
@@ -99,20 +100,17 @@ class Login extends Component {
               <div className={"login__label"}>
                 <br/>
                 <div>Don't have an account?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
+                  <a style={{ color: 'white' }} href="#" onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/register');
-                  }}> You can
-                    register
-                    here.</a>
+                    this.props.history.push('/register');
+                  }}> You can register here.</a>
                 </div>
                 <br/>
                 <div>Forgot your password?
                   <a style={{ color: 'white' }} href={'#'} onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/ChangePassword');
-                  }}> You can
-                    reset it here.</a>
+                    this.props.history.push('/register');
+                  }}> You can reset it here.</a>
                 </div>
               </div>
 
