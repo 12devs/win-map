@@ -17,12 +17,14 @@ class UnauthorizationInfo extends React.Component {
   }
 
   render() {
-
+    if (!this.props.open) {
+      return null;
+    }
     return (
       <div>
-        <div className='point__container' onClick={this.props.close}/>
-        <div className="notification">
-          dhcfigyueriufhgiurehfiurehfiherf
+        <div className="unauth_info">
+          <button className="point__data-btn-close" onClick={this.props.close}/>
+          <div>If you want to save markers and receive wind notifications you need to register</div>
         </div>
       </div>
     );

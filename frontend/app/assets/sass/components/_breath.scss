@@ -667,6 +667,40 @@
   }
 }
 
+.unauth_info {
+  width: 36rem;
+  position: absolute;
+  z-index: 999999;
+  //height: calc(100% - 14rem);
+  bottom: 3rem;
+  left: 3rem;
+  padding: 2rem;
+  overflow: auto;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2) !important;
+
+  @media screen and (max-width: 780px) {
+    left: 1rem;
+    bottom: 3rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: calc(100% - 2rem);
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  &__block {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    //display: flex;
+    flex-direction: column;
+  }
+}
+
 .notification__settings {
   border: none;
   overflow: auto;

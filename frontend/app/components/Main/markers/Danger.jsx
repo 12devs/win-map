@@ -57,7 +57,6 @@ class Danger extends React.Component {
 
   render() {
     const { viewType } = this.props;
-    console.log(this.props.point);
     return (
       <div><Marker
         draggable={true}

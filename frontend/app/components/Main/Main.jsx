@@ -19,10 +19,12 @@ class Main extends React.Component {
     super();
     this.state = {
       isNotificationSettingsOpen: false,
+      isUnathInfo: true,
     };
     this.getInfo = this.getInfo.bind(this);
     this.openNotificationSettings = this.openNotificationSettings.bind(this);
     this.closeNotificationSettings = this.closeNotificationSettings.bind(this);
+    this.closeUnauthInfo = this.closeUnauthInfo.bind(this);
     this.changeViewType = this.changeViewType.bind(this);
     this.logout = this.logout.bind(this);
     this.showAll = this.showAll.bind(this);
@@ -47,6 +49,10 @@ class Main extends React.Component {
 
   closeNotificationSettings() {
     this.setState({ isNotificationSettingsOpen: false });
+  }
+
+  closeUnauthInfo() {
+    this.setState({ isUnathInfo: false });
   }
 
   getInfo() {
@@ -150,11 +156,11 @@ class Main extends React.Component {
             <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--delete-all"
                     onClick={this.deleteAll}/>
           </Popover>
-          {localStorage.windToken ?
-            <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-              <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--notifications"
-                      onClick={this.openNotificationSettings}/>
-            </Popover> : null}
+          {localStorage.windToken &&
+          <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--notifications"
+                    onClick={this.openNotificationSettings}/>
+          </Popover>}
           <Popover content={'Current/History'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
             <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--mode"
                     onClick={this.changeViewType}/>
@@ -169,7 +175,7 @@ class Main extends React.Component {
         </div>
         <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
-        <UnauthorizationInfo open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
+        {!localStorage.windToken && <UnauthorizationInfo open={this.state.isUnathInfo} close={this.closeUnauthInfo}/>}
         <SavePointSettings/>
         <Map/>
       </div>
