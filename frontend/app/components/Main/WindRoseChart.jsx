@@ -32,7 +32,7 @@ class WindRoseChart extends React.Component {
       console.log(data);
       data.exporting.buttons.contextButton.theme = {
         fill: '#F8C845',
-        stroke: '#F8C845',
+        // stroke: '#F8C845',
       };
       data.exporting.buttons.contextButton.symbolFill = 'black';
       data.exporting.buttons.contextButton.symbolStroke = 'black';
@@ -55,11 +55,11 @@ class WindRoseChart extends React.Component {
 
       data.xAxis.labels = {
         style: {
-          color: 'white'
+          color: '#000000a6'
         }
       };
       data.legend.itemStyle = {
-        color: 'white',
+        color: '#000000a6',
       };
       new Highcharts.Chart('container', data);
     } catch (err) {

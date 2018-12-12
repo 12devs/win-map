@@ -1,9 +1,10 @@
 import L from 'leaflet';
-import markerBlue from '../../assets/img/point_blue.png';
-import markerRed from '../../assets/img/point_red.png';
+import markerRed from '../../assets/img/red.svg';
+import markerBlue from '../../assets/img/blue.svg';
 
 export const redIcon = L.icon({
   iconUrl: markerRed,
+  iconRetinaUrl: markerRed,
   iconSize: [29, 40],
   iconAnchor: [14.5, 40],
   popupAnchor: [1, -34],
@@ -13,6 +14,7 @@ export const redIcon = L.icon({
 
 export const blueIcon = L.icon({
   iconUrl: markerBlue,
+  iconRetinaUrl: markerBlue,
   iconSize: [29, 41],
   iconAnchor: [14.5, 40],
   popupAnchor: [1, -34],

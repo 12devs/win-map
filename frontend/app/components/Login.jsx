@@ -33,7 +33,7 @@ class Login extends Component {
           error ? this.setState({ error }) : this.setState({ error: message });
         } else {
           localStorage.setItem('windToken', token);
-          location.assign('/main');
+          this.props.history.push('/main');
         }
       })
       .catch((error) => {
