@@ -7,7 +7,7 @@ import Notifications from './Notifications';
 import PointSettings from './PointSettings';
 import SavePointSettings from './SavePointSettings';
 import { calcBoundsAll } from "./../../utils";
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Popover } from 'antd';
 import 'antd/lib/popover/style/index.css';
@@ -48,13 +48,15 @@ class Main extends React.Component {
   }
 
   getInfo() {
-    return services.getInfo()
-      .then(res => {
-        res.savePointSettings = {};
-        res.mapBounds = calcBoundsAll([...res.places, ...res.dangers]);
-        this.props.updateReduxState(res);
-        this.props.updateStatistic();
-      });
+    if (localStorage.windToken) {
+      return services.getInfo()
+        .then(res => {
+          res.savePointSettings = {};
+          res.mapBounds = calcBoundsAll([...res.places, ...res.dangers]);
+          this.props.updateReduxState(res);
+          this.props.updateStatistic();
+        });
+    }
   }
 
   showAll() {
@@ -82,7 +84,7 @@ class Main extends React.Component {
                 localStorage.setItem('windToken', '');
                 location.assign('/login');
                 onClose();
-                this.props.updateReduxState({ isLoader:true });
+                this.props.updateReduxState({ isLoader: true });
               }}>Yes
               </button>
               <button className={"confirm__button"} onClick={onClose}>No</button>
@@ -103,15 +105,22 @@ class Main extends React.Component {
               <h1>Are you sure?</h1>
               <p>You want to delete all your points?</p>
               <button className={"confirm__button"} onClick={() => {
-                return services.deleteAllPoints()
-                  .then(() => {
-                    this.props.updateReduxState({ places: [], dangers: [] });
-                    this.props.updateStatistic();
-                    onClose();
-                  })
-                  .catch(() => {
-                    onClose();
-                  });
+                if (localStorage.windToken) {
+                  return services.deleteAllPoints()
+                    .then(() => {
+                      this.props.updateReduxState({ places: [], dangers: [] });
+                      this.props.updateStatistic();
+                      onClose();
+                    })
+                    .catch(() => {
+                      onClose();
+                    });
+                }
+                else {
+                  this.props.updateReduxState({ places: [], dangers: [] });
+                  this.props.updateStatistic();
+                  onClose();
+                }
               }}>Yes
               </button>
               <button className={"confirm__button"} onClick={onClose}>No</button>
@@ -132,18 +141,20 @@ class Main extends React.Component {
           <Popover content={'Remove all markers'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
             <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
           </Popover>
-          <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--notifications"
-                    onClick={this.openNotificationSettings}/>
-          </Popover>
+          {localStorage.windToken ?
+            <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+              <button className="map__navigation-btn map__navigation-btn--notifications"
+                      onClick={this.openNotificationSettings}/>
+            </Popover> : null}
           <Popover content={'Current/History'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
             <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
           </Popover>
-          <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
-              this.logout();
-            }}/>
-          </Popover>
+          {localStorage.windToken ?
+            <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+              <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
+                this.logout();
+              }}/>
+            </Popover> : null}
           <input className="map__navigation-range" type="range" id="start" name="size"
                  min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
         </div>

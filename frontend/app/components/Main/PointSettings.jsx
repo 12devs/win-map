@@ -31,19 +31,32 @@ class PointSettings extends React.Component {
   delMarker() {
     const { point, type } = this.props.info;
     const { id } = point;
-    return services.deletePoint({
-      [type]: { id },
-    })
-      .then(res => {
-        if (type === 'place') {
-          const places = this.props.places.filter(el => !(el.id === id));
-          this.props.updateReduxState({ places });
-        }
-        if (type === 'danger') {
-          const dangers = this.props.dangers.filter(el => !(el.id === id));
-          this.props.updateReduxState({ dangers });
-        }
-      });
+    if (localStorage.windToken) {
+      return services.deletePoint({
+        [type]: { id },
+      })
+        .then(res => {
+          if (type === 'place') {
+            const places = this.props.places.filter(el => !(el.id === id));
+            this.props.updateReduxState({ places });
+          }
+          if (type === 'danger') {
+            const dangers = this.props.dangers.filter(el => !(el.id === id));
+            this.props.updateReduxState({ dangers });
+          }
+        });
+    }
+    else {
+      if (type === 'place') {
+        const places = this.props.places.filter(el => !(el.id === id));
+        this.props.updateReduxState({ places });
+      }
+      if (type === 'danger') {
+        const dangers = this.props.dangers.filter(el => !(el.id === id));
+        this.props.updateReduxState({ dangers });
+      }
+    }
+
   };
 
   updatePoint() {
@@ -198,10 +211,8 @@ class PointSettings extends React.Component {
             onClick={this.goToMarker}>Go to marker
           </button>
           <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
-            this.delMarker()
-              .then(() => {
-                this.props.updateReduxState({ info: { point: null, type: null } });
-              });
+            this.delMarker();
+            this.props.updateReduxState({ info: { point: null, type: null } });
             return false;
           }}>Remove point
           </button>

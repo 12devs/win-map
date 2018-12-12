@@ -24,7 +24,7 @@ const getStationId = (location) => {
         return Station.update(info, { where: { station_id: info.station_id } })
           .then(res => {
             if (!res[0]) {
-              Station.create(info)
+              return Station.create(info)
             }
           })
           .then(() => {
