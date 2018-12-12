@@ -9,8 +9,10 @@ import SavePointSettings from './SavePointSettings';
 import { calcBoundsAll } from "./../../utils";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Popover } from 'antd';
+import { Popover, Slider } from 'antd';
 import 'antd/lib/popover/style/index.css';
+import 'antd/dist/antd.css';
+import UnauthorizationInfo from './UnauthorizationInfo';
 
 class Main extends React.Component {
   constructor() {
@@ -134,32 +136,40 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <div className="map__navigation">
+        <div className="map__navigation map__navigation_two">
+          <Slider className="map__navigation-range" id="start" name="size" defaultValue={0}
+                  style={{ width: '150px' }}
+                  onChange={(value) => this.props.updateReduxState({ scaleWind: value })}/>
+          {/* <input className="map__navigation-range" type="range" id="start" name="size"
+                  min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/> */}
           <Popover content={'View all markers'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--show-all" onClick={this.showAll}/>
+            <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--show-all"
+                    onClick={this.showAll}/>
           </Popover>
           <Popover content={'Remove all markers'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--delete-all" onClick={this.deleteAll}/>
+            <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--delete-all"
+                    onClick={this.deleteAll}/>
           </Popover>
           {localStorage.windToken ?
             <Popover content={'Notifications'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-              <button className="map__navigation-btn map__navigation-btn--notifications"
+              <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--notifications"
                       onClick={this.openNotificationSettings}/>
             </Popover> : null}
           <Popover content={'Current/History'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-            <button className="map__navigation-btn map__navigation-btn--mode" onClick={this.changeViewType}/>
+            <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--mode"
+                    onClick={this.changeViewType}/>
           </Popover>
-          {localStorage.windToken ?
-            <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
-              <button className="map__navigation-btn map__navigation-btn--logout" onClick={() => {
-                this.logout();
-              }}/>
-            </Popover> : null}
-          <input className="map__navigation-range" type="range" id="start" name="size"
-                 min="0" max="100" onChange={(e) => this.props.updateReduxState({ scaleWind: e.target.value })}/>
+        </div>
+        <div className="map__navigation" style={{ padding: 0 }}>
+          <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
+                  style={{ margin: 0 }} onClick={() => {
+            this.props.updateReduxState({ isLoader: true });
+            this.logout();
+          }}/>
         </div>
         <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
+        <UnauthorizationInfo open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <SavePointSettings/>
         <Map/>
       </div>

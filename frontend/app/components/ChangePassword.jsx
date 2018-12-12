@@ -33,7 +33,7 @@ class ChangePassword extends Component {
             this.setState({ isLoader: false });
             error ? this.setState({ error }) : this.setState({ error: message });
           } else {
-            return location.assign('/login');
+            return this.props.history.push('/login');
           }
         })
         .catch((error) => {
@@ -76,9 +76,7 @@ class ChangePassword extends Component {
         <div className="login">
           {isLoader ? <Loader/> :
             <div className="login__form">
-              <div className={"form_name"}>
-                Change password form
-              </div>
+              <div className={"form_name"}>Change password</div>
               <div>
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
@@ -88,14 +86,14 @@ class ChangePassword extends Component {
               </div>
               <div>
                 <label className="login__label" htmlFor="password">
-                  <input placeholder="New password" className="login__input" type="text"
+                  <input placeholder="New password" className="login__input" type="password"
                          style={{ color: password ? 'white' : null }}
                          onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
                 </label>
               </div>
               <div>
                 <label className="login__label" htmlFor="repeatPassword">
-                  <input placeholder="Repeat Password" className="login__input" type="text"
+                  <input placeholder="Repeat Password" className="login__input" type="password"
                          style={{ color: repeatPassword ? 'white' : null }}
                          onChange={(event) => this.setState({ repeatPassword: event.target.value })}
                          value={repeatPassword}/>
@@ -111,19 +109,15 @@ class ChangePassword extends Component {
               </div>
 
               <div className={"login__label"}>
-                <br/>
-                <div>Don't have an account?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
-                    this.setState({ isLoader: true });
-                    location.assign('/register');
-                  }}> You can register here.</a>
+                <div className="auth__link" onClick={() => {
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/register');
+                  }}>Don't have an account?
                 </div>
-                <br/>
-                <div>
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
-                    this.setState({ isLoader: true });
-                    location.assign('/login');
-                  }}> Come back</a>
+                <div className="auth__link" onClick={() => {
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/login');
+                  }}>Already have an account?
                 </div>
               </div>
             </div>}

@@ -33,7 +33,7 @@ class Login extends Component {
           error ? this.setState({ error }) : this.setState({ error: message });
         } else {
           localStorage.setItem('windToken', token);
-          location.assign('/main');
+          this.props.history.push('/main');
         }
       })
       .catch((error) => {
@@ -43,6 +43,7 @@ class Login extends Component {
 
   render() {
     const { login, password, showCode, email, code, error, isLoader } = this.state;
+
     if (showCode) {
       return (
         <div className="login">
@@ -70,9 +71,7 @@ class Login extends Component {
         <div className="login">
           {isLoader ? <Loader/> :
             <div className="login__form">
-              <div className={"form_name"}>
-                Login form
-              </div>
+              <div className="form_name">Sign in</div>
               <div>
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
@@ -87,7 +86,9 @@ class Login extends Component {
                          onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
                 </label>
               </div>
-              {error ? <div className="login__label" style={{ color: 'red' }}>{error}</div> : null}
+              {
+                error && <div className="login__label" style={{ color: 'red' }}>{error}</div>
+              }
               <div>
                 <button className="login__btn-submit" onClick={() => {
                   this.setState({ isLoader: true });
@@ -96,23 +97,16 @@ class Login extends Component {
                 </button>
               </div>
 
-              <div className={"login__label"}>
-                <br/>
-                <div>Don't have an account?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
+              <div className="login__label">
+                <div className="auth__link" onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/register');
-                  }}> You can
-                    register
-                    here.</a>
+                    this.props.history.push('/register');
+                  }}>Don't have an account?
                 </div>
-                <br/>
-                <div>Forgot your password?
-                  <a style={{ color: 'white' }} href={'#'} onClick={() => {
+                <div className="auth__link" onClick={() => {
                     this.setState({ isLoader: true });
-                    location.assign('/ChangePassword');
-                  }}> You can
-                    reset it here.</a>
+                    this.props.history.push('/ChangePassword');
+                  }}>Forgot your password?
                 </div>
               </div>
 

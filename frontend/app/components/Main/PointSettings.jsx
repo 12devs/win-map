@@ -148,74 +148,81 @@ class PointSettings extends React.Component {
           this.props.updateReduxState({ info: { point: null, type: null } });
         }}>
         </div>
-        <div className="point__data" style={{ backgroundColor: color }}>
-          {!this.state.editName ?
-            <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
-            <div>
-              <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
-                     onChange={(e) => {
-                       this.setState({ name: e.target.value });
-                     }}
-                     onKeyDown={e => {
-                       if (e.keyCode === 13) {
+        {/* <div className="point__data" style={{ backgroundColor: color }}> */}
+        <div className="point__data">
+          <div style={{ flex: 1, overflow: 'auto' }}>
+            {!this.state.editName ?
+              <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
+                       onChange={(e) => {
+                         this.setState({ name: e.target.value });
+                       }}
+                       onKeyDown={e => {
+                         if (e.keyCode === 13) {
+                           this.updatePoint();
+                         }
+                       }}
+                       onBlur={() => {
                          this.updatePoint();
-                       }
-                     }}
-                     onBlur={() => {
-                       this.updatePoint();
-                     }}
-                     autoFocus={true}
-              />
-            </div>
-          }
-          {!this.state.editDangerRadius ?
-            <div className="point__data-name"
-                 onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
-            <div>
-              <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
-                     placeholder="new Name" type="text" value={this.state.dangerRadius}
-                     onChange={(e) => {
-                       let valid;
-                       valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
-                       this.setState({ validDistance: valid, dangerRadius: e.target.value });
-                     }}
-                     onKeyDown={e => {
-                       if (e.keyCode === 13) {
-                         this.updatePoint();
-                       }
-                     }}
-                     onBlur={() => {
-                       this.updatePoint();
-                     }}
-                     autoFocus={true}
-              />
-            </div>
-          }
-          <div className="point__data-type">{type}</div>
-          <div onClick={() => this.updatePoint()}>
-            {type === 'place' ?
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab="Wind Rose Chart" key="1"><WindRoseChart point={point}/></Tabs.TabPane>
-                <Tabs.TabPane tab="Statistics info" key="2"><Stats point={point}/></Tabs.TabPane>
-              </Tabs> :
-              <WindRoseChart point={point}/>
+                       }}
+                       autoFocus={true}
+                />
+              </div>
             }
+            {!this.state.editDangerRadius ?
+              <div className={` ${point.dangerRadius && 'point__data-name'} `}
+                   onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
+                       placeholder="new Name" type="text" value={this.state.dangerRadius}
+                       onChange={(e) => {
+                         let valid;
+                         valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
+                         this.setState({ validDistance: valid, dangerRadius: e.target.value });
+                       }}
+                       onKeyDown={e => {
+                         if (e.keyCode === 13) {
+                           this.updatePoint();
+                         }
+                       }}
+                       onBlur={() => {
+                         this.updatePoint();
+                       }}
+                       autoFocus={true}
+                />
+              </div>
+            }
+            <div className={type === 'place' ? 'point__data-type-place' : 'point__data-type-danger'}/>
+            <div onClick={() => this.updatePoint()}>
+              {type === 'place' ?
+                <Tabs defaultActiveKey="1">
+                  <Tabs.TabPane tab="Wind Rose Chart" key="1"><WindRoseChart point={point}/></Tabs.TabPane>
+                  <Tabs.TabPane tab="Statistics info" key="2"><Stats point={point}/></Tabs.TabPane>
+                </Tabs> :
+                <WindRoseChart point={point}/>
+              }
+            </div>
+            <div className="point__data-text">Lat: {point.lat}</div>
+            <div className="point__data-text">Lng: {point.lng}</div>
+            <button className="point__data-btn-close" onClick={() => {
+              this.props.updateReduxState({ info: { point: null, type: null } });
+            }}/>
           </div>
-          <div className="point__data-text">Lat: {point.lat}</div>
-          <div className="point__data-text">Lng: {point.lng}</div>
-          <button className="point__data-btn-close" onClick={() => {
-            this.props.updateReduxState({ info: { point: null, type: null } });
-          }}/>
-          <button
-            className="point__data-btn-meta point__data-btn-meta--marker"
-            onClick={this.goToMarker}>Go to marker
-          </button>
-          <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
-            this.delMarker();
-            this.props.updateReduxState({ info: { point: null, type: null } });
-            return false;
-          }}>Remove point
-          </button>
+          <div>
+            <div className="point__data-buttons">
+              <button
+                className="point__data-btn-meta point__data-btn-meta--marker"
+                onClick={this.goToMarker}>Go to marker
+              </button>
+              <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
+                this.delMarker();
+                this.props.updateReduxState({ info: { point: null, type: null } });
+                return false;
+              }}>Remove point
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
