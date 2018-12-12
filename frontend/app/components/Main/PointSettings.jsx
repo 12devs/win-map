@@ -75,12 +75,12 @@ class PointSettings extends React.Component {
     if (dangerRadius) {
       point.dangerRadius = parseInt(dangerRadius, 10);
     }
-    return services.updatePoint({
-      [type]: point,
-    })
-      .then(res => {
-        if (type === 'place') {
-          let places = this.props.places.map(elem => {
+    if (localStorage.windToken) {
+      return services.updatePoint({
+        [type]: point,
+      })
+        .then(res => {
+          let markers = this.props[`${type}s`].map(elem => {
             if (elem.id === point.id) {
               if (name) {
                 elem.name = name;
@@ -91,23 +91,23 @@ class PointSettings extends React.Component {
             }
             return elem;
           });
-          this.props.updateReduxState({ places });
+          this.props.updateReduxState({ markers });
+        });
+    }
+    else {
+      let markers = this.props[`${type}s`].map(elem => {
+        if (elem.id === point.id) {
+          if (name) {
+            elem.name = name;
+          }
+          if (dangerRadius) {
+            elem.dangerRadius = parseInt(dangerRadius, 10);
+          }
         }
-        if (type === 'danger') {
-          let dangers = this.props.dangers.map(elem => {
-            if (elem.id === point.id) {
-              if (name) {
-                elem.name = name;
-              }
-              if (dangerRadius) {
-                elem.dangerRadius = parseInt(dangerRadius, 10);
-              }
-            }
-            return elem;
-          });
-          this.props.updateReduxState({ dangers });
-        }
+        return elem;
       });
+      this.props.updateReduxState({ markers });
+    }
   };
 
   goToMarker() {
