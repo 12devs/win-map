@@ -68,11 +68,15 @@ class NotificationSettings extends React.Component {
         </div>
 
         <div className="notification__settings-item notification__settings-item--title">
-          <span>Send notification to this device </span>
-          <Switch
-            onChange={this.changeDeviceSettings}
-            checked={this.state.checked}
-          />
+          <div className="notification__settings-block">
+            <span>Send notification to this device </span>
+            <Switch
+              height={20}
+              width={45}
+              onChange={this.changeDeviceSettings}
+              checked={this.state.checked}
+            />
+          </div>
           <button className="notification__btn notification__btn--save" onClick={this.handleClick}>Save</button>
         </div>
       </div>
