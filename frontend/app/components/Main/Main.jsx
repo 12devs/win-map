@@ -90,7 +90,7 @@ class Main extends React.Component {
               <p>You want to logout?</p>
               <button className={"confirm__button"} onClick={() => {
                 localStorage.setItem('windToken', '');
-                location.assign('/login');
+                location.assign('/main');
                 onClose();
                 this.props.updateReduxState({ isLoader: true });
               }}>Yes
