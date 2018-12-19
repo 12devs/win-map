@@ -6,6 +6,7 @@ import WindRoseChart from './WindRoseChart';
 import Stats from './Stats';
 import geolib from "geolib";
 import { Tabs } from 'antd';
+import { confirmAlert } from 'react-confirm-alert';
 
 const COMPONENTS = {
   WindRoseChart,
@@ -57,6 +58,29 @@ class PointSettings extends React.Component {
       }
     }
 
+  };
+
+  delAlert = () => {
+    confirmAlert({
+      customUI: par => {
+        const { onClose } = par;
+        return (
+          <div className={'confirm__alert'}>
+            <div style={{ margin: '50px' }}>
+              <h1>Are you sure?</h1>
+              <p>You want to remove marker?</p>
+              <button className={"confirm__button"} onClick={() => {
+                this.delMarker();
+                this.props.updateReduxState({ info: { point: null, type: null } });
+                onClose();
+              }}>Yes
+              </button>
+              <button className={"confirm__button"} onClick={onClose}>No</button>
+            </div>
+          </div>
+        );
+      },
+    });
   };
 
   updatePoint() {
@@ -216,9 +240,7 @@ class PointSettings extends React.Component {
                 onClick={this.goToMarker}>Go to marker
               </button>
               <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
-                this.delMarker();
-                this.props.updateReduxState({ info: { point: null, type: null } });
-                return false;
+                this.delAlert();
               }}>Remove point
               </button>
             </div>
