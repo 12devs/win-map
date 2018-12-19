@@ -28,7 +28,7 @@ class WindRose extends React.Component {
     return (
       <div>
         {arr.map((direction, i) => {
-          return (<SectorPolygon key={i} color="purple" point={point} dist={history[direction] * k}
+          return (<SectorPolygon simple={true} key={i} color="purple" point={point} dist={history[direction] * k}
                                  direction={direction}/>)
         })}
       </div>

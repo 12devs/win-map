@@ -2,7 +2,7 @@ import React from 'react';
 import { Polygon } from 'react-leaflet';
 import { connect } from 'react-redux';
 import actions from './../../actions';
-import { getPolygon, getArrMinMaxCount } from './../../utils';
+import { getPolygon, getArrMinMaxCount, getOnePolygon } from './../../utils';
 
 class SectorPolygon extends React.Component {
   constructor() {
@@ -29,6 +29,19 @@ class SectorPolygon extends React.Component {
       const angles = getArrMinMaxCount(0, 12.5, 10);
       const dists = getArrMinMaxCount(0, dist, 10);
       try {
+        if(this.props.simple){
+          const positions = getOnePolygon(point, dist, direction);
+          console.log(positions);
+          return (
+            <Polygon
+              color="#5F57CA"
+              weight={1}
+              // fill={false}
+              positions={positions}
+              fillOpacity={0.5}
+            />
+          )
+        }
         return (
           <div>
             {angles.map((angle, i) => {

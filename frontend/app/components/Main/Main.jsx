@@ -169,13 +169,13 @@ class Main extends React.Component {
 
         <div className="map__navigation" style={{ padding: 0 }}>
           {localStorage.windToken ?
-            <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <Popover content={'Logout'} placement="bottom" mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
               <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
                       style={{ margin: 0 }} onClick={() => {
                 this.logout();
               }}/>
             </Popover> :
-            <Popover content={'Login'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+            <Popover content={'Login'} placement="bottom" mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
               <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
                       style={{ margin: 0 }} onClick={() => {
                 this.props.history.push('/login');

@@ -87,6 +87,21 @@ const computeDestinationPoint = (start, distance, bearing) => {
   };
 };
 
+const getOnePolygon = (point, dist, direction) => {
+  const result = [{ lat: point.lat, lng: point.lng }];
+  const dir =sectors[direction];
+  if (dir || dir === 0) {
+    [getCorrectDirection(dir-11.25), getCorrectDirection(dir+11.25)].forEach(bearing => {
+      const p = computeDestinationPoint(point, dist, bearing);
+      result.push({
+        lat: p.lat,
+        lng: p.lng,
+      })
+    });
+  }
+  return result
+};
+
 const getPolygon = (point, dist, direction, a) => {
   direction = sectors[direction];
   if (!direction && direction !== 0) {
@@ -129,5 +144,6 @@ export {
   getCorrectDirection,
   computeDestinationPoint,
   getPolygon,
+  getOnePolygon,
 }
 
