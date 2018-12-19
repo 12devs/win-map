@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import services from "./../services";
 import Loader from './Loader';
+import connect from 'react-redux/es/connect/connect';
+import actions from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class Login extends Component {
 
   login = () => {
     const { login, password, code } = this.state;
+    const { places, dangers } = this.props;
     return services.login({ login, password, code })
       .then(res => {
         const { message, email, error, token } = res;
@@ -31,9 +34,12 @@ class Login extends Component {
         if (message !== 'OK') {
           this.setState({ isLoader: false });
           error ? this.setState({ error }) : this.setState({ error: message });
-        } else {
+        }
+        else {
           localStorage.setItem('windToken', token);
-          this.props.history.push('/main');
+          return services.addPoints({ places, dangers }).then(res => {
+            return this.props.history.push('/main');
+          });
         }
       })
       .catch((error) => {
@@ -99,14 +105,14 @@ class Login extends Component {
 
               <div className="login__label">
                 <div className="auth__link" onClick={() => {
-                    this.setState({ isLoader: true });
-                    this.props.history.push('/register');
-                  }}>Don't have an account?
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/register');
+                }}>Don't have an account?
                 </div>
                 <div className="auth__link" onClick={() => {
-                    this.setState({ isLoader: true });
-                    this.props.history.push('/ChangePassword');
-                  }}>Forgot your password?
+                  this.setState({ isLoader: true });
+                  this.props.history.push('/ChangePassword');
+                }}>Forgot your password?
                 </div>
               </div>
 
@@ -117,5 +123,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Login);
 

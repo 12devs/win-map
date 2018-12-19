@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker } from 'react-leaflet';
+import { Marker, Tooltip } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -65,6 +65,7 @@ class UserPlace extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>
+        <Tooltip><span>{this.props.point.name}</span></Tooltip>
       </Marker>
     );
   }

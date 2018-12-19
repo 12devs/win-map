@@ -9,5 +9,6 @@ route.post('/delete', point.deletePoint);
 route.post('/deleteAllPoints', point.deleteAllPoints);
 route.post('/move', point.movePoint);
 route.post('/update', point.update);
+route.post('/add', point.addMarkers);
 
 export default route;

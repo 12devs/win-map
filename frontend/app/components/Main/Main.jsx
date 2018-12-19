@@ -166,13 +166,24 @@ class Main extends React.Component {
                     onClick={this.changeViewType}/>
           </Popover>
         </div>
+
         <div className="map__navigation" style={{ padding: 0 }}>
-          <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
-                  style={{ margin: 0 }} onClick={() => {
-            this.props.updateReduxState({ isLoader: true });
-            this.logout();
-          }}/>
+          {localStorage.windToken ?
+            <Popover content={'Logout'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+              <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
+                      style={{ margin: 0 }} onClick={() => {
+                this.props.updateReduxState({ isLoader: true });
+                this.logout();
+              }}/>
+            </Popover> :
+            <Popover content={'Login'} mouseLeaveDelay={0.1} mouseEnterDelay={0.3}>
+              <button className="map__navigation-btn map__navigation-btn-border map__navigation-btn--logout"
+                      style={{ margin: 0 }} onClick={() => {
+                this.props.history.push('/login');
+              }}/>
+            </Popover>}
         </div>
+
         <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         {!localStorage.windToken && <UnauthorizationInfo open={this.state.isUnathInfo} close={this.closeUnauthInfo}/>}
