@@ -31,19 +31,32 @@ class PointSettings extends React.Component {
   delMarker() {
     const { point, type } = this.props.info;
     const { id } = point;
-    return services.deletePoint({
-      [type]: { id },
-    })
-      .then(res => {
-        if (type === 'place') {
-          const places = this.props.places.filter(el => !(el.id === id));
-          this.props.updateReduxState({ places });
-        }
-        if (type === 'danger') {
-          const dangers = this.props.dangers.filter(el => !(el.id === id));
-          this.props.updateReduxState({ dangers });
-        }
-      });
+    if (localStorage.windToken) {
+      return services.deletePoint({
+        [type]: { id },
+      })
+        .then(res => {
+          if (type === 'place') {
+            const places = this.props.places.filter(el => !(el.id === id));
+            this.props.updateReduxState({ places });
+          }
+          if (type === 'danger') {
+            const dangers = this.props.dangers.filter(el => !(el.id === id));
+            this.props.updateReduxState({ dangers });
+          }
+        });
+    }
+    else {
+      if (type === 'place') {
+        const places = this.props.places.filter(el => !(el.id === id));
+        this.props.updateReduxState({ places });
+      }
+      if (type === 'danger') {
+        const dangers = this.props.dangers.filter(el => !(el.id === id));
+        this.props.updateReduxState({ dangers });
+      }
+    }
+
   };
 
   updatePoint() {
@@ -62,12 +75,12 @@ class PointSettings extends React.Component {
     if (dangerRadius) {
       point.dangerRadius = parseInt(dangerRadius, 10);
     }
-    return services.updatePoint({
-      [type]: point,
-    })
-      .then(res => {
-        if (type === 'place') {
-          let places = this.props.places.map(elem => {
+    if (localStorage.windToken) {
+      return services.updatePoint({
+        [type]: point,
+      })
+        .then(res => {
+          let markers = this.props[`${type}s`].map(elem => {
             if (elem.id === point.id) {
               if (name) {
                 elem.name = name;
@@ -78,23 +91,23 @@ class PointSettings extends React.Component {
             }
             return elem;
           });
-          this.props.updateReduxState({ places });
+          this.props.updateReduxState({ markers });
+        });
+    }
+    else {
+      let markers = this.props[`${type}s`].map(elem => {
+        if (elem.id === point.id) {
+          if (name) {
+            elem.name = name;
+          }
+          if (dangerRadius) {
+            elem.dangerRadius = parseInt(dangerRadius, 10);
+          }
         }
-        if (type === 'danger') {
-          let dangers = this.props.dangers.map(elem => {
-            if (elem.id === point.id) {
-              if (name) {
-                elem.name = name;
-              }
-              if (dangerRadius) {
-                elem.dangerRadius = parseInt(dangerRadius, 10);
-              }
-            }
-            return elem;
-          });
-          this.props.updateReduxState({ dangers });
-        }
+        return elem;
       });
+      this.props.updateReduxState({ markers });
+    }
   };
 
   goToMarker() {
@@ -142,45 +155,45 @@ class PointSettings extends React.Component {
               <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
-                      onChange={(e) => {
-                        this.setState({ name: e.target.value });
-                      }}
-                      onKeyDown={e => {
-                        if (e.keyCode === 13) {
-                          this.updatePoint();
-                        }
-                      }}
-                      onBlur={() => {
-                        this.updatePoint();
-                      }}
-                      autoFocus={true}
+                       onChange={(e) => {
+                         this.setState({ name: e.target.value });
+                       }}
+                       onKeyDown={e => {
+                         if (e.keyCode === 13) {
+                           this.updatePoint();
+                         }
+                       }}
+                       onBlur={() => {
+                         this.updatePoint();
+                       }}
+                       autoFocus={true}
                 />
               </div>
             }
             {!this.state.editDangerRadius ?
               <div className={` ${point.dangerRadius && 'point__data-name'} `}
-                  onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
+                   onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
-                      placeholder="new Name" type="text" value={this.state.dangerRadius}
-                      onChange={(e) => {
-                        let valid;
-                        valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
-                        this.setState({ validDistance: valid, dangerRadius: e.target.value });
-                      }}
-                      onKeyDown={e => {
-                        if (e.keyCode === 13) {
-                          this.updatePoint();
-                        }
-                      }}
-                      onBlur={() => {
-                        this.updatePoint();
-                      }}
-                      autoFocus={true}
+                       placeholder="new Name" type="text" value={this.state.dangerRadius}
+                       onChange={(e) => {
+                         let valid;
+                         valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
+                         this.setState({ validDistance: valid, dangerRadius: e.target.value });
+                       }}
+                       onKeyDown={e => {
+                         if (e.keyCode === 13) {
+                           this.updatePoint();
+                         }
+                       }}
+                       onBlur={() => {
+                         this.updatePoint();
+                       }}
+                       autoFocus={true}
                 />
               </div>
             }
-            <div className={type === 'place' ? 'point__data-type-place' : 'point__data-type-danger'} />
+            <div className={type === 'place' ? 'point__data-type-place' : 'point__data-type-danger'}/>
             <div onClick={() => this.updatePoint()}>
               {type === 'place' ?
                 <Tabs defaultActiveKey="1">
@@ -203,10 +216,8 @@ class PointSettings extends React.Component {
                 onClick={this.goToMarker}>Go to marker
               </button>
               <button className="point__data-btn-meta point__data-btn-meta--remove" onClick={() => {
-                this.delMarker()
-                  .then(() => {
-                    this.props.updateReduxState({ info: { point: null, type: null } });
-                  });
+                this.delMarker();
+                this.props.updateReduxState({ info: { point: null, type: null } });
                 return false;
               }}>Remove point
               </button>

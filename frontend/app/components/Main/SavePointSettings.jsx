@@ -35,7 +35,36 @@ class SavePointSettings extends React.Component {
     if (lngCorrect < -180) {
       lngCorrect += 360;
     }
-    return services.savePoint({
+    if (localStorage.windToken) {
+      return services.savePoint({
+        [key]: {
+          lat: latlng.lat,
+          lng: lngCorrect,
+          name
+        },
+        stations: [...this.props.stations]
+      })
+        .then(res => {
+          const { danger, place } = res;
+          let places = this.props.places;
+          let dangers = this.props.dangers;
+          let stationsData = this.props.stationsData;
+          const stations = this.props.stations;
+          stationsData = { ...stationsData, ...res.stationsData };
+          if (danger) {
+            dangers.push(danger);
+          }
+          if (place) {
+            places.push(place);
+          }
+          stations.push(...Object.keys((res.stationsData || {})));
+          this.props.updateReduxState({ places, dangers, stationsData, stations });
+          this.props.updateReduxState({ savePointSettings: { show: false } });
+          this.setState({ markerType: '', error: '' });
+          this.props.updateReduxState({ info: { point: res[key], type: key }, isLoader: false });
+        });
+    }
+    return services.pointInfo({
       [key]: {
         lat: latlng.lat,
         lng: lngCorrect,
@@ -51,10 +80,10 @@ class SavePointSettings extends React.Component {
         const stations = this.props.stations;
         stationsData = { ...stationsData, ...res.stationsData };
         if (danger) {
-          dangers.push(danger);
+          dangers = [...dangers, danger];
         }
         if (place) {
-          places.push(place);
+          places = [...places, place];
         }
         stations.push(...Object.keys((res.stationsData || {})));
         this.props.updateReduxState({ places, dangers, stationsData, stations });

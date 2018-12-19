@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker } from 'react-leaflet';
+import { Marker, Tooltip } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -13,7 +13,7 @@ class Danger extends React.Component {
     this.updatePosition = this.updatePosition.bind(this);
   }
 
-  updatePosition(id, e) {
+  updatePosition(point, e) {
     let { lat, lng } = e.target._latlng;
     let lngCorrect = lng;
     lngCorrect = lngCorrect % 360;
@@ -23,12 +23,28 @@ class Danger extends React.Component {
     if (lngCorrect < -180) {
       lngCorrect += 360;
     }
-    return services.movePoint({
-      danger: { lat, lng: lngCorrect, id, },
+    if (localStorage.windToken) {
+      return services.movePoint({
+        danger: { lat, lng: lngCorrect, id: point.id, },
+        stations: [...this.props.stations]
+      })
+        .then(res => {
+          const dangers = this.props.dangers.filter(el => !(el.id === point.id));
+          dangers.push(res.danger);
+          let stationsData = this.props.stationsData;
+          const stations = this.props.stations;
+          stationsData = { ...stationsData, ...(res.stationsData || {}) };
+          stations.push(...Object.keys((res.stationsData || {})));
+          this.props.updateReduxState({ dangers, stations, stationsData });
+          this.props.updateStatistic();
+        });
+    }
+    return services.movePointUnathorization({
+      danger: { lat, lng: lngCorrect, id: point.id, name: point.name, dangerRadius: point.dangerRadius },
       stations: [...this.props.stations]
     })
       .then(res => {
-        const dangers = this.props.dangers.filter(el => !(el.id === id));
+        const dangers = this.props.dangers.filter(el => !(el.id === point.id));
         dangers.push(res.danger);
         let stationsData = this.props.stationsData;
         const stations = this.props.stations;
@@ -45,19 +61,19 @@ class Danger extends React.Component {
       <div><Marker
         draggable={true}
         onDragend={(e) => {
-          this.updatePosition(this.props.point.id, e);
+          this.updatePosition(this.props.point, e);
         }}
         onClick={() => {
-          this.props.updateReduxState({info:{ point: this.props.point, type: 'danger' }});
+          this.props.updateReduxState({ info: { point: this.props.point, type: 'danger' } });
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
       </Marker>
         {(() => {
           if (viewType === "Current") {
-            return <SectorPolygon point={this.props.point}/>
+            return <SectorPolygon point={this.props.point}/>;
           } else {
-            return <WindRose point={this.props.point}/>
+            return <WindRose point={this.props.point}/>;
           }
         })()}
       </div>);

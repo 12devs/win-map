@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker } from 'react-leaflet';
+import { Marker, Tooltip } from 'react-leaflet';
 import services from '../../../services/index';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -11,7 +11,7 @@ class UserPlace extends React.Component {
     this.updatePosition = this.updatePosition.bind(this);
   }
 
-  updatePosition(id, e) {
+  updatePosition(point, e) {
     let { lat, lng } = e.target._latlng;
     let lngCorrect = lng;
     lngCorrect = lngCorrect % 360;
@@ -21,19 +21,34 @@ class UserPlace extends React.Component {
     if (lngCorrect < -180) {
       lngCorrect += 360;
     }
-
-    return services.movePoint({
-      place: {lat, lng: lngCorrect, id},
+    if (localStorage.windToken) {
+      return services.movePoint({
+        place: { lat, lng: lngCorrect, id: point.id },
+        stations: [...this.props.stations]
+      })
+        .then(res => {
+          const places = this.props.places.filter(el => !(el.id === point.id));
+          places.push(res.place);
+          let stationsData = this.props.stationsData;
+          const stations = this.props.stations;
+          stationsData = { ...stationsData, ...res.stationsData };
+          stations.push(...Object.keys((res.stationsData || {})));
+          this.props.updateReduxState({ places, stationsData, stations });
+          this.props.updateStatistic();
+        });
+    }
+    return services.movePointUnathorization({
+      place: { lat, lng: lngCorrect, id: point.id, name: point.name },
       stations: [...this.props.stations]
     })
       .then(res => {
-        const places = this.props.places.filter(el => !(el.id === id));
+        const places = this.props.places.filter(el => !(el.id === point.id));
         places.push(res.place);
         let stationsData = this.props.stationsData;
         const stations = this.props.stations;
-        stationsData = {...stationsData, ...res.stationsData};
+        stationsData = { ...stationsData, ...(res.stationsData || {}) };
         stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({places, stationsData, stations});
+        this.props.updateReduxState({ places, stations, stationsData });
         this.props.updateStatistic();
       });
   };
@@ -43,10 +58,10 @@ class UserPlace extends React.Component {
       <Marker
         draggable={true}
         onDragend={(e) => {
-          this.updatePosition(this.props.point.id, e);
+          this.updatePosition(this.props.point, e);
         }}
         onClick={() => {
-          this.props.updateReduxState({info: {point: this.props.point, type:'place'}});
+          this.props.updateReduxState({ info: { point: this.props.point, type: 'place' } });
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={blueIcon}>

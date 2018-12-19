@@ -24,6 +24,8 @@ class MyMap extends React.Component {
     return (
       <div style={{ height: '100%' }}>
         <Map
+          maxZoom={17}
+          minZoom={1}
           onViewportChanged={(e) => {
             console.log(e);
             const { zoom } = e;
@@ -65,7 +67,7 @@ class MyMap extends React.Component {
                   attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                   url='https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}'
                   minZoom={0}
-                  maxZoom={18}
+                  maxZoom={17}
                   ext='png'
                 />
               </LayerGroup>

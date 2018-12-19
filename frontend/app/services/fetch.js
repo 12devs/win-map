@@ -54,7 +54,8 @@ const postPutDelete = (url, method, body) => {
     })
     .catch(err => {
       if (err.response.statusText === 'Unauthorized') {
-        location.assign('/login')
+        console.log('Unauthorized');
+        // location.assign('/login')
       } else {
         return err.response.data;
       }

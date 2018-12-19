@@ -2,7 +2,6 @@ import { Point, Account, Danger, Place, Subscription, Notification, Station } fr
 import { getStationId, getHistoricalData, getDailyHistoricalData, getCurrenData } from '../api/wind';
 import getWindRoseData from '../api/windRoseParses';
 import _ from 'lodash';
-import BluebirdPromise from 'bluebird';
 
 const getNotificationSettings = async (userId) => {
   const query = {
@@ -26,7 +25,7 @@ const getNotificationSettings = async (userId) => {
       acc[place_id].danger.push({
         value: danger_id,
         label: danger.name,
-      })
+      });
     } else {
       acc[place_id] = {
         place: {
@@ -37,13 +36,13 @@ const getNotificationSettings = async (userId) => {
           value: danger_id,
           label: danger.name,
         }]
-      }
+      };
     }
-    return acc
+    return acc;
   }, {});
   const notificationSettings = [];
   for (let key in temp) {
-    notificationSettings.push(temp[key])
+    notificationSettings.push(temp[key]);
   }
   return notificationSettings;
 };
@@ -59,8 +58,8 @@ const getStationsData = async (stations) => {
           },
           history: {},
           period: 0,
-        }
-      })
+        };
+      });
   });
   const promisesHistorical = stations.map(elem => getWindRoseData(elem.lat, elem.lng));
   const stsData = await Promise.all(promises);
@@ -83,10 +82,10 @@ const getPlacesDangersStationsDataStations = async (userId) => {
           station_id: elem.station_id,
           lat: elem.lat,
           lng: elem.lng,
-        }
+        };
       });
       const stationsData = await getStationsData(stations);
-      return { places, dangers, stationsData, stations }
+      return { places, dangers, stationsData, stations };
     });
 };
 
@@ -142,13 +141,13 @@ export default {
           const { places, dangers, stationsData, stations } = result[0];
           const notifications = result[1];
           const notificationSettings = result[2];
-          return { places, dangers, stations, stationsData, notificationSettings, notifications }
+          return { places, dangers, stations, stationsData, notificationSettings, notifications };
         });
 
-      res.status(200).json({ places, dangers, stations, stationsData, notificationSettings, notifications })
+      res.status(200).json({ places, dangers, stations, stationsData, notificationSettings, notifications });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   },
 
@@ -158,14 +157,14 @@ export default {
       if (danger) {
         await Danger.destroy({ where: { id: danger.id } });
         await Subscription.destroy({ where: { danger_id: danger.id } });
-        res.status(200).json({ message: danger.id + ' successful deleted' })
+        res.status(200).json({ message: danger.id + ' successful deleted' });
       } else {
         await Place.destroy({ where: { id: place.id } });
         await Subscription.destroy({ where: { place_id: place.id } });
-        res.status(200).json({ message: place.id + ' successful deleted' })
+        res.status(200).json({ message: place.id + ' successful deleted' });
       }
     } catch (err) {
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   },
 
@@ -176,9 +175,9 @@ export default {
       await Danger.destroy({ where: { account_id: userId } });
       await Place.destroy({ where: { account_id: userId } });
 
-      res.status(200).json({ message: 'All points were successful deleted' })
+      res.status(200).json({ message: 'All points were successful deleted' });
     } catch (err) {
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   },
 
@@ -191,9 +190,30 @@ export default {
       if (danger) {
         await Danger.update({ name: danger.name, dangerRadius: danger.dangerRadius }, { where: { id: danger.id } });
       }
-      res.status(200).json({ message: 'Successful updated' })
+      res.status(200).json({ message: 'Successful updated' });
     } catch (err) {
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
+    }
+  },
+
+  async addMarkers(req, res) {
+    try {
+      const { dangers, places } = req.body;
+      const { user } = req;
+
+      dangers.length && dangers.forEach(async el => {
+        el.account_id = user.id;
+        await Danger.create(el);
+      });
+
+      places.length && places.forEach(async el => {
+        el.account_id = user.id;
+        await Place.create(el);
+      });
+
+      return res.status(200).json({ message: 'Successful added' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
   },
 
@@ -214,9 +234,9 @@ export default {
             station_id: savedDanger.station_id,
             lat: savedDanger.lat,
             lng: savedDanger.lng
-          }])
+          }]);
         }
-        res.status(200).json({ danger: savedDanger, stationsData })
+        res.status(200).json({ danger: savedDanger, stationsData });
       } else {
         const { lat, lng } = place;
         place.station_id = await getStationId({ lat, lng });
@@ -229,11 +249,11 @@ export default {
             lng: savedPlace.lng
           }]);
         }
-        res.status(200).json({ place: savedPlace, stationsData })
+        res.status(200).json({ place: savedPlace, stationsData });
       }
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: err.message })
+      return res.status(500).json({ error: err.message });
     }
   }
-}
+};
