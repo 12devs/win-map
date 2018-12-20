@@ -4,6 +4,9 @@ import actions from './../../actions';
 import services from "./../../services";
 import { Menu, Icon } from 'antd';
 import '../../assets/sass/components/_menu.scss';
+import { confirmAlert } from 'react-confirm-alert';
+
+const markerLimit = 50;
 
 class SavePointSettings extends React.Component {
   constructor(props) {
@@ -16,10 +19,33 @@ class SavePointSettings extends React.Component {
     this.addMarker = this.addMarker.bind(this);
   }
 
+  maxPointsAlert = () => {
+    confirmAlert({
+      customUI: par => {
+        const { onClose } = par;
+        return (
+          <div className={'confirm__alert'}>
+            <div style={{ margin: '50px' }}>
+              <h1>Marker limit!</h1>
+              <p>{`You have exceeded the limit of ${markerLimit} markers`}</p>
+              <button className={"confirm__button"} onClick={onClose}>Ok</button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   addMarker(markerType) {
     const { latlng } = this.props.savePointSettings;
+    const { places, dangers } = this.props;
     const { name } = this.state;
     let key;
+
+    if ((places.length + dangers.length) > markerLimit) {
+      this.props.updateReduxState({ isLoader: false });
+      return this.maxPointsAlert();
+    }
 
     if (markerType === 'Danger') {
       key = 'danger';
@@ -95,7 +121,6 @@ class SavePointSettings extends React.Component {
 
   render() {
     const { show, containerPoint } = this.props.savePointSettings;
-    const { isLoader } = this.props;
     if (!show) {
       return null;
     }
