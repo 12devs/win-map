@@ -115,7 +115,7 @@ class PointSettings extends React.Component {
             }
             return elem;
           });
-          this.props.updateReduxState({ markers });
+          this.props.updateReduxState({ [`${type}s`]: markers });
         });
     }
     else {
@@ -130,7 +130,7 @@ class PointSettings extends React.Component {
         }
         return elem;
       });
-      this.props.updateReduxState({ markers });
+      this.props.updateReduxState({ [`${type}s`]: markers });
     }
   };
 

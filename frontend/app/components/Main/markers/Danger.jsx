@@ -68,6 +68,7 @@ class Danger extends React.Component {
         }}
         position={[this.props.point.lat, this.props.point.lng]}
         icon={redIcon}>
+        <Tooltip><span>{this.props.point.name}</span></Tooltip>
       </Marker>
         {(() => {
           if (viewType === "Current") {
