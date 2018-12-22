@@ -28,8 +28,7 @@ class WindRoseChart extends React.Component {
 
   newChart() {
     try {
-      const data = this.props.stationsData[this.props.point.station_id].windRoseData;
-      console.log(data);
+      const data = JSON.parse(JSON.stringify(this.props.stationsData[this.props.point.station_id].windRoseData));
       data.exporting.buttons.contextButton.theme = {
         fill: '#F8C845',
         // stroke: '#F8C845',

@@ -3,6 +3,7 @@ import services from "./../services";
 import Loader from './Loader';
 import connect from 'react-redux/es/connect/connect';
 import actions from '../actions';
+import Password from "./Password";
 
 class Login extends Component {
   constructor(props) {
@@ -57,9 +58,15 @@ class Login extends Component {
             <div className="login__form">
               <div>
                 <label className="login__label" htmlFor="code">
-                  <input placeholder={`code from ${email}`} className="login__input" type="text"
-                         onChange={(event) => this.setState({ code: event.target.value })} value={code}
-                         onKeyUp={(e)=> {console.log(e)}}
+                  <input
+                    placeholder={`code from ${email}`}
+                    className="login__input"
+                    type="text"
+                    onChange={(event) => this.setState({ code: event.target.value })}
+                    value={code}
+                    onKeyUp={(e) => {
+                      console.log(e)
+                    }}
                   />
                 </label>
               </div>
@@ -89,15 +96,8 @@ class Login extends Component {
                   />
                 </label>
               </div>
-              <div>
-                <label className="login__label" htmlFor="password">
-                  <input placeholder="Password" className="login__input" type="password"
-                         style={{ color: password ? 'white' : null }}
-                         onChange={(event) => this.setState({ password: event.target.value })} value={password}
-                         onKeyUp={(e)=> e.keyCode === 13 && this.login()}
-                  />
-                </label>
-              </div>
+
+              <Password value={password} parentStateKey={'password'} parent={this} placeholder={'Password'}/>
               {
                 error && <div className="login__label" style={{ color: 'red' }}>{error}</div>
               }

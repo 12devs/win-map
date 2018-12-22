@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import services from "./../services";
 import Loader from './Loader';
+import Password from "./Password";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -84,21 +85,9 @@ class ChangePassword extends Component {
                          onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
                 </label>
               </div>
-              <div>
-                <label className="login__label" htmlFor="password">
-                  <input placeholder="New password" className="login__input" type="password"
-                         style={{ color: password ? 'white' : null }}
-                         onChange={(event) => this.setState({ password: event.target.value })} value={password}/>
-                </label>
-              </div>
-              <div>
-                <label className="login__label" htmlFor="repeatPassword">
-                  <input placeholder="Repeat Password" className="login__input" type="password"
-                         style={{ color: repeatPassword ? 'white' : null }}
-                         onChange={(event) => this.setState({ repeatPassword: event.target.value })}
-                         value={repeatPassword}/>
-                </label>
-              </div>
+              <Password value={password} parentStateKey={'password'} parent={this} placeholder={'Password'}/>
+              <Password value={repeatPassword} parentStateKey={'repeatPassword'} parent={this} placeholder={'Repeat Password'}/>
+
               {error ? <div className="login__label" style={{ color: 'red' }}> {error}</div> : null}
               <div>
                 <button className="login__btn-submit" onClick={() => {
