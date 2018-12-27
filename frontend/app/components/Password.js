@@ -27,12 +27,12 @@ class Password extends Component {
     return (
       <div>
         <label className="login__label" htmlFor="password">
-            <input placeholder={placeholder} className="login__input__password" type={inputType}
+            <input placeholder={placeholder} className="login__input" type={inputType}
                    style={{ color: value ? 'white' : null }}
                    onChange={(event) => parent.setState({ [parentStateKey]: event.target.value })} value={value}
                    onKeyUp={(e) => e.keyCode === 13 && parent.login()}>
             </input>
-            <input readOnly className={`login__input__password__button ${buttonClass}`} onClick={()=>this.setState({hide: !this.state.hide})}/>
+            <span className={`login__input__password__button ${buttonClass}`} onClick={()=>this.setState({hide: !this.state.hide})}/>
         </label>
       </div>
     )
