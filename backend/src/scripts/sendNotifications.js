@@ -91,6 +91,15 @@ const sendMessage = (options) => {
   return sendNotification(opt)
 };
 
+const welcomeMessage = (include_player_ids) => {
+  const options = {
+    message: "Welcome to wind-map",
+    tokens: include_player_ids
+  };
+  return sendMessage(options);
+};
+
 export {
   sendNotifications,
+  welcomeMessage,
 }

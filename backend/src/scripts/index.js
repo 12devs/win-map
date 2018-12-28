@@ -12,8 +12,6 @@ const createAndSendNotifications = () => {
     })
 };
 
-export {
-  createAndSendNotifications
+export default {
+  createAndSendNotifications,
 }
-
-createAndSendNotifications();

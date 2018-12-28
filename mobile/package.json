@@ -20,7 +20,7 @@
     "react-native-highcharts": "^1.0.2",
     "react-native-maps": "^0.22.0",
     "react-native-multiple-select": "^0.4.4",
-    "react-native-onesignal": "^3.2.8",
+    "react-native-onesignal": "^3.2.12",
     "react-native-router-flux": "^4.0.5",
     "react-native-sectioned-multi-select": "^0.6.2",
     "react-native-simple-radio-button": "^2.7.3",
