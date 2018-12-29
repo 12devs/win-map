@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Polygon } from 'react-native-maps';
-import { getPolygon } from './../utils';
+import { getPolygon } from '../utils/utils';
 import { View } from "react-native";
 
 

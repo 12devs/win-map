@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions, Keyboard, 
 import actions from '../../actions/index';
 import { connect } from "react-redux";
 import services from '../../services/index';
-import { calcMapRegionOne } from '../../utils';
+import { calcMapRegionOne } from '../../utils/utils';
 import { SearchBar, ListItem } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('window');
@@ -19,13 +19,10 @@ class Search extends Component {
     this.onSelectedItemsChange = this.onSelectedItemsChange.bind(this);
   }
 
-  componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-  }
-
   handleBackPress = () => {
     if (this.state.items) {
       this.setState({ items: [] });
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
       return true;
     }
     else
@@ -34,6 +31,7 @@ class Search extends Component {
 
   onChange = selectedItems => {
     if (selectedItems.length > 1) {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
       return services.search(selectedItems).then(res => {
         const places = res.data.map((el, id) => {
           const { display_name, lat, lon } = el;

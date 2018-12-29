@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import actions from "../../actions/index";
 import { connect } from "react-redux";
-import { calcMapRegionAll } from '../../utils';
+import { calcMapRegionAll } from '../../utils/utils';
 import icons from '../icons';
 import service from '../../services';
 

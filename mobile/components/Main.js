@@ -4,7 +4,8 @@ import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
 import services from "../services/index";
-import { calcMapRegionAll } from '../utils';
+import { calcMapRegionAll } from '../utils/utils';
+import Loader from './Loader';
 
 const { width } = Dimensions.get('window');
 
@@ -17,6 +18,12 @@ function MiniOfflineSign() {
 }
 
 class Main extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoad: true,
+    };
+  }
 
   componentDidMount = () => {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
@@ -31,9 +38,11 @@ class Main extends Component {
             res.mapRegion = mapRegion;
           }
           this.props.updateReduxState({ ...res, isGetMainData: true });
+          this.setState({ isLoad: false });
           return this.props.updateStatistic();
         });
     }
+    return this.setState({ isLoad: false });
   };
 
   componentWillUnmount() {
@@ -53,12 +62,14 @@ class Main extends Component {
     if (!isConnected) {
       return <MiniOfflineSign/>;
     }
-    else
-      return (
-        <View style={styles.container}>
-          <Map style={styles.map} navigation={this.props.navigation}/>
-        </View>
-      );
+    if (this.state.isLoad) {
+      return <Loader size='large' color='#3D6DCC'/>;
+    }
+    return (
+      <View style={styles.container}>
+        <Map style={styles.map} navigation={this.props.navigation}/>
+      </View>
+    );
   }
 }
 

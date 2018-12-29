@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { calcMapRegionOne } from '../utils';
+import { calcMapRegionOne } from '../utils/utils';
 import {
   View,
   Text,

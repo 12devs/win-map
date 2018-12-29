@@ -6,6 +6,7 @@ import { createStore } from "redux";
 
 import OneSignal from 'react-native-onesignal';
 import { Alert, BackHandler } from 'react-native';
+import {exitAppPressed} from './utils/backHandler'
 
 const store = createStore(reducer);
 
@@ -56,7 +57,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.backPressed);
+    BackHandler.addEventListener('hardwareBackPress', exitAppPressed);
   }
 
   componentWillUnmount() {
@@ -64,20 +65,8 @@ export default class App extends Component {
     OneSignal.removeEventListener('received', this.onReceived);
     OneSignal.removeEventListener('opened', this.onOpened);
     OneSignal.removeEventListener('ids', this.onIds);
-    BackHandler.removeEventListener('hardwareBackPress', this.backPressed);
+    BackHandler.removeEventListener('hardwareBackPress', exitAppPressed);
   }
-
-  backPressed = () => {
-    Alert.alert(
-      'Exit App',
-      'Do you want to exit?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => BackHandler.exitApp()},
-      ],
-      { cancelable: false });
-    return true;
-  };
 
   onReceived(notification) {
     log("Notification received: ", notification);

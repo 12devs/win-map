@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Polygon } from 'react-native-maps';
 import { connect } from 'react-redux';
 import actions from '../../actions/index';
-import { getPolygon, getArrMinMaxCount } from './../../utils';
+import { getPolygon, getArrMinMaxCount } from '../../utils/utils';
 
 class SectorPolygon extends React.Component {
   constructor() {
