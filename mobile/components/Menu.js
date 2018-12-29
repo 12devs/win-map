@@ -4,7 +4,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions
+  Dimensions, BackHandler
 } from 'react-native';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
@@ -23,10 +23,12 @@ import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
 import { Icon } from 'react-native-elements';
 import SaveNotificationSettings from './SaveNotificationSettings';
+import OneSignal from 'react-native-onesignal';
 
 const { width, height } = Dimensions.get('window');
 
 class HamburgerIcon extends Component {
+
   toggleDrawer = () => {
     this.props.navigationProps.toggleDrawer();
   };

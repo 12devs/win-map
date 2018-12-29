@@ -3,6 +3,8 @@ import {
   View,
   StyleSheet,
   Dimensions,
+  BackHandler,
+  Alert
 } from 'react-native';
 import { PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Callout } from 'react-native-maps';

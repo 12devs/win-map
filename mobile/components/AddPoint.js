@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import Loader from './Loader';
+import OneSignal from 'react-native-onesignal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,6 +29,10 @@ class AddPoint extends React.Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   handleBackPress = () => {

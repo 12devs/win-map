@@ -5,7 +5,7 @@ import {
   ScrollView,
   Dimensions,
   NativeModules,
-  LayoutAnimation,
+  LayoutAnimation, BackHandler,
 } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
@@ -27,9 +27,19 @@ class notificationSettings extends Component {
     this.onClickPlace = this.onClickPlace.bind(this);
   }
 
-  componentWillUnmount(){
-    console.log('componentWillUnmount   NS');
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
+  };
+
   onClickPlace(id) {
     const { touch } = this.state;
 
@@ -45,7 +55,7 @@ class notificationSettings extends Component {
       },
     });
 
-    return this.setState({ touch: touch === id ? '' : id });
+   return this.setState({ touch: touch === id ? '' : id });
   }
 
   render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, BackHandler } from 'react-native';
 import actions from '../actions/index';
 import services from '../services/index';
 import { connect } from "react-redux";
@@ -9,6 +9,19 @@ import service from '../services';
 const { width, height } = Dimensions.get('window');
 
 class Notifications extends Component {
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
+  };
 
   handleClick(id) {
     const notifications = this.props.notifications;

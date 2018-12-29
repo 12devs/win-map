@@ -29,6 +29,10 @@ class PointSettings extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
   handleBackPress = () => {
     this.props.navigation.navigate('Map');
     return true;
