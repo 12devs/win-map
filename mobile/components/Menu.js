@@ -22,6 +22,7 @@ import PointSettings from './PointSettings';
 import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
 import { Icon } from 'react-native-elements';
+import SaveNotificationSettings from './SaveNotificationSettings';
 
 const { width, height } = Dimensions.get('window');
 
@@ -105,6 +106,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => ({
         title: 'Notification Settings',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerRight: <SaveNotificationSettings navigation={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC'
         },

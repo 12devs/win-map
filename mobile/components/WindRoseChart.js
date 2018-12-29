@@ -21,6 +21,7 @@ class WindRoseChart extends React.Component {
 
   newChart() {
     let chart = this.props.stationsData[this.props.stationId].windRoseData;
+    chart.exporting = { enabled: false };
     chart.series[0].color = '#e8eaf6';
     chart.series[1].color = '#c5cae9';
     chart.series[2].color = '#9fa8da';

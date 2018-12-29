@@ -4,14 +4,12 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  Alert,
   NativeModules,
   LayoutAnimation,
 } from 'react-native';
 import actions from '../actions/index';
-import services from '../services/index';
 import { connect } from "react-redux";
-import { Button, Card, List, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import Accordion from './Accordion';
 
 const { UIManager } = NativeModules;
@@ -29,6 +27,9 @@ class notificationSettings extends Component {
     this.onClickPlace = this.onClickPlace.bind(this);
   }
 
+  componentWillUnmount(){
+    console.log('componentWillUnmount   NS');
+  }
   onClickPlace(id) {
     const { touch } = this.state;
 
@@ -50,11 +51,6 @@ class notificationSettings extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {/* <Card containerStyle={styles.container}>
-          <Text style={styles.textContainer}>
-            Select the dangers for each blue marker to get notifications on them.
-          </Text>
-        </Card>*/}
         <View>
           {this.props.places.map((place, i) => {
             return (
@@ -71,26 +67,6 @@ class notificationSettings extends Component {
               </View>);
           })}
         </View>
-        <Button
-          containerViewStyle={styles.button}
-          backgroundColor={'#3D6DCC'}
-          borderRadius={50}
-          color={'#fff'}
-          title='Save'
-          onPress={
-            () => services.sendSubscriptions({ subscriptions: this.props.notificationSettings })
-              .then(res => {
-                console.log(res);
-                Alert.alert(
-                  'Alert',
-                  'Settings have been saved!',
-                  [
-                    { text: 'Ok', onPress: () => console.log('No Pressed'), style: 'cancel' },
-                  ],
-                  { cancelable: false }
-                );
-              })
-          }/>
       </ScrollView>
     );
   }
