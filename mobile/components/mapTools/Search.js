@@ -6,8 +6,6 @@ import services from '../../services/index';
 import { calcMapRegionOne } from '../../utils/utils';
 import { SearchBar, ListItem } from 'react-native-elements';
 
-const { width, height } = Dimensions.get('window');
-
 class Search extends Component {
   constructor() {
     super();
@@ -57,8 +55,9 @@ class Search extends Component {
 
   render() {
     const { items } = this.state;
+    const { width, height } = this.props;
     return (
-      <View style={styles.searchContainer}>
+      <View style={{ width }}>
         {items.length > 1 ? <SearchBar
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
@@ -73,11 +72,14 @@ class Search extends Component {
             placeholder='Search...'/>}
 
         {items.length > 1 ?
-          <ScrollView style={styles.scrollContainer}>
+          <ScrollView style={[{ height }, styles.scrollContainer]}>
             {
               items.map((l, i) => (
                 <ListItem
-                  containerStyle={styles.listContainer}
+                  containerStyle={[styles.listContainer, {
+                    marginRight: width / 40,
+                    marginLeft: width / 40,
+                  }]}
                   key={i}
                   title={l.display_name}
                   subtitle={`lat: ${l.lat}, lng: ${l.lon}`}
@@ -104,9 +106,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(Search);
 
 const styles = StyleSheet.create({
-  searchContainer: {
-    width,
-  },
   containerStyle: {
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent'
@@ -116,15 +115,10 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   scrollContainer: {
-    height: height * 0.8,
     backgroundColor: '#eeeeee',
-    // flexDirection: 'column',
-    // justifyContent: 'center',
   },
   listContainer: {
     backgroundColor: '#fff',
-    marginRight: width / 40,
-    marginLeft: width / 40,
     borderBottomColor: '#eee',
     borderTopColor: '#eee'
   }

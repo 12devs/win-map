@@ -4,8 +4,6 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  BackHandler,
-  Alert
 } from 'react-native';
 import { PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Callout } from 'react-native-maps';
@@ -33,7 +31,7 @@ class Map extends Component {
     };
   }
 
-  _onLayout = event => {
+  onLayout = event => {
     this.setState({
       layout: {
         height: event.nativeEvent.layout.height,
@@ -41,7 +39,6 @@ class Map extends Component {
       }
     });
   };
-
 
   render() {
     const ASPECT_RATIO = 10;
@@ -63,7 +60,7 @@ class Map extends Component {
     const polygons = getPolygons(dangers, stationsData, scaleWind, viewType);
 
     return (
-      <View style={styles.container} onLayout={this._onLayout}>
+      <View style={styles.container} onLayout={this.onLayout}>
         <MapView
           onPress={(e) => {
             const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate;
@@ -106,7 +103,7 @@ class Map extends Component {
           <MapViewType/>
         </Callout>
         <Callout style={{ top: 0 }}>
-          <Search/>
+          <Search width={width} height={height}/>
         </Callout>
         <Callout style={{ top: 0 }}>
           <Text>{`${width}x${height}`}</Text>

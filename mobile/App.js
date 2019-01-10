@@ -6,7 +6,7 @@ import { createStore } from "redux";
 
 import OneSignal from 'react-native-onesignal';
 import { Alert, BackHandler } from 'react-native';
-import {exitAppPressed} from './utils/backHandler'
+import { exitAppPressed } from './utils/backHandler';
 
 const store = createStore(reducer);
 
