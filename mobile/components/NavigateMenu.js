@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ScrollView, View, Image, Text, Dimensions, StyleSheet } from "react-native";
+import { AsyncStorage, ScrollView, View, Text, StyleSheet } from "react-native";
 import { DrawerItems } from "react-navigation";
 import { connect } from "react-redux";
 import actions from "../actions";
@@ -8,9 +8,6 @@ const Rules = {
   notLogged: ['ChangePassword', 'Register', 'Login', /*'test'*/],
   logged: ['Map', 'notificationSettings', /*'test'*/, 'notifications', 'Logout'],
 };
-
-const { width, height } = Dimensions.get('window');
-
 
 class CustomDrawerContentComponent extends Component {
 
@@ -30,14 +27,16 @@ class CustomDrawerContentComponent extends Component {
     const filteredItems = items.filter(item => Rules[this.props.menuRule || 'notLogged'].indexOf(item.key) !== -1);
 
     return (
-      <ScrollView>
+      <View>
         <View style={styles.headerContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>Wind App</Text>
           </View>
         </View>
-        <DrawerItems items={filteredItems} {...rest}/>
-      </ScrollView>
+        <ScrollView>
+          <DrawerItems items={filteredItems} {...rest}/>
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: '#3D6DCC',
-    height: height / 4.5
+    height: "40%"
   },
   textContainer: {
     flex: 1,

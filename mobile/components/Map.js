@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Dimensions,
 } from 'react-native';
@@ -93,7 +92,7 @@ class Map extends Component {
         <Callout>
           <Navigation/>
         </Callout>
-        <Callout style={styles.rightTools}>
+        <Callout style={width > height ? styles.rightTools : { marginTop: 150 }}>
           <DeleteMarkers/>
         </Callout>
         <Callout style={{ bottom: 0, width }}>
@@ -104,9 +103,6 @@ class Map extends Component {
         </Callout>
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
-        </Callout>
-        <Callout style={{ top: 0 }}>
-          <Text>{`${width}x${height}`}</Text>
         </Callout>
       </View>
     );
