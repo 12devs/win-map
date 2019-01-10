@@ -62,7 +62,9 @@ const Register_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+
   });
 
 const Login_StackNavigator = createStackNavigator({
@@ -81,7 +83,8 @@ const Login_StackNavigator = createStackNavigator({
     },
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
   });
 
 const Main_StackNavigator = createStackNavigator({
@@ -210,6 +213,8 @@ const ChangePassword_StackNavigator = createStackNavigator({
   {
     mode: 'modal',
     headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+
 
   });
 

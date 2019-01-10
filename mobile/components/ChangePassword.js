@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import services from '../services/index';
 import { Button, Icon } from 'react-native-elements';
 
@@ -45,105 +45,119 @@ class ChangePassword extends Component {
   render() {
     if (this.state.showCode) {
       return (
-        <View style={styles.mainContainer}>
-          <View style={styles.container}>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <TextInput style={styles.input}
-                         value={this.state.code}
-                         underlineColorAndroid="transparent"
-                         placeholder={"code from " + this.state.email}
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         onChangeText={(changePasswordCode) => this.setState({ changePasswordCode })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
+        <ScrollView>
+          <View style={styles.mainContainer}>
+            <View style={styles.container}>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <TextInput style={styles.input}
+                           value={this.state.code}
+                           underlineColorAndroid="transparent"
+                           placeholder={"code from " + this.state.email}
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           onChangeText={(changePasswordCode) => this.setState({ changePasswordCode })}/>
+                <View style={styles.iconContainer}>
+                  <Icon name='lock-outline' color='#3D6DCC'/>
+                </View>
+              </View>
+
+              {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <Button
+                  containerViewStyle={styles.buttonContainer}
+                  backgroundColor={'#3D6DCC'}
+                  // large
+                  // borderRadius={50}
+                  title='SEND'
+                  color={'#fff'}
+                  onPress={this.changePassword}/>
               </View>
             </View>
-
-            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-            <Button
-              containerViewStyle={styles.buttonContainer}
-              backgroundColor={'#3D6DCC'}
-              // large
-              // borderRadius={50}
-              title='SEND'
-              color={'#fff'}
-              onPress={this.changePassword}/>
           </View>
-        </View>
+        </ScrollView>
       );
     } else {
       return (
-        <View style={styles.mainContainer}>
-          <View style={styles.container}>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <TextInput style={styles.input}
-                         underlineColorAndroid="transparent"
-                         placeholder="Username"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={this.state.login}
-                         onChangeText={(login) => this.setState({ login })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='mail-outline' color='#3D6DCC'/>
+        <ScrollView>
+          <View style={styles.mainContainer}>
+            <View style={styles.container}>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <TextInput style={styles.input}
+                           underlineColorAndroid="transparent"
+                           placeholder="Username"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={this.state.login}
+                           onChangeText={(login) => this.setState({ login })}/>
+                <View style={styles.iconContainer}>
+                  <Icon name='mail-outline' color='#3D6DCC'/>
+                </View>
+              </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <TextInput style={styles.input}
+                           underlineColorAndroid="transparent"
+                           secureTextEntry={true}
+                           placeholder="Password"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={this.state.password}
+                           onChangeText={(password) => this.setState({ password })}/>
+                <View style={styles.iconContainer}>
+                  <Icon name='lock-outline' color='#3D6DCC'/>
+                </View>
+              </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <TextInput style={styles.input}
+                           underlineColorAndroid="transparent"
+                           secureTextEntry={true}
+                           placeholder="Repeat Password"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={this.state.repeatPassword}
+                           onChangeText={(repeatPassword) => this.setState({ repeatPassword })}/>
+                <View style={styles.iconContainer}>
+                  <Icon name='lock-outline' color='#3D6DCC'/>
+                </View>
+              </View>
+              {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <Button
+                  containerViewStyle={styles.buttonContainer}
+                  backgroundColor={'#3D6DCC'}
+                  // large
+                  // borderRadius={50}
+                  title='Change'
+                  color={'#fff'}
+                  onPress={this.changePassword}/>
               </View>
             </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <TextInput style={styles.input}
-                         underlineColorAndroid="transparent"
-                         secureTextEntry={true}
-                         placeholder="Password"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={this.state.password}
-                         onChangeText={(password) => this.setState({ password })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
-              </View>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <TextInput style={styles.input}
-                         underlineColorAndroid="transparent"
-                         secureTextEntry={true}
-                         placeholder="Repeat Password"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={this.state.repeatPassword}
-                         onChangeText={(repeatPassword) => this.setState({ repeatPassword })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
-              </View>
-            </View>
-            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
-            <Button
-              containerViewStyle={styles.buttonContainer}
-              backgroundColor={'#3D6DCC'}
-              // large
-              // borderRadius={50}
-              title='Change'
-              color={'#fff'}
-              onPress={this.changePassword}/>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Login');
+              }}
+            >
+              <Text style={styles.textContainer}>You can login here.</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('Login');
-            }}
-          >
-            <Text style={styles.textContainer}>You can login here.</Text>
-          </TouchableOpacity>
-        </View>
+        </ScrollView>
       );
     }
   }
@@ -182,7 +196,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderBottomColor: '#3D6DCC',
     borderBottomWidth: 1,
-    width: width / 1.3,
+    width: "80%",
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -201,10 +215,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 35,
     marginBottom: 10,
-    // width: width / 1.3,
-    //
-    marginLeft: width * 0.06,
-    marginRight: width * 0.06,
+    width: "80%",
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }
