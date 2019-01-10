@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   Dimensions,
   BackHandler,
@@ -16,13 +17,33 @@ import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
 import MapViewType from './mapTools/MapViewType';
 import { getPolygons } from "./Polygons";
+import DeleteMarkers from './mapTools/delAllMarkers';
 
-const screen = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 class Map extends Component {
 
-  render() {
+  constructor() {
+    super();
+    this.state = {
+      layout: {
+        height: height,
+        width: width,
+      }
+    };
+  }
 
+  _onLayout = event => {
+    this.setState({
+      layout: {
+        height: event.nativeEvent.layout.height,
+        width: event.nativeEvent.layout.width,
+      }
+    });
+  };
+
+
+  render() {
     const ASPECT_RATIO = 10;
     const mapPadding = 50;
     const LATITUDE = 53.78825;
@@ -37,11 +58,12 @@ class Map extends Component {
     };
 
     const { dangers, stationsData, scaleWind, viewType } = this.props;
+    const { width, height } = this.state.layout;
 
     const polygons = getPolygons(dangers, stationsData, scaleWind, viewType);
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={this._onLayout}>
         <MapView
           onPress={(e) => {
             const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate;
@@ -74,14 +96,20 @@ class Map extends Component {
         <Callout>
           <Navigation/>
         </Callout>
-        <Callout style={{ bottom: 0, width: screen.width }}>
+        <Callout style={styles.rightTools}>
+          <DeleteMarkers/>
+        </Callout>
+        <Callout style={{ bottom: 0, width }}>
           <Slider/>
         </Callout>
-        <Callout style={styles.submitButton}>
+        <Callout style={styles.rightTools}>
           <MapViewType/>
         </Callout>
         <Callout style={{ top: 0 }}>
           <Search/>
+        </Callout>
+        <Callout style={{ top: 0 }}>
+          <Text>{`${width}x${height}`}</Text>
         </Callout>
       </View>
     );
@@ -112,7 +140,7 @@ const styles = StyleSheet.create({
   map: {
     flex: 10,
   },
-  submitButton: {
+  rightTools: {
     margin: 5,
     marginTop: 70,
     right: 0,

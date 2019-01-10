@@ -4,24 +4,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
 } from 'react-native';
 import actions from "../../actions/index";
 import { connect } from "react-redux";
 import { calcMapRegionAll } from '../../utils/utils';
 import icons from '../icons';
-import service from '../../services';
 
 class Navigation extends Component {
-
-  deleteAllMarkers = () => {
-    return service.deleteAllPoints().then(() => {
-      this.props.updateReduxState({
-        places: [],
-        dangers: [],
-      });
-    });
-  };
 
   render() {
     return (
@@ -60,33 +49,6 @@ class Navigation extends Component {
               style={styles.image}
               source={{
                 uri: icons.clock
-              }}/>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.imageContainer}
-            onPress={() => {
-              Alert.alert(
-                'Alert',
-                'Do you really want to delete all markers?',
-                [
-                  { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
-                  {
-                    text: 'Yes', onPress: () => {
-                      console.log('Yes Pressed');
-                      this.deleteAllMarkers();
-                    }
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: icons.markerOff
               }}/>
           </TouchableOpacity>
         </View>
