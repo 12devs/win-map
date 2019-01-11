@@ -61,6 +61,9 @@ const viewAllNotification = (body) => {
   return fetch('post', '/api/subscriptions/ViewAllNotification', body);
 };
 
+const updatePoint = (body = {}) => {
+  return fetch('post', '/api/points/update', body);
+};
 
 export default {
   login,
@@ -77,5 +80,6 @@ export default {
   viewNotifications,
   search,
   deleteAllPoints,
-  viewAllNotification
+  viewAllNotification,
+  updatePoint
 };

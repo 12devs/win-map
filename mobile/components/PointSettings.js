@@ -5,13 +5,16 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  BackHandler
+  BackHandler,
+  Alert,
+  Modal,
+  TextInput,
 } from 'react-native';
 import actions from "../actions/index";
 import { connect } from "react-redux";
 import WindRoseChart from './WindRoseChart';
 import services from '../services/index';
-import { Header, Button, Card, Divider } from 'react-native-elements';
+import { Button, Card, Divider, Icon } from 'react-native-elements';
 import Loader from './Loader';
 import { Table, Row, Rows } from 'react-native-table-component';
 
@@ -21,8 +24,12 @@ class PointSettings extends Component {
     this.state = {
       isDelButton: false,
       tableHead: ['Danger name', 'In danger now', 'In danger for a period(days)'],
+      modalVisible: false,
+      markerName: '',
+      dangerRadius: 0,
     };
     this.delMarker = this.delMarker.bind(this);
+    this.updatePoint = this.updatePoint.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +44,10 @@ class PointSettings extends Component {
     this.props.navigation.navigate('Map');
     return true;
   };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
 
   delMarker() {
     const { point, type } = this.props.info;
@@ -58,16 +69,113 @@ class PointSettings extends Component {
       });
   };
 
+  updatePoint() {
+    const { point, type } = this.props.info;
+    const { markerName, dangerRadius } = this.state;
+    if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
+      return;
+    }
+    if (dangerRadius) {
+      point.dangerRadius = parseInt(dangerRadius, 10);
+    }
+
+    return services.updatePoint({
+      [type]: point,
+    })
+      .then(() => {
+        let markers = this.props[`${type}s`].map(elem => {
+          if (elem.id === point.id) {
+            if (markerName) {
+              console.log('name');
+              elem.name = markerName;
+            }
+            if (dangerRadius) {
+              elem.dangerRadius = parseInt(dangerRadius, 10);
+            }
+          }
+          return elem;
+        });
+        console.log('2', this.props.places);
+
+        this.props.updateReduxState({ [`${type}s`]: markers });
+      });
+  };
+
   render() {
     let { info, statistic } = this.props;
     let { point, type } = info;
-    const { isDelButton } = this.state;
+    const { isDelButton, modalVisible, markerName, dangerRadius } = this.state;
     if (!point) {
       point = {};
     }
 
     return (
       <View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={modalVisible}
+          onRequestClose={() => {
+            this.setModalVisible(false);
+          }}>
+          <View>
+            <View>
+              <View style={styles.inputContainer}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                  <TextInput style={styles.input}
+                             value={markerName}
+                             underlineColorAndroid="transparent"
+                             placeholder="Marker Name"
+                             placeholderTextColor="#3D6DCC"
+                             autoCapitalize="none"
+                             onChangeText={(markerName) => this.setState({ markerName })}/>
+                  <View style={styles.iconContainer}>
+                    <Icon name='location-on' color='#3D6DCC'/>
+                  </View>
+                </View>
+              </View>
+
+              {point.dangerRadius &&
+              <View style={styles.inputContainer}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                  <TextInput style={styles.input}
+                             value={dangerRadius}
+                             underlineColorAndroid="transparent"
+                             placeholder="Wind Radius"
+                             placeholderTextColor="#3D6DCC"
+                             autoCapitalize="none"
+                             onChangeText={(dangerRadius) => this.setState({ dangerRadius })}/>
+                  <View style={styles.iconContainer}>
+                    <Icon name='network-wifi' color='#3D6DCC'/>
+                  </View>
+                </View>
+              </View>}
+
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <Button
+                  containerViewStyle={styles.buttonContainer}
+                  backgroundColor={'#3D6DCC'}
+                  borderRadius={50}
+                  title='Change'
+                  color={'#fff'}
+                  onPress={() => {
+                    this.updatePoint();
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}/>
+              </View>
+
+            </View>
+          </View>
+        </Modal>
         {
           !isDelButton ?
             <ScrollView contentContainerStyle={{
@@ -75,12 +183,14 @@ class PointSettings extends Component {
               justifyContent: 'center',
             }}>
               <Card containerStyle={{ elevation: 5 }}>
-                <View style={{ margin: 10 }}>
-                  <Text style={{ textAlign: 'center' }}>Name: {point.name}</Text>
-                  <Text style={{ textAlign: 'center' }}>Type: {type}</Text>
-                  <Text style={{ textAlign: 'center' }}>Lat: {point.lat}</Text>
-                  <Text style={{ textAlign: 'center' }}>Lng: {point.lng}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Icon name='location-on' color={type === 'place' ? '#3D6DCC' : 'red'}/>
+                  <Text onPress={() => {
+                    this.setModalVisible(true);
+                  }} style={{ textAlign: 'center', fontSize: 20 }}>{point.name}</Text>
                 </View>
+                {point.dangerRadius && <Text style={{ textAlign: 'center' }}>Wind Radius: {point.dangerRadius}</Text>}
+                {/*<Text style={{ textAlign: 'center' }}>{`(${point.lat}, ${point.lng})`}</Text>*/}
                 <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }}/>
                 <View>
                   <WindRoseChart stationId={point.station_id}/>
@@ -106,7 +216,7 @@ class PointSettings extends Component {
               <Button
                 containerViewStyle={{ margin: 10, marginTop: 20 }}
                 backgroundColor={'#3D6DCC'}
-                large
+                // large
                 borderRadius={50}
                 icon={{ name: 'location-on' }}
                 title='Go to marker'
@@ -120,17 +230,30 @@ class PointSettings extends Component {
               <Button
                 containerViewStyle={{ margin: 10 }}
                 backgroundColor={'red'}
-                large
+                // large
                 borderRadius={50}
                 icon={{ name: 'location-off' }}
                 title='Remove point'
                 onPress={() => {
-                  this.setState({ isSentButton: true });
-                  this.delMarker()
-                    .then(() => {
-                      this.props.updateReduxState({ info: { point: null, type: null } });
-                      this.props.navigation.navigate('Map');
-                    });
+                  Alert.alert(
+                    'Alert',
+                    'Do you really want to delete marker?',
+                    [
+                      { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
+                      {
+                        text: 'Yes', onPress: () => {
+                          this.setState({ isSentButton: true });
+                          this.delMarker()
+                            .then(() => {
+                              this.props.updateReduxState({ info: { point: null, type: null } });
+                              this.props.navigation.navigate('Map');
+                            });
+                        }
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+
                 }}/>
             </ScrollView> :
             <View style={{ height: '100%' }}>
@@ -155,6 +278,11 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(PointSettings);
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    paddingTop: 30,
+    paddingBottom: 30,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     padding: 16,
@@ -165,8 +293,31 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#fff'
   },
+  iconContainer: {
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: 40,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   text: {
     margin: 6,
     textAlign: 'center'
+  },
+  input: {
+    marginBottom: 10,
+    height: 60,
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: "80%",
+  },
+  buttonContainer: {
+    marginTop: 35,
+    marginBottom: 10,
+    width: "80%",
+    borderWidth: 1,
+    borderColor: '#3D6DCC'
   }
 });

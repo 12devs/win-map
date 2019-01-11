@@ -10,10 +10,6 @@ import {
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import Loader from './Loader';
-import OneSignal from 'react-native-onesignal';
-
-const { width, height } = Dimensions.get('window');
-
 
 class AddPoint extends React.Component {
   constructor(props) {
@@ -53,7 +49,7 @@ class AddPoint extends React.Component {
         {(!addPoint.isSentButton) ?
           <View style={{ height: '100%', backgroundColor: '#fff' }}>
             <View>
-              <Text style={{ textAlign: 'center', marginTop: 10 }}>Enter marker name:</Text>
+              <Text style={{ textAlign: 'center', marginTop: 20 }}>Enter marker name:</Text>
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -76,7 +72,7 @@ class AddPoint extends React.Component {
               <Button
                 containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: '#3D6DCC' }}
                 backgroundColor={markerType === 'Danger' ? '#fff' : '#3D6DCC'}
-                large
+                // large
                 borderRadius={50}
                 icon={markerType === 'Danger' ? { name: 'home', color: '#3D6DCC' } : { name: 'home', color: '#fff' }}
                 title='My Place'
@@ -87,7 +83,7 @@ class AddPoint extends React.Component {
               <Button
                 containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: 'red' }}
                 backgroundColor={markerType !== 'Danger' ? '#fff' : 'red'}
-                large
+                // large
                 borderRadius={50}
                 icon={markerType !== 'Danger' ? { name: 'error', color: 'red' } : { name: 'error', color: '#fff' }}
                 color={markerType !== 'Danger' ? 'red' : '#fff'}
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderBottomColor: '#3D6DCC',
     borderBottomWidth: 1,
-    width: width / 1.3,
+    width: "80%",
     justifyContent: 'center',
     alignItems: 'center',
   },
