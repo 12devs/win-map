@@ -185,7 +185,7 @@ class Main extends React.Component {
 
         <Notifications open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
         <PointSettings open={this.state.isNotificationSettingsOpen} close={this.closeNotificationSettings}/>
-        {!localStorage.windToken && <UnauthorizationInfo open={this.state.isUnathInfo} close={this.closeUnauthInfo}/>}
+        {!localStorage.windToken && <UnauthorizationInfo history={this.props.history} open={this.state.isUnathInfo} close={this.closeUnauthInfo}/>}
         <SavePointSettings/>
         <Map/>
       </div>

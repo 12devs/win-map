@@ -188,7 +188,9 @@ class PointSettings extends Component {
                   <Text onPress={() => {
                     this.setModalVisible(true);
                   }} style={{ textAlign: 'center', fontSize: 20 }}>{point.name}</Text>
-                  <Icon name='create' color='gray' size={18} containerStyle={{marginLeft:10}}/>
+                  <Icon onPress={() => {
+                    this.setModalVisible(true);
+                  }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }}/>
                 </View>
                 {point.dangerRadius && <Text style={{ textAlign: 'center' }}>Wind Radius: {point.dangerRadius} m</Text>}
                 {/*<Text style={{ textAlign: 'center' }}>{`(${point.lat}, ${point.lng})`}</Text>*/}

@@ -89,11 +89,11 @@ class Map extends Component {
           <Markers navigation={this.props.navigation}/>
           {/*{polygons}*/}
         </MapView>
-        <Callout>
-          <Navigation/>
-        </Callout>
         <Callout style={width > height ? styles.rightTools : { marginTop: 150 }}>
           <DeleteMarkers/>
+        </Callout>
+        <Callout>
+          <Navigation/>
         </Callout>
         <Callout style={{ bottom: 0, width }}>
           <Slider/>
@@ -104,6 +104,12 @@ class Map extends Component {
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
         </Callout>
+       {/* <Callout
+          style={{ bottom: 0, width: '0%', flexDirection: 'row', justifyContent: 'center', marginBottom: height / 6, }}>
+          <View style={{ padding: 0, opacity: 0.7, backgroundColor: "#000", borderRadius: 50 }}>
+            <Text style={{ padding: 10, color: 'white', textAlign: 'center' }}>{viewType}</Text>
+          </View>
+        </Callout>*/}
       </View>
     );
   }
