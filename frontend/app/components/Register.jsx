@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import services from "./../services";
 import Loader from './Loader';
 import Password from "./Password";
+import connect from 'react-redux/es/connect/connect';
+import actions from '../actions';
 
 class Register extends Component {
   constructor(props) {
@@ -19,9 +21,10 @@ class Register extends Component {
 
   register = () => {
     const { login, password, repeatPassword, email } = this.state;
+    const { places, dangers } = this.props;
 
     if (password === repeatPassword) {
-      services.register({ login, password, email })
+      services.register({ login, password, email, places, dangers })
         .then(res => {
           const { message, error } = res;
           if (message !== 'OK') {
@@ -58,7 +61,8 @@ class Register extends Component {
             </div>
 
             <Password value={password} parentStateKey={'password'} parent={this} placeholder={'Password'}/>
-            <Password value={repeatPassword} parentStateKey={'repeatPassword'} parent={this} placeholder={'Repeat Password'}/>
+            <Password value={repeatPassword} parentStateKey={'repeatPassword'} parent={this}
+                      placeholder={'Repeat Password'}/>
 
             <div>
               <label className="login__label" htmlFor="email">
@@ -77,9 +81,9 @@ class Register extends Component {
             </div>
             <div className={"login__label"}>
               <div className="auth__link" onClick={() => {
-                  this.setState({ isLoader: true });
-                  this.props.history.push('/login');
-                }}>Already have an account?
+                this.setState({ isLoader: true });
+                this.props.history.push('/login');
+              }}>Already have an account?
               </div>
             </div>
           </div>}
@@ -88,4 +92,11 @@ class Register extends Component {
   }
 }
 
-export default Register;
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+  };
+}
+
+export default connect(mapStateToProps, actions)(Register);

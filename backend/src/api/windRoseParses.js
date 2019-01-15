@@ -79,9 +79,4 @@ const getWindRoseData = async (lat, lng) => {
   }
 };
 
-getWindRoseData('53.694071', '24.132062')
-  .then(res => {
-    console.log(res);
-  })
-
 export default getWindRoseData;

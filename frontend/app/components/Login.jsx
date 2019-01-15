@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import services from "./../services";
 import Loader from './Loader';
-import connect from 'react-redux/es/connect/connect';
-import actions from '../actions';
 import Password from "./Password";
 
 class Login extends Component {
@@ -22,7 +20,6 @@ class Login extends Component {
 
   login = () => {
     const { login, password, code } = this.state;
-    const { places, dangers } = this.props;
     return services.login({ login, password, code })
       .then(res => {
         const { message, email, error, token } = res;
@@ -38,9 +35,7 @@ class Login extends Component {
         }
         else {
           localStorage.setItem('windToken', token);
-          return services.addPoints({ places, dangers }).then(res => {
-            return this.props.history.push('/main');
-          });
+          return this.props.history.push('/main');
         }
       })
       .catch((error) => {
@@ -65,7 +60,7 @@ class Login extends Component {
                     onChange={(event) => this.setState({ code: event.target.value })}
                     value={code}
                     onKeyUp={(e) => {
-                      console.log(e)
+                      console.log(e);
                     }}
                   />
                 </label>
@@ -129,12 +124,5 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
-  };
-}
-
-export default connect(mapStateToProps, actions)(Login);
+export default Login;
 

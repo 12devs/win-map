@@ -4,12 +4,13 @@ import bcrypt from "bcryptjs";
 import logger from '../logger';
 import { Account } from './../models';
 import { sendEmail, verifyEmail } from "../api/email";
+import { Danger, Place } from '../models';
 
 export default {
 
   async register(req, res) {
     try {
-      const { login, password } = req.body;
+      const { login, password, places, dangers } = req.body;
       let { email } = req.body;
 
       if (!login || !password || !email) {
@@ -35,12 +36,23 @@ export default {
       const currentAccount = await Account.findOne({ where: { login } });
 
       if (currentAccount) {
-        return res.status(403).json({ error: 'User with this login already exists' })
+        return res.status(403).json({ error: 'User with this login already exists' });
       }
 
       await verifyEmail(email);
-      await Account.create(acc);
+      const account = await Account.create(acc);
+      const { id } = account;
       await sendEmail(email, 'Wind-map activation code', code);
+
+      dangers.length && dangers.forEach(async el => {
+        el.account_id = id;
+        await Danger.create(el);
+      });
+
+      places.length && places.forEach(async el => {
+        el.account_id = id;
+        await Place.create(el);
+      });
 
       return res.status(200).json({ message: 'OK' });
     } catch (err) {
@@ -69,7 +81,7 @@ export default {
               acc.changePasswordCode = changePasswordCode;
               acc.attemptsChangePasswordCode = 0;
               await acc.save();
-              throw new Error('3 attempts are complete! A new code has been sent to your email.')
+              throw new Error('3 attempts are complete! A new code has been sent to your email.');
             }
             await acc.save();
             throw new Error('invalid code!');
@@ -121,14 +133,14 @@ export default {
               acc.code = code;
               acc.attemptsCode = 0;
               await acc.save();
-              throw new Error('3 attempts are complete! A new code has been sent to your email.')
+              throw new Error('3 attempts are complete! A new code has been sent to your email.');
             }
             await acc.save();
-            throw new Error('invalid code!')
+            throw new Error('invalid code!');
           }
           acc.code = '';
           acc.attemptsCode = 0;
-          await acc.save()
+          await acc.save();
         } else {
 
           return res.status(200).json({ message: 'code', email: acc.email });
@@ -145,4 +157,4 @@ export default {
       return res.status(500).json({ error: 'Wrong login or password' });
     }
   }
-}
+};

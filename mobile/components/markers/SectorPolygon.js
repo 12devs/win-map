@@ -34,7 +34,8 @@ class SectorPolygon extends React.Component {
           />;
         }
         const angles = getArrMinMaxCount(0, 12.5, 30);
-        const dists = getArrMinMaxCount(0, dist, 30);
+        const dists = getArrMinMaxCount(0, point.dangerRadius, 30);
+        console.log('dangerRadius', point.dangerRadius);
         return angles.map((angle, i) => {
           const positions = getPolygon(point, dists[i], direction, angle);
           return <Polygon
