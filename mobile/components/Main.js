@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, NetInfo, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, NetInfo, Dimensions, Text, Alert } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
@@ -45,6 +45,19 @@ class Main extends Component {
           });
       }
     }
+   /* Alert.alert(
+      'You are not registered!',
+      'If you want to save markers and receive wind notifications you need to register.',
+      [
+        {
+          text: 'Ok', onPress: () => {
+            return this.props.navigation.navigate('Map');
+
+          }, style: 'cancel'
+        },
+      ],
+      { cancelable: false }
+    );*/
     return this.setState({ isLoad: false });
   };
 

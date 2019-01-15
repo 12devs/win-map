@@ -33,9 +33,8 @@ class SectorPolygon extends React.Component {
             fillColor={'rgba(95, 87, 202, 0.5)'}
           />;
         }
-        const angles = getArrMinMaxCount(0, 12.5, 30);
-        const dists = getArrMinMaxCount(0, point.dangerRadius, 30);
-        console.log('dangerRadius', point.dangerRadius);
+        const angles = getArrMinMaxCount(0, 12.5, 10);
+        const dists = getArrMinMaxCount(0, point.dangerRadius, 10);
         return angles.map((angle, i) => {
           const positions = getPolygon(point, dists[i], direction, angle);
           return <Polygon
@@ -44,7 +43,7 @@ class SectorPolygon extends React.Component {
             coordinates={positions}
             strokeWidth={1}
             strokeColor={'rgba(95, 87, 202, 0)'}
-            fillColor={'rgba(95, 87, 202, 0.06)'}
+            fillColor={'rgba(95, 87, 202, 0.18)'}
           />
         })
       } catch (err) {

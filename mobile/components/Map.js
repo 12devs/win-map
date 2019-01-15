@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
+  Dimensions, Text,
 } from 'react-native';
 import { PROVIDER_DEFAULT } from 'react-native-maps';
 import MapView, { ProviderPropType, Callout } from 'react-native-maps';
@@ -13,7 +13,6 @@ import Navigation from "./mapTools/Navigation";
 import Search from './mapTools/Search';
 import Slider from './mapTools/Slider';
 import MapViewType from './mapTools/MapViewType';
-import { getPolygons } from "./Polygons";
 import DeleteMarkers from './mapTools/delAllMarkers';
 
 const { width, height } = Dimensions.get('window');
@@ -52,11 +51,8 @@ class Map extends Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     };
-
-    const { dangers, stationsData, scaleWind, viewType } = this.props;
+    const { viewType } = this.props;
     const { width, height } = this.state.layout;
-
-    const polygons = getPolygons(dangers, stationsData, scaleWind, viewType);
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
@@ -87,7 +83,6 @@ class Map extends Component {
           mapType={this.props.mapViewType || 'standard'}
         >
           <Markers navigation={this.props.navigation}/>
-          {/*{polygons}*/}
         </MapView>
         <Callout style={width > height ? styles.rightTools : { marginTop: 150 }}>
           <DeleteMarkers/>
@@ -95,19 +90,20 @@ class Map extends Component {
         <Callout>
           <Navigation/>
         </Callout>
-        <Callout style={{ bottom: 0, width }}>
-          <Slider/>
-        </Callout>
+        {viewType === 'Current' ? null :
+          <Callout style={{ bottom: 0, width }}>
+            <Slider/>
+          </Callout>}
         <Callout style={styles.rightTools}>
           <MapViewType/>
         </Callout>
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
         </Callout>
-       {/* <Callout
-          style={{ bottom: 0, width: '0%', flexDirection: 'row', justifyContent: 'center', marginBottom: height / 6, }}>
+       {/*  <Callout
+          style={{ bottom: 0, width: '100%', flexDirection: 'row', justifyContent: 'center', marginBottom: height / 6, }}>
           <View style={{ padding: 0, opacity: 0.7, backgroundColor: "#000", borderRadius: 50 }}>
-            <Text style={{ padding: 10, color: 'white', textAlign: 'center' }}>{viewType}</Text>
+            <Text style={{ padding: 10, color: 'white', textAlign: 'center' }}>{viewType} mode</Text>
           </View>
         </Callout>*/}
       </View>
