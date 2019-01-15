@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../actions/index';
 import services from "../services/index";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Modal, Text, TouchableOpacity, Image, Dimensions
-} from 'react-native';
+import hasItem from '../utils/asyncStorage';
+import { View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import icons from './icons';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-
-class SentPoint extends React.Component {
+class SentPoint extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,67 +17,97 @@ class SentPoint extends React.Component {
       isSentButton: false,
       error: ''
     };
-
     this.addMarker = this.addMarker.bind(this);
   }
 
-
-  addMarker() {
+  addMarker = async () => {
     const { latlng } = this.props.savePointSettings;
     const { markerType, addPoint } = this.props;
     const { name } = addPoint;
-    console.log(name);
+    const isToken = await hasItem('windToken');
+    let key;
+    let lngCorrect = latlng.lng;
+    lngCorrect = lngCorrect % 360;
 
-    if (addPoint.name)
+    if (name) {
       this.props.updateReduxState({ addPoint: { isSentButton: true } });
-
-    if (!name) {
+    }
+    else {
       return this.props.updateReduxState({ addPoint: { name: '', error: 'Enter name of point!' } });
     }
 
-    let key;
     if (markerType === 'Danger') {
       key = 'danger';
-    } else {
+    }
+    else {
       key = 'place';
     }
 
-    let lngCorrect = latlng.lng;
-    lngCorrect = lngCorrect % 360;
     if (lngCorrect > 180) {
       lngCorrect -= 360;
     }
     if (lngCorrect < -180) {
       lngCorrect += 360;
     }
-    return services.savePoint({
-      [key]: {
-        lat: latlng.lat,
-        lng: lngCorrect,
-        name
-      },
-      stations: [...this.props.stations]
-    })
-      .then(res => {
-        const { danger, place } = res;
-        let { places, dangers, stationsData, stations } = this.props;
-        stationsData = { ...stationsData, ...res.stationsData };
-        if (danger) {
-          dangers.push(danger);
-        }
-        if (place) {
-          places.push(place);
-        }
-        stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({
-          places,
-          dangers,
-          stationsData,
-          stations,
-          savePointSettings: { show: false }
+
+    const query = { [key]: { lat: latlng.lat, lng: lngCorrect, name }, stations: [...this.props.stations] };
+
+    if (isToken) {
+      return services.savePoint(query)
+        .then(res => {
+          const { danger, place } = res;
+          let { places, dangers, stationsData, stations } = this.props;
+          stationsData = { ...stationsData, ...res.stationsData };
+
+          if (danger) {
+            dangers.push(danger);
+          }
+          if (place) {
+            places.push(place);
+          }
+
+          stations.push(...Object.keys((res.stationsData || {})));
+          this.props.updateReduxState({
+            places,
+            dangers,
+            stationsData,
+            stations,
+            savePointSettings: { show: false }
+          });
+          this.props.updateStatistic();
         });
-        this.props.updateStatistic();
+    }
+    return services.pointInfo(query)
+      .then(res => {
+        this.helperAddPoint(res);
       });
+  };
+
+  helperAddPoint = (res) => {
+    const { danger, place } = res;
+    let { places, dangers, stationsData, stations } = this.props;
+
+    if (stationsData.size) stationsData = { ...stationsData, ...res.stationsData };
+    else stationsData = res.stationsData;
+
+    if (danger) {
+      dangers = [...dangers, danger];
+    }
+
+    if (place) {
+      places = [...places, place];
+    }
+    stations.push(...Object.keys((res.stationsData || {})));
+
+    this.props.updateReduxState({
+      places,
+      dangers,
+      stationsData,
+      stations,
+      savePointSettings: { show: false }
+    });
+
+    return this.props.updateStatistic();
   };
 
   render() {
@@ -94,8 +119,9 @@ class SentPoint extends React.Component {
             style={{ padding: 5, marginRight: width * 0.04 }}
             onPress={async () => {
               await this.addMarker();
-              if (addPoint.name !== '')
+              if (addPoint.name !== '') {
                 this.props.navigation.navigate('Map');
+              }
             }}
           >
             <Image

@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Dimensions, BackHandler
-} from 'react-native';
-
+import { View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Login from './Login';
 import Logout from './Logout';
@@ -23,9 +16,8 @@ import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
 import { Icon } from 'react-native-elements';
 import SaveNotificationSettings from './SaveNotificationSettings';
-import OneSignal from 'react-native-onesignal';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class HamburgerIcon extends Component {
 
@@ -219,6 +211,12 @@ const ChangePassword_StackNavigator = createStackNavigator({
   });
 
 export default createDrawerNavigator({
+    Map: {
+      screen: Main_StackNavigator,
+      navigationOptions: {
+        drawerIcon: <Icon name='map'/>
+      }
+    },
     Register: {
       screen: Register_StackNavigator,
       navigationOptions: {
@@ -230,13 +228,6 @@ export default createDrawerNavigator({
       navigationOptions: {
         drawerIcon: <Icon name='account-circle'/>
       }
-    },
-    Map: {
-      screen: Main_StackNavigator,
-      navigationOptions: {
-        drawerIcon: <Icon name='map'/>
-      }
-
     },
     notificationSettings: {
       screen: notificationSettings_StackNavigator,

@@ -6,6 +6,7 @@ import Map from './Map';
 import services from "../services/index";
 import { calcMapRegionAll } from '../utils/utils';
 import Loader from './Loader';
+import hasItem from '../utils/asyncStorage';
 
 const { width } = Dimensions.get('window');
 
@@ -25,22 +26,24 @@ class Main extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    const hasToken = await hasItem('windToken');
+
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
-    if (!this.props.isGetMainData) {
-      return services.getInfo()
-        .then(res => {
-          if (res.unauthorized) {
-            return this.props.navigation.navigate('Login');
-          }
-          const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
-          if (mapRegion) {
-            res.mapRegion = mapRegion;
-          }
-          this.props.updateReduxState({ ...res, isGetMainData: true });
-          this.setState({ isLoad: false });
-          return this.props.updateStatistic();
-        });
+    if (hasToken) {
+      if (!this.props.isGetMainData) {
+        return services.getInfo()
+          .then(res => {
+            const mapRegion = calcMapRegionAll([...res.places, ...res.dangers]);
+
+            if (mapRegion) {
+              res.mapRegion = mapRegion;
+            }
+            this.props.updateReduxState({ ...res, isGetMainData: true });
+            this.setState({ isLoad: false });
+            return this.props.updateStatistic();
+          });
+      }
     }
     return this.setState({ isLoad: false });
   };

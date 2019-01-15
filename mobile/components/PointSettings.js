@@ -17,6 +17,7 @@ import services from '../services/index';
 import { Button, Card, Divider, Icon } from 'react-native-elements';
 import Loader from './Loader';
 import { Table, Row, Rows } from 'react-native-table-component';
+import hasItem from '../utils/asyncStorage';
 
 class PointSettings extends Component {
   constructor() {
@@ -49,56 +50,75 @@ class PointSettings extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  delMarker() {
+  delMarker = async () => {
     const { point, type } = this.props.info;
     const { id } = point;
-    return services.deletePoint({
-      [type]: { id },
-    })
-      .then(res => {
-        console.log(res);
-        if (type === 'place') {
-          const places = this.props.places.filter(el => !(el.id === id));
-          this.props.updateReduxState({ places, info: { point: null, type: null } });
-        }
-        if (type === 'danger') {
-          const dangers = this.props.dangers.filter(el => !(el.id === id));
-          this.props.updateReduxState({ dangers, info: { point: null, type: null } });
-          this.props.updateStatistic();
-        }
-      });
+    const isToken = await hasItem('windToken');
+
+    if (isToken) {
+      return services.deletePoint({ [type]: { id } })
+        .then(() => {
+          return this.delHelper(type, id);
+        });
+    }
+    else {
+      return this.delHelper(type, id);
+    }
   };
 
-  updatePoint() {
+  delHelper = (type, id) => {
+    if (type === 'place') {
+      const places = this.props.places.filter(el => !(el.id === id));
+      this.props.updateReduxState({ places, info: { point: null, type: null } });
+    }
+    if (type === 'danger') {
+      const dangers = this.props.dangers.filter(el => !(el.id === id));
+      this.props.updateReduxState({ dangers, info: { point: null, type: null } });
+      this.props.updateStatistic();
+    }
+  };
+
+  updatePoint = async () => {
     const { point, type } = this.props.info;
     const { markerName, dangerRadius } = this.state;
+    const hasToken = await hasItem('windToken');
+
     if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
       return;
     }
+
     if (dangerRadius) {
       point.dangerRadius = parseInt(dangerRadius, 10);
     }
 
-    return services.updatePoint({
-      [type]: point,
-    })
-      .then(() => {
-        let markers = this.props[`${type}s`].map(elem => {
-          if (elem.id === point.id) {
-            if (markerName) {
-              console.log('name');
-              elem.name = markerName;
-            }
-            if (dangerRadius) {
-              elem.dangerRadius = parseInt(dangerRadius, 10);
-            }
-          }
-          return elem;
+    if (hasToken) {
+      return services.updatePoint({
+        [type]: point,
+      })
+        .then(() => {
+          this.updatePointHelper(type, point, markerName, dangerRadius);
         });
-        console.log('2', this.props.places);
+    }
+    else {
+      this.updatePointHelper(type, point, markerName, dangerRadius);
+    }
+  };
 
-        this.props.updateReduxState({ [`${type}s`]: markers });
-      });
+  updatePointHelper = (type, point, markerName, dangerRadius) => {
+    let markers = this.props[`${type}s`].map(elem => {
+      if (elem.id === point.id) {
+        if (markerName) {
+          console.log('name');
+          elem.name = markerName;
+        }
+        if (dangerRadius) {
+          elem.dangerRadius = parseInt(dangerRadius, 10);
+        }
+      }
+      return elem;
+    });
+
+    this.props.updateReduxState({ [`${type}s`]: markers });
   };
 
   render() {

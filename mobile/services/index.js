@@ -65,6 +65,11 @@ const updatePoint = (body = {}) => {
   return fetch('post', '/api/points/update', body);
 };
 
+const pointInfo = (point) => {
+  return fetch('post', '/points/save', point);
+};
+
+
 export default {
   login,
   changePassword,
@@ -81,5 +86,6 @@ export default {
   search,
   deleteAllPoints,
   viewAllNotification,
-  updatePoint
+  updatePoint,
+  pointInfo
 };
