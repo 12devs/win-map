@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -8,13 +8,13 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView
-} from 'react-native';
-import services from "../services/index";
-import { Button, Icon } from 'react-native-elements';
-import { connect } from "react-redux";
-import actions from "../actions";
+} from 'react-native'
+import services from "../services/index"
+import { Button, Icon } from 'react-native-elements'
+import { connect } from "react-redux"
+import actions from "../actions"
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 class Login extends Component {
   state = {
@@ -24,36 +24,39 @@ class Login extends Component {
     email: '',
     error: '',
     showCode: false,
-  };
+    showPassword: false,
+  }
 
   login = () => {
-    const { login, password, code } = this.state;
+    const { login, password, code } = this.state
     return services.login({ login, password, code })
       .then(res => {
-        console.log(res);
-        const { message, email, error, token } = res;
-        this.setState({ code: '' });
-        this.setState({ error: '' });
+        console.log(res)
+        const { message, email, error, token } = res
+        this.setState({ code: '' })
+        this.setState({ error: '' })
         if (message === 'code') {
-          return this.setState({ showCode: true, email });
+          return this.setState({ showCode: true, email })
         }
         if (message !== 'OK') {
-          error ? this.setState({ error }) : this.setState({ error: message });
+          error ? this.setState({ error }) : this.setState({ error: message })
         } else {
           return AsyncStorage.setItem('windToken', token)
             .then(() => {
-              this.props.updateReduxState({ menuRule: 'logged' });
-              return this.props.navigation.navigate('Map');
-            });
+              this.props.updateReduxState({ menuRule: 'logged' })
+              return this.props.navigation.navigate('Map')
+            })
         }
       })
       .catch((error) => {
-        console.error(error);
-      });
-  };
+        console.error(error)
+      })
+  }
 
   render() {
-    if (this.state.showCode) {
+    const { showPassword, showCode, code, email, error, login, password } = this.state
+
+    if (showCode) {
       return (
         <ScrollView>
           <View style={styles.mainContainer}>
@@ -62,18 +65,18 @@ class Login extends Component {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-                <TextInput style={styles.input}
-                           value={this.state.code}
-                           underlineColorAndroid="transparent"
-                           placeholder={"code from " + this.state.email}
-                           placeholderTextColor="#3D6DCC"
-                           autoCapitalize="none"
-                           onChangeText={(code) => this.setState({ code })}/>
                 <View style={styles.iconContainer}>
                   <Icon name='lock-outline' color='#3D6DCC'/>
                 </View>
+                <TextInput style={styles.input}
+                           value={code}
+                           underlineColorAndroid="transparent"
+                           placeholder={"code from " + email}
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           onChangeText={(code) => this.setState({ code })}/>
               </View>
-              {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+              {error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -89,7 +92,7 @@ class Login extends Component {
             </View>
           </View>
         </ScrollView>
-      );
+      )
     } else {
       return (
         <ScrollView>
@@ -99,34 +102,49 @@ class Login extends Component {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
+                <View style={styles.iconContainer}>
+                  <Icon name='perm-identity' color='#3D6DCC'/>
+                </View>
                 <TextInput style={styles.input}
-                           value={this.state.login}
+                           value={login}
                            underlineColorAndroid="transparent"
                            placeholder="Username"
                            placeholderTextColor="#3D6DCC"
                            autoCapitalize="none"
                            onChangeText={(login) => this.setState({ login })}/>
-                <View style={styles.iconContainer}>
-                  <Icon name='perm-identity' color='#3D6DCC'/>
-                </View>
               </View>
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-                <TextInput style={styles.input}
-                           value={this.state.password}
-                           secureTextEntry={true}
+                <View style={styles.iconContainer}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon name='lock-outline' color='#3D6DCC'/>
+                  </View>
+                </View>
+                <TextInput style={styles.inputPassword}
+                           value={password}
+                           secureTextEntry={!showPassword}
                            underlineColorAndroid="transparent"
                            placeholder="Password"
                            placeholderTextColor="#3D6DCC"
                            autoCapitalize="none"
                            onChangeText={(password) => this.setState({ password })}/>
-                <View style={styles.iconContainer}>
-                  <Icon name='lock-outline' color='#3D6DCC'/>
+                <View style={styles.iconContainerPassword}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon onPress={() => {
+                      this.setState({ showPassword: !showPassword })
+                    }} name={showPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                  </View>
                 </View>
               </View>
-              {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+              {error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -148,7 +166,7 @@ class Login extends Component {
               <Text style={styles.textContainer}>Don't have an account?</Text>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('Register');
+                  this.props.navigation.navigate('Register')
                 }}>
                 <Text style={styles.secondaryTextContainer}>You can register here.</Text>
               </TouchableOpacity>
@@ -161,23 +179,23 @@ class Login extends Component {
               <Text style={styles.textContainer}>Forgot your password?</Text>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('ChangePassword');
+                  this.props.navigation.navigate('ChangePassword')
                 }}>
                 <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
-      );
+      )
     }
   }
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {}
 }
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect(mapStateToProps, actions)(Login)
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -204,6 +222,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  iconContainerPassword: {
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: '15%',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   input: {
     // marginTop: 10,
     marginBottom: 10,
@@ -211,6 +238,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#3D6DCC',
     borderBottomWidth: 1,
     width: "80%",
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  inputPassword: {
+    // marginTop: 10,
+    marginBottom: 10,
+    height: 60,
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: "65%",
     // justifyContent: 'center',
     // alignItems: 'center',
   },
@@ -233,4 +270,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }
-});
+})

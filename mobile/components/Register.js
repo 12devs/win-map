@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import services from '../services/index';
-import { Button, Icon } from 'react-native-elements';
-
-const { width, height } = Dimensions.get('window');
+import React, { Component } from 'react'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import services from '../services/index'
+import { Button, Icon } from 'react-native-elements'
+import connect from 'react-redux/es/connect/connect'
+import actions from '../actions'
 
 class Register extends Component {
   state = {
@@ -11,32 +11,36 @@ class Register extends Component {
     password: '',
     email: '',
     repeatPassword: '',
-    error: ''
-  };
+    error: '',
+    showPassword: false,
+    showRepeatPassword: false
+  }
 
   register = () => {
-    const { login, password, repeatPassword, email } = this.state;
+    const { login, password, repeatPassword, email } = this.state
+    const { places, dangers } = this.props
 
     if (password === repeatPassword) {
-      services.register({ login, password, email })
+      services.register({ login, password, email, places, dangers })
         .then(res => {
-          const { message, error } = res;
+          const { message, error } = res
           if (message !== 'OK') {
-            error ? this.setState({ error }) : this.setState({ error: message });
+            error ? this.setState({ error }) : this.setState({ error: message })
           }
           else
-            return this.props.navigation.navigate('Login');
+            return this.props.navigation.navigate('Login')
         })
         .catch((error) => {
-          this.setState({ error: error.toString() });
-        });
+          this.setState({ error: error.toString() })
+        })
     }
     else {
-      this.setState({ error: 'Passwords do not match' });
+      this.setState({ error: 'Passwords do not match' })
     }
-  };
+  }
 
   render() {
+    const { showPassword, email, login, error, showRepeatPassword } = this.state
     return (
       <ScrollView>
         <View style={styles.mainContainer}>
@@ -45,65 +49,90 @@ class Register extends Component {
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
+              <View style={styles.iconContainer}>
+                <Icon name='mail-outline' color='#3D6DCC'/>
+              </View>
               <TextInput style={styles.input}
                          underlineColorAndroid="transparent"
                          placeholder="email"
                          placeholderTextColor="#3D6DCC"
                          autoCapitalize="none"
-                         value={this.state.email}
+                         value={email}
                          onChangeText={(email) => this.setState({ email })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='mail-outline' color='#3D6DCC'/>
-              </View>
             </View>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
+              <View style={styles.iconContainer}>
+                <Icon name='perm-identity' color='#3D6DCC'/>
+              </View>
               <TextInput style={styles.input}
                          underlineColorAndroid="transparent"
                          placeholder="Username"
                          placeholderTextColor="#3D6DCC"
                          autoCapitalize="none"
-                         value={this.state.login}
+                         value={login}
                          onChangeText={(login) => this.setState({ login })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='perm-identity' color='#3D6DCC'/>
-              </View>
             </View>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-              <TextInput style={styles.input}
+              <View style={styles.iconContainer}>
+                <Icon name='lock-outline' color='#3D6DCC'/>
+              </View>
+              <TextInput style={styles.inputPassword}
                          underlineColorAndroid="transparent"
-                         secureTextEntry={true}
+                         secureTextEntry={!showPassword}
                          placeholder="Password"
                          placeholderTextColor="#3D6DCC"
                          autoCapitalize="none"
                          value={this.state.password}
                          onChangeText={(password) => this.setState({ password })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
+              <View style={styles.iconContainerPassword}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                  <Icon onPress={() => {
+                    this.setState({ showPassword: !showPassword })
+                  }} name={showPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                </View>
               </View>
             </View>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-              <TextInput style={styles.input}
+              <View style={styles.iconContainer}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                  <Icon name='lock-outline' color='#3D6DCC'/>
+                </View>
+              </View>
+              <TextInput style={styles.inputPassword}
                          underlineColorAndroid="transparent"
-                         secureTextEntry={true}
+                         secureTextEntry={!showRepeatPassword}
                          placeholder="Repeat Password"
                          placeholderTextColor="#3D6DCC"
                          autoCapitalize="none"
                          value={this.state.repeatPassword}
                          onChangeText={(repeatPassword) => this.setState({ repeatPassword })}/>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
+              <View style={styles.iconContainerPassword}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                  <Icon onPress={() => {
+                    this.setState({ showRepeatPassword: !showRepeatPassword })
+                  }} name={showRepeatPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                </View>
               </View>
             </View>
-            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {this.state.error}</Text> : null}
+            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
             <View style={{
               flexDirection: 'row',
               justifyContent: 'center',
@@ -126,22 +155,28 @@ class Register extends Component {
             <Text style={styles.textContainer}>Do have an account?</Text>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate('Login');
+                this.props.navigation.navigate('Login')
               }}>
               <Text style={styles.secondaryTextContainer}>You can login here.</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
-export default Register;
+function mapStateToProps(state) {
+  return {
+    places: state.get('places'),
+    dangers: state.get('dangers'),
+  }
+}
+
+export default connect(mapStateToProps, actions)(Register)
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // marginTop: 10,
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 2,
@@ -152,8 +187,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: '#fff',
-    // margin: 10,
-    // elevation: 5
   },
   iconContainer: {
     borderBottomColor: '#3D6DCC',
@@ -164,8 +197,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  iconContainerPassword: {
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: '15%',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   input: {
-    // marginTop: 10,
     marginBottom: 10,
     height: 60,
     borderBottomColor: '#3D6DCC',
@@ -173,6 +214,13 @@ const styles = StyleSheet.create({
     width: "80%",
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  inputPassword: {
+    marginBottom: 10,
+    height: 60,
+    borderBottomColor: '#3D6DCC',
+    borderBottomWidth: 1,
+    width: "65%",
   },
   textContainer: {
     textAlign: 'center',
@@ -193,4 +241,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }
-});
+})

@@ -16,6 +16,7 @@ import Back from './mapTools/Back';
 import SentPoint from './SentPoint';
 import { Icon } from 'react-native-elements';
 import SaveNotificationSettings from './SaveNotificationSettings';
+import AccountIcon from './mapTools/MapHeaderIcon';
 
 const { width } = Dimensions.get('window');
 
@@ -85,6 +86,7 @@ const Main_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => ({
         title: 'Map',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerRight: <AccountIcon navigation={navigation}/>,
         headerTitleStyle: { textAlign: 'center' },
         headerStyle: {
           backgroundColor: '#3D6DCC'

@@ -100,8 +100,14 @@ class Map extends Component {
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
         </Callout>
-       {/*  <Callout
-          style={{ bottom: 0, width: '100%', flexDirection: 'row', justifyContent: 'center', marginBottom: height / 6, }}>
+       {/* <Callout
+          style={{
+            bottom: 0,
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginBottom: height / 6,
+          }}>
           <View style={{ padding: 0, opacity: 0.7, backgroundColor: "#000", borderRadius: 50 }}>
             <Text style={{ padding: 10, color: 'white', textAlign: 'center' }}>{viewType} mode</Text>
           </View>
