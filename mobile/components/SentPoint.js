@@ -104,7 +104,7 @@ class SentPoint extends Component {
     const { danger, place } = res
     let { places, dangers, stationsData, stations } = this.props
 
-    if (stationsData.size) stationsData = { ...stationsData, ...res.stationsData }
+    if (stationsData.size !== 0) stationsData = { ...stationsData, ...res.stationsData }
     else stationsData = res.stationsData
 
     if (danger) {
@@ -120,7 +120,7 @@ class SentPoint extends Component {
       places,
       dangers,
       stationsData,
-      stations,
+      stations: Object.keys(res.stationsData),
       savePointSettings: { show: false }
     })
 

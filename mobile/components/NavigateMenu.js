@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ScrollView, View, Text, StyleSheet } from "react-native";
+import { AsyncStorage, ScrollView, View, Text, StyleSheet, Image } from "react-native";
 import { DrawerItems } from "react-navigation";
 import { connect } from "react-redux";
 import actions from "../actions";
@@ -29,6 +29,8 @@ class CustomDrawerContentComponent extends Component {
     return (
       <View>
         <View style={styles.headerContainer}>
+          <Image source={{uri: 'https://s3.amazonaws.com/dsg.files.app.content.prod/gereports/wp-content/uploads/2017/09/12121430/wind-onshore-48-158-3d-landscape-1-3000px.jpg'}}
+                 style={{backgroundColor:'#000', width: "100%", height: "100%", opacity: 0.7}}  />
           <View style={styles.textContainer}>
             <Text style={styles.text}>Wind App</Text>
           </View>
@@ -50,17 +52,19 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
-    color: '#fff',
+    color: '#e3e3e3',
     fontSize: 25
   },
   headerContainer: {
-    backgroundColor: '#3D6DCC',
+    backgroundColor: '#000',
     height: "40%"
   },
   textContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: '-25%',
+    marginRight: '48%'
   },
 });
 
