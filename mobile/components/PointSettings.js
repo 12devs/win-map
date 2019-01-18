@@ -18,6 +18,7 @@ import { Button, Card, Divider, Icon } from 'react-native-elements';
 import Loader from './Loader';
 import { Table, Row, Rows } from 'react-native-table-component';
 import hasItem from '../utils/asyncStorage';
+import Overlay from 'react-native-modal-overlay';
 
 class PointSettings extends Component {
   constructor() {
@@ -60,8 +61,7 @@ class PointSettings extends Component {
         .then(() => {
           return this.delHelper(type, id);
         });
-    }
-    else {
+    } else {
       return this.delHelper(type, id);
     }
   };
@@ -98,8 +98,7 @@ class PointSettings extends Component {
         .then(() => {
           this.updatePointHelper(type, point, markerName, dangerRadius);
         });
-    }
-    else {
+    } else {
       this.updatePointHelper(type, point, markerName, dangerRadius);
     }
   };
@@ -124,22 +123,19 @@ class PointSettings extends Component {
   render() {
     let { info, statistic } = this.props;
     let { point, type } = info;
-    const { isDelButton, modalVisible, markerName, dangerRadius } = this.state;
+    let { isDelButton, modalVisible, markerName, dangerRadius } = this.state;
     if (!point) {
       point = {};
     }
 
     return (
       <View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={modalVisible}
-          onRequestClose={() => {
-            this.setModalVisible(false);
-          }}>
+        <Overlay visible={modalVisible}
+                 onClose={() => this.setModalVisible(false)}
+                 containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.78)' }} closeOnTouchOutside>
           <View>
             <View>
+              <Text style={{ textAlign: 'center', fontSize: 20 }}>Marker name:</Text>
               <View style={styles.inputContainer}>
                 <View style={{
                   flexDirection: 'row',
@@ -148,7 +144,7 @@ class PointSettings extends Component {
                   <TextInput style={styles.input}
                              value={markerName}
                              underlineColorAndroid="transparent"
-                             placeholder="Marker Name"
+                             placeholder={point.name}
                              placeholderTextColor="#3D6DCC"
                              autoCapitalize="none"
                              onChangeText={(markerName) => this.setState({ markerName })}/>
@@ -159,20 +155,23 @@ class PointSettings extends Component {
               </View>
 
               {point.dangerRadius &&
-              <View style={styles.inputContainer}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                  <TextInput style={styles.input}
-                             value={dangerRadius}
-                             underlineColorAndroid="transparent"
-                             placeholder="Wind Radius"
-                             placeholderTextColor="#3D6DCC"
-                             autoCapitalize="none"
-                             onChangeText={(dangerRadius) => this.setState({ dangerRadius })}/>
-                  <View style={styles.iconContainer}>
-                    <Icon name='network-wifi' color='#3D6DCC'/>
+              <View>
+                <Text style={{ textAlign: 'center', fontSize: 20 }}>Wind radius:</Text>
+                <View style={styles.inputContainer}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <TextInput style={styles.input}
+                               value={dangerRadius}
+                               underlineColorAndroid="transparent"
+                               placeholder={point.dangerRadius.toString()}
+                               placeholderTextColor="#3D6DCC"
+                               autoCapitalize="none"
+                               onChangeText={(dangerRadius) => this.setState({ dangerRadius })}/>
+                    <View style={styles.iconContainer}>
+                      <Icon name='network-wifi' color='#3D6DCC'/>
+                    </View>
                   </View>
                 </View>
               </View>}
@@ -195,7 +194,7 @@ class PointSettings extends Component {
 
             </View>
           </View>
-        </Modal>
+        </Overlay>
         {
           !isDelButton ?
             <ScrollView contentContainerStyle={{
@@ -212,7 +211,8 @@ class PointSettings extends Component {
                     this.setModalVisible(true);
                   }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }}/>
                 </View>
-                {point.dangerRadius && <Text style={{ textAlign: 'center' }}>Wind Radius: {point.dangerRadius} m</Text>}
+                {point.dangerRadius &&
+                <Text style={{ textAlign: 'center' }}>Wind Radius: {point.dangerRadius.toString()} m</Text>}
                 {/*<Text style={{ textAlign: 'center' }}>{`(${point.lat}, ${point.lng})`}</Text>*/}
                 <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }}/>
                 <View>

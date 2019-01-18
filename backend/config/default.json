@@ -15,13 +15,13 @@
   },
   "database": {
     "dialect": "postgres",
-    "username": "postgres",
+    "username": "user",
     "password": "postgres",
     "database": "wind",
     "host": "127.0.0.1"
   },
   "database_test": {
-    "dialect": "postgres",
+    "dialect": "user",
     "username": "postgres",
     "password": "postgres",
     "database": "wind_test",
