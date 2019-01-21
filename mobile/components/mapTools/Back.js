@@ -1,60 +1,40 @@
-import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  ScrollView, Dimensions, TouchableOpacity, Image
-} from 'react-native';
-import actions from "../../actions/index";
-import { connect } from "react-redux";
-import icons from '../icons';
+import React, { Component } from 'react'
+import { View, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native'
+import actions from "../../actions/index"
+import { connect } from "react-redux"
+import icons from '../icons'
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window')
 
 class Back extends Component {
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 5, marginLeft: width * 0.04 }}
+        <TouchableOpacity style={styles.touchable}
                           onPress={() => {
-                            this.props.updateReduxState({ info: { point: null, type: null } });
-                            this.props.navigation.navigate('Map');
+                            this.props.updateReduxState({ info: { point: null, type: null } })
+                            this.props.navigation.navigate('Map')
                           }}>
           <Image
             source={{ uri: icons.back }}
-            style={{ width: 25, height: 25, tintColor: '#fff' }}
+            style={styles.image}
           />
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    places: state.get('places'),
-    savePointSettings: state.get('savePointSettings'),
-    dangers: state.get('dangers'),
-    stations: state.get('stations'),
-    stationsData: state.get('stationsData'),
-    markerType: state.get('markerType'),
-    viewType: state.get('viewType'),
-    actionType: state.get('actionType'),
-    isSavePointSettingsOpen: state.get('isSavePointSettingsOpen'),
-    info: state.get('info'),
-  };
-}
-
-export default connect(mapStateToProps, actions)(Back);
+export default connect(null, actions)(Back)
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: 1,
+  touchable: {
+    padding: 5,
+    marginLeft: width * 0.04
   },
-  button: {
-    margin: 20
+  image: {
+    width: 25,
+    height: 25,
+    tintColor: '#fff'
   }
-});
+})

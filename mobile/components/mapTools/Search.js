@@ -1,61 +1,59 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions, Keyboard, Modal } from 'react-native';
-import actions from '../../actions/index';
-import { connect } from "react-redux";
-import services from '../../services/index';
-import { calcMapRegionOne } from '../../utils/utils';
-import { SearchBar, ListItem } from 'react-native-elements';
+import React, { Component } from 'react'
+import { View, StyleSheet, Text, ScrollView, BackHandler, Keyboard } from 'react-native'
+import actions from '../../actions/index'
+import { connect } from "react-redux"
+import services from '../../services/index'
+import { calcMapRegionOne } from '../../utils/utils'
+import { SearchBar, ListItem } from 'react-native-elements'
 
 class Search extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       onSearch: false,
       items: []
-    };
-    this.onChange = this.onChange.bind(this);
-    this.onSelectedItemsChange = this.onSelectedItemsChange.bind(this);
+    }
+    this.onChange = this.onChange.bind(this)
+    this.onSelectedItemsChange = this.onSelectedItemsChange.bind(this)
   }
 
   handleBackPress = () => {
     if (this.state.items) {
-      this.setState({ items: [] });
-      BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-      return true;
+      this.setState({ items: [] })
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+      return true
     }
-    else
-      return false;
-  };
+    return false
+  }
 
   onChange = selectedItems => {
     if (selectedItems.length > 1) {
-      BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
       return services.search(selectedItems).then(res => {
         const places = res.data.map((el, id) => {
-          const { display_name, lat, lon } = el;
-          return { id: id.toString(), display_name, lat, lon };
-        });
-        this.setState({ items: places });
-      });
+          const { display_name, lat, lon } = el
+          return { id: id.toString(), display_name, lat, lon }
+        })
+        this.setState({ items: places })
+      })
     }
-    else {
-      this.setState({ items: [] });
-    }
-  };
+    return this.setState({ items: [] })
+  }
 
   onSelectedItemsChange = selectedItems => {
-    const { lat, lon } = this.state.items[selectedItems];
-    const mapRegion = calcMapRegionOne({ lat, lon });
+    const { lat, lon } = this.state.items[selectedItems]
+    const mapRegion = calcMapRegionOne({ lat, lon })
     if (mapRegion) {
-      this.props.updateReduxState({ mapRegion });
-      this.setState({ items: [] });
-      Keyboard.dismiss();
+      this.props.updateReduxState({ mapRegion })
+      this.setState({ items: [] })
+      Keyboard.dismiss()
     }
-  };
+  }
 
   render() {
-    const { items } = this.state;
-    const { width, height } = this.props;
+    const { items } = this.state
+    const { width, height } = this.props
+
     return (
       <View style={{ width }}>
         {items.length > 1 ? <SearchBar
@@ -92,18 +90,11 @@ class Search extends Component {
             }
           </ScrollView> : null}
       </View>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
-  };
-}
-
-export default connect(mapStateToProps, actions)(Search);
+export default connect(null, actions)(Search)
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -122,4 +113,4 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
     borderTopColor: '#eee'
   }
-});
+})

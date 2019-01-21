@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { StyleSheet, Slider, } from 'react-native';
-import actions from "../../actions/index";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import { StyleSheet, Slider, } from 'react-native'
+import actions from "../../actions/index"
+import { connect } from "react-redux"
 
 class Navigation extends Component {
 
   change(value) {
-    this.props.updateReduxState({ scaleWind: parseFloat(value) });
+    this.props.updateReduxState({ scaleWind: parseFloat(value) })
   }
 
   render() {
@@ -20,17 +20,17 @@ class Navigation extends Component {
         onValueChange={this.change.bind(this)}
         value={this.props.scaleWind}
       />
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     scaleWind: state.get('scaleWind'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Navigation);
+export default connect(mapStateToProps, actions)(Navigation)
 
 const styles = StyleSheet.create({
   submitButton: {
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
     height: 30,
   },
 
-});
+})

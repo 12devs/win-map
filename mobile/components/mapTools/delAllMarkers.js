@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Alert,
-} from 'react-native';
-import actions from "../../actions/index";
-import { connect } from "react-redux";
-import icons from '../icons';
-import service from '../../services';
+import React, { Component } from 'react'
+import { View, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native'
+import actions from "../../actions/index"
+import { connect } from "react-redux"
+import icons from '../icons'
+import service from '../../services'
 
 class DeleteMarkers extends Component {
 
@@ -18,51 +12,43 @@ class DeleteMarkers extends Component {
       this.props.updateReduxState({
         places: [],
         dangers: [],
-      });
-    });
-  };
+      })
+    })
+  }
 
   render() {
     return (
-        <View style={{ marginTop: 70 }}>
-          <TouchableOpacity
-            style={styles.imageContainer}
-            onPress={() => {
-              Alert.alert(
-                'Alert',
-                'Do you really want to delete all markers?',
-                [
-                  { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
-                  {
-                    text: 'Yes', onPress: () => {
-                      console.log('Yes Pressed');
-                      this.deleteAllMarkers();
-                    }
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: icons.markerOff
-              }}/>
-          </TouchableOpacity>
-        </View>
-    );
+      <View style={{ marginTop: 70 }}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={() => {
+            Alert.alert(
+              'Alert',
+              'Do you really want to delete all markers?',
+              [
+                { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
+                {
+                  text: 'Yes', onPress: () => {
+                    console.log('Yes Pressed')
+                    this.deleteAllMarkers()
+                  }
+                },
+              ],
+              { cancelable: false }
+            )
+          }}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: icons.markerOff
+            }}/>
+        </TouchableOpacity>
+      </View>
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    places: state.get('places'),
-    dangers: state.get('dangers'),
-    viewType: state.get('viewType'),
-  };
-}
-
-export default connect(mapStateToProps, actions)(DeleteMarkers);
+export default connect(null, actions)(DeleteMarkers)
 
 const styles = StyleSheet.create({
   container: {
@@ -83,4 +69,4 @@ const styles = StyleSheet.create({
     margin: 15,
     tintColor: '#00498f',
   }
-});
+})

@@ -1,27 +1,27 @@
-import RadioForm from 'react-native-simple-radio-button';
-import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import actions from "../../actions/index";
-import { connect } from "react-redux";
-import _ from 'lodash';
-import icons from '../icons';
+import RadioForm from 'react-native-simple-radio-button'
+import React, { Component } from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import actions from "../../actions/index"
+import { connect } from "react-redux"
+import _ from 'lodash'
+import icons from '../icons'
 
 class MapViewType extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       isShow: false
-    };
+    }
   }
 
   render() {
-    const { isShow } = this.state;
+    const { isShow } = this.state
     const radio_props = [
       { label: 'standard', value: 'standard' },
       { label: 'satellite', value: 'satellite' },
       { label: 'hybrid', value: 'hybrid' },
-    ];
-    const index = _.findIndex(radio_props, o => (o.value == this.props.mapViewType));
+    ]
+    const index = _.findIndex(radio_props, o => (o.value === this.props.mapViewType))
 
     return (
       <View>
@@ -29,25 +29,13 @@ class MapViewType extends Component {
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={() => {
-              this.setState({ isShow: !isShow });
+              this.setState({ isShow: !isShow })
             }}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: icons.layers
-              }}/>
+            <Image style={styles.image} source={{ uri: icons.layers }}/>
           </TouchableOpacity> : null}
 
         {isShow ?
-          <View style={{
-            backgroundColor: 'white',
-            padding: 20,
-            paddingTop: 10,
-            paddingBottom: 10,
-            borderRadius: 10,
-            elevation: 3,
-            margin: 3
-          }}>
+          <View style={styles.layersContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Text style={{ textAlign: 'right', marginBottom: 10 }}>Map Layers</Text>
             </View>
@@ -57,32 +45,32 @@ class MapViewType extends Component {
               selectedButtonColor={'#00498f'}
               initial={index}
               onPress={(value) => {
-                this.props.updateReduxState({ mapViewType: value });
+                this.props.updateReduxState({ mapViewType: value })
               }}
             />
             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
               <TouchableOpacity
-                style={{ borderWidth: 1, borderRadius: 50,borderColor:'#00498f', padding: 5, paddingRight: 20, paddingLeft: 20 }}
+                style={styles.closeContainer}
                 onPress={() => {
-                  this.setState({ isShow: !isShow });
+                  this.setState({ isShow: !isShow })
                 }}>
-                <Text style={{ color:'#00498f' }}>Close</Text>
+                <Text style={{ color: '#00498f' }}>Close</Text>
               </TouchableOpacity>
             </View>
           </View> : null}
       </View>
 
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     mapViewType: state.get('mapViewType'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(MapViewType);
+export default connect(mapStateToProps, actions)(MapViewType)
 
 const styles = StyleSheet.create({
   image: {
@@ -91,12 +79,29 @@ const styles = StyleSheet.create({
     margin: 15,
     tintColor: '#00498f',
   },
+  layersContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 10,
+    elevation: 3,
+    margin: 3
+  },
   imageContainer: {
     padding: 2,
     borderRadius: 80,
     elevation: 5,
     margin: 10,
     marginRight: 5,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
-});
+  closeContainer: {
+    borderWidth: 1,
+    borderRadius: 50,
+    borderColor: '#00498f',
+    padding: 5,
+    paddingRight: 20,
+    paddingLeft: 20
+  }
+})

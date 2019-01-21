@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
-import actions from "../../actions/index";
-import { connect } from "react-redux";
-import { calcMapRegionAll } from '../../utils/utils';
-import icons from '../icons';
+import React, { Component } from 'react'
+import { View, TouchableOpacity, StyleSheet, Image, } from 'react-native'
+import actions from "../../actions/index"
+import { connect } from "react-redux"
+import { calcMapRegionAll } from '../../utils/utils'
+import icons from '../icons'
 
 class Navigation extends Component {
 
@@ -20,9 +15,9 @@ class Navigation extends Component {
             style={styles.imageContainer}
             onPress={
               () => {
-                const mapRegion = calcMapRegionAll([...this.props.places, ...this.props.dangers]);
+                const mapRegion = calcMapRegionAll([...this.props.places, ...this.props.dangers])
                 if (mapRegion) {
-                  this.props.updateReduxState({ mapRegion });
+                  this.props.updateReduxState({ mapRegion })
                 }
               }}>
             <Image
@@ -39,9 +34,9 @@ class Navigation extends Component {
             onPress={
               () => {
                 if (this.props.viewType === 'Current') {
-                  this.props.updateReduxState({ viewType: 'Historical' });
+                  this.props.updateReduxState({ viewType: 'Historical' })
                 } else {
-                  this.props.updateReduxState({ viewType: 'Current' });
+                  this.props.updateReduxState({ viewType: 'Current' })
                 }
               }
             }>
@@ -53,7 +48,7 @@ class Navigation extends Component {
           </TouchableOpacity>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -62,10 +57,10 @@ function mapStateToProps(state) {
     places: state.get('places'),
     dangers: state.get('dangers'),
     viewType: state.get('viewType'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Navigation);
+export default connect(mapStateToProps, actions)(Navigation)
 
 const styles = StyleSheet.create({
   container: {
@@ -84,4 +79,4 @@ const styles = StyleSheet.create({
     margin: 15,
     tintColor: '#00498f',
   }
-});
+})
