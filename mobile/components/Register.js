@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
 import services from '../services/index'
 import { Button, Icon } from 'react-native-elements'
 import connect from 'react-redux/es/connect/connect'
@@ -16,6 +16,19 @@ class Register extends Component {
     showRepeatPassword: false
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
+  };
+
   register = () => {
     const { login, password, repeatPassword, email } = this.state
     const { places, dangers } = this.props
@@ -26,15 +39,13 @@ class Register extends Component {
           const { message, error } = res
           if (message !== 'OK') {
             error ? this.setState({ error }) : this.setState({ error: message })
-          }
-          else
+          } else
             return this.props.navigation.navigate('Login')
         })
         .catch((error) => {
           this.setState({ error: error.toString() })
         })
-    }
-    else {
+    } else {
       this.setState({ error: 'Passwords do not match' })
     }
   }
@@ -223,14 +234,14 @@ const styles = StyleSheet.create({
     width: "65%",
   },
   textContainer: {
-    textAlign: 'center',
-    textAlignVertical: "center",
+    // textAlign: 'center',
+    // textAlignVertical: "center",
     color: '#525966',
     padding: 10,
   },
   secondaryTextContainer: {
-    textAlign: 'center',
-    textAlignVertical: "center",
+    // textAlign: 'center',
+    // textAlignVertical: "center",
     color: '#3D6DCC',
     padding: 10,
   },

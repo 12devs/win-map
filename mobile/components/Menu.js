@@ -45,7 +45,7 @@ const Register_StackNavigator = createStackNavigator({
       screen: Register,
       navigationOptions: ({ navigation }) => ({
         title: 'Register',
-        // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+        headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC',
           textAlign: 'center'
@@ -66,7 +66,7 @@ const Login_StackNavigator = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return ({
           title: 'Login',
-          // headerLeft: <HamburgerIcon navigationProps={navigation}/>,
+          headerLeft: <Back navigation={navigation}/>,
           headerStyle: {
             backgroundColor: '#3D6DCC'
           },
@@ -196,7 +196,7 @@ const ChangePassword_StackNavigator = createStackNavigator({
       screen: ChangePassword,
       navigationOptions: ({ navigation }) => ({
         title: 'Change Password',
-        // headerLeft: <Back navigation={navigation}/>,
+        headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
           backgroundColor: '#3D6DCC'
         },

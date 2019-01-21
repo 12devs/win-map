@@ -5,16 +5,13 @@ import {
   TextInput,
   StyleSheet,
   AsyncStorage,
-  Dimensions,
   TouchableOpacity,
-  ScrollView
+  ScrollView, BackHandler
 } from 'react-native'
 import services from "../services/index"
 import { Button, Icon } from 'react-native-elements'
 import { connect } from "react-redux"
 import actions from "../actions"
-
-const { width, height } = Dimensions.get('window')
 
 class Login extends Component {
   state = {
@@ -26,6 +23,19 @@ class Login extends Component {
     showCode: false,
     showPassword: false,
   }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map');
+    return true;
+  };
 
   login = () => {
     const { login, password, code } = this.state

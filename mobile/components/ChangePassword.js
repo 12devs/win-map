@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
 import services from '../services/index'
 import { Button, Icon } from 'react-native-elements'
 
@@ -16,6 +16,19 @@ class ChangePassword extends Component {
     showCode: false,
     showPassword: false,
     showRepeatPassword: false
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate('Map')
+    return true
   }
 
   changePassword = () => {
@@ -38,8 +51,7 @@ class ChangePassword extends Component {
         .catch((error) => {
           this.setState({ error: error.toString() })
         })
-    }
-    else {
+    } else {
       this.setState({ error: 'Passwords do not match' })
     }
   }

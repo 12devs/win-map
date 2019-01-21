@@ -132,7 +132,9 @@ class PointSettings extends Component {
       <View>
         <Overlay visible={modalVisible}
                  onClose={() => this.setModalVisible(false)}
-                 containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.78)' }} closeOnTouchOutside>
+                 containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.78)' }}
+                 closeOnTouchOutside
+                 animationType='zoomIn'>
           <View>
             <View>
               <Text style={{ textAlign: 'center', fontSize: 20 }}>Marker name:</Text>
@@ -304,7 +306,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   container: {
     flex: 1,
