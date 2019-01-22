@@ -27,6 +27,7 @@
     "react-native-sectioned-multi-select": "^0.6.2",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-sound-player": "^0.5.3",
+    "react-native-splash-screen": "^3.1.1",
     "react-native-table-component": "^1.1.8",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^2.18.2",

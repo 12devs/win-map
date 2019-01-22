@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, NetInfo, Dimensions, Text, Alert } from 'react-native';
+import { View, StyleSheet, NetInfo, Dimensions, Text, StatusBar } from 'react-native';
 import actions from '../actions/index';
 import { connect } from "react-redux";
 import Map from './Map';
