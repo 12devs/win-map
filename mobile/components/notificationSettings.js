@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   StyleSheet,
@@ -6,42 +6,42 @@ import {
   Dimensions,
   NativeModules,
   LayoutAnimation, BackHandler,
-} from 'react-native';
-import actions from '../actions/index';
-import { connect } from "react-redux";
-import { ListItem } from 'react-native-elements';
-import Accordion from './Accordion';
+} from 'react-native'
+import actions from '../actions/index'
+import { connect } from "react-redux"
+import { ListItem } from 'react-native-elements'
+import Accordion from './Accordion'
 
-const { UIManager } = NativeModules;
-const { width } = Dimensions.get('window');
+const { UIManager } = NativeModules
+const { width } = Dimensions.get('window')
 
 UIManager.setLayoutAnimationEnabledExperimental &&
-UIManager.setLayoutAnimationEnabledExperimental(true);
+UIManager.setLayoutAnimationEnabledExperimental(true)
 
 class notificationSettings extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       touch: '',
-    };
-    this.onClickPlace = this.onClickPlace.bind(this);
+    }
+    this.onClickPlace = this.onClickPlace.bind(this)
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   onClickPlace(id) {
-    const { touch } = this.state;
+    const { touch } = this.state
 
     LayoutAnimation.configureNext({
       duration: 200,
@@ -53,9 +53,9 @@ class notificationSettings extends Component {
         type: LayoutAnimation.Types.linear,
         property: LayoutAnimation.Properties.opacity,
       },
-    });
+    })
 
-   return this.setState({ touch: touch === id ? '' : id });
+    return this.setState({ touch: touch === id ? '' : id })
   }
 
   render() {
@@ -74,11 +74,11 @@ class notificationSettings extends Component {
                   leftIcon={{ name: 'location-on', color: '#3D6DCC' }}
                   rightIcon={place.id === this.state.touch ? { name: 'expand-more' } : {}}/>
                 <Accordion place={place} touch={this.state.touch}/>
-              </View>);
+              </View>)
           })}
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -87,10 +87,10 @@ function mapStateToProps(state) {
     notificationSettings: state.get('notificationSettings'),
     places: state.get('places'),
     dangers: state.get('dangers'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(notificationSettings);
+export default connect(mapStateToProps, actions)(notificationSettings)
 
 const styles = StyleSheet.create({
   container: {
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
     marginRight: width / 3,
     marginTop: 30
   }
-});
+})

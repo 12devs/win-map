@@ -16,7 +16,7 @@ import OneSignal from 'react-native-onesignal'
 
 class Login extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       login: '',
       password: '',
@@ -27,7 +27,7 @@ class Login extends Component {
       showPassword: false,
       device: {}
     }
-    this.onIds = this.onIds.bind(this);
+    this.onIds = this.onIds.bind(this)
   }
 
   componentDidMount() {
@@ -35,7 +35,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    OneSignal.configure();
+    OneSignal.configure()
     OneSignal.addEventListener('ids', this.onIds)
   }
 
@@ -46,7 +46,7 @@ class Login extends Component {
 
   onIds(device) {
     console.log('Device info: ', device)
-    this.setState({device})
+    this.setState({ device })
   }
 
   handleBackPress = () => {
@@ -71,7 +71,7 @@ class Login extends Component {
           return AsyncStorage.setItem('windToken', token)
             .then(() => {
               this.props.updateReduxState({ menuRule: 'logged' })
-              services.saveNotificationToken(device.userId);
+              services.saveNotificationToken(device.userId)
               return this.props.navigation.navigate('Map')
             })
         }
@@ -219,11 +219,7 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {}
-}
-
-export default connect(mapStateToProps, actions)(Login)
+export default connect(null, actions)(Login)
 
 const styles = StyleSheet.create({
   mainContainer: {

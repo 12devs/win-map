@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import actions from '../actions/index';
-import { connect } from "react-redux";
-import _ from 'lodash';
-import { ListItem } from 'react-native-elements';
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import actions from '../actions/index'
+import { connect } from "react-redux"
+import _ from 'lodash'
+import { ListItem } from 'react-native-elements'
 
 class Accordion extends Component {
   state = {
     items: []
-  };
+  }
 
   onSelectedItemsChange = (l) => {
-    const { place } = this.props;
-    const notificationSettings = this.props.notificationSettings;
-    const index = _.findIndex(notificationSettings, o => (o.place.value === place.id));
+    const { place } = this.props
+    const notificationSettings = this.props.notificationSettings
+    const index = _.findIndex(notificationSettings, o => (o.place.value === place.id))
 
     if (index === -1) {
       notificationSettings.push({
@@ -22,17 +22,15 @@ class Accordion extends Component {
           value: place.id
         },
         danger: [{ value: l.id, label: l.name }]
-      });
-    }
-    else {
-      let danger = notificationSettings[index].danger;
-      const value = _.findIndex(danger, el => (el.value === l.id));
+      })
+    } else {
+      let danger = notificationSettings[index].danger
+      const value = _.findIndex(danger, el => (el.value === l.id))
 
       if (value !== -1) {
-        danger = danger.filter(el => el.value !== l.id);
-      }
-      else {
-        danger.push({ value: l.id, label: l.name });
+        danger = danger.filter(el => el.value !== l.id)
+      } else {
+        danger.push({ value: l.id, label: l.name })
       }
       notificationSettings[index] = {
         place: {
@@ -40,22 +38,22 @@ class Accordion extends Component {
           value: place.id
         },
         danger
-      };
+      }
     }
 
-    this.props.updateReduxState({ notificationSettings });
-    this.forceUpdate();
-  };
+    this.props.updateReduxState({ notificationSettings })
+    this.forceUpdate()
+  }
 
 
   render() {
-    const { place, dangers } = this.props;
+    const { place, dangers } = this.props
     let selectedItems = (this.props.notificationSettings.filter(elem => {
-      return elem.place.value === place.id;
-    })[0] || {}).danger;
+      return elem.place.value === place.id
+    })[0] || {}).danger
 
     if (!selectedItems) {
-      selectedItems = [];
+      selectedItems = []
     }
 
     return (
@@ -65,7 +63,7 @@ class Accordion extends Component {
             {dangers.map((l) => (
               <ListItem
                 onPress={() => {
-                  this.onSelectedItemsChange(l);
+                  this.onSelectedItemsChange(l)
                 }}
                 containerStyle={styles.itemListContainer}
                 underlayColor={'#dbdbdb'}
@@ -83,7 +81,7 @@ class Accordion extends Component {
           </View> : null
         }
       </View>
-    );
+    )
   }
 }
 
@@ -91,10 +89,10 @@ function mapStateToProps(state) {
   return {
     notificationSettings: state.get('notificationSettings'),
     dangers: state.get('dangers'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Accordion);
+export default connect(mapStateToProps, actions)(Accordion)
 
 const styles = StyleSheet.create({
   itemListContainer: {
@@ -102,4 +100,4 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e1e1e1',
     borderTopColor: 'transparent',
   }
-});
+})

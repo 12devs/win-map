@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
 import services from '../services/index'
 import { Button, Icon } from 'react-native-elements'
-
-const { width, height } = Dimensions.get('window')
 
 class ChangePassword extends Component {
   state = {

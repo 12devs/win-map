@@ -1,50 +1,50 @@
-import React from 'react';
-import services from '../../services/index';
-import { connect } from 'react-redux';
-import actions from '../../actions/index';
-import redIcon from '../../assets/point_red-mobile.png';
-import { Marker, ProviderPropType } from 'react-native-maps';
-import SectorPolygon from "./SectorPolygon";
-import WindRose from "./WindRose";
+import React from 'react'
+import services from '../../services/index'
+import { connect } from 'react-redux'
+import actions from '../../actions/index'
+import redIcon from '../../assets/point_red-mobile.png'
+import { Marker, ProviderPropType } from 'react-native-maps'
+import SectorPolygon from "./SectorPolygon"
+import WindRose from "./WindRose"
 
 const components = {
   Current: SectorPolygon,
   Historical: WindRose,
-};
+}
 
 class Danger extends React.Component {
   constructor(props) {
-    super(props);
-    this.updatePosition = this.updatePosition.bind(this);
+    super(props)
+    this.updatePosition = this.updatePosition.bind(this)
   }
 
   updatePosition(id, e) {
-    let { latitude, longitude } = e.nativeEvent.coordinate;
-    let lngCorrect = longitude;
-    lngCorrect = lngCorrect % 360;
+    let { latitude, longitude } = e.nativeEvent.coordinate
+    let lngCorrect = longitude
+    lngCorrect = lngCorrect % 360
     if (lngCorrect > 180) {
-      lngCorrect -= 360;
+      lngCorrect -= 360
     }
     if (lngCorrect < -180) {
-      lngCorrect += 360;
+      lngCorrect += 360
     }
     return services.movePoint({
       danger: { lat: latitude, lng: lngCorrect, id, },
       stations: [...this.props.stations]
     })
       .then(res => {
-        const dangers = this.props.dangers.filter(el => !(el.id === id));
-        dangers.push(res.danger);
-        let stationsData = this.props.stationsData;
-        const stations = this.props.stations;
-        stationsData = { ...stationsData, ...(res.stationsData || {}) };
-        stations.push(...Object.keys((res.stationsData || {})));
-        this.props.updateReduxState({ dangers, stations, stationsData });
-      });
+        const dangers = this.props.dangers.filter(el => !(el.id === id))
+        dangers.push(res.danger)
+        let stationsData = this.props.stationsData
+        const stations = this.props.stations
+        stationsData = { ...stationsData, ...(res.stationsData || {}) }
+        stations.push(...Object.keys((res.stationsData || {})))
+        this.props.updateReduxState({ dangers, stations, stationsData })
+      })
   };
 
   render() {
-    const { viewType, point } = this.props;
+    const { viewType, point } = this.props
     const marker = <Marker
       key={`marker ${point.type} ${point.id}`}
       coordinate={{
@@ -53,14 +53,14 @@ class Danger extends React.Component {
       }}
       onDragEnd={(e) => this.updatePosition(point.id, e)}
       onPress={(e) => {
-        e.stopPropagation();
-        this.props.updateReduxState({ info: { point, type: 'danger' } });
+        e.stopPropagation()
+        this.props.updateReduxState({ info: { point, type: 'danger' } })
         this.props.navigation.navigate('PointSettings')
       }}
       draggable
-      image={redIcon}/>;
+      image={redIcon}/>
 
-    const Component = components[viewType];
+    const Component = components[viewType]
 
     return [].concat(marker, <Component key={'sectorPolygon'} point={point}/>)
   }
@@ -72,7 +72,7 @@ function mapStateToProps(state) {
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     viewType: state.get('viewType'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Danger);
+export default connect(mapStateToProps, actions)(Danger)

@@ -1,48 +1,48 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import actions from '../actions/index';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import actions from '../actions/index'
 import {
   StyleSheet,
   TextInput,
   View,
   Text,
-  BackHandler, Dimensions,
-} from 'react-native';
-import { Button, Icon } from 'react-native-elements';
-import Loader from './Loader';
+  BackHandler,
+} from 'react-native'
+import { Button, Icon } from 'react-native-elements'
+import Loader from './Loader'
 
 class AddPoint extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: '',
       markerType: '',
       error: ''
-    };
-    this.markerType = this.markerType.bind(this);
-    this.props.updateReduxState({ addPoint: { name: '', error: '', isSentButton: false } });
+    }
+    this.markerType = this.markerType.bind(this)
+    this.props.updateReduxState({ addPoint: { name: '', error: '', isSentButton: false } })
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   markerType(markerType) {
-    this.props.updateReduxState({ markerType: markerType });
+    this.props.updateReduxState({ markerType: markerType })
   };
 
   render() {
-    const { markerType, savePointSettings, addPoint } = this.props;
-    const { show } = savePointSettings;
+    const { markerType, savePointSettings, addPoint } = this.props
+    const { show } = savePointSettings
 
     return (
       <View>
@@ -61,7 +61,7 @@ class AddPoint extends React.Component {
                            placeholderTextColor="#3D6DCC"
                            autoCapitalize="none"
                            onChangeText={(e) => {
-                             this.props.updateReduxState({ addPoint: { name: e, error: '' } });
+                             this.props.updateReduxState({ addPoint: { name: e, error: '' } })
                            }}/>
                 <View style={styles.iconContainer}>
                   <Icon name='location-on' color='#3D6DCC'/>
@@ -78,7 +78,7 @@ class AddPoint extends React.Component {
                 title='My Place'
                 color={markerType === 'Danger' ? '#3D6DCC' : '#fff'}
                 onPress={() => {
-                  this.markerType('My Place');
+                  this.markerType('My Place')
                 }}/>
               <Button
                 containerViewStyle={{ margin: 10, borderWidth: 1, borderColor: 'red' }}
@@ -89,12 +89,12 @@ class AddPoint extends React.Component {
                 color={markerType !== 'Danger' ? 'red' : '#fff'}
                 title='Danger'
                 onPress={() => {
-                  this.markerType('Danger');
+                  this.markerType('Danger')
                 }}/>
             </View>
           </View> : <View style={{ height: '100%' }}><Loader size='large' color='#3D6DCC'/></View>}
       </View>
-    );
+    )
   }
 }
 
@@ -107,10 +107,10 @@ function mapStateToProps(state) {
     savePointSettings: state.get('savePointSettings'),
     stationsData: state.get('stationsData'),
     addPoint: state.get('addPoint'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(AddPoint);
+export default connect(mapStateToProps, actions)(AddPoint)
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})

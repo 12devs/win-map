@@ -1,21 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import actions from '../../actions/index';
-import SectorPolygon from './SectorPolygon';
-import _ from 'lodash';
+import React from 'react'
+import { connect } from 'react-redux'
+import actions from '../../actions/index'
+import SectorPolygon from './SectorPolygon'
+import _ from 'lodash'
 
 class WindRose extends React.Component {
   constructor() {
-    super();
+    super()
   }
 
   render() {
-    const { point, scaleWind, stationsData } = this.props;
-    const dist = scaleWind;
-    const history = _.get(stationsData, [point.station_id, 'history'], {});
-    const directions = Object.keys(history);
-    const max = Math.max(..._.values(history));
-    const k = dist / max;
+    const { point, scaleWind, stationsData } = this.props
+    const dist = scaleWind
+    const history = _.get(stationsData, [point.station_id, 'history'], {})
+    const directions = Object.keys(history)
+    const max = Math.max(..._.values(history))
+    const k = dist / max
     return directions.map((direction, i) => {
       return (<SectorPolygon key={i}
                              simple={true}
@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     stations: state.get('stations'),
     stationsData: state.get('stationsData'),
     scaleWind: state.get('scaleWind'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(WindRose);
+export default connect(mapStateToProps, actions)(WindRose)

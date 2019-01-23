@@ -31,32 +31,30 @@ class SentPoint extends Component {
     lngCorrect = lngCorrect % 360
 
     if ((places.length + dangers.length) > markerLimit) {
-      return  Alert.alert(
+      return Alert.alert(
         'Alert',
         `You have exceeded the limit of ${markerLimit} markers`,
         [
           {
             text: 'Ok', onPress: () => {
-              return this.props.navigation.navigate('Map');
+              return this.props.navigation.navigate('Map')
 
             }, style: 'cancel'
           },
         ],
         { cancelable: false }
-      );
+      )
     }
 
     if (name) {
       this.props.updateReduxState({ addPoint: { isSentButton: true } })
-    }
-    else {
+    } else {
       return this.props.updateReduxState({ addPoint: { name: '', error: 'Enter name of point!' } })
     }
 
     if (markerType === 'Danger') {
       key = 'danger'
-    }
-    else {
+    } else {
       key = 'place'
     }
 

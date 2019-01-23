@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
-import Login from './Login';
-import Logout from './Logout';
-import Register from './Register';
-import Main from './Main';
-import Test from './Test';
-import ChangePassword from './ChangePassword';
-import Notifications from './Notifications';
-import notificationSettings from './notificationSettings';
-import NavigateMenu from './NavigateMenu';
-import AddPoint from './AddPoint';
-import PointSettings from './PointSettings';
-import Back from './mapTools/Back';
-import SentPoint from './SentPoint';
-import { Icon } from 'react-native-elements';
-import SaveNotificationSettings from './SaveNotificationSettings';
-import AccountIcon from './mapTools/MapHeaderIcon';
+import React, { Component } from 'react'
+import { View, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
+import Login from './Login'
+import Logout from './Logout'
+import Register from './Register'
+import Main from './Main'
+import Test from './Test'
+import ChangePassword from './ChangePassword'
+import Notifications from './Notifications'
+import notificationSettings from './notificationSettings'
+import NavigateMenu from './NavigateMenu'
+import AddPoint from './AddPoint'
+import PointSettings from './PointSettings'
+import Back from './mapTools/Back'
+import SentPoint from './SentPoint'
+import { Icon } from 'react-native-elements'
+import SaveNotificationSettings from './SaveNotificationSettings'
+import AccountIcon from './mapTools/MapHeaderIcon'
+import About from "./About"
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window')
 
 class HamburgerIcon extends Component {
 
   toggleDrawer = () => {
-    this.props.navigationProps.toggleDrawer();
-  };
+    this.props.navigationProps.toggleDrawer()
+  }
 
   render() {
     return (
@@ -36,7 +37,7 @@ class HamburgerIcon extends Component {
           />
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 }
 
@@ -58,7 +59,7 @@ const Register_StackNavigator = createStackNavigator({
     headerLayoutPreset: 'center',
     cardStyle: { backgroundColor: '#fff' }
 
-  });
+  })
 
 const Login_StackNavigator = createStackNavigator({
     Second: {
@@ -71,14 +72,14 @@ const Login_StackNavigator = createStackNavigator({
             backgroundColor: '#3D6DCC'
           },
           headerTintColor: '#fff',
-        });
+        })
       }
     },
   },
   {
     headerLayoutPreset: 'center',
     cardStyle: { backgroundColor: '#fff' }
-  });
+  })
 
 const Main_StackNavigator = createStackNavigator({
     Third: {
@@ -97,7 +98,7 @@ const Main_StackNavigator = createStackNavigator({
   },
   {
     headerLayoutPreset: 'center',
-  });
+  })
 
 const notificationSettings_StackNavigator = createStackNavigator({
     Third: {
@@ -116,7 +117,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
   {
     headerLayoutPreset: 'center',
     cardStyle: { backgroundColor: '#fff' }
-  });
+  })
 
 const test_StackNavigator = createStackNavigator({
     Third: {
@@ -133,7 +134,7 @@ const test_StackNavigator = createStackNavigator({
   },
   {
     headerLayoutPreset: 'center'
-  });
+  })
 
 const notifications_StackNavigator = createStackNavigator({
     Third: {
@@ -152,7 +153,7 @@ const notifications_StackNavigator = createStackNavigator({
     headerLayoutPreset: 'center',
     cardStyle: { backgroundColor: '#fff' }
 
-  });
+  })
 const addedMarker_StackNavigator = createStackNavigator({
     Details: {
       screen: AddPoint,
@@ -170,7 +171,7 @@ const addedMarker_StackNavigator = createStackNavigator({
   {
     mode: 'modal',
     headerLayoutPreset: 'center'
-  });
+  })
 
 const pointSettings_StackNavigator = createStackNavigator({
     Details: {
@@ -190,7 +191,8 @@ const pointSettings_StackNavigator = createStackNavigator({
     headerLayoutPreset: 'center',
     // cardStyle: { backgroundColor: '#fff' }
 
-  });
+  })
+
 const ChangePassword_StackNavigator = createStackNavigator({
     Details: {
       screen: ChangePassword,
@@ -208,9 +210,26 @@ const ChangePassword_StackNavigator = createStackNavigator({
     mode: 'modal',
     headerLayoutPreset: 'center',
     cardStyle: { backgroundColor: '#fff' }
+  })
 
-
-  });
+const About_StackNavigator = createStackNavigator({
+    Details: {
+      screen: About,
+      navigationOptions: ({ navigation }) => ({
+        title: 'About',
+        headerLeft: <Back navigation={navigation}/>,
+        headerStyle: {
+          backgroundColor: '#3D6DCC'
+        },
+        headerTintColor: '#fff',
+      })
+    },
+  },
+  {
+    mode: 'modal',
+    headerLayoutPreset: 'center',
+    cardStyle: { backgroundColor: '#fff' }
+  })
 
 export default createDrawerNavigator({
     Map: {
@@ -268,8 +287,15 @@ export default createDrawerNavigator({
     ChangePassword: {
       screen: ChangePassword_StackNavigator,
       navigationOptions: {
-        drawerIcon: <Icon name='exit-to-app'/>
-
+        drawerLabel: 'Change password',
+        drawerIcon: <Icon name='sync'/>
+      }
+    },
+    About: {
+      screen: About_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'About',
+        drawerIcon: <Icon name='info'/>
       }
     },
     test: {
@@ -280,6 +306,6 @@ export default createDrawerNavigator({
     initialRouteName: 'Map',
     contentComponent: NavigateMenu,
   }
-);
+)
 
 

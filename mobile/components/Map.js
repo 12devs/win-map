@@ -1,32 +1,28 @@
-import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions, Text,
-} from 'react-native';
-import { PROVIDER_DEFAULT } from 'react-native-maps';
-import MapView, { ProviderPropType, Callout } from 'react-native-maps';
-import Markers from './markers/Markers';
-import actions from '../actions/index';
-import { connect } from "react-redux";
-import Navigation from "./mapTools/Navigation";
-import Search from './mapTools/Search';
-import Slider from './mapTools/Slider';
-import MapViewType from './mapTools/MapViewType';
-import DeleteMarkers from './mapTools/delAllMarkers';
+import React, { Component } from 'react'
+import { View, StyleSheet, Dimensions, } from 'react-native'
+import { PROVIDER_DEFAULT } from 'react-native-maps'
+import MapView, { ProviderPropType, Callout } from 'react-native-maps'
+import Markers from './markers/Markers'
+import actions from '../actions/index'
+import { connect } from "react-redux"
+import Navigation from "./mapTools/Navigation"
+import Search from './mapTools/Search'
+import Slider from './mapTools/Slider'
+import MapViewType from './mapTools/MapViewType'
+import DeleteMarkers from './mapTools/delAllMarkers'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 class Map extends Component {
 
   constructor() {
-    super();
+    super()
     this.state = {
       layout: {
         height: height,
         width: width,
       }
-    };
+    }
   }
 
   onLayout = event => {
@@ -35,40 +31,40 @@ class Map extends Component {
         height: event.nativeEvent.layout.height,
         width: event.nativeEvent.layout.width,
       }
-    });
-  };
+    })
+  }
 
   render() {
-    const ASPECT_RATIO = 10;
-    const mapPadding = 50;
-    const LATITUDE = 53.78825;
-    const LONGITUDE = 24.4324;
-    const LATITUDE_DELTA = 0.0922;
-    const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+    const ASPECT_RATIO = 10
+    const mapPadding = 50
+    const LATITUDE = 53.78825
+    const LONGITUDE = 24.4324
+    const LATITUDE_DELTA = 0.0922
+    const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
     const initialRegion = {
       latitude: LATITUDE,
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
-    };
-    const { viewType } = this.props;
-    const { width, height } = this.state.layout;
+    }
+    const { viewType } = this.props
+    const { width, height } = this.state.layout
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
         <MapView
           onPress={(e) => {
-            const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate;
+            const { latitude: lat, longitude: lng } = e.nativeEvent.coordinate
             this.props.updateReduxState({
               savePointSettings: {
                 show: true,
                 latlng: { lat, lng }
               },
-            });
-            this.props.navigation.navigate('AddPoint');
+            })
+            this.props.navigation.navigate('AddPoint')
           }}
           onRegionChangeComplete={(mapRegion) => {
-            this.props.updateReduxState({ tempRegion: mapRegion });
+            this.props.updateReduxState({ tempRegion: mapRegion })
           }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}
@@ -100,7 +96,7 @@ class Map extends Component {
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
         </Callout>
-       {/* <Callout
+        {/* <Callout
           style={{
             bottom: 0,
             width: '100%',
@@ -113,7 +109,7 @@ class Map extends Component {
           </View>
         </Callout>*/}
       </View>
-    );
+    )
   }
 }
 
@@ -126,10 +122,10 @@ function mapStateToProps(state) {
     stationsData: state.get('stationsData'),
     scaleWind: state.get('scaleWind'),
     dangers: state.get('dangers'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Map);
+export default connect(mapStateToProps, actions)(Map)
 
 const styles = StyleSheet.create({
   container: {
@@ -146,4 +142,4 @@ const styles = StyleSheet.create({
     marginTop: 70,
     right: 0,
   },
-});
+})

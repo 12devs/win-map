@@ -1,49 +1,51 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, BackHandler } from 'react-native';
-import actions from '../actions/index';
-import services from '../services/index';
-import { connect } from "react-redux";
-import { Button, List, ListItem } from 'react-native-elements';
-import service from '../services';
+import React, { Component } from 'react'
+import { View, StyleSheet, Text, ScrollView, Dimensions, BackHandler } from 'react-native'
+import actions from '../actions/index'
+import services from '../services/index'
+import { connect } from "react-redux"
+import { Button, List, ListItem } from 'react-native-elements'
+import service from '../services'
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window')
 
 class Notifications extends Component {
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   handleClick(id) {
-    const notifications = this.props.notifications;
-    const index = notifications.findIndex(el => el.id === id);
-    notifications[index].view_at = new Date();
-    this.props.updateReduxState({ notifications });
-    services.viewNotifications({ notification: notifications[index] });
-    this.forceUpdate();
+    const notifications = this.props.notifications
+    const index = notifications.findIndex(el => el.id === id)
+
+    notifications[index].view_at = new Date()
+    this.props.updateReduxState({ notifications })
+    services.viewNotifications({ notification: notifications[index] })
+    this.forceUpdate()
   };
 
   viewAllNotification() {
-    const notifications = this.props.notifications;
+    const notifications = this.props.notifications
+
     return service.viewAllNotification().then(res => {
-      notifications.map(el => el.view_at = new Date());
-      this.props.updateReduxState({ notifications });
-      console.log(res);
-      this.forceUpdate();
-    });
+      notifications.map(el => el.view_at = new Date())
+      this.props.updateReduxState({ notifications })
+      console.log(res)
+      this.forceUpdate()
+    })
   };
 
   render() {
-    const unviewedNotifications = this.props.notifications.filter(elem => !elem.view_at);
+    const unviewedNotifications = this.props.notifications.filter(elem => !elem.view_at)
 
     if (!unviewedNotifications.length) {
       return <View style={{
@@ -51,15 +53,10 @@ class Notifications extends Component {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <Text style={{
-          textAlign: 'center',
-          textAlignVertical: "center",
-          color: 'silver',
-          padding: 10,
-        }}>
+        <Text style={styles.textContainer}>
           {'No notifications'}
         </Text>
-      </View>;
+      </View>
     }
     return (
       <ScrollView contentContainerStyle={{
@@ -75,16 +72,9 @@ class Notifications extends Component {
                 subtitle={notification.created_at}
                 leftIcon={{ name: 'notifications' }}
                 rightIcon={{ name: 'close' }}
-                containerStyle={{
-                  borderBottomColor: '#eee',
-                  // marginTop: 5,
-                  marginBottom: 2,
-                  borderTopColor: 'transparent',
-                  marginLeft: 10,
-                  marginRight: 10
-                }}
+                containerStyle={styles.list}
                 onPressRightIcon={() => {
-                  this.handleClick(notification.id);
+                  this.handleClick(notification.id)
                 }}
               />
             ))
@@ -97,20 +87,20 @@ class Notifications extends Component {
           color={'#fff'}
           title='Clear All'
           onPress={() => {
-            this.viewAllNotification();
+            this.viewAllNotification()
           }}/>
       </ScrollView>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     notifications: state.get('notifications'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Notifications);
+export default connect(mapStateToProps, actions)(Notifications)
 
 
 const styles = StyleSheet.create({
@@ -124,11 +114,17 @@ const styles = StyleSheet.create({
     borderColor: 'steelblue',
     borderRadius: 20,
   },
-  map: {},
-  submitButton: {
-    backgroundColor: '#7a42f4',
+  textContainer: {
+    textAlign: 'center',
+    textAlignVertical: "center",
+    color: 'silver',
     padding: 10,
-    margin: 5,
-    height: 40,
   },
-});
+  list: {
+    borderBottomColor: '#eee',
+    marginBottom: 2,
+    borderTopColor: 'transparent',
+    marginLeft: 10,
+    marginRight: 10
+  },
+})

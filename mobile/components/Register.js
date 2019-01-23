@@ -17,17 +17,17 @@ class Register extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   register = () => {
     const { login, password, repeatPassword, email } = this.state

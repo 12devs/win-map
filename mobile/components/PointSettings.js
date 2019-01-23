@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { calcMapRegionOne } from '../utils/utils';
+import React, { Component } from 'react'
+import { calcMapRegionOne } from '../utils/utils'
 import {
   View,
   Text,
@@ -7,88 +7,87 @@ import {
   ScrollView,
   BackHandler,
   Alert,
-  Modal,
   TextInput,
-} from 'react-native';
-import actions from "../actions/index";
-import { connect } from "react-redux";
-import WindRoseChart from './WindRoseChart';
-import services from '../services/index';
-import { Button, Card, Divider, Icon } from 'react-native-elements';
-import Loader from './Loader';
-import { Table, Row, Rows } from 'react-native-table-component';
-import hasItem from '../utils/asyncStorage';
-import Overlay from 'react-native-modal-overlay';
+} from 'react-native'
+import actions from "../actions/index"
+import { connect } from "react-redux"
+import WindRoseChart from './WindRoseChart'
+import services from '../services/index'
+import { Button, Card, Divider, Icon } from 'react-native-elements'
+import Loader from './Loader'
+import { Table, Row, Rows } from 'react-native-table-component'
+import hasItem from '../utils/asyncStorage'
+import Overlay from 'react-native-modal-overlay'
 
 class PointSettings extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       isDelButton: false,
       tableHead: ['Danger name', 'In danger now', 'In danger for a period(days)'],
       modalVisible: false,
       markerName: '',
       dangerRadius: 0,
-    };
-    this.delMarker = this.delMarker.bind(this);
-    this.updatePoint = this.updatePoint.bind(this);
+    }
+    this.delMarker = this.delMarker.bind(this)
+    this.updatePoint = this.updatePoint.bind(this)
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+    this.setState({ modalVisible: visible })
   }
 
   delMarker = async () => {
-    const { point, type } = this.props.info;
-    const { id } = point;
-    const isToken = await hasItem('windToken');
+    const { point, type } = this.props.info
+    const { id } = point
+    const isToken = await hasItem('windToken')
 
     if (isToken) {
       return services.deletePoint({ [type]: { id } })
         .then(() => {
-          return this.delHelper(type, id);
-        });
+          return this.delHelper(type, id)
+        })
     } else {
-      return this.delHelper(type, id);
+      return this.delHelper(type, id)
     }
-  };
+  }
 
   delHelper = (type, id) => {
     if (type === 'place') {
-      const places = this.props.places.filter(el => !(el.id === id));
-      this.props.updateReduxState({ places, info: { point: null, type: null } });
+      const places = this.props.places.filter(el => !(el.id === id))
+      this.props.updateReduxState({ places, info: { point: null, type: null } })
     }
     if (type === 'danger') {
-      const dangers = this.props.dangers.filter(el => !(el.id === id));
-      this.props.updateReduxState({ dangers, info: { point: null, type: null } });
-      this.props.updateStatistic();
+      const dangers = this.props.dangers.filter(el => !(el.id === id))
+      this.props.updateReduxState({ dangers, info: { point: null, type: null } })
+      this.props.updateStatistic()
     }
-  };
+  }
 
   updatePoint = async () => {
-    const { point, type } = this.props.info;
-    const { markerName, dangerRadius } = this.state;
-    const hasToken = await hasItem('windToken');
+    const { point, type } = this.props.info
+    const { markerName, dangerRadius } = this.state
+    const hasToken = await hasItem('windToken')
 
     if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
-      return;
+      return
     }
 
     if (dangerRadius) {
-      point.dangerRadius = parseInt(dangerRadius, 10);
+      point.dangerRadius = parseInt(dangerRadius, 10)
     }
 
     if (hasToken) {
@@ -96,36 +95,36 @@ class PointSettings extends Component {
         [type]: point,
       })
         .then(() => {
-          this.updatePointHelper(type, point, markerName, dangerRadius);
-        });
+          this.updatePointHelper(type, point, markerName, dangerRadius)
+        })
     } else {
-      this.updatePointHelper(type, point, markerName, dangerRadius);
+      this.updatePointHelper(type, point, markerName, dangerRadius)
     }
-  };
+  }
 
   updatePointHelper = (type, point, markerName, dangerRadius) => {
     let markers = this.props[`${type}s`].map(elem => {
       if (elem.id === point.id) {
         if (markerName) {
-          console.log('name');
-          elem.name = markerName;
+          console.log('name')
+          elem.name = markerName
         }
         if (dangerRadius) {
-          elem.dangerRadius = parseInt(dangerRadius, 10);
+          elem.dangerRadius = parseInt(dangerRadius, 10)
         }
       }
-      return elem;
-    });
+      return elem
+    })
 
-    this.props.updateReduxState({ [`${type}s`]: markers });
-  };
+    this.props.updateReduxState({ [`${type}s`]: markers })
+  }
 
   render() {
-    let { info, statistic } = this.props;
-    let { point, type } = info;
-    let { isDelButton, modalVisible, markerName, dangerRadius } = this.state;
+    let { info, statistic } = this.props
+    let { point, type } = info
+    let { isDelButton, modalVisible, markerName, dangerRadius } = this.state
     if (!point) {
-      point = {};
+      point = {}
     }
 
     return (
@@ -189,8 +188,8 @@ class PointSettings extends Component {
                   title='Change'
                   color={'#fff'}
                   onPress={() => {
-                    this.updatePoint();
-                    this.setModalVisible(!this.state.modalVisible);
+                    this.updatePoint()
+                    this.setModalVisible(!this.state.modalVisible)
                   }}/>
               </View>
 
@@ -207,10 +206,10 @@ class PointSettings extends Component {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                   <Icon name='location-on' color={type === 'place' ? '#3D6DCC' : 'red'}/>
                   <Text onPress={() => {
-                    this.setModalVisible(true);
+                    this.setModalVisible(true)
                   }} style={{ textAlign: 'center', fontSize: 20 }}>{point.name}</Text>
                   <Icon onPress={() => {
-                    this.setModalVisible(true);
+                    this.setModalVisible(true)
                   }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }}/>
                 </View>
                 {point.dangerRadius &&
@@ -246,10 +245,10 @@ class PointSettings extends Component {
                 icon={{ name: 'location-on' }}
                 title='Go to marker'
                 onPress={() => {
-                  this.props.navigation.navigate('Map');
-                  const mapRegion = calcMapRegionOne(point);
+                  this.props.navigation.navigate('Map')
+                  const mapRegion = calcMapRegionOne(point)
                   if (mapRegion) {
-                    this.props.updateReduxState({ mapRegion, info: { point: null, type: null } });
+                    this.props.updateReduxState({ mapRegion, info: { point: null, type: null } })
                   }
                 }}/>
               <Button
@@ -267,17 +266,17 @@ class PointSettings extends Component {
                       { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
                       {
                         text: 'Yes', onPress: () => {
-                          this.setState({ isSentButton: true });
+                          this.setState({ isSentButton: true })
                           this.delMarker()
                             .then(() => {
-                              this.props.updateReduxState({ info: { point: null, type: null } });
-                              this.props.navigation.navigate('Map');
-                            });
+                              this.props.updateReduxState({ info: { point: null, type: null } })
+                              this.props.navigation.navigate('Map')
+                            })
                         }
                       },
                     ],
                     { cancelable: false }
-                  );
+                  )
 
                 }}/>
             </ScrollView> :
@@ -287,7 +286,7 @@ class PointSettings extends Component {
         }
       </View>
 
-    );
+    )
   }
 }
 
@@ -297,10 +296,10 @@ function mapStateToProps(state) {
     dangers: state.get('dangers'),
     info: state.get('info'),
     statistic: state.get('statistic'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(PointSettings);
+export default connect(mapStateToProps, actions)(PointSettings)
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -345,4 +344,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3D6DCC'
   }
-});
+})
