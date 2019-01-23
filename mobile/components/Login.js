@@ -12,33 +12,50 @@ import services from "../services/index"
 import { Button, Icon } from 'react-native-elements'
 import { connect } from "react-redux"
 import actions from "../actions"
+import OneSignal from 'react-native-onesignal'
 
 class Login extends Component {
-  state = {
-    login: '',
-    password: '',
-    code: '',
-    email: '',
-    error: '',
-    showCode: false,
-    showPassword: false,
+  constructor() {
+    super();
+    this.state = {
+      login: '',
+      password: '',
+      code: '',
+      email: '',
+      error: '',
+      showCode: false,
+      showPassword: false,
+      device: {}
+    }
+    this.onIds = this.onIds.bind(this);
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  componentWillMount() {
+    OneSignal.configure();
+    OneSignal.addEventListener('ids', this.onIds)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+    OneSignal.removeEventListener('ids', this.onIds)
+  }
+
+  onIds(device) {
+    console.log('Device info: ', device)
+    this.setState({device})
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate('Map');
-    return true;
-  };
+    this.props.navigation.navigate('Map')
+    return true
+  }
 
   login = () => {
-    const { login, password, code } = this.state
+    const { login, password, code, device } = this.state
     return services.login({ login, password, code })
       .then(res => {
         console.log(res)
@@ -54,6 +71,7 @@ class Login extends Component {
           return AsyncStorage.setItem('windToken', token)
             .then(() => {
               this.props.updateReduxState({ menuRule: 'logged' })
+              services.saveNotificationToken(device.userId);
               return this.props.navigation.navigate('Map')
             })
         }

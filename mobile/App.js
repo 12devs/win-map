@@ -4,7 +4,7 @@ import reducer from "./reducers"
 import { connect, Provider } from "react-redux"
 import { createStore } from "redux"
 import OneSignal from 'react-native-onesignal'
-import { Alert, BackHandler, StatusBar, View } from 'react-native'
+import { BackHandler } from 'react-native'
 import { exitAppPressed } from './utils/backHandler'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -88,9 +88,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Menu>
-          <StatusBar backgroundColor='#fff' barStyle='light-content'/>
-        </Menu>
+        <Menu/>
       </Provider>
     )
   }

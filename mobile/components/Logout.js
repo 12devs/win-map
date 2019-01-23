@@ -1,67 +1,83 @@
-import React, { Component } from 'react';
-import { Alert, AsyncStorage } from 'react-native';
-import { connect } from "react-redux";
-import actions from "../actions";
+import React, { Component } from 'react'
+import { Alert, AsyncStorage } from 'react-native'
+import { connect } from "react-redux"
+import actions from "../actions"
+import OneSignal from "react-native-onesignal"
+import services from "../services/index"
 
 class Logout extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      device: {}
+    }
+    this.onIds = this.onIds.bind(this)
+  }
+
   componentDidMount = () => {
-    console.log('componentDidMount');
     Alert.alert(
       'Alert',
       'Do you really want to logout?',
       [
         {
           text: 'No', onPress: () => {
-            console.log('No Pressed');
-            return this.props.navigation.goBack();
+            return this.props.navigation.goBack()
           }, style: 'cancel'
         },
         {
           text: 'Yes', onPress: () => {
-            console.log('Yes Pressed', this.props.navigation);
+            return services.deleteNotificationToken(this.state.device.userId).then(res => {
+              AsyncStorage.setItem('windToken', '')
+              this.props.updateReduxState({
+                menuRule: 'notLogged',
+                isGetMainData: false,
+                stations: [],
+                places: [],
+                dangers: [],
+                stationsData: {},
+                markerType: "My Place",
+                viewType: "Current",
+                mapViewType: "standard",
+                actionType: "Add",
+                scaleWind: 5000,
+                notificationSettings: [],
+                savePointSettings: { show: false },
+                notifications: [],
+                info: {
+                  point: null,
+                  type: null
+                },
+                addPoint: { name: '', error: '', isSentButton: false },
+                isConnected: true
+              })
 
-            AsyncStorage.setItem('windToken', '');
-            this.props.updateReduxState({
-              menuRule: 'notLogged',
-              isGetMainData: false,
-              stations: [],
-              places: [],
-              dangers: [],
-              stationsData: {},
-              markerType: "My Place",
-              viewType: "Current",
-              mapViewType: "standard",
-              actionType: "Add",
-              scaleWind: 5000,
-              notificationSettings: [],
-              savePointSettings: { show: false },
-              notifications: [],
-              info: {
-                point: null,
-                type: null
-              },
-              addPoint: { name: '', error: '', isSentButton: false },
-              isConnected: true
-            });
-
-            return this.props.navigation.navigate('Map');
+              return this.props.navigation.navigate('Map')
+            })
           }
         },
       ],
       { cancelable: false }
-    );
+    )
+  }
 
-  };
+  componentWillMount() {
+    OneSignal.configure()
+    OneSignal.addEventListener('ids', this.onIds)
+  }
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onIds)
+  }
+
+  onIds(device) {
+    console.log('Device info: ', device)
+    this.setState({ device })
+  }
 
   render() {
-
-    return null;
+    return null
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
-export default connect(mapStateToProps, actions)(Logout);
+export default connect(null, actions)(Logout)
