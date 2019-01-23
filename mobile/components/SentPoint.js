@@ -101,10 +101,11 @@ class SentPoint extends Component {
   helperAddPoint = (res) => {
     const { danger, place } = res
     let { places, dangers, stationsData, stations } = this.props
-
-    if (stationsData.size !== 0) stationsData = { ...stationsData, ...res.stationsData }
-    else stationsData = res.stationsData
-
+    if (stationsData.size !== 0) {
+      stationsData = { ...stationsData, ...res.stationsData }
+    } else {
+      stationsData = res.stationsData
+    }
     if (danger) {
       dangers = [...dangers, danger]
     }
@@ -118,7 +119,7 @@ class SentPoint extends Component {
       places,
       dangers,
       stationsData,
-      stations: Object.keys(res.stationsData),
+      stations: Object.keys(stationsData),
       savePointSettings: { show: false }
     })
 
