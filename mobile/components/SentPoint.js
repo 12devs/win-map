@@ -23,12 +23,13 @@ class SentPoint extends Component {
   addMarker = async () => {
     const { latlng } = this.props.savePointSettings
     const { markerType, addPoint, dangers, places } = this.props
-    const { name } = addPoint
+    let { name } = addPoint
     const isToken = await hasItem('windToken')
     const markerLimit = 50
     let key
     let lngCorrect = latlng.lng
     lngCorrect = lngCorrect % 360
+    name = name.trim()
 
     if ((places.length + dangers.length) > markerLimit) {
       return Alert.alert(
@@ -51,7 +52,6 @@ class SentPoint extends Component {
     } else {
       return this.props.updateReduxState({ addPoint: { name: '', error: 'Enter name of point!' } })
     }
-
     if (markerType === 'Danger') {
       key = 'danger'
     } else {
@@ -135,7 +135,7 @@ class SentPoint extends Component {
             style={{ padding: 5, marginRight: width * 0.04 }}
             onPress={async () => {
               await this.addMarker()
-              if (addPoint.name !== '') {
+              if (addPoint.name.trim() !== '') {
                 this.props.navigation.navigate('Map')
               }
             }}

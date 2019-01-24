@@ -82,6 +82,10 @@ class PointSettings extends Component {
     const { markerName, dangerRadius } = this.state
     const hasToken = await hasItem('windToken')
 
+    if (!markerName.trim() && !dangerRadius.trim()) {
+      return;
+    }
+
     if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
       return
     }

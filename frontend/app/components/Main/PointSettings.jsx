@@ -87,7 +87,7 @@ class PointSettings extends React.Component {
     const { point, type } = this.props.info;
     const { name, dangerRadius } = this.state;
     this.setState({ name: '', editName: false, editDangerRadius: false, dangerRadius: '' });
-    if (!name && !dangerRadius) {
+    if (!name.trim() && !dangerRadius.trim()) {
       return;
     }
     if (name) {
