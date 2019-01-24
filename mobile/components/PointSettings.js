@@ -28,13 +28,17 @@ class PointSettings extends Component {
       modalVisible: false,
       markerName: '',
       dangerRadius: 0,
+      modalError: ''
     }
     this.delMarker = this.delMarker.bind(this)
     this.updatePoint = this.updatePoint.bind(this)
   }
 
   componentDidMount() {
+    const { point } = this.props.info
+
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+    this.setState({ markerName: point.name, dangerRadius: point.dangerRadius })
   }
 
   componentWillUnmount() {
@@ -82,12 +86,18 @@ class PointSettings extends Component {
     const { markerName, dangerRadius } = this.state
     const hasToken = await hasItem('windToken')
 
-    if (!markerName.trim() && !dangerRadius.trim()) {
-      return;
+    if (!markerName.trim()) {
+      return this.setState({ modalError: 'Marker name is required field!' })
+    }
+
+    if (dangerRadius) {
+      if (!dangerRadius.toString().trim()) {
+        return this.setState({ modalError: 'Wind radius is required field!' })
+      }
     }
 
     if (dangerRadius && (dangerRadius < 0 || (isNaN(Number(dangerRadius))))) {
-      return
+      return this.setState({ modalError: 'Enter the correct wind radius!' })
     }
 
     if (dangerRadius) {
@@ -95,14 +105,20 @@ class PointSettings extends Component {
     }
 
     if (hasToken) {
+      point.name = markerName
+
       return services.updatePoint({
         [type]: point,
       })
-        .then(() => {
+        .then((res) => {
+          console.log(res)
           this.updatePointHelper(type, point, markerName, dangerRadius)
+          this.setModalVisible(!this.state.modalVisible)
+
         })
     } else {
       this.updatePointHelper(type, point, markerName, dangerRadius)
+      this.setModalVisible(!this.state.modalVisible)
     }
   }
 
@@ -110,7 +126,6 @@ class PointSettings extends Component {
     let markers = this.props[`${type}s`].map(elem => {
       if (elem.id === point.id) {
         if (markerName) {
-          console.log('name')
           elem.name = markerName
         }
         if (dangerRadius) {
@@ -126,7 +141,7 @@ class PointSettings extends Component {
   render() {
     let { info, statistic } = this.props
     let { point, type } = info
-    let { isDelButton, modalVisible, markerName, dangerRadius } = this.state
+    let { isDelButton, modalVisible, markerName, dangerRadius, modalError } = this.state
     if (!point) {
       point = {}
     }
@@ -149,7 +164,6 @@ class PointSettings extends Component {
                   <TextInput style={styles.input}
                              value={markerName}
                              underlineColorAndroid="transparent"
-                             placeholder={point.name}
                              placeholderTextColor="#3D6DCC"
                              autoCapitalize="none"
                              onChangeText={(markerName) => this.setState({ markerName })}/>
@@ -168,9 +182,8 @@ class PointSettings extends Component {
                     justifyContent: 'center',
                   }}>
                     <TextInput style={styles.input}
-                               value={dangerRadius}
+                               value={dangerRadius.toString()}
                                underlineColorAndroid="transparent"
-                               placeholder={point.dangerRadius.toString()}
                                placeholderTextColor="#3D6DCC"
                                autoCapitalize="none"
                                onChangeText={(dangerRadius) => this.setState({ dangerRadius })}/>
@@ -180,6 +193,7 @@ class PointSettings extends Component {
                   </View>
                 </View>
               </View>}
+              {modalError ? <Text style={{ textAlign: 'center', color: 'red' }}>{modalError}</Text> : null}
 
               <View style={{
                 flexDirection: 'row',
@@ -193,7 +207,6 @@ class PointSettings extends Component {
                   color={'#fff'}
                   onPress={() => {
                     this.updatePoint()
-                    this.setModalVisible(!this.state.modalVisible)
                   }}/>
               </View>
 
