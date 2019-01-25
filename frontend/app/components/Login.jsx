@@ -59,9 +59,7 @@ class Login extends Component {
                     type="text"
                     onChange={(event) => this.setState({ code: event.target.value })}
                     value={code}
-                    onKeyUp={(e) => {
-                      console.log(e);
-                    }}
+                    onKeyUp={e => e.keyCode === 13 && this.login()}
                   />
                 </label>
               </div>

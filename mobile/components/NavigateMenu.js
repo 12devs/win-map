@@ -27,7 +27,7 @@ class CustomDrawerContentComponent extends Component {
     const filteredItems = items.filter(item => Rules[this.props.menuRule || 'notLogged'].indexOf(item.key) !== -1)
 
     return (
-      <View>
+      <View style={styles.container}>
         {/*<View style={styles.headerContainer}>*/}
         <Image source={require('../assets/screen.png')}
                style={styles.image}/>
@@ -65,6 +65,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '-25%',
     marginRight: '48%'
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
   },
   image: {
     backgroundColor: '#000',

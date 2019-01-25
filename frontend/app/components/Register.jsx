@@ -56,7 +56,9 @@ class Register extends Component {
               <label className="login__label" htmlFor="login">
                 <input placeholder="Login" className="login__input" type="text"
                        style={{ color: login ? 'white' : null }}
-                       onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
+                       onChange={(event) => this.setState({ login: event.target.value })}
+                       value={login}
+                       onKeyUp={e => e.keyCode === 13 && this.register()}/>
               </label>
             </div>
 
@@ -68,7 +70,9 @@ class Register extends Component {
               <label className="login__label" htmlFor="email">
                 <input placeholder="Email" className="login__input" type="text"
                        style={{ color: email ? 'white' : null }}
-                       onChange={(event) => this.setState({ email: event.target.value })} value={email}/>
+                       onChange={(event) => this.setState({ email: event.target.value })}
+                       value={email}
+                       onKeyUp={e => e.keyCode === 13 && this.register()}/>
               </label>
             </div>
             {this.state.error ? <div className="login__label" style={{ color: 'red' }}> {this.state.error}</div> : null}

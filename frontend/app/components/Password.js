@@ -17,6 +17,19 @@ class Password extends Component {
     this.state = {
       hide: true,
     };
+    this.selectForm = this.selectForm.bind(this);
+
+  }
+
+  selectForm = (parent) => {
+    switch (parent.props.match.url) {
+      case '/login':
+        return parent.login()
+      case '/register':
+        return parent.register()
+      case '/ChangePassword':
+        return parent.changePassword()
+    }
   }
 
   render() {
@@ -30,7 +43,7 @@ class Password extends Component {
             <input placeholder={placeholder} className="login__input" type={inputType}
                    style={{ color: value ? 'white' : null }}
                    onChange={(event) => parent.setState({ [parentStateKey]: event.target.value })} value={value}
-                   onKeyUp={(e) => e.keyCode === 13 && parent.login()}>
+                   onKeyUp={(e) => e.keyCode === 13 && this.selectForm(parent)}>
             </input>
             <span className={`login__input__password__button ${buttonClass}`} onClick={()=>this.setState({hide: !this.state.hide})}/>
         </label>

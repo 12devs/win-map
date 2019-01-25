@@ -58,7 +58,8 @@ class ChangePassword extends Component {
                 <label className="login__label" htmlFor="code">
                   <input placeholder={`code from ${email}`} className="login__input" type="text"
                          onChange={(event) => this.setState({ changePasswordCode: event.target.value })}
-                         value={changePasswordCode}/>
+                         value={changePasswordCode}
+                         onKeyUp={e => e.keyCode === 13 && this.changePassword()}/>
                 </label>
               </div>
               {error ? <div className="login__label" style={{ color: 'red' }}> {error}</div> : null}
@@ -82,7 +83,10 @@ class ChangePassword extends Component {
                 <label className="login__label" htmlFor="login">
                   <input placeholder="Login" className="login__input" type="text"
                          style={{ color: login ? 'white' : null }}
-                         onChange={(event) => this.setState({ login: event.target.value })} value={login}/>
+                         onChange={(event) => this.setState({ login: event.target.value })}
+                         value={login}
+                         onKeyUp={e => e.keyCode === 13 && this.changePassword()}
+                  />
                 </label>
               </div>
               <Password value={password} parentStateKey={'password'} parent={this} placeholder={'Password'}/>
