@@ -53,7 +53,7 @@ class Register extends Component {
   render() {
     const { showPassword, email, login, error, showRepeatPassword } = this.state
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.mainContainer}>
           <View style={styles.container}>
             <View style={{

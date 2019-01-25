@@ -73,6 +73,7 @@ function mapStateToProps(state) {
     stationsData: state.get('stationsData'),
     scaleWind: state.get('scaleWind'),
     zoom: state.get('zoom'),
+    dangers: state.get('dangers'), //for immediately render after changing points danger radius
   };
 }
 

@@ -59,7 +59,7 @@ class ChangePassword extends Component {
 
     if (this.state.showCode) {
       return (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{
@@ -98,7 +98,7 @@ class ChangePassword extends Component {
       )
     } else {
       return (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{

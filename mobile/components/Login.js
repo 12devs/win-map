@@ -86,7 +86,7 @@ class Login extends Component {
 
     if (showCode) {
       return (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{
@@ -97,6 +97,7 @@ class Login extends Component {
                   <Icon name='lock-outline' color='#3D6DCC'/>
                 </View>
                 <TextInput style={styles.input}
+                           onSubmitEditing ={Keyboard.dismiss}
                            value={code}
                            underlineColorAndroid="transparent"
                            placeholder={"code from " + email}
@@ -123,7 +124,7 @@ class Login extends Component {
       )
     } else {
       return (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{
