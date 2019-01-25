@@ -72,6 +72,10 @@ const addPoints = (body = {}) => {
   return fetch('post', '/api/points/add', body);
 };
 
+const getNotification = (token) => {
+  return fetch('get', '/api/notifications/get', { token });
+};
+
 export default {
   login,
   register,
@@ -90,5 +94,6 @@ export default {
   updatePoint,
   pointInfo,
   movePointUnathorization,
-  addPoints
+  addPoints,
+  getNotification
 };

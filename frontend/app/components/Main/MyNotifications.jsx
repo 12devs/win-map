@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import actions from './../../actions';
 import { Dropdown, Icon, Menu } from 'antd';
 import services from '../../services';
-import { redIcon } from '../icons';
 
 class Notifications extends React.Component {
   constructor(props) {
@@ -13,6 +12,13 @@ class Notifications extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.visibleChange = this.visibleChange.bind(this);
+  }
+
+  componentDidMount() {
+    services.getNotification().then(res => {
+      console.log(res)
+      this.props.updateReduxState({ notifications: res  })
+    })
   }
 
   handleClick = (id) => {

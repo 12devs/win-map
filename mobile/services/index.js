@@ -37,6 +37,10 @@ const saveNotificationToken = (token) => {
   return fetch('post', '/api/notifications/saveToken', { token });
 };
 
+const getNotification = (token) => {
+  return fetch('get', '/api/notifications/get', { token });
+};
+
 const sendSubscriptions = (body) => {
   return fetch('post', '/api/subscriptions/save', body);
 };
@@ -87,5 +91,6 @@ export default {
   deleteAllPoints,
   viewAllNotification,
   updatePoint,
-  pointInfo
+  pointInfo,
+  getNotification
 };

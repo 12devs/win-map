@@ -12,6 +12,9 @@ class Notifications extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+    service.getNotification().then(res => {
+      this.props.updateReduxState({ notifications: res  })
+    })
   }
 
   componentWillUnmount() {
