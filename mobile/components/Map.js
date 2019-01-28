@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native'
 import { PROVIDER_DEFAULT } from 'react-native-maps'
 import MapView, { ProviderPropType, Callout } from 'react-native-maps'
 import Markers from './markers/Markers'
@@ -10,6 +10,7 @@ import Search from './mapTools/Search'
 import Slider from './mapTools/Slider'
 import MapViewType from './mapTools/MapViewType'
 import DeleteMarkers from './mapTools/delAllMarkers'
+import hasItem from "../utils/asyncStorage"
 
 const { width, height } = Dimensions.get('window')
 
@@ -22,8 +23,14 @@ class Map extends Component {
         height: height,
         width: width,
       },
-      isLogo: true
+      isLogo: true,
     }
+  }
+
+  componentDidMount() {
+    hasItem('isLogo').then(isLogo=>{
+      return this.setState({isLogo})
+    })
   }
 
   onLayout = event => {
@@ -49,7 +56,8 @@ class Map extends Component {
       longitudeDelta: LONGITUDE_DELTA,
     }
     const { viewType } = this.props
-    const { width, height } = this.state.layout
+    const { layout, isLogo} = this.state
+    const { width, height } = layout
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
@@ -98,25 +106,14 @@ class Map extends Component {
           <Search width={width} height={height}/>
         </Callout>
 
-        {this.state.isLogo && <Callout
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            width: '100%',
-            height,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
+        {!isLogo && <Callout>
           <TouchableOpacity onPress={() => {
-            console.log('click')
-            this.setState({ isLogo: false })
+            this.setState({ isLogo: true })
+            AsyncStorage.setItem('isLogo', 'true')
           }}>
-            <Image source={require('../assets/tooltip.png')}
-                   style={{
-                     width: 219,
-                     height: 257,
-                   }}/>
+            <View style={styles.logoContainer}>
+              <Image source={require('../assets/tooltip.png')} style={styles.logo}/>
+            </View>
           </TouchableOpacity>
         </Callout>}
 
@@ -165,5 +162,18 @@ const styles = StyleSheet.create({
     margin: 5,
     marginTop: 70,
     right: 0,
+  },
+  logoContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    width,
+    height,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  logo: {
+    width: 219,
+    height: 257,
+    marginTop: -50,
   },
 })

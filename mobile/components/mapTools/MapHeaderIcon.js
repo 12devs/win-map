@@ -39,7 +39,7 @@ class AccountIcon extends Component {
       onPress={() => {
         this.props.navigation.navigate('Login')
       }}
-      name='account-circle'
+      name='lock-outline'
       color='#fff'
       size={25}
       containerStyle={{ marginRight: width * 0.04 }}
