@@ -99,7 +99,9 @@ export default {
         const changePasswordCode = _.random(0, 99999);
         await sendEmail(acc.email, 'Wind-map change password code', changePasswordCode);
         acc.changePasswordCode = changePasswordCode;
+
         await acc.save();
+        return res.status(200).json({ message: 'code', email: acc.email });
       }
     } catch (err) {
       return res.status(500).json({ error: err.message });

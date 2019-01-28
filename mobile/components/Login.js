@@ -25,7 +25,8 @@ class Login extends Component {
       error: '',
       showCode: false,
       showPassword: false,
-      device: {}
+      device: {},
+      isLoader: false
     }
     this.onIds = this.onIds.bind(this)
   }
@@ -58,8 +59,9 @@ class Login extends Component {
     const { login, password, code, device } = this.state
     return services.login({ login, password, code })
       .then(res => {
-        console.log(res)
         const { message, email, error, token } = res
+
+        this.setState({isLoader: false})
         this.setState({ code: '' })
         this.setState({ error: '' })
         if (message === 'code') {
@@ -77,16 +79,17 @@ class Login extends Component {
         }
       })
       .catch((error) => {
+        this.setState({ isLoader: false })
         console.error(error)
       })
   }
 
   render() {
-    const { showPassword, showCode, code, email, error, login, password } = this.state
+    const { showPassword, showCode, code, email, error, login, password, isLoader } = this.state
 
     if (showCode) {
       return (
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{
@@ -97,7 +100,6 @@ class Login extends Component {
                   <Icon name='lock-outline' color='#3D6DCC'/>
                 </View>
                 <TextInput style={styles.input}
-                           onSubmitEditing ={Keyboard.dismiss}
                            value={code}
                            underlineColorAndroid="transparent"
                            placeholder={"code from " + email}
@@ -114,9 +116,15 @@ class Login extends Component {
                   containerViewStyle={styles.buttonContainer}
                   backgroundColor={'#3D6DCC'}
                   // borderRadius={50}
-                  title='SEND'
+                  disabled={isLoader}
+                  disabledStyle={{backgroundColor:'#3D6DCC'}}
+                  loading={isLoader}
+                  title='Send'
                   color={'#fff'}
-                  onPress={this.login}/>
+                  onPress={() => {
+                    this.setState({isLoader: true})
+                    this.login()
+                  }}/>
               </View>
             </View>
           </View>
@@ -124,7 +132,7 @@ class Login extends Component {
       )
     } else {
       return (
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <View style={{
@@ -182,9 +190,15 @@ class Login extends Component {
                   containerViewStyle={styles.buttonContainer}
                   backgroundColor={'#3D6DCC'}
                   // borderRadius={50}
-                  title='LOGIN'
+                  disabled={isLoader}
+                  disabledStyle={{backgroundColor:'#3D6DCC'}}
+                  loading={isLoader}
+                  title='Login'
                   color={'#fff'}
-                  onPress={this.login}/>
+                  onPress={() => {
+                    this.setState({isLoader: true})
+                    this.login()
+                  }}/>
               </View>
             </View>
 

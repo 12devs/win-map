@@ -13,7 +13,8 @@ class Register extends Component {
     repeatPassword: '',
     error: '',
     showPassword: false,
-    showRepeatPassword: false
+    showRepeatPassword: false,
+    isLoader: false
   }
 
   componentDidMount() {
@@ -37,141 +38,150 @@ class Register extends Component {
       services.register({ login, password, email, places, dangers })
         .then(res => {
           const { message, error } = res
+
+          this.setState({isLoader: false})
           if (message !== 'OK') {
             error ? this.setState({ error }) : this.setState({ error: message })
-          } else
+          } else {
             return this.props.navigation.navigate('Login')
+          }
         })
         .catch((error) => {
+          this.setState({isLoader: false})
           this.setState({ error: error.toString() })
         })
     } else {
+      this.setState({isLoader: false})
       this.setState({ error: 'Passwords do not match' })
     }
   }
 
   render() {
-    const { showPassword, email, login, error, showRepeatPassword } = this.state
+    const { showPassword, email, login, error, showRepeatPassword, isLoader } = this.state
     return (
-      <ScrollView keyboardShouldPersistTaps="always">
-        <View style={styles.mainContainer}>
-          <View style={styles.container}>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <View style={styles.iconContainer}>
-                <Icon name='mail-outline' color='#3D6DCC'/>
-              </View>
-              <TextInput style={styles.input}
-                         underlineColorAndroid="transparent"
-                         placeholder="email"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={email}
-                         onChangeText={(email) => this.setState({ email })}/>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <View style={styles.iconContainer}>
-                <Icon name='perm-identity' color='#3D6DCC'/>
-              </View>
-              <TextInput style={styles.input}
-                         underlineColorAndroid="transparent"
-                         placeholder="Username"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={login}
-                         onChangeText={(login) => this.setState({ login })}/>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <View style={styles.iconContainer}>
-                <Icon name='lock-outline' color='#3D6DCC'/>
-              </View>
-              <TextInput style={styles.inputPassword}
-                         underlineColorAndroid="transparent"
-                         secureTextEntry={!showPassword}
-                         placeholder="Password"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={this.state.password}
-                         onChangeText={(password) => this.setState({ password })}/>
-              <View style={styles.iconContainerPassword}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                  <Icon onPress={() => {
-                    this.setState({ showPassword: !showPassword })
-                  }} name={showPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+      <ScrollView keyboardShouldPersistTaps="handled">
+          <View style={styles.mainContainer}>
+            <View style={styles.container}>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <View style={styles.iconContainer}>
+                  <Icon name='mail-outline' color='#3D6DCC'/>
                 </View>
+                <TextInput style={styles.input}
+                           underlineColorAndroid="transparent"
+                           placeholder="email"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={email}
+                           onChangeText={(email) => this.setState({ email })}/>
               </View>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-              <View style={styles.iconContainer}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <View style={styles.iconContainer}>
+                  <Icon name='perm-identity' color='#3D6DCC'/>
+                </View>
+                <TextInput style={styles.input}
+                           underlineColorAndroid="transparent"
+                           placeholder="Username"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={login}
+                           onChangeText={(login) => this.setState({ login })}/>
+              </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <View style={styles.iconContainer}>
                   <Icon name='lock-outline' color='#3D6DCC'/>
                 </View>
-              </View>
-              <TextInput style={styles.inputPassword}
-                         underlineColorAndroid="transparent"
-                         secureTextEntry={!showRepeatPassword}
-                         placeholder="Repeat Password"
-                         placeholderTextColor="#3D6DCC"
-                         autoCapitalize="none"
-                         value={this.state.repeatPassword}
-                         onChangeText={(repeatPassword) => this.setState({ repeatPassword })}/>
-              <View style={styles.iconContainerPassword}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                  <Icon onPress={() => {
-                    this.setState({ showRepeatPassword: !showRepeatPassword })
-                  }} name={showRepeatPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                <TextInput style={styles.inputPassword}
+                           underlineColorAndroid="transparent"
+                           secureTextEntry={!showPassword}
+                           placeholder="Password"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={this.state.password}
+                           onChangeText={(password) => this.setState({ password })}/>
+                <View style={styles.iconContainerPassword}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon onPress={() => {
+                      this.setState({ showPassword: !showPassword })
+                    }} name={showPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                  </View>
                 </View>
               </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <View style={styles.iconContainer}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon name='lock-outline' color='#3D6DCC'/>
+                  </View>
+                </View>
+                <TextInput style={styles.inputPassword}
+                           underlineColorAndroid="transparent"
+                           secureTextEntry={!showRepeatPassword}
+                           placeholder="Repeat Password"
+                           placeholderTextColor="#3D6DCC"
+                           autoCapitalize="none"
+                           value={this.state.repeatPassword}
+                           onChangeText={(repeatPassword) => this.setState({ repeatPassword })}/>
+                <View style={styles.iconContainerPassword}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon onPress={() => {
+                      this.setState({ showRepeatPassword: !showRepeatPassword })
+                    }} name={showRepeatPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
+                  </View>
+                </View>
+              </View>
+              {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+                <Button
+                  containerViewStyle={styles.buttonContainer}
+                  backgroundColor={'#3D6DCC'}
+                  disabledStyle={{backgroundColor:'#3D6DCC'}}
+                  disabled={isLoader}
+                  loading={isLoader}
+                  title='Register'
+                  color={'#fff'}
+                  onPress={() => {
+                    this.setState({isLoader:true})
+                    this.register()
+                  }}/>
+              </View>
             </View>
-            {this.state.error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
+
             <View style={{
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-              <Button
-                containerViewStyle={styles.buttonContainer}
-                backgroundColor={'#3D6DCC'}
-                // large
-                // borderRadius={50}
-                title='Register'
-                color={'#fff'}
-                onPress={this.register}/>
+              <Text style={styles.textContainer}>Do have an account?</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('Login')
+                }}>
+                <Text style={styles.secondaryTextContainer}>You can login here.</Text>
+              </TouchableOpacity>
             </View>
           </View>
-
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-            <Text style={styles.textContainer}>Do have an account?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Login')
-              }}>
-              <Text style={styles.secondaryTextContainer}>You can login here.</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </ScrollView>
     )
   }

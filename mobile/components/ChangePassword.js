@@ -13,7 +13,8 @@ class ChangePassword extends Component {
     changePasswordCode: '',
     showCode: false,
     showPassword: false,
-    showRepeatPassword: false
+    showRepeatPassword: false,
+    isLoader: false
   }
 
   componentDidMount() {
@@ -31,11 +32,13 @@ class ChangePassword extends Component {
 
   changePassword = () => {
     const { login, password, repeatPassword, changePasswordCode } = this.state
+
     if (password === repeatPassword) {
       services.changePassword({ login, password, changePasswordCode })
         .then((res) => {
-          console.log(res)
           const { error, message, email } = res
+
+          this.setState({ isLoader: false })
           if (message === 'code') {
             this.setState({ error: '' })
             return this.setState({ email, showCode: true })
@@ -47,15 +50,17 @@ class ChangePassword extends Component {
           }
         })
         .catch((error) => {
+          this.setState({ isLoader: false })
           this.setState({ error: error.toString() })
         })
     } else {
+      this.setState({ isLoader: false })
       this.setState({ error: 'Passwords do not match' })
     }
   }
 
   render() {
-    const { showPassword, email, login, error, password, showRepeatPassword, repeatPassword } = this.state
+    const { showPassword, email, login, error, password, showRepeatPassword, repeatPassword, isLoader } = this.state
 
     if (this.state.showCode) {
       return (
@@ -88,9 +93,15 @@ class ChangePassword extends Component {
                   backgroundColor={'#3D6DCC'}
                   // large
                   // borderRadius={50}
-                  title='SEND'
+                  disabled={isLoader}
+                  disabledStyle={{ backgroundColor: '#3D6DCC' }}
+                  loading={isLoader}
+                  title='Send'
                   color={'#fff'}
-                  onPress={this.changePassword}/>
+                  onPress={() => {
+                    this.setState({ isLoader: true })
+                    this.changePassword()
+                  }}/>
               </View>
             </View>
           </View>
@@ -178,9 +189,15 @@ class ChangePassword extends Component {
                   backgroundColor={'#3D6DCC'}
                   // large
                   // borderRadius={50}
+                  disabled={isLoader}
+                  disabledStyle={{ backgroundColor: '#3D6DCC' }}
+                  loading={isLoader}
                   title='Change'
                   color={'#fff'}
-                  onPress={this.changePassword}/>
+                  onPress={() => {
+                    this.setState({ isLoader: true })
+                    this.changePassword()
+                  }}/>
               </View>
             </View>
             <TouchableOpacity
