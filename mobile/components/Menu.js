@@ -48,6 +48,7 @@ const Register_StackNavigator = createStackNavigator({
         title: 'Register',
         headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC',
           textAlign: 'center'
         },
@@ -69,6 +70,7 @@ const Login_StackNavigator = createStackNavigator({
           title: 'Login',
           headerLeft: <Back navigation={navigation}/>,
           headerStyle: {
+            height: 45,
             backgroundColor: '#3D6DCC'
           },
           headerTintColor: '#fff',
@@ -90,6 +92,7 @@ const Main_StackNavigator = createStackNavigator({
         headerRight: <AccountIcon navigation={navigation}/>,
         headerTitleStyle: { textAlign: 'center' },
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -108,6 +111,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerRight: <SaveNotificationSettings navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -126,6 +130,7 @@ const test_StackNavigator = createStackNavigator({
         title: 'Test',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -143,6 +148,7 @@ const notifications_StackNavigator = createStackNavigator({
         title: 'Notifications',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -162,6 +168,7 @@ const addedMarker_StackNavigator = createStackNavigator({
         headerLeft: <Back navigation={navigation}/>,
         headerRight: <SentPoint navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -180,6 +187,7 @@ const pointSettings_StackNavigator = createStackNavigator({
         title: 'Point Info',
         headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -200,6 +208,7 @@ const ChangePassword_StackNavigator = createStackNavigator({
         title: 'Change Password',
         headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',
@@ -219,6 +228,7 @@ const About_StackNavigator = createStackNavigator({
         title: 'About',
         headerLeft: <Back navigation={navigation}/>,
         headerStyle: {
+          height: 45,
           backgroundColor: '#3D6DCC'
         },
         headerTintColor: '#fff',

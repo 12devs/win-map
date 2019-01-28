@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Dimensions, } from 'react-native'
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native'
 import { PROVIDER_DEFAULT } from 'react-native-maps'
 import MapView, { ProviderPropType, Callout } from 'react-native-maps'
 import Markers from './markers/Markers'
@@ -21,7 +21,8 @@ class Map extends Component {
       layout: {
         height: height,
         width: width,
-      }
+      },
+      isLogo: true
     }
   }
 
@@ -80,7 +81,7 @@ class Map extends Component {
         >
           <Markers navigation={this.props.navigation}/>
         </MapView>
-        <Callout style={width > height ? styles.rightTools : { marginTop: 150 }}>
+        <Callout style={width > height ? styles.rightTools : { marginTop: 130 }}>
           <DeleteMarkers/>
         </Callout>
         <Callout>
@@ -96,6 +97,29 @@ class Map extends Component {
         <Callout style={{ top: 0 }}>
           <Search width={width} height={height}/>
         </Callout>
+
+        {this.state.isLogo && <Callout
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            width: '100%',
+            height,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <TouchableOpacity onPress={() => {
+            console.log('click')
+            this.setState({ isLogo: false })
+          }}>
+            <Image source={require('../assets/tooltip.png')}
+                   style={{
+                     width: 219,
+                     height: 257,
+                   }}/>
+          </TouchableOpacity>
+        </Callout>}
+
         {/* <Callout
           style={{
             bottom: 0,

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   image: {
     width: 20,
     height: 20,
-    margin: 15,
+    margin: 10,
     tintColor: '#00498f',
   },
   layersContainer: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 10,
-    elevation: 3,
+    elevation: 1,
     margin: 3
   },
   imageContainer: {

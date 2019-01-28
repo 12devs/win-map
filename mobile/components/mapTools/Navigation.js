@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     padding: 2,
     borderRadius: 80,
     backgroundColor: '#fff',
-    elevation: 5
+    elevation: 2
   },
   image: {
     width: 20,
     height: 20,
-    margin: 15,
+    margin: 10,
     tintColor: '#00498f',
   }
 })

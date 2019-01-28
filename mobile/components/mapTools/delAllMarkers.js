@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     padding: 2,
     borderRadius: 80,
-    elevation: 5,
+    elevation: 1,
     margin: 10,
     marginRight: 5,
     backgroundColor: '#fff',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   image: {
     width: 20,
     height: 20,
-    margin: 15,
+    margin: 10,
     tintColor: '#00498f',
   }
 })

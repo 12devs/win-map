@@ -65,8 +65,8 @@ class Search extends Component {
           <SearchBar
             searchIcon={{ size: 24 }}
             onChangeText={this.onChange}
-            containerStyle={[{ backgroundColor: 'transparent' }, styles.containerStyle]}
-            inputStyle={styles.inputStyle}
+            containerStyle={[{ borderRadius: 50, backgroundColor: 'transparent' }, styles.containerStyle]}
+            inputStyle={[styles.inputStyle, {borderRadius: 50}]}
             placeholder='Search...'/>}
 
         {items.length > 1 ?
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     backgroundColor: '#fff',
-    elevation: 5
+    elevation: 1
   },
   scrollContainer: {
     backgroundColor: '#eeeeee',
