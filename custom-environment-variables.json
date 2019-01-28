@@ -37,5 +37,8 @@
       "user": "NODEMAILER_USER",
       "pass": "NODEMAILER_PASS"
     }
+  },
+  "adminSecret": {
+    "secret": "ADMIN_SECRET"
   }
 }

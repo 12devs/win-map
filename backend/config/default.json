@@ -37,5 +37,6 @@
     "saltRound": 10,
     "iv": "fe5091106e9f93dec6030926dab17892"
   },
-  "apiKeys":{}
+  "apiKeys":{},
+  "adminSecret": {}
 }
