@@ -180,7 +180,9 @@ class PointSettings extends React.Component {
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
                        onChange={(e) => {
-                         this.setState({ name: e.target.value });
+                         if (e.target.value.length < 30) {
+                           this.setState({ name: e.target.value });
+                         }
                        }}
                        onKeyDown={e => {
                          if (e.keyCode === 13) {
@@ -203,7 +205,9 @@ class PointSettings extends React.Component {
                        onChange={(e) => {
                          let valid;
                          valid = !(e.target.value < 0 || isNaN(Number(e.target.value)));
-                         this.setState({ validDistance: valid, dangerRadius: e.target.value });
+                         if (e.target.value.length < 7) {
+                           this.setState({ validDistance: valid, dangerRadius: e.target.value });
+                         }
                        }}
                        onKeyDown={e => {
                          if (e.keyCode === 13) {
