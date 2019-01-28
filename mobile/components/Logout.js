@@ -18,7 +18,7 @@ class Logout extends Component {
   componentDidMount = () => {
     Alert.alert(
       'Alert',
-      'Do you really want to logout?',
+      'Do you want to logout?',
       [
         {
           text: 'No', onPress: () => {

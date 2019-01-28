@@ -93,7 +93,7 @@ class Main extends React.Component {
           <div className={'confirm__alert'}>
             <div style={{ margin: '50px' }}>
               <h1>Are you sure?</h1>
-              <p>You want to logout?</p>
+              <p>Do you want to logout?</p>
               <button className={"confirm__button"} onClick={() => {
                 localStorage.setItem('windToken', '')
                 location.assign('/main')
@@ -117,7 +117,7 @@ class Main extends React.Component {
           <div className={'confirm__alert'}>
             <div style={{ margin: '50px' }}>
               <h1>Are you sure?</h1>
-              <p>You want to delete all your points?</p>
+              <p>Do you want to delete all your markers?</p>
               <button className={"confirm__button"} onClick={() => {
                 if (localStorage.windToken) {
                   return services.deleteAllPoints()

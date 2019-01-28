@@ -279,7 +279,7 @@ class PointSettings extends Component {
                 onPress={() => {
                   Alert.alert(
                     'Alert',
-                    'Do you really want to delete marker?',
+                    'Do you want to delete the marker?',
                     [
                       { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
                       {

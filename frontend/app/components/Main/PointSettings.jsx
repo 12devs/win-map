@@ -68,7 +68,7 @@ class PointSettings extends React.Component {
           <div className={'confirm__alert'}>
             <div style={{ margin: '50px' }}>
               <h1>Are you sure?</h1>
-              <p>You want to remove marker?</p>
+              <p>Do you want to delete the marker?</p>
               <button className={"confirm__button"} onClick={() => {
                 this.delMarker();
                 this.props.updateReduxState({ info: { point: null, type: null } });
@@ -176,7 +176,7 @@ class PointSettings extends React.Component {
         <div className="point__data">
           <div style={{ flex: 1, overflow: 'auto' }}>
             {!this.state.editName ?
-              <div className="point__data-name" onClick={() => this.setState({ editName: true })}>{point.name}</div> :
+              <div className="point__data-name" onClick={() => this.setState({ editName: true, name: point.name})}>{point.name}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
                        onChange={(e) => {
@@ -196,7 +196,7 @@ class PointSettings extends React.Component {
             }
             {!this.state.editDangerRadius ?
               <div className={` ${point.dangerRadius && 'point__data-name'} `}
-                   onClick={() => this.setState({ editDangerRadius: true })}>{point.dangerRadius}</div> :
+                   onClick={() => this.setState({ editDangerRadius: true, dangerRadius: point.dangerRadius  })}>{point.dangerRadius}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
                        placeholder="new Name" type="text" value={this.state.dangerRadius}

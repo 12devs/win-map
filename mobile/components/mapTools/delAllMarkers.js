@@ -24,7 +24,7 @@ class DeleteMarkers extends Component {
           onPress={() => {
             Alert.alert(
               'Alert',
-              'Do you really want to delete all markers?',
+              'Do you want to delete all your markers?',
               [
                 { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' },
                 {

@@ -107,7 +107,7 @@ const notificationSettings_StackNavigator = createStackNavigator({
     Third: {
       screen: notificationSettings,
       navigationOptions: ({ navigation }) => ({
-        title: 'Notification Settings',
+        title: 'Notification settings',
         headerLeft: <HamburgerIcon navigationProps={navigation}/>,
         headerRight: <SaveNotificationSettings navigation={navigation}/>,
         headerStyle: {

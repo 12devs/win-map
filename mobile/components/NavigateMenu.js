@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   image: {
-    backgroundColor: '#000',
+    // backgroundColor: '#fff',
     width: '100%',
-    height: '40%',
-    opacity: 0.9,
+    height: '30%',
+    // opacity: 0.9,
     alignSelf: 'center'
   }
 })
