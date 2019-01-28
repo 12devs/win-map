@@ -48,7 +48,7 @@ class MyMap extends React.Component {
 
           <ReactLeafletSearch position="topleft"/>
 
-          <LayersControl position="topright">
+          <LayersControl position="bottomright">
             <BaseLayer checked name="OpenStreetMap">
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
