@@ -106,7 +106,7 @@ const calcMapRegionAll = (points) => {
 const calcMapRegionOne = (point) => {
   try {
     const points = [0, 90, 180, 270].map(bearing => {
-      return geolib.computeDestinationPoint(point, 5000, bearing);
+      return geolib.computeDestinationPoint(point, 200, bearing);
     });
     return calcMapRegionAll(points)
   } catch (err) {

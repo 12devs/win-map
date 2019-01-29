@@ -70,7 +70,7 @@ class Search extends Component {
             placeholder='Search...'/>}
 
         {items.length > 1 ?
-          <ScrollView style={[{ height }, styles.scrollContainer]}>
+          <ScrollView style={[{ height }, styles.scrollContainer]} keyboardShouldPersistTaps="handled">
             {
               items.map((l, i) => (
                 <ListItem
