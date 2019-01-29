@@ -154,13 +154,15 @@ export default {
   async deletePoint(req, res) {
     try {
       const { danger, place } = req.body;
+      const { user } = req;
+
       if (danger) {
-        await Danger.destroy({ where: { id: danger.id } });
-        await Subscription.destroy({ where: { danger_id: danger.id } });
+        await Danger.destroy({ where: { id: danger.id, account_id: user.id } });
+        await Subscription.destroy({ where: { danger_id: danger.id,  account_id: user.id } });
         res.status(200).json({ message: danger.id + ' successful deleted' });
       } else {
-        await Place.destroy({ where: { id: place.id } });
-        await Subscription.destroy({ where: { place_id: place.id } });
+        await Place.destroy({ where: { id: place.id,  account_id: user.id } });
+        await Subscription.destroy({ where: { place_id: place.id,  account_id: user.id } });
         res.status(200).json({ message: place.id + ' successful deleted' });
       }
     } catch (err) {
@@ -183,12 +185,14 @@ export default {
 
   async update(req, res) {
     try {
+      const { user } = req;
       const { danger, place } = req.body;
       if (place) {
-        await Place.update({ name: place.name }, { where: { id: place.id } });
+        await Place.update({ name: place.name }, { where: { id: place.id, account_id: user.id  } });
       }
       if (danger) {
-        await Danger.update({ name: danger.name, dangerRadius: danger.dangerRadius }, { where: { id: danger.id } });
+        await Danger.update({ name: danger.name, dangerRadius: danger.dangerRadius },
+          { where: { id: danger.id, account_id: user.id  } });
       }
       res.status(200).json({ message: 'Successful updated' });
     } catch (err) {

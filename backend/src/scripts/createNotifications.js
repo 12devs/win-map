@@ -48,7 +48,13 @@ const createNotifications = async () => {
     if (!subscription.length) {
       break
     }
-    await SubscriptionHandler(subscription[0]);
+
+    try {
+      await SubscriptionHandler(subscription[0]);
+    } catch (err) {
+      console.log(err)
+    }
+
     offset++;
   } while (true);
 
