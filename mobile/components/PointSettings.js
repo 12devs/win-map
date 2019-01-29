@@ -72,12 +72,25 @@ class PointSettings extends Component {
   delHelper = (type, id) => {
     if (type === 'place') {
       const places = this.props.places.filter(el => !(el.id === id))
-      this.props.updateReduxState({ places, info: { point: null, type: null } })
+      const notificationSettings = this.props.notificationSettings.filter(el => !(el.place.value === id))
+
+      return this.props.updateReduxState({ places, notificationSettings, info: { point: null, type: null } })
     }
     if (type === 'danger') {
       const dangers = this.props.dangers.filter(el => !(el.id === id))
-      this.props.updateReduxState({ dangers, info: { point: null, type: null } })
-      this.props.updateStatistic()
+      const notificationSettings = this.props.notificationSettings
+      const newNotificationSettings = notificationSettings.map(el => {
+        const dangers = el.danger.filter(el => !(el.value === id))
+
+        return { place: el.place, danger: dangers }
+      })
+
+      this.props.updateReduxState({
+        dangers,
+        notificationSettings: newNotificationSettings,
+        info: { point: null, type: null }
+      })
+      return this.props.updateStatistic()
     }
   }
 
@@ -314,6 +327,7 @@ function mapStateToProps(state) {
     dangers: state.get('dangers'),
     info: state.get('info'),
     statistic: state.get('statistic'),
+    notificationSettings: state.get('notificationSettings')
   }
 }
 

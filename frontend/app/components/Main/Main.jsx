@@ -122,7 +122,7 @@ class Main extends React.Component {
                 if (localStorage.windToken) {
                   return services.deleteAllPoints()
                     .then(() => {
-                      this.props.updateReduxState({ places: [], dangers: [] })
+                      this.props.updateReduxState({ places: [], dangers: [], notificationSettings: [] })
                       this.props.updateStatistic()
                       onClose()
                     })
@@ -130,7 +130,7 @@ class Main extends React.Component {
                       onClose()
                     })
                 } else {
-                  this.props.updateReduxState({ places: [], dangers: [] })
+                  this.props.updateReduxState({ places: [], dangers: [], notificationSettings: [] })
                   this.props.updateStatistic()
                   onClose()
                 }

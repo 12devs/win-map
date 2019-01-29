@@ -16,10 +16,11 @@ class DeleteMarkers extends Component {
         return this.props.updateReduxState({
           places: [],
           dangers: [],
+          notificationSettings: []
         })
       })
     }
-    return this.props.updateReduxState({ places: [], dangers: [] })
+    return this.props.updateReduxState({ places: [], dangers: [], notificationSettings: [] })
   }
 
   render() {

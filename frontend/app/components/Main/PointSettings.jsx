@@ -33,32 +33,34 @@ class PointSettings extends React.Component {
     const { point, type } = this.props.info;
     const { id } = point;
     if (localStorage.windToken) {
-      return services.deletePoint({
-        [type]: { id },
-      })
-        .then(res => {
-          if (type === 'place') {
-            const places = this.props.places.filter(el => !(el.id === id));
-            this.props.updateReduxState({ places });
-          }
-          if (type === 'danger') {
-            const dangers = this.props.dangers.filter(el => !(el.id === id));
-            this.props.updateReduxState({ dangers });
-          }
-        });
+      return services.deletePoint({ [type]: { id } })
+        .then(() => {
+          this.helpDelMarker(id, type)
+        })
+    } else {
+      this.helpDelMarker(id, type)
     }
-    else {
-      if (type === 'place') {
-        const places = this.props.places.filter(el => !(el.id === id));
-        this.props.updateReduxState({ places });
-      }
-      if (type === 'danger') {
-        const dangers = this.props.dangers.filter(el => !(el.id === id));
-        this.props.updateReduxState({ dangers });
-      }
-    }
-
   };
+
+  helpDelMarker = (id, type) => {
+    if (type === 'place') {
+      const places = this.props.places.filter(el => !(el.id === id))
+      const notificationSettings = this.props.notificationSettings.filter(el => !(el.place.value === id))
+
+      return this.props.updateReduxState({ places, notificationSettings })
+    }
+    if (type === 'danger') {
+      const dangers = this.props.dangers.filter(el => !(el.id === id))
+      const notificationSettings = this.props.notificationSettings
+      const newNotificationSettings = notificationSettings.map(el => {
+        const dangers = el.danger.filter(el => !(el.value === id))
+
+        return { place: el.place, danger: dangers }
+      })
+
+      return this.props.updateReduxState({ dangers, notificationSettings: newNotificationSettings })
+    }
+  }
 
   delAlert = () => {
     confirmAlert({
@@ -176,7 +178,8 @@ class PointSettings extends React.Component {
         <div className="point__data">
           <div style={{ flex: 1, overflow: 'auto' }}>
             {!this.state.editName ?
-              <div className="point__data-name" onClick={() => this.setState({ editName: true, name: point.name})}>{point.name}</div> :
+              <div className="point__data-name"
+                   onClick={() => this.setState({ editName: true, name: point.name })}>{point.name}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className="point__input-text valid" placeholder="new Name" type="text" value={this.state.name}
                        onChange={(e) => {
@@ -198,7 +201,10 @@ class PointSettings extends React.Component {
             }
             {!this.state.editDangerRadius ?
               <div className={` ${point.dangerRadius && 'point__data-name'} `}
-                   onClick={() => this.setState({ editDangerRadius: true, dangerRadius: point.dangerRadius  })}>{point.dangerRadius}</div> :
+                   onClick={() => this.setState({
+                     editDangerRadius: true,
+                     dangerRadius: point.dangerRadius
+                   })}>{point.dangerRadius}</div> :
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <input className={`point__input-text ${this.state.validDistance ? 'valid' : 'valid_fail'}`}
                        placeholder="new Name" type="text" value={this.state.dangerRadius}
