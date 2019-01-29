@@ -4,16 +4,22 @@ import actions from "../../actions/index"
 import { connect } from "react-redux"
 import icons from '../icons'
 import service from '../../services'
+import hasItem from "../../utils/asyncStorage"
 
 class DeleteMarkers extends Component {
 
-  deleteAllMarkers = () => {
-    return service.deleteAllPoints().then(() => {
-      this.props.updateReduxState({
-        places: [],
-        dangers: [],
+  deleteAllMarkers = async () => {
+    const isToken = await hasItem('windToken')
+
+    if (isToken) {
+      return service.deleteAllPoints().then(() => {
+        return this.props.updateReduxState({
+          places: [],
+          dangers: [],
+        })
       })
-    })
+    }
+    return this.props.updateReduxState({ places: [], dangers: [] })
   }
 
   render() {

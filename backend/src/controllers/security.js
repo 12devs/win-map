@@ -44,12 +44,12 @@ export default {
       const { id } = account;
       await sendEmail(email, 'Wind-map activation code', code);
 
-      dangers.length && dangers.forEach(async el => {
+      !!dangers && !!dangers.length && dangers.forEach(async el => {
         el.account_id = id;
         await Danger.create(el);
       });
 
-      places.length && places.forEach(async el => {
+      !!places && !!places.length && places.forEach(async el => {
         el.account_id = id;
         await Place.create(el);
       });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, BackHandler, Platform } from 'react-native'
 import { Button } from 'react-native-elements'
+import email from 'react-native-email'
 
 class About extends Component {
 
@@ -15,6 +16,13 @@ class About extends Component {
   handleBackPress = () => {
     this.props.navigation.navigate('Map')
     return true
+  }
+
+  handleEmail = () => {
+    const to = 'support@12devs.com'
+    email(to, {
+      subject: 'Wind app',
+    }).catch(console.error)
   }
 
   render() {
@@ -40,8 +48,7 @@ class About extends Component {
                 backgroundColor={'#3D6DCC'}
                 borderRadius={50}
                 title='Contact us'
-                onPress={() => {
-                }}/>
+                onPress={this.handleEmail}/>
             </View>
             <View style={styles.buttonContainer}>
               <Button
