@@ -4,13 +4,6 @@ import { connect } from 'react-redux'
 import actions from '../../actions/index'
 import redIcon from '../../assets/red_marker.png'
 import { Marker, ProviderPropType } from 'react-native-maps'
-import SectorPolygon from "./SectorPolygon"
-import WindRose from "./WindRose"
-
-const components = {
-  Current: SectorPolygon,
-  Historical: WindRose,
-}
 
 class Danger extends React.Component {
   constructor(props) {
@@ -44,8 +37,8 @@ class Danger extends React.Component {
   };
 
   render() {
-    const { viewType, point } = this.props
-    const marker = <Marker
+    const { point } = this.props
+    return <Marker
       key={`marker ${point.type} ${point.id}`}
       coordinate={{
         latitude: point.lat,
@@ -59,10 +52,6 @@ class Danger extends React.Component {
       }}
       draggable
       image={redIcon}/>
-
-    const Component = components[viewType]
-
-    return [].concat(marker, <Component key={'sectorPolygon'} point={point}/>)
   }
 }
 
