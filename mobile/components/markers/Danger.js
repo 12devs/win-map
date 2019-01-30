@@ -12,7 +12,7 @@ class Danger extends React.Component {
     this.updatePosition = this.updatePosition.bind(this)
   }
 
-  updatePosition = async (id, dangerRadius, e) => {
+  updatePosition = async (point, e) => {
     let { latitude, longitude } = e.nativeEvent.coordinate
     let lngCorrect = longitude
     const hasToken = await hasItem('windToken')
@@ -25,15 +25,13 @@ class Danger extends React.Component {
       lngCorrect += 360
     }
 
-    const query = {
-      danger: { lat: latitude, lng: lngCorrect, id, },
-      stations: [...this.props.stations]
-    }
-
     if (hasToken) {
-      return services.movePoint(query)
+      return services.movePoint({
+        danger: { lat: latitude, lng: lngCorrect, id: point.id},
+        stations: [...this.props.stations]
+      })
         .then(res => {
-          const dangers = this.props.dangers.filter(el => !(el.id === id))
+          const dangers = this.props.dangers.filter(el => !(el.id === point.id))
           dangers.push(res.danger)
           let stationsData = this.props.stationsData
           const stations = this.props.stations
@@ -42,13 +40,16 @@ class Danger extends React.Component {
           return this.props.updateReduxState({ dangers, stations, stationsData })
         })
     }
-    return services.movePointUnathorization(query)
+    return services.movePointUnathorization({
+      danger: { lat: latitude, lng: lngCorrect, id: point.id, name: point.name, dangerRadius: point.dangerRadius },
+      stations: [...this.props.stations]
+    })
       .then(res => {
         console.log('res', res)
-        const dangers = this.props.dangers.filter(el => !(el.id === id))
+        const dangers = this.props.dangers.filter(el => !(el.id === point.id))
         let { stationsData, stations } = this.props
 
-        res.danger.dangerRadius = dangerRadius
+        res.danger.dangerRadius = point.dangerRadius
         dangers.push(res.danger)
         stationsData = { ...stationsData, ...(res.stationsData || {}) }
         stations.push(...Object.keys((res.stationsData || {})))
@@ -64,7 +65,7 @@ class Danger extends React.Component {
         latitude: point.lat,
         longitude: point.lng
       }}
-      onDragEnd={(e) => this.updatePosition(point.id, point.dangerRadius, e)}
+      onDragEnd={(e) => this.updatePosition(point, e)}
       onPress={(e) => {
         e.stopPropagation()
         this.props.updateReduxState({ info: { point, type: 'danger' } })

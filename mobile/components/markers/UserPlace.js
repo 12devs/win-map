@@ -12,7 +12,7 @@ class UserPlace extends React.Component {
     this.updatePosition = this.updatePosition.bind(this)
   }
 
-  async updatePosition(id, e) {
+  async updatePosition(point, e) {
     let { latitude, longitude } = e.nativeEvent.coordinate
     let lngCorrect = longitude
     const hasToken = await hasItem('windToken')
@@ -25,17 +25,18 @@ class UserPlace extends React.Component {
       lngCorrect += 360
     }
 
-    const query = {
-      place: { lat: latitude, lng: lngCorrect, id },
-      stations: [...this.props.stations]
-    }
-
     if (hasToken) {
-      return services.movePoint(query)
-        .then(res => this.helperUpdatePosition(res, id))
+      return services.movePoint({
+        place: { lat: latitude, lng: lngCorrect, id: point.id },
+        stations: [...this.props.stations]
+      })
+        .then(res => this.helperUpdatePosition(res, point.id))
     }
-    return services.movePointUnathorization(query)
-      .then(res => this.helperUpdatePosition(res, id))
+    return services.movePointUnathorization({
+      place: { lat: latitude, lng: lngCorrect, id: point.id, name: point.name },
+      stations: [...this.props.stations]
+    })
+      .then(res => this.helperUpdatePosition(res, point.id))
   };
 
   helperUpdatePosition(res, id) {
@@ -56,7 +57,7 @@ class UserPlace extends React.Component {
           longitude: this.props.point.lng
         }}
         onDragEnd={(e) => {
-          this.updatePosition(this.props.point.id, e)
+          this.updatePosition(this.props.point, e)
           this.props.updateStatistic()
         }}
         onPress={(e) => {
