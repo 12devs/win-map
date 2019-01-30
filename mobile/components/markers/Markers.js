@@ -18,11 +18,11 @@ class Markers extends React.Component {
     const Component = components[this.props.viewType]
 
     const UserPlaces = places.map((point, id) => {
-      return <UserPlace key={id} point={point} showInfo={this.showInfo} navigation={navigation}/>
+      return <UserPlace key={`PLace ${point.id} ${id}`} point={point} showInfo={this.showInfo} navigation={navigation}/>
     })
 
-    const Dangers = dangers.map((point) => {
-      return <Danger key={`Danger ${point.type} ${point.id}`} point={point} showInfo={this.showInfo}
+    const Dangers = dangers.map((point, id) => {
+      return <Danger key={`Danger ${point.id}  ${id}`} point={point} showInfo={this.showInfo}
                      navigation={navigation}/>
     })
 

@@ -17,6 +17,9 @@ class SectorPolygon extends React.Component {
       dist = this.props.scaleWind
     }
     const direction = this.props.direction || _.get(stationsData, [point.station_id, 'current', 'dir'], null)
+    if (direction === 'Varible') {
+      return null
+    }
     if (direction) {
       try {
         if (simple) {

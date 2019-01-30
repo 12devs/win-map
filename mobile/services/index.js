@@ -25,6 +25,10 @@ const movePoint = (point) => {
   return fetch('post', '/api/points/move', point);
 };
 
+const movePointUnathorization = (point) => {
+  return fetch('post', '/points/move', point);
+};
+
 const deletePoint = (point) => {
   return fetch('post', '/api/points/delete', point);
 };
@@ -92,5 +96,6 @@ export default {
   viewAllNotification,
   updatePoint,
   pointInfo,
-  getNotification
+  getNotification,
+  movePointUnathorization
 };

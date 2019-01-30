@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import actions from '../../actions/index'
 import blueIcon from '../../assets/blue_marker.png'
 import { Marker, ProviderPropType } from 'react-native-maps'
+import hasItem from "../../utils/asyncStorage"
 
 class UserPlace extends React.Component {
   constructor(props) {
@@ -11,9 +12,11 @@ class UserPlace extends React.Component {
     this.updatePosition = this.updatePosition.bind(this)
   }
 
-  updatePosition(id, e) {
+  async updatePosition(id, e) {
     let { latitude, longitude } = e.nativeEvent.coordinate
     let lngCorrect = longitude
+    const hasToken = await hasItem('windToken')
+
     lngCorrect = lngCorrect % 360
     if (lngCorrect > 180) {
       lngCorrect -= 360
@@ -22,20 +25,28 @@ class UserPlace extends React.Component {
       lngCorrect += 360
     }
 
-    return services.movePoint({
+    const query = {
       place: { lat: latitude, lng: lngCorrect, id },
       stations: [...this.props.stations]
-    })
-      .then(res => {
-        const places = this.props.places.filter(el => !(el.id === id))
-        places.push(res.place)
-        let stationsData = this.props.stationsData
-        const stations = this.props.stations
-        stationsData = { ...stationsData, ...res.stationsData }
-        stations.push(...Object.keys((res.stationsData || {})))
-        this.props.updateReduxState({ places, stationsData, stations })
-      })
+    }
+
+    if (hasToken) {
+      return services.movePoint(query)
+        .then(res => this.helperUpdatePosition(res, id))
+    }
+    return services.movePointUnathorization(query)
+      .then(res => this.helperUpdatePosition(res, id))
   };
+
+  helperUpdatePosition(res, id) {
+    const places = this.props.places.filter(el => !(el.id === id))
+    let { stationsData, stations } = this.props
+
+    places.push(res.place)
+    stationsData = { ...stationsData, ...res.stationsData }
+    stations.push(...Object.keys((res.stationsData || {})))
+    return this.props.updateReduxState({ places, stationsData, stations })
+  }
 
   render() {
     return (
