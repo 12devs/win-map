@@ -54,15 +54,19 @@ class AddPoint extends React.Component {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-                <TextInput style={styles.input}
-                           value={this.state.login}
-                           underlineColorAndroid="transparent"
-                           placeholder="Marker Name"
-                           placeholderTextColor="#3D6DCC"
-                           autoCapitalize="none"
-                           onChangeText={(e) => {
-                             this.props.updateReduxState({ addPoint: { name: e, error: '' } })
-                           }}/>
+                <TextInput
+                  style={styles.input}
+                  value={addPoint.name}
+                  underlineColorAndroid="transparent"
+                  placeholder="Marker Name"
+                  placeholderTextColor="#3D6DCC"
+                  autoCapitalize="none"
+                  onChangeText={(e) => {
+                    if(e.length<30) {
+                      this.props.updateReduxState({ addPoint: { name: e, error: '' } })
+                    }
+                  }}
+                />
                 <View style={styles.iconContainer}>
                   <Icon name='location-on' color='#3D6DCC'/>
                 </View>

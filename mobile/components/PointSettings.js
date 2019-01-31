@@ -167,7 +167,7 @@ class PointSettings extends Component {
                  containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.78)' }}
                  closeOnTouchOutside
                  animationType='zoomIn'>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <View>
               <Text style={{ textAlign: 'center', fontSize: 20 }}>Marker name:</Text>
               <View style={styles.inputContainer}>

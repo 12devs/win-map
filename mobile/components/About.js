@@ -55,7 +55,7 @@ class About extends Component {
                 containerViewStyle={styles.button}
                 backgroundColor={'#3D6DCC'}
                 borderRadius={50}
-                title={Platform.OS === 'ios' ? 'Rate on App Store' : 'Rate on Google play'}
+                title={Platform.OS === 'ios' ? 'Rate on App Store' : 'Rate on Google Play'}
                 onPress={() => {
                 }}/>
             </View>
