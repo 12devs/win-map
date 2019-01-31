@@ -32,31 +32,49 @@ class ChangePassword extends Component {
 
   changePassword = () => {
     const { login, password, repeatPassword, changePasswordCode } = this.state
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+    const validPassword = password.match(passwordRegex)
 
-    if (password === repeatPassword) {
-      services.changePassword({ login, password, changePasswordCode })
-        .then((res) => {
-          const { error, message, email } = res
+    if (!password || !login || !repeatPassword) {
+      return this.setState({ error: 'Missing params' })
+    }
 
-          this.setState({ isLoader: false })
-          if (message === 'code') {
-            this.setState({ error: '' })
-            return this.setState({ email, showCode: true })
-          }
-          if (message !== 'OK') {
-            error ? this.setState({ error }) : this.setState({ error: message })
-          } else {
-            return this.props.navigation.navigate('Login')
-          }
-        })
-        .catch((error) => {
-          this.setState({ isLoader: false })
-          this.setState({ error: error.toString() })
-        })
-    } else {
-      this.setState({ isLoader: false })
+    if (!validPassword) {
+      return this.setState({
+        error: 'Please, enter a password that meets all of the requirements:\n\t' +
+          '* at least 8 characters\n\t' +
+          '* at least 1 number\n\t' +
+          '* at least 1 upper-case character\n\t' +
+          '* at  least 1 lower-case character'
+      })
+    }
+
+    if (password !== repeatPassword) {
       this.setState({ error: 'Passwords do not match' })
     }
+
+    this.setState({ isLoader: true })
+
+    services.changePassword({ login, password, changePasswordCode })
+      .then((res) => {
+        const { error, message, email } = res
+
+        this.setState({ isLoader: false })
+
+        if (message === 'code') {
+          return this.setState({ email, showCode: true, error: '' })
+        }
+
+        if (message === 'OK') {
+          return this.props.navigation.navigate('Login')
+        }
+        this.setState({ error: error || message })
+
+      })
+      .catch((error) => {
+        this.setState({ error: error.toString(), isLoader: false })
+      })
+
   }
 
   render() {
@@ -179,7 +197,15 @@ class ChangePassword extends Component {
                   </View>
                 </View>
               </View>
-              {error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {error ? <Text style={styles.textError}> {error}</Text> : null}
+              </View>
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -195,7 +221,6 @@ class ChangePassword extends Component {
                   title='Change'
                   color={'#fff'}
                   onPress={() => {
-                    this.setState({ isLoader: true })
                     this.changePassword()
                   }}/>
               </View>
@@ -288,5 +313,10 @@ const styles = StyleSheet.create({
     width: "80%",
     borderWidth: 1,
     borderColor: '#3D6DCC'
+  },
+  textError: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'red'
   }
 })

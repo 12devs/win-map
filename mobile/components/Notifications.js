@@ -72,8 +72,8 @@ class Notifications extends Component {
               <ListItem
                 key={i}
                 title={notification.message}
-                titleNumberOfLines={2}
-                subtitle={notification.created_at}
+                titleNumberOfLines={3}
+                subtitle={`${new Date(notification.created_at).toLocaleString()}`}
                 leftIcon={{ name: 'notifications' }}
                 rightIcon={{ name: 'close' }}
                 containerStyle={styles.list}
@@ -85,7 +85,7 @@ class Notifications extends Component {
           }
         </View>
         <Button
-          containerViewStyle={{ marginLeft: width / 5, marginRight: width / 5, marginBottom: 20, marginTop: 20 }}
+          containerViewStyle={styles.button}
           backgroundColor={'#3D6DCC'}
           borderRadius={50}
           color={'#fff'}
@@ -131,4 +131,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10
   },
+  button:{
+    marginLeft: width / 5,
+    marginRight: width / 5,
+    marginBottom: 20,
+    marginTop: 20
+  }
 })

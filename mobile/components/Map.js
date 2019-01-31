@@ -9,7 +9,7 @@ import Navigation from "./mapTools/Navigation"
 import Search from './mapTools/Search'
 import Slider from './mapTools/Slider'
 import MapViewType from './mapTools/MapViewType'
-import DeleteMarkers from './mapTools/delAllMarkers'
+import DeleteMarkers from './mapTools/DelAllMarkers'
 import hasItem from "../utils/asyncStorage"
 
 const { width, height } = Dimensions.get('window')

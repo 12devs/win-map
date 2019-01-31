@@ -167,7 +167,7 @@ class PointSettings extends Component {
                  containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.78)' }}
                  closeOnTouchOutside
                  animationType='zoomIn'>
-          <View>
+          <ScrollView>
             <View>
               <Text style={{ textAlign: 'center', fontSize: 20 }}>Marker name:</Text>
               <View style={styles.inputContainer}>
@@ -233,7 +233,7 @@ class PointSettings extends Component {
               </View>
 
             </View>
-          </View>
+          </ScrollView>
         </Overlay>
         {
           !isDelButton ?

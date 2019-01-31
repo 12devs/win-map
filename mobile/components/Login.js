@@ -57,26 +57,30 @@ class Login extends Component {
 
   login = () => {
     const { login, password, code, device } = this.state
+
+    this.setState({ isLoader: true })
+
     return services.login({ login, password, code })
       .then(res => {
         const { message, email, error, token } = res
 
-        this.setState({isLoader: false})
-        this.setState({ code: '' })
-        this.setState({ error: '' })
+        this.setState({ isLoader: false, code: '', error: '' })
+
         if (message === 'code') {
           return this.setState({ showCode: true, email })
         }
+
         if (message !== 'OK') {
-          error ? this.setState({ error }) : this.setState({ error: message })
-        } else {
-          return AsyncStorage.setItem('windToken', token)
-            .then(() => {
-              this.props.updateReduxState({ menuRule: 'logged' })
-              services.saveNotificationToken(device.userId)
-              return this.props.navigation.navigate('Map')
-            })
+          return this.setState({ error: error || message })
         }
+
+        return AsyncStorage.setItem('windToken', token)
+          .then(() => {
+            this.props.updateReduxState({ menuRule: 'logged' })
+            services.saveNotificationToken(device.userId)
+            return this.props.navigation.navigate('Map')
+          })
+
       })
       .catch((error) => {
         this.setState({ isLoader: false })
@@ -117,12 +121,11 @@ class Login extends Component {
                   backgroundColor={'#3D6DCC'}
                   // borderRadius={50}
                   disabled={isLoader}
-                  disabledStyle={{backgroundColor:'#3D6DCC'}}
+                  disabledStyle={{ backgroundColor: '#3D6DCC' }}
                   loading={isLoader}
                   title='Send'
-                  color={'#fff'}
+                  color='#fff'
                   onPress={() => {
-                    this.setState({isLoader: true})
                     this.login()
                   }}/>
               </View>
@@ -191,12 +194,12 @@ class Login extends Component {
                   backgroundColor={'#3D6DCC'}
                   // borderRadius={50}
                   disabled={isLoader}
-                  disabledStyle={{backgroundColor:'#3D6DCC'}}
+                  disabledStyle={{ backgroundColor: '#3D6DCC' }}
                   loading={isLoader}
                   title='Login'
                   color={'#fff'}
                   onPress={() => {
-                    this.setState({isLoader: true})
+                    this.setState({ isLoader: true })
                     this.login()
                   }}/>
               </View>

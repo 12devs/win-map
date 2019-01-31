@@ -36,7 +36,7 @@ export default {
         const { lat, lng } = danger;
         danger.station_id = await getStationId({ lat, lng });
         const savedDanger = danger;
-        savedDanger.dangerRadius = 500000;
+        savedDanger.dangerRadius = 5000;
         savedDanger.lat = Number(lat);
         savedDanger.lng = Number(lng);
         savedDanger.id = +new Date();
