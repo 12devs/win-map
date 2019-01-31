@@ -180,7 +180,11 @@ class PointSettings extends Component {
                              underlineColorAndroid="transparent"
                              placeholderTextColor="#3D6DCC"
                              autoCapitalize="none"
-                             onChangeText={(markerName) => this.setState({ markerName })}/>
+                             onChangeText={(markerName) => {
+                               if (markerName.length < 30) {
+                                 this.setState({ markerName })
+                               }
+                             }}/>
                   <View style={styles.iconContainer}>
                     <Icon name='location-on' color='#3D6DCC'/>
                   </View>
@@ -200,7 +204,11 @@ class PointSettings extends Component {
                                underlineColorAndroid="transparent"
                                placeholderTextColor="#3D6DCC"
                                autoCapitalize="none"
-                               onChangeText={(dangerRadius) => this.setState({ dangerRadius })}/>
+                               onChangeText={(dangerRadius) => {
+                                 if (dangerRadius.length < 7) {
+                                   this.setState({ dangerRadius })
+                                 }
+                               }}/>
                     <View style={styles.iconContainer}>
                       <Icon name='network-wifi' color='#3D6DCC'/>
                     </View>

@@ -72,6 +72,7 @@ class Notifications extends Component {
               <ListItem
                 key={i}
                 title={notification.message}
+                titleNumberOfLines={2}
                 subtitle={notification.created_at}
                 leftIcon={{ name: 'notifications' }}
                 rightIcon={{ name: 'close' }}
