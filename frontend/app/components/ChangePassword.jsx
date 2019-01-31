@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import services from "./../services";
-import Loader from './Loader';
-import Password from "./Password";
+import React, { Component } from 'react'
+import services from "./../services"
+import Loader from './Loader'
+import Password from "./Password"
 
 class ChangePassword extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       login: '',
       password: '',
@@ -15,40 +15,58 @@ class ChangePassword extends Component {
       changePasswordCode: '',
       showCode: false,
       isLoader: false
-    };
-    this.changePassword = this.changePassword.bind(this);
+    }
+    this.changePassword = this.changePassword.bind(this)
   }
 
   changePassword = () => {
-    const { login, password, repeatPassword, changePasswordCode } = this.state;
-    if (password === repeatPassword) {
-      services.changePassword({ login, password, changePasswordCode })
-        .then((res) => {
-          const { error, message, email } = res;
-          if (message === 'code') {
-            this.setState({ error: '' });
-            this.setState({ isLoader: false });
-            return this.setState({ email, showCode: true });
-          }
-          if (message !== 'OK') {
-            this.setState({ isLoader: false });
-            error ? this.setState({ error }) : this.setState({ error: message });
-          } else {
-            return this.props.history.push('/login');
-          }
-        })
-        .catch((error) => {
-          this.setState({ error: error.toString() });
-        });
+    const { login, password, repeatPassword, changePasswordCode } = this.state
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+    const validPassword = password.match(passwordRegex)
+
+    if (!password || !login || !repeatPassword) {
+      return this.setState({ error: 'Missing params' })
     }
-    else {
-      this.setState({ isLoader: false });
-      this.setState({ error: 'Passwords do not match' });
+
+    if (!validPassword) {
+      return this.setState({
+        error: 'Please, enter a password that meets all of the requirements:\n\t' +
+          '* at least 8 characters\n\t' +
+          '* at least 1 number\n\t' +
+          '* at least 1 upper-case character\n\t' +
+          '* at  least 1 lower-case character'
+      })
     }
-  };
+
+    if (password !== repeatPassword) {
+      return this.setState({ error: 'Passwords do not match' })
+    }
+
+    this.setState({ isLoader: true })
+
+    services.changePassword({ login, password, changePasswordCode })
+      .then((res) => {
+        const { error, message, email } = res
+
+        if (message === 'code') {
+          return this.setState({ email, showCode: true, error: '', isLoader: false })
+        }
+
+        if (message === 'OK') {
+          this.setState({ isLoader: false })
+          return this.props.history.push('/login')
+        }
+
+        this.setState({ error: error || message, isLoader: false })
+      })
+      .catch((error) => {
+        this.setState({ error: error.toString() })
+      })
+
+  }
 
   render() {
-    const { login, password, showCode, email, changePasswordCode, error, repeatPassword, isLoader } = this.state;
+    const { login, password, showCode, email, changePasswordCode, error, repeatPassword, isLoader } = this.state
     if (showCode) {
       return (
         <div className="login">
@@ -65,14 +83,14 @@ class ChangePassword extends Component {
               {error ? <div className="login__label" style={{ color: 'red' }}> {error}</div> : null}
               <div>
                 <button className="login__btn-submit" onClick={() => {
-                  this.setState({ isLoader: true });
-                  this.changePassword();
+                  this.setState({ isLoader: true })
+                  this.changePassword()
                 }}>Send
                 </button>
               </div>
             </div>}
         </div>
-      );
+      )
     } else {
       return (
         <div className="login">
@@ -90,34 +108,34 @@ class ChangePassword extends Component {
                 </label>
               </div>
               <Password value={password} parentStateKey={'password'} parent={this} placeholder={'Password'}/>
-              <Password value={repeatPassword} parentStateKey={'repeatPassword'} parent={this} placeholder={'Repeat Password'}/>
+              <Password value={repeatPassword} parentStateKey={'repeatPassword'} parent={this}
+                        placeholder={'Repeat Password'}/>
 
-              {error ? <div className="login__label" style={{ color: 'red' }}> {error}</div> : null}
+              {error ? <div className="login__label error" style={{ color: 'red' }}> {error}</div> : null}
               <div>
                 <button className="login__btn-submit" onClick={() => {
-                  // this.setState({ isLoader: true });
-                  this.changePassword();
+                  this.changePassword()
                 }}>Change password
                 </button>
               </div>
 
               <div className={"login__label"}>
                 <div className="auth__link" onClick={() => {
-                  this.setState({ isLoader: true });
-                  this.props.history.push('/register');
-                  }}>Don't have an account?
+                  this.setState({ isLoader: true })
+                  this.props.history.push('/register')
+                }}>Don't have an account?
                 </div>
                 <div className="auth__link" onClick={() => {
-                  this.setState({ isLoader: true });
-                  this.props.history.push('/login');
-                  }}>Already have an account?
+                  this.setState({ isLoader: true })
+                  this.props.history.push('/login')
+                }}>Already have an account?
                 </div>
               </div>
             </div>}
         </div>
-      );
+      )
     }
   }
 }
 
-export default ChangePassword;
+export default ChangePassword

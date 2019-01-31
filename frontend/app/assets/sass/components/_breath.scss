@@ -580,6 +580,11 @@
   position: relative;
 }
 
+.error {
+  color: red;
+  white-space: pre-wrap;
+}
+
 .form_name {
   margin-top: 1.2rem;
   display: block;
