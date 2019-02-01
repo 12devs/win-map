@@ -113,7 +113,7 @@ android {
     buildToolsVersion "27.0.1"
 
     defaultConfig {
-        applicationId "com.emptyprojecttemplate"
+        applicationId "com.windmapapp"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1

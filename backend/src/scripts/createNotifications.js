@@ -93,7 +93,7 @@ const SubscriptionHandler = async (subscription, expiredTime = 1800000) => {
       subscription.last_message = 'end';
       await Notification.create({
         account_id: subscription.account_id,
-        message: `Wind doesn't blows from ${subscription.danger.name} toward ${subscription.place.name}`
+        message: `Wind doesn't blow from ${subscription.danger.name} toward ${subscription.place.name}`
       });
     }
   } else {
@@ -108,7 +108,7 @@ const SubscriptionHandler = async (subscription, expiredTime = 1800000) => {
       subscription.last_message = 'end';
       await Notification.create({
         account_id: subscription.account_id,
-        message: `Wind doesn't blows from ${subscription.danger.name} toward ${subscription.place.name}`
+        message: `Wind doesn't blow from ${subscription.danger.name} toward ${subscription.place.name}`
       });
     }
   }

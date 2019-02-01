@@ -1,5 +1,5 @@
 {
-  "name": "empty-project-template",
+  "name": "windmapapp",
   "private": true,
   "scripts": {
     "start": "react-native start",
