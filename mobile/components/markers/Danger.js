@@ -27,7 +27,7 @@ class Danger extends React.Component {
 
     if (hasToken) {
       return services.movePoint({
-        danger: { lat: latitude, lng: lngCorrect, id: point.id},
+        danger: { lat: latitude, lng: lngCorrect, id: point.id },
         stations: [...this.props.stations]
       })
         .then(res => {
@@ -72,6 +72,8 @@ class Danger extends React.Component {
         this.props.navigation.navigate('PointSettings')
       }}
       draggable
+      // anchor={{ x: 2, y: 2 }}
+      centerOffset={{ x: 0, y: -20 }}
       image={redIcon}/>
   }
 }

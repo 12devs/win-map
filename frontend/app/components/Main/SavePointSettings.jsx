@@ -140,18 +140,16 @@ class SavePointSettings extends React.Component {
             mode="vertical">
             <Menu.Item
               onClick={() => {
-                this.props.updateReduxState({ isLoader: true });
                 this.addMarker('My Place');
-                this.props.updateReduxState({ savePointSettings: { show: false } });
+                this.props.updateReduxState({ savePointSettings: { show: false, isLoader: true } });
               }}
               key="1">
               Add Place Marker
             </Menu.Item>
 
             <Menu.Item onClick={() => {
-              this.props.updateReduxState({ isLoader: true });
               this.addMarker('Danger');
-              this.props.updateReduxState({ savePointSettings: { show: false } });
+              this.props.updateReduxState({ savePointSettings: { show: false, isLoader: true } });
             }} key="2">
               Add Danger Marker
             </Menu.Item>

@@ -65,7 +65,7 @@
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "wind_app@2x-4.png",
+      "filename" : "wind_app@2x-3.png",
       "scale" : "2x"
     },
     {
@@ -77,7 +77,7 @@
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "wind_app@2x-5.png",
+      "filename" : "wind_app@2x-4.png",
       "scale" : "2x"
     },
     {
@@ -89,7 +89,7 @@
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "wind_app@2x-6.png",
+      "filename" : "wind_app@2x-5.png",
       "scale" : "2x"
     },
     {
@@ -100,7 +100,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "wind_app@2x-3.png",
+      "filename" : "wind_app@2x-6.png",
       "scale" : "1x"
     }
   ],
