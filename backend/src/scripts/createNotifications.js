@@ -61,7 +61,7 @@ const createNotifications = async () => {
   logger.info('createNotifications|CREATED');
 };
 
-const SubscriptionHandler = async (subscription, expiredTime = 86400000) => {
+const SubscriptionHandler = async (subscription, expiredTime = 1800000) => {
   let wind = await Station.findOne({
     where: {
       station_id: subscription.place.station_id,

@@ -2,17 +2,18 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   AsyncStorage,
   TouchableOpacity,
-  ScrollView, BackHandler
+  ScrollView,
+  BackHandler
 } from 'react-native'
 import services from "../services/index"
-import { Button, Icon } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { connect } from "react-redux"
 import actions from "../actions"
 import OneSignal from 'react-native-onesignal'
+import AuthorizationInput from "./AuthorizationInput"
 
 class Login extends Component {
   constructor() {
@@ -96,30 +97,20 @@ class Login extends Component {
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-                <View style={styles.iconContainer}>
-                  <Icon name='lock-outline' color='#3D6DCC'/>
-                </View>
-                <TextInput style={styles.input}
-                           value={code}
-                           underlineColorAndroid="transparent"
-                           placeholder={"code from " + email}
-                           placeholderTextColor="#3D6DCC"
-                           autoCapitalize="none"
-                           onChangeText={(code) => this.setState({ code })}/>
-              </View>
+
+              <AuthorizationInput
+                icon='lock-outline'
+                placeholder={"code from " + email}
+                value={code}
+                onChangeText={(code) => this.setState({ code })}
+              />
+
               {error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
+
+              <View style={styles.rowContainer}>
                 <Button
                   containerViewStyle={styles.buttonContainer}
                   backgroundColor={'#3D6DCC'}
-                  // borderRadius={50}
                   disabled={isLoader}
                   disabledStyle={{ backgroundColor: '#3D6DCC' }}
                   loading={isLoader}
@@ -138,57 +129,27 @@ class Login extends Component {
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.mainContainer}>
             <View style={styles.container}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-                <View style={styles.iconContainer}>
-                  <Icon name='perm-identity' color='#3D6DCC'/>
-                </View>
-                <TextInput style={styles.input}
-                           value={login}
-                           underlineColorAndroid="transparent"
-                           placeholder="Username"
-                           placeholderTextColor="#3D6DCC"
-                           autoCapitalize="none"
-                           onChangeText={(login) => this.setState({ login })}/>
-              </View>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-                <View style={styles.iconContainer}>
-                  <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                    <Icon name='lock-outline' color='#3D6DCC'/>
-                  </View>
-                </View>
-                <TextInput style={styles.inputPassword}
-                           value={password}
-                           secureTextEntry={!showPassword}
-                           underlineColorAndroid="transparent"
-                           placeholder="Password"
-                           placeholderTextColor="#3D6DCC"
-                           autoCapitalize="none"
-                           onChangeText={(password) => this.setState({ password })}/>
-                <View style={styles.iconContainerPassword}>
-                  <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                    <Icon onPress={() => {
-                      this.setState({ showPassword: !showPassword })
-                    }} name={showPassword ? 'eye-off' : 'eye'} type='material-community' color='gray'/>
-                  </View>
-                </View>
-              </View>
+
+              <AuthorizationInput
+                icon='perm-identity'
+                placeholder="Username"
+                value={login}
+                onChangeText={(login) => this.setState({ login })}
+              />
+
+              <AuthorizationInput
+                icon='lock-outline'
+                placeholder="Password"
+                value={password}
+                secureTextEntry={!showPassword}
+                isPassword
+                pressEye={() => this.setState({ showPassword: !showPassword })}
+                onChangeText={(password) => this.setState({ password })}
+              />
+
               {error ? <Text style={{ textAlign: 'center', color: 'red' }}> {error}</Text> : null}
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
+
+              <View style={styles.rowContainer}>
                 <Button
                   containerViewStyle={styles.buttonContainer}
                   backgroundColor={'#3D6DCC'}
@@ -205,10 +166,7 @@ class Login extends Component {
               </View>
             </View>
 
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
+            <View style={styles.rowContainer}>
               <Text style={styles.textContainer}>Don't have an account?</Text>
               <TouchableOpacity
                 onPress={() => {
@@ -218,10 +176,7 @@ class Login extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
+            <View style={styles.rowContainer}>
               <Text style={styles.textContainer}>Forgot your password?</Text>
               <TouchableOpacity
                 onPress={() => {
@@ -230,6 +185,7 @@ class Login extends Component {
                 <Text style={styles.secondaryTextContainer}>You can reset it here.</Text>
               </TouchableOpacity>
             </View>
+
           </View>
         </ScrollView>
       )
@@ -241,57 +197,26 @@ export default connect(null, actions)(Login)
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // margin: 20,
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 2,
     backgroundColor: '#fff',
-
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   container: {
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: '#fff',
-    // margin: 10,
-    // elevation: 5
-  },
-  iconContainer: {
-    borderBottomColor: '#3D6DCC',
-    borderBottomWidth: 1,
-    width: 40,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  iconContainerPassword: {
-    borderBottomColor: '#3D6DCC',
-    borderBottomWidth: 1,
-    width: '15%',
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
   },
   input: {
-    // marginTop: 10,
     marginBottom: 10,
     height: 60,
     borderBottomColor: '#3D6DCC',
     borderBottomWidth: 1,
     width: "80%",
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  inputPassword: {
-    // marginTop: 10,
-    marginBottom: 10,
-    height: 60,
-    borderBottomColor: '#3D6DCC',
-    borderBottomWidth: 1,
-    width: "65%",
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   textContainer: {
     textAlign: 'center',
