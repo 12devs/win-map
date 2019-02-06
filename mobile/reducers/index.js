@@ -49,7 +49,7 @@ const reducer = function (state = immutable.Map(), action) {
     case "updateReduxState":
       let a;
       if (!('tempRegion' in action.state)) {
-        a = state.update("mapRegion", () => immutable.fromJS(state.get('tempRegion')));
+        a = state.update("mapRegion", () => immutable.fromJS(state.get('tempRegion') || state.get('mapRegion')));
       } else {
         a = state
       }

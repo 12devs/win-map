@@ -26,34 +26,35 @@ class Logout extends Component {
           }, style: 'cancel'
         },
         {
-          text: 'Yes', onPress: () => {
-            return services.deleteNotificationToken(this.state.device.userId).then(res => {
-              AsyncStorage.setItem('windToken', '')
-              this.props.updateReduxState({
-                menuRule: 'notLogged',
-                isGetMainData: false,
-                stations: [],
-                places: [],
-                dangers: [],
-                stationsData: {},
-                markerType: "My Place",
-                viewType: "Current",
-                mapViewType: "standard",
-                actionType: "Add",
-                scaleWind: 5000,
-                notificationSettings: [],
-                savePointSettings: { show: false },
-                notifications: [],
-                info: {
-                  point: null,
-                  type: null
-                },
-                addPoint: { name: '', error: '', isSentButton: false },
-                isConnected: true
-              })
-
-              return this.props.navigation.navigate('Map')
+          text: 'Yes', onPress: async () => {
+            await services.deleteNotificationToken(this.state.device.userId)
+            await AsyncStorage.setItem('windToken', '')
+            this.props.updateReduxState({
+              menuRule: 'notLogged',
+              isGetMainData: false,
+              stations: [],
+              places: [],
+              dangers: [],
+              stationsData: {},
+              markerType: "My Place",
+              viewType: "Current",
+              mapViewType: "standard",
+              mapRegion: null,
+              tempRegion: null,
+              actionType: "Add",
+              scaleWind: 5000,
+              notificationSettings: [],
+              savePointSettings: { show: false },
+              notifications: [],
+              info: {
+                point: null,
+                type: null
+              },
+              addPoint: { name: '', error: '', isSentButton: false },
+              isConnected: true
             })
+
+            return this.props.navigation.navigate('Map')
           }
         },
       ],

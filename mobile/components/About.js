@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ScrollView, Image, BackHandler, Platform } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, BackHandler, Platform, Linking } from 'react-native'
 import { Button } from 'react-native-elements'
 import email from 'react-native-email'
 
@@ -23,6 +23,19 @@ class About extends Component {
     email(to, {
       subject: 'Wind app',
     }).catch(console.error)
+  }
+
+  async onClickRate() {
+    try {
+      if (Platform.OS === 'ios')
+        return
+
+      const url = `https://play.google.com/store/apps/details?id=com.windmapapp`
+
+      await Linking.openURL(url)
+    } catch (error) {
+      console.log(('Не удалось загрузить страницу с приложением'))
+    }
   }
 
   render() {
@@ -56,8 +69,7 @@ class About extends Component {
                 backgroundColor={'#3D6DCC'}
                 borderRadius={50}
                 title={Platform.OS === 'ios' ? 'Rate on App Store' : 'Rate on Google Play'}
-                onPress={() => {
-                }}/>
+                onPress={this.onClickRate}/>
             </View>
           </View>
         </View>

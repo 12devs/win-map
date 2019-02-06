@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+  Platform,
+  PermissionsAndroid
+} from 'react-native'
 import { PROVIDER_DEFAULT } from 'react-native-maps'
-import MapView, { ProviderPropType, Callout } from 'react-native-maps'
+import MapView, { ProviderPropType, Callout, AnimatedRegion } from 'react-native-maps'
 import Markers from './markers/Markers'
 import actions from '../actions/index'
 import { connect } from "react-redux"
@@ -11,14 +20,28 @@ import Slider from './mapTools/Slider'
 import MapViewType from './mapTools/MapViewType'
 import DeleteMarkers from './mapTools/DelAllMarkers'
 import hasItem from "../utils/asyncStorage"
+import { watchPosition } from "../utils/utils"
+import Permissions from 'react-native-permissions'
 
 const { width, height } = Dimensions.get('window')
 
 class Map extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
     this.state = {
+      latitude: 53.78825,
+      longitude: 30.4324,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.1,
+      routeCoordinates: [],
+      distanceTravelled: 0,
+      prevLatLng: {},
+      coordinate: new AnimatedRegion({
+        latitude: 53.78825,
+        longitude: 30.4324
+      }),
       layout: {
         height: height,
         width: width,
@@ -27,9 +50,43 @@ class Map extends Component {
     }
   }
 
-  componentDidMount() {
-    hasItem('isLogo').then(isLogo=>{
-      return this.setState({isLogo})
+  requestLocationPermission = async () => {
+    const { coordinate, routeCoordinates, distanceTravelled } = this.state
+
+    try {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+      const position = await watchPosition(coordinate, routeCoordinates, distanceTravelled, granted)
+
+      this.setState({ ...position })
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  componentDidMount = async () => {
+    const { coordinate, routeCoordinates, distanceTravelled } = this.state
+
+    if (Platform.OS === 'android') {
+      await this.requestLocationPermission()
+    } else {
+      const granted = await Permissions.check('location')
+
+      this.setState({ ...await watchPosition(coordinate, routeCoordinates, distanceTravelled, granted) })
+    }
+
+    hasItem('isLogo').then(isLogo => {
+      this.setState({ isLogo })
+    })
+  }
+
+  getMapRegion = () => {
+    const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state
+    return ({
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
     })
   }
 
@@ -43,21 +100,10 @@ class Map extends Component {
   }
 
   render() {
-    const ASPECT_RATIO = 10
-    const mapPadding = 50
-    const LATITUDE = 53.78825
-    const LONGITUDE = 24.4324
-    const LATITUDE_DELTA = 0.0922
-    const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
-    const initialRegion = {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
-    }
     const { viewType } = this.props
-    const { layout, isLogo} = this.state
+    const { layout, isLogo } = this.state
     const { width, height } = layout
+    const mapPadding = 50
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
@@ -77,8 +123,7 @@ class Map extends Component {
           }}
           provider={PROVIDER_DEFAULT}
           style={styles.map}
-          initialRegion={initialRegion}
-          region={this.props.mapRegion || initialRegion}
+          region={this.props.mapRegion || this.getMapRegion()}
           mapPadding={{
             top: mapPadding * 2,
             right: mapPadding,
@@ -86,24 +131,32 @@ class Map extends Component {
             left: mapPadding
           }}
           mapType={this.props.mapViewType || 'standard'}
+          showsUserLocation={true}
+          showsMyLocationButton={false}
+          followsUserLocation={true}
         >
-          <Markers navigation={this.props.navigation}/>
+          <Markers navigation={this.props.navigation} />
         </MapView>
+
         <Callout style={width > height ? styles.rightTools : { marginTop: 130 }}>
-          <DeleteMarkers/>
+          <DeleteMarkers />
         </Callout>
+
         <Callout>
-          <Navigation/>
+          <Navigation />
         </Callout>
+
         {viewType === 'Current' ? null :
           <Callout style={{ bottom: 0, width }}>
-            <Slider/>
+            <Slider />
           </Callout>}
+
         <Callout style={styles.rightTools}>
-          <MapViewType/>
+          <MapViewType />
         </Callout>
+
         <Callout style={{ top: 0 }}>
-          <Search width={width} height={height}/>
+          <Search width={width} height={height} />
         </Callout>
 
         {!isLogo && <Callout>
@@ -112,7 +165,7 @@ class Map extends Component {
             AsyncStorage.setItem('isLogo', 'true')
           }}>
             <View style={styles.logoContainer}>
-              <Image source={require('../assets/tooltip.png')} style={styles.logo}/>
+              <Image source={require('../assets/tooltip.png')} style={styles.logo} />
             </View>
           </TouchableOpacity>
         </Callout>}
