@@ -153,11 +153,14 @@ class PointSettings extends Component {
   }
 
   render() {
-    let { info, statistic } = this.props
+    let { info, statistic, stationsData } = this.props
     let { point, type } = info
     let { isDelButton, modalVisible, markerName, dangerRadius, modalError } = this.state
+    let speed = 0
     if (!point) {
       point = {}
+    } else {
+      speed = stationsData[point.station_id].current.speed
     }
 
     return (
@@ -184,13 +187,13 @@ class PointSettings extends Component {
                                if (markerName.length < 30) {
                                  this.setState({ markerName })
                                }
-                             }}/>
+                             }} />
                   <View style={styles.iconContainer}>
-                    <Icon name='location-on' color='#3D6DCC'/>
+                    <Icon name='location-on' color='#3D6DCC' />
                   </View>
                 </View>
               </View>
-
+              {speed}
               {point.dangerRadius &&
               <View>
                 <Text style={{ textAlign: 'center', fontSize: 20 }}>Wind radius:</Text>
@@ -208,13 +211,14 @@ class PointSettings extends Component {
                                  if (dangerRadius.length < 7) {
                                    this.setState({ dangerRadius })
                                  }
-                               }}/>
+                               }} />
                     <View style={styles.iconContainer}>
-                      <Icon name='network-wifi' color='#3D6DCC'/>
+                      <Icon name='network-wifi' color='#3D6DCC' />
                     </View>
                   </View>
                 </View>
               </View>}
+
               {modalError ? <Text style={{ textAlign: 'center', color: 'red' }}>{modalError}</Text> : null}
 
               <View style={{
@@ -229,7 +233,7 @@ class PointSettings extends Component {
                   color={'#fff'}
                   onPress={() => {
                     this.updatePoint()
-                  }}/>
+                  }} />
               </View>
 
             </View>
@@ -243,20 +247,23 @@ class PointSettings extends Component {
             }}>
               <Card containerStyle={{ elevation: 5 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Icon name='location-on' color={type === 'place' ? '#3D6DCC' : 'red'}/>
+                  <Icon name='location-on' color={type === 'place' ? '#3D6DCC' : 'red'} />
                   <Text onPress={() => {
                     this.setModalVisible(true)
                   }} style={{ textAlign: 'center', fontSize: 20 }}>{point.name}</Text>
                   <Icon onPress={() => {
                     this.setModalVisible(true)
-                  }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }}/>
+                  }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }} />
                 </View>
                 {point.dangerRadius &&
-                <Text style={{ textAlign: 'center' }}>Wind Radius: {point.dangerRadius.toString()} m</Text>}
+                <Text style={{ textAlign: 'center' }}>Wind radius: {point.dangerRadius.toString()} m</Text>}
+                {!!speed &&
+                <Text style={{ textAlign: 'center' }}>Wind speed: {(speed * 0.44704).toFixed(1)} m/s</Text>}
+
                 {/*<Text style={{ textAlign: 'center' }}>{`(${point.lat}, ${point.lng})`}</Text>*/}
-                <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }}/>
+                <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }} />
                 <View>
-                  <WindRoseChart stationId={point.station_id}/>
+                  <WindRoseChart stationId={point.station_id} />
                 </View>
               </Card>
 
@@ -264,13 +271,13 @@ class PointSettings extends Component {
                 type === 'place' ?
                   <Card containerStyle={{ elevation: 5 }}>
                     <Table borderStyle={{ borderColor: 'transparent' }}>
-                      <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
-                      <Divider style={{ margin: 5, marginLeft: 0, marginRight: 0 }}/>
+                      <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text} />
+                      <Divider style={{ margin: 5, marginLeft: 0, marginRight: 0 }} />
                       {
                         statistic.get(point.id).map((danger, id) =>
                           <Row key={id}
                                data={[danger.get('dangerName'), danger.get('currently') === true ? 'yes' : 'no', danger.get('period')]}
-                               textStyle={styles.text}/>)
+                               textStyle={styles.text} />)
                       }
                     </Table>
                   </Card> : null
@@ -289,7 +296,7 @@ class PointSettings extends Component {
                   if (mapRegion) {
                     this.props.updateReduxState({ mapRegion, info: { point: null, type: null } })
                   }
-                }}/>
+                }} />
               <Button
                 containerViewStyle={{ margin: 10 }}
                 backgroundColor={'red'}
@@ -317,10 +324,10 @@ class PointSettings extends Component {
                     { cancelable: false }
                   )
 
-                }}/>
+                }} />
             </ScrollView> :
             <View style={{ height: '100%' }}>
-              <Loader size='large' color='#3D6DCC'/>
+              <Loader size='large' color='#3D6DCC' />
             </View>
         }
       </View>
@@ -335,6 +342,7 @@ function mapStateToProps(state) {
     dangers: state.get('dangers'),
     info: state.get('info'),
     statistic: state.get('statistic'),
+    stationsData: state.get('stationsData'),
     notificationSettings: state.get('notificationSettings')
   }
 }

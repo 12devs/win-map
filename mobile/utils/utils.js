@@ -164,7 +164,7 @@ const watchPosition = (coordinate, routeCoordinates, distanceTravelled = 0,
         ({ code, message }) => {
           return reject(Object.assign(new Error(message), { name: "PositionError", code }))
         },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        { enableHighAccuracy: false, maximumAge: 0, timeout: 15000 }
       )
     }
   })
