@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import actions from '../actions/index'
 import ChartView from 'react-native-highcharts'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView } from 'react-native'
 
 class WindRoseChart extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class WindRoseChart extends React.Component {
   render() {
     return (
       <ScrollView>
-        <ChartView style={{ height: 300 }} config={this.state.config} more={true}/>
+        <ChartView style={{ height: 300 }} config={this.state.config} more={true} />
       </ScrollView>
     )
   }

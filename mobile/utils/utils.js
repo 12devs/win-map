@@ -115,61 +115,6 @@ const calcMapRegionOne = (point) => {
   }
 }
 
-const watchPosition = (coordinate, routeCoordinates, distanceTravelled = 0,
-                       permissionLocation, positionType = 'getCurrentPosition') => {
-  return new Promise(async (resolve, reject) => {
-    if (permissionLocation === 'denied') {
-      resolve({
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 10,
-        longitudeDelta: 100,
-        routeCoordinates: routeCoordinates.concat([{
-          latitude: 0,
-          longitude: 0,
-        }]),
-        distanceTravelled,
-        prevLatLng: {
-          latitude: 0,
-          longitude: 0,
-        }
-      })
-    } else {
-      navigator.geolocation[positionType](position => {
-          const { latitude, longitude } = position.coords
-          const newCoordinate = { latitude, longitude }
-
-          if (Platform.OS === "android") {
-            if (this.marker) {
-              console.log('marker')
-              this.marker._component.animateMarkerToCoordinate(
-                newCoordinate,
-                500
-              )
-            }
-          } else {
-            coordinate.timing(newCoordinate).start()
-          }
-
-          resolve({
-            latitude,
-            longitude,
-            routeCoordinates: routeCoordinates.concat([newCoordinate]),
-            distanceTravelled,
-            prevLatLng: newCoordinate,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.1,
-          })
-        },
-        ({ code, message }) => {
-          return reject(Object.assign(new Error(message), { name: "PositionError", code }))
-        },
-        { enableHighAccuracy: false, maximumAge: 0, timeout: 15000 }
-      )
-    }
-  })
-}
-
 export {
   calcMapRegionAll,
   calcMapRegionOne,
@@ -177,5 +122,4 @@ export {
   getCorrectDirection,
   computeDestinationPoint,
   getPolygon,
-  watchPosition
 }

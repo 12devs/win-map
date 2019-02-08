@@ -24,7 +24,7 @@ class Navigation extends Component {
               style={styles.image}
               source={{
                 uri: icons.marker
-              }}/>
+              }} />
           </TouchableOpacity>
         </View>
 
@@ -44,7 +44,7 @@ class Navigation extends Component {
               style={styles.image}
               source={{
                 uri: icons.clock
-              }}/>
+              }} />
           </TouchableOpacity>
         </View>
       </View>

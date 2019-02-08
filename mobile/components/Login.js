@@ -118,7 +118,8 @@ class Login extends Component {
                   color='#fff'
                   onPress={() => {
                     this.login()
-                  }}/>
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -162,7 +163,8 @@ class Login extends Component {
                   onPress={() => {
                     this.setState({ isLoader: true })
                     this.login()
-                  }}/>
+                  }}
+                />
               </View>
             </View>
 

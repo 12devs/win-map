@@ -2,14 +2,24 @@ import React, { Component } from 'react'
 import Menu from './components/Menu.js'
 import reducer from "./reducers"
 import { connect, Provider } from "react-redux"
-import { createStore } from "redux"
 import OneSignal from 'react-native-onesignal'
 import { BackHandler } from 'react-native'
 import { exitAppPressed } from './utils/backHandler'
 import SplashScreen from 'react-native-splash-screen'
+import { createLogger } from "redux-logger"
+import { createStore, applyMiddleware } from 'redux'
+import { Iterable } from 'immutable'
 
+const stateTransformer = (state) => {
+  if (Iterable.isIterable(state)) return state.toJS()
+  else return state
+}
 
-const store = createStore(reducer)
+const logger = createLogger({
+  stateTransformer,
+})
+
+const store = createStore(reducer, applyMiddleware(logger))
 
 const log = function () {
   [].slice.call(arguments, 0).forEach(elem => {
@@ -88,7 +98,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Menu/>
+        <Menu />
       </Provider>
     )
   }

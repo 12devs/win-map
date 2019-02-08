@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     width: "65%",
   },
   input: {
-    // marginTop: 10,
     marginBottom: 10,
     height: 60,
     borderBottomColor: '#3D6DCC',

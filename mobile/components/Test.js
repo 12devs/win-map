@@ -1,29 +1,28 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native'
+import { Text, StyleSheet, ScrollView } from 'react-native'
 import services from '../services/index'
-import { Actions } from 'react-native-router-flux';
-import { AsyncStorage } from 'react-native';
-import actions from "../actions/index";
-import { connect } from "react-redux";
+import { AsyncStorage } from 'react-native'
+import actions from "../actions/index"
+import { connect } from "react-redux"
 
 class Test extends Component {
   state = {
-    token:'',
+    token: '',
     info: {}
-  };
+  }
   componentDidMount = () => {
     return AsyncStorage.getItem('windToken')
       .then(windToken => {
-        this.setState({token: windToken});
+        this.setState({ token: windToken })
         return services.getInfo()
           .then(res => {
             return this.props.updateReduxState(res)
           })
           .catch((error) => {
-            console.error(error);
-          });
-      });
-  };
+            console.error(error)
+          })
+      })
+  }
 
   render() {
     return (
@@ -50,10 +49,10 @@ function mapStateToProps(state) {
     notificationSettings: state.get('notificationSettings'),
     logs: state.get('logs'),
     addPoint: state.get('addPoint'),
-  };
+  }
 }
 
-export default connect(mapStateToProps, actions)(Test);
+export default connect(mapStateToProps, actions)(Test)
 
 const styles = StyleSheet.create({
   container: {
@@ -74,4 +73,4 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: 'white'
   }
-});
+})

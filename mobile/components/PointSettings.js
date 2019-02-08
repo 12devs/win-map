@@ -193,7 +193,7 @@ class PointSettings extends Component {
                   </View>
                 </View>
               </View>
-              {speed}
+
               {point.dangerRadius &&
               <View>
                 <Text style={{ textAlign: 'center', fontSize: 20 }}>Wind radius:</Text>
@@ -256,9 +256,11 @@ class PointSettings extends Component {
                   }} name='create' color='gray' size={18} containerStyle={{ marginLeft: 10 }} />
                 </View>
                 {point.dangerRadius &&
-                <Text style={{ textAlign: 'center' }}>Wind radius: {point.dangerRadius.toString()} m</Text>}
+                <Text style={{ textAlign: 'center', marginTop: 5 }}>Wind
+                  radius: {point.dangerRadius.toString()} m</Text>}
                 {!!speed &&
-                <Text style={{ textAlign: 'center' }}>Wind speed: {(speed * 0.44704).toFixed(1)} m/s</Text>}
+                <Text style={{ textAlign: 'center', marginTop: 5 }}>Wind
+                  speed: {(speed * 0.44704).toFixed(1)} m/s</Text>}
 
                 {/*<Text style={{ textAlign: 'center' }}>{`(${point.lat}, ${point.lng})`}</Text>*/}
                 <Divider style={{ margin: 20, marginLeft: 40, marginRight: 40 }} />
@@ -298,7 +300,7 @@ class PointSettings extends Component {
                   }
                 }} />
               <Button
-                containerViewStyle={{ margin: 10 }}
+                containerViewStyle={{ margin: 10, marginBottom:20 }}
                 backgroundColor={'red'}
                 // large
                 borderRadius={50}
