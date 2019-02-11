@@ -45,7 +45,6 @@ class Danger extends React.Component {
       stations: [...this.props.stations]
     })
       .then(res => {
-        console.log('res', res)
         const dangers = this.props.dangers.filter(el => !(el.id === point.id))
         let { stationsData, stations } = this.props
 

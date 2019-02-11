@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
-  Alert
+  Alert,
+  Platform
 } from 'react-native'
 import { PROVIDER_DEFAULT } from 'react-native-maps'
 import MapView, { ProviderPropType, Callout } from 'react-native-maps'
@@ -61,10 +62,7 @@ class Map extends Component {
   }
 
   watchPosition = async () => {
-    console.log('watchPosition')
-
     try {
-
       const granted = await this.requestLocationPermission()
 
       if (granted === 'authorized') {
@@ -75,7 +73,7 @@ class Map extends Component {
 
         this.position = navigator.geolocation.watchPosition(position => {
             const { latitude, longitude } = position.coords
-            console.log(latitude, longitude)
+
             this.props.updateReduxState({
               userLocation: {
                 latitude,
@@ -125,8 +123,33 @@ class Map extends Component {
     })
   }
 
+  onUserLocation = async () => {
+    const { userLocation } = this.props
+    const granted = await this.requestLocationPermission()
+
+    if (granted === 'authorized') {
+      if (this.position === undefined) {
+        await this.watchPosition()
+      }
+      this._map.animateToRegion({
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005
+      }, 500)
+    } else if (granted === 'denied' && Platform.OS === 'ios') {
+      Alert.alert(
+        'Location Disabled',
+        'Do you want to turn it on?',
+        [{ text: 'No', style: 'cancel' },
+          { text: 'Go to settings', onPress: () => Permissions.openSettings() }],
+        { cancelable: false }
+      )
+    }
+  }
+
   render() {
-    const { viewType, mapViewType, userLocation } = this.props
+    const { viewType, mapViewType } = this.props
     const { layout, isLogo, isLoader } = this.state
     const { width, height } = layout
     const mapPadding = 50
@@ -169,23 +192,7 @@ class Map extends Component {
         </Callout>
 
         <Callout style={[styles.rightTools, { marginTop: 0 }]}>
-          <UserLocation location={async () => {
-            const granted = await this.requestLocationPermission()
-
-            if (granted === 'authorized') {
-              if (this.position === undefined) {
-                await this.watchPosition()
-              }
-              this._map.animateToRegion({
-                latitude: userLocation.latitude,
-                longitude: userLocation.longitude,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.005
-              }, 500)
-            }
-
-
-          }} />
+          <UserLocation location={this.onUserLocation} />
         </Callout>
 
         <Callout>

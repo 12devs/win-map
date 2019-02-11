@@ -1,7 +1,6 @@
 import { Alert, BackHandler } from 'react-native';
 
 const exitAppPressed = () => {
-  console.log('exitApp');
   Alert.alert(
     'Exit App',
     'Do you want to exit?',

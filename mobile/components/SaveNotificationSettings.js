@@ -25,7 +25,6 @@ class SaveNotificationSettings extends React.Component {
           onPress={
             () => services.sendSubscriptions({ subscriptions: this.props.notificationSettings })
               .then(res => {
-                console.log(res)
                 Alert.alert(
                   'Alert',
                   'Settings have been saved!',

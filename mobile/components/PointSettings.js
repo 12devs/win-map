@@ -124,7 +124,6 @@ class PointSettings extends Component {
         [type]: point,
       })
         .then((res) => {
-          console.log(res)
           this.updatePointHelper(type, point, markerName, dangerRadius)
           this.setState({ modalError: '' })
           this.setModalVisible(!this.state.modalVisible)

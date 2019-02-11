@@ -42,7 +42,6 @@ class Notifications extends Component {
     return service.viewAllNotification().then(res => {
       notifications.map(el => el.view_at = new Date())
       this.props.updateReduxState({ notifications })
-      console.log(res)
       this.forceUpdate()
     })
   };
