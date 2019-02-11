@@ -16,7 +16,7 @@ class Navigation extends Component {
         thumbTintColor={'#00498f'}
         style={styles.submitButton}
         step={1}
-        maximumValue={100000}
+        maximumValue={10000}
         onValueChange={this.change.bind(this)}
         value={this.props.scaleWind}
       />

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   Alert,
-  Platform
+  Platform,
 } from 'react-native'
 import { PROVIDER_DEFAULT } from 'react-native-maps'
 import MapView, { ProviderPropType, Callout } from 'react-native-maps'
@@ -228,18 +228,6 @@ class Map extends Component {
           </Callout>
         }
 
-        {/*  <Callout
-          style={{
-            bottom: 0,
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginBottom: height / 6,
-          }}>
-          <View style={{ padding: 0, opacity: 0.7, backgroundColor: "#000", borderRadius: 50 }}>
-            <Text style={{ padding: 10, color: 'white', textAlign: 'center' }}>{viewType} mode</Text>
-          </View>
-        </Callout>*/}
       </View>
     )
   }

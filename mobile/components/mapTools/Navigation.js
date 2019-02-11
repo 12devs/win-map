@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, StyleSheet, Image, } from 'react-native'
+import { Toast } from "native-base"
 import actions from "../../actions/index"
 import { connect } from "react-redux"
 import { calcMapRegionAll } from '../../utils/utils'
@@ -16,6 +17,13 @@ class Navigation extends Component {
             onPress={
               () => {
                 const mapRegion = calcMapRegionAll([...this.props.places, ...this.props.dangers])
+
+                Toast.show({
+                  text: 'View all markers',
+                  duration: 1000,
+                  position: 'center'
+                })
+
                 if (mapRegion) {
                   this.props.updateReduxState({ mapRegion })
                 }
@@ -34,8 +42,20 @@ class Navigation extends Component {
             onPress={
               () => {
                 if (this.props.viewType === 'Current') {
+                  Toast.show({
+                    text: 'Historical mode',
+                    duration: 1000,
+                    position: 'center'
+                  })
+
                   this.props.updateReduxState({ viewType: 'Historical' })
                 } else {
+                  Toast.show({
+                    text: 'Current mode',
+                    duration: 1000,
+                    position: 'center'
+                  })
+
                   this.props.updateReduxState({ viewType: 'Current' })
                 }
               }

@@ -9,6 +9,7 @@ import SplashScreen from 'react-native-splash-screen'
 import { createLogger } from "redux-logger"
 import { createStore, applyMiddleware } from 'redux'
 import { Iterable } from 'immutable'
+import { Root } from 'native-base'
 
 const stateTransformer = (state) => {
   if (Iterable.isIterable(state)) return state.toJS()
@@ -98,7 +99,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Menu />
+        <Root>
+          <Menu />
+        </Root>
       </Provider>
     )
   }
