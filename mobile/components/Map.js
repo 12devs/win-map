@@ -152,7 +152,6 @@ class Map extends Component {
     const { viewType, mapViewType } = this.props
     const { layout, isLogo, isLoader } = this.state
     const { width, height } = layout
-    const mapPadding = 50
 
     if (isLoader) {
       return <Loader size='large' color='#3D6DCC' />
@@ -173,12 +172,6 @@ class Map extends Component {
           provider={PROVIDER_DEFAULT}
           style={styles.map}
           region={this.getMapRegion()}
-          mapPadding={{
-            top: mapPadding * 2,
-            right: mapPadding,
-            bottom: mapPadding,
-            left: mapPadding
-          }}
           mapType={mapViewType || 'standard'}
           showsUserLocation={true}
           showsMyLocationButton={false}

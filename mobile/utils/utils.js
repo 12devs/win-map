@@ -95,8 +95,8 @@ const calcMapRegionAll = (points) => {
       return {
         latitude,
         longitude,
-        latitudeDelta: Math.abs(maxLat - minLat),
-        longitudeDelta: Math.abs(maxLng - minLng),
+        latitudeDelta: Math.abs(maxLat - minLat) * 1.5,
+        longitudeDelta: Math.abs(maxLng - minLng) * 1.5,
       }
     }
   } catch (err) {
